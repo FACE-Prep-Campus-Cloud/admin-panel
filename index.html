@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FACE Prep - Admin Panel</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; background: #f5f5f5; }
+  .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  h1 { margin-bottom: 30px; color: #1e293b; }
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px; }
+  label { display: block; font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 5px; text-transform: uppercase; }
+  input, select { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; }
+  button { background: #3b82f6; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-right: 10px; }
+  button:hover { background: #2563eb; }
+  button.secondary { background: #64748b; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+  th { background: #f8fafc; font-weight: 600; color: #475569; }
+  .actions { display: flex; gap: 5px; }
+  .btn-edit, .btn-delete { padding: 6px 12px; font-size: 12px; border-radius: 4px; cursor: pointer; border: none; }
+  .btn-edit { background: #f59e0b; color: white; }
+  .btn-delete { background: #ef4444; color: white; }
+  .status { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .status.active { background: #10b981; color: white; }
+  .status.inactive { background: #ef4444; color: white; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎓 FACE Prep Campus - Admin Panel</h1>
+  
+  <div class="form-grid">
+    <div>
+      <label>College</label>
+      <select id="adminCollege">
+        <option value="">Select College</option>
+      </select>
+    </div>
+    <div>
+      <label>Department</label>
+      <select id="adminDepartment">
+        <option value="">Select Department</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div>
+      <label>Subject Name</label>
+      <input type="text" id="subjectName" placeholder="e.g. Machine Learning">
+    </div>
+    <div>
+      <label>Mentor Name</label>
+      <input type="text" id="mentorName" placeholder="e.g. John Doe">
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button onclick="addSubject()">Add Subject</button>
+    <button onclick="loadSubjects()" class="secondary">Refresh List</button>
+  </div>
+
+  <table id="subjectsTable">
+    <thead>
+      <tr>
+        <th>College</th>
+        <th>Department</th>
+        <th>Subject</th>
+        <th>Mentor</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="subjectsBody">
+      <tr><td colspan="6" style="text-align:center; color:#64748b;">Select a department to view subjects</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+const SUPABASE_URL = "https://bdgfotzgqwlrqylodydt.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkZ2ZvdHpncXdscnF5bG9keWR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyNjkzNTUsImV4cCI6MjA5NDg0NTM1NX0.xAJnpKDQIfQinWgJ8oEPaD3ELGLY_IiwWrYAFNcCUEo";
+
+// Load colleges on page load
+async function loadColleges() {
+  // For now, populate with existing colleges from your data
+  const colleges = [
+    "Kamaraj College", "Kamaraj Women's College", "SDNB Vaishnav College for Women",
+    "Patrician College of Arts & Science", "Sree Saraswathi Thyagaraja College"
+    // Add all your colleges here
+  ];
+  
+  const select = document.getElementById('adminCollege');
+  colleges.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    select.appendChild(opt);
+  });
+}
+
+async function addSubject() {
+  const college = document.getElementById('adminCollege').value;
+  const dept = document.getElementById('adminDepartment').value;
+  const subject = document.getElementById('subjectName').value;
+  const mentor = document.getElementById('mentorName').value;
+  
+  if (!college || !dept || !subject || !mentor) {
+    alert('Please fill all fields');
+    return;
+  }
+  
+  const data = {
+    college_name: college,
+    department_name: dept,
+    subject_name: subject,
+    mentor_name: mentor,
+    is_active: true
+  };
+  
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/subject_mentors`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(data)
+  });
+  
+  if (res.ok) {
+    alert('Subject added successfully!');
+    loadSubjects();
+    document.getElementById('subjectName').value = '';
+    document.getElementById('mentorName').value = '';
+  } else {
+    alert('Error adding subject');
+  }
+}
+
+async function loadSubjects() {
+  const dept = document.getElementById('adminDepartment').value;
+  if (!dept) return;
+  
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/subject_mentors?department_name=eq.${encodeURIComponent(dept)}&select=*`,
+    {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      }
+    }
+  );
+  
+  const data = await res.json();
+  const tbody = document.getElementById('subjectsBody');
+  tbody.innerHTML = '';
+  
+  data.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.college_name}</td>
+      <td>${row.department_name}</td>
+      <td>${row.subject_name}</td>
+      <td>${row.mentor_name}</td>
+      <td><span class="status ${row.is_active ? 'active' : 'inactive'}">${row.is_active ? 'Active' : 'Inactive'}</span></td>
+      <td class="actions">
+        <button class="btn-edit" onclick="editSubject(${row.id})">Edit</button>
+        <button class="btn-delete" onclick="toggleStatus(${row.id}, ${!row.is_active})">
+          ${row.is_active ? 'Deactivate' : 'Activate'}
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function toggleStatus(id, newStatus) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/subject_mentors?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({ is_active: newStatus })
+  });
+  
+  if (res.ok) {
+    loadSubjects();
+  }
+}
+
+document.getElementById('adminDepartment').addEventListener('change', loadSubjects);
+
+loadColleges();
+</script>
+</body>
+</html>
