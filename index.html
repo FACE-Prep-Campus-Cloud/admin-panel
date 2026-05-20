@@ -3,201 +3,768 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FACE Prep - Admin Panel</title>
+<title>FACE Prep - Mentor Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; background: #f5f5f5; }
-  .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-  h1 { margin-bottom: 30px; color: #1e293b; }
-  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px; }
-  label { display: block; font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 5px; text-transform: uppercase; }
-  input, select { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; }
-  button { background: #3b82f6; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-right: 10px; }
-  button:hover { background: #2563eb; }
-  button.secondary { background: #64748b; }
-  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-  th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
-  th { background: #f8fafc; font-weight: 600; color: #475569; }
-  .actions { display: flex; gap: 5px; }
-  .btn-edit, .btn-delete { padding: 6px 12px; font-size: 12px; border-radius: 4px; cursor: pointer; border: none; }
-  .btn-edit { background: #f59e0b; color: white; }
-  .btn-delete { background: #ef4444; color: white; }
-  .status { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-  .status.active { background: #10b981; color: white; }
-  .status.inactive { background: #ef4444; color: white; }
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface2: #f1f5f9;
+  --border: #e2e8f0;
+  --accent: #3b82f6;
+  --accent2: #8b5cf6;
+  --text: #1e293b;
+  --muted: #64748b;
+  --error: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 20px;
+  line-height: 1.6;
+}
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--surface);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #1e293b 30%, #3b82f6 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 40px;
+  font-size: 14px;
+}
+.section-header {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 30px 0 15px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+input, select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Syne', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+}
+.btn-secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover {
+  background: var(--border);
+}
+.btn-small {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.btn-edit {
+  background: var(--warning);
+  color: white;
+}
+.btn-delete {
+  background: var(--error);
+  color: white;
+}
+.btn-activate {
+  background: var(--success);
+  color: white;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+}
+thead {
+  background: var(--surface2);
+}
+th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--border);
+}
+td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+}
+tr:hover {
+  background: rgba(59, 130, 246, 0.02);
+}
+.status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-block;
+}
+.status-active {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+.status-inactive {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+}
+.status-override {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--accent2);
+  margin-left: 8px;
+}
+.actions {
+  display: flex;
+  gap: 6px;
+}
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+#toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 400px;
+}
+#toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+#toast.success {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.05);
+}
+#toast.error {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.05);
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+.stat-card {
+  background: var(--surface2);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.loading {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.filter-bar {
+  background: var(--surface2);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.filter-bar > div {
+  flex: 1;
+  min-width: 200px;
+}
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>🎓 FACE Prep Campus - Admin Panel</h1>
+  <h1>🎓 Mentor Management System</h1>
+  <p class="subtitle">Update mentor assignments for any college and department</p>
+
+  <div class="stats" id="stats">
+    <div class="stat-card">
+      <div class="stat-label">Total Overrides</div>
+      <div class="stat-value" id="totalOverrides">-</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active Overrides</div>
+      <div class="stat-value" id="activeOverrides" style="color: var(--success);">-</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Colleges</div>
+      <div class="stat-value" id="totalColleges" style="color: var(--accent2);">-</div>
+    </div>
+  </div>
+
+  <div class="section-header">➕ Add/Update Mentor Assignment</div>
   
   <div class="form-grid">
     <div>
-      <label>College</label>
-      <select id="adminCollege">
+      <label for="college">College *</label>
+      <select id="college" required>
         <option value="">Select College</option>
       </select>
     </div>
     <div>
-      <label>Department</label>
-      <select id="adminDepartment">
-        <option value="">Select Department</option>
+      <label for="department">Department *</label>
+      <select id="department" required disabled>
+        <option value="">First select college</option>
       </select>
     </div>
   </div>
 
   <div class="form-grid">
     <div>
-      <label>Subject Name</label>
-      <input type="text" id="subjectName" placeholder="e.g. Machine Learning">
+      <label for="subject">Subject Name *</label>
+      <input type="text" id="subject" placeholder="e.g. Machine Learning" required>
     </div>
     <div>
-      <label>Mentor Name</label>
-      <input type="text" id="mentorName" placeholder="e.g. John Doe">
+      <label for="mentor">Mentor Name *</label>
+      <input type="text" id="mentor" placeholder="e.g. Dr. John Smith" required>
     </div>
   </div>
 
-  <div style="margin-top: 20px;">
-    <button onclick="addSubject()">Add Subject</button>
-    <button onclick="loadSubjects()" class="secondary">Refresh List</button>
+  <div style="margin-top: 20px; display: flex; gap: 10px;">
+    <button class="btn btn-primary" onclick="saveOverride()">
+      <span>💾</span>
+      <span id="saveText">Save Override</span>
+    </button>
+    <button class="btn btn-secondary" onclick="clearForm()">
+      Clear Form
+    </button>
   </div>
 
-  <table id="subjectsTable">
-    <thead>
-      <tr>
-        <th>College</th>
-        <th>Department</th>
-        <th>Subject</th>
-        <th>Mentor</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="subjectsBody">
-      <tr><td colspan="6" style="text-align:center; color:#64748b;">Select a department to view subjects</td></tr>
-    </tbody>
-  </table>
+  <div class="section-header" style="margin-top: 50px;">📋 Current Overrides</div>
+  
+  <div class="filter-bar">
+    <div>
+      <label for="filterCollege">Filter by College</label>
+      <select id="filterCollege" onchange="loadOverrides()">
+        <option value="">All Colleges</option>
+      </select>
+    </div>
+    <div>
+      <label for="filterDepartment">Filter by Department</label>
+      <select id="filterDepartment" onchange="loadOverrides()" disabled>
+        <option value="">All Departments</option>
+      </select>
+    </div>
+    <div>
+      <label for="filterStatus">Filter by Status</label>
+      <select id="filterStatus" onchange="loadOverrides()">
+        <option value="">All Statuses</option>
+        <option value="true">Active Only</option>
+        <option value="false">Inactive Only</option>
+      </select>
+    </div>
+    <div style="flex: 0;">
+      <button class="btn btn-secondary" onclick="loadOverrides()">
+        🔄 Refresh
+      </button>
+    </div>
+  </div>
+
+  <div id="tableContainer">
+    <div class="empty-state">
+      <div class="empty-state-icon">📚</div>
+      <p>No overrides found. Add your first mentor override above.</p>
+    </div>
+  </div>
 </div>
+
+<div id="toast"></div>
 
 <script>
 const SUPABASE_URL = "https://bdgfotzgqwlrqylodydt.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkZ2ZvdHpncXdscnF5bG9keWR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyNjkzNTUsImV4cCI6MjA5NDg0NTM1NX0.xAJnpKDQIfQinWgJ8oEPaD3ELGLY_IiwWrYAFNcCUEo";
 
-// Load colleges on page load
-async function loadColleges() {
-  // For now, populate with existing colleges from your data
-  const colleges = [
-    "Kamaraj College", "Kamaraj Women's College", "SDNB Vaishnav College for Women",
-    "Patrician College of Arts & Science", "Sree Saraswathi Thyagaraja College"
-    // Add all your colleges here
-  ];
+let editingId = null;
+
+// Your college data structure
+const COLLEGE_DATA = {
+  "Kamaraj College": ["I BCA - A", "I BCA - B", "II BCA", "B.Com Honors", "BBA Digital Marketing"],
+  "Kamaraj Women's College": ["I BCA - A"],
+  "SDNB Vaishnav College for Women": ["II B.Sc. CS with AI", "I B.Sc. CS with AI (Shift 1)", "I B.Sc. CS with AI (Shift 2)", "I B.Sc. DS & AI", "I B.Com FinTech with AI", "I BBA DM & BA"],
+  "Patrician College of Arts & Science": ["B.Sc. CS with AI"],
+  "Sree Saraswathi Thyagaraja College": ["I BBA", "I MCA"],
+  "TERF's College of Arts and Science": ["III BCA", "II B.Sc IT"],
+  "TJS College of Arts and Science": ["II B.Sc CS with AI"],
+  "Bharathidasan College of Arts & Science": ["I B.Sc CT", "I BBA CA", "II B.Sc CT"],
+  "Nagarathinam Angalammal Arts & Science College": ["II B.Sc AI", "I B.Sc AI", "I B.Sc CC", "BBA DM", "B.Com BC & FT"],
+  "Vinayaga Mission's Research Foundation School of Arts & Science": ["B.Com FinTech with AI", "B.Sc AI & ML"],
+  "Sri Amaraavathi College of Arts & Science": ["I BCA", "II BCA", "I B.Sc AI & ML", "B.Com FinTech"],
+  "Takshashila University": ["II B.Sc CS AI & ML", "I B.Sc CS AI & ML", "B.Com FinTech with AI"],
+  "Study World Group of Institution": ["BCA"],
+  "Rathinam College of Arts & Science": ["BCA (AI)", "B.Sc CT (GenAI)"],
+  "Noorul Islam Centre for Higher Education (NICHE)": ["B.Sc AI & ML"],
+  "AMET University": ["II B.Sc AI & ML", "I B.Sc AI & ML", "I B.Sc AI & DS", "I B.Com Fintech with AI", "I BBA E-Commerce & Digital Marketing"],
+  "Joy University": ["BCA AI"],
+  "Sasurie College of Arts and Science": ["B.Sc AI & DS", "B.Sc CS", "B.Sc IT", "BBA CA", "B.Com PA"],
+  "S-VYASA University": ["II BCA"],
+  "Alliance University": ["I BCA (DS + AI & ML)", "I BCA (Game Development)", "II BCA DS (A+B)", "II BCA AI & ML (A+B)", "II BCA Game Development (A+B)", "I MCA - A", "I MCA - B"],
+  "Kristu Jayanti (Deemed to be University)": ["BBA - AI & DS", "BBA - FinTech"],
+  "Asian School of Business": ["BCA", "BBA", "B.Com"]
+};
+
+// Initialize
+function init() {
+  populateColleges();
+  populateFilterColleges();
+  loadOverrides();
+  loadStats();
+}
+
+function populateColleges() {
+  const select = document.getElementById('college');
+  const colleges = Object.keys(COLLEGE_DATA).sort();
   
-  const select = document.getElementById('adminCollege');
-  colleges.forEach(c => {
+  colleges.forEach(college => {
     const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
+    opt.value = college;
+    opt.textContent = college;
     select.appendChild(opt);
   });
 }
 
-async function addSubject() {
-  const college = document.getElementById('adminCollege').value;
-  const dept = document.getElementById('adminDepartment').value;
-  const subject = document.getElementById('subjectName').value;
-  const mentor = document.getElementById('mentorName').value;
+function populateFilterColleges() {
+  const select = document.getElementById('filterCollege');
+  const colleges = Object.keys(COLLEGE_DATA).sort();
   
-  if (!college || !dept || !subject || !mentor) {
-    alert('Please fill all fields');
+  colleges.forEach(college => {
+    const opt = document.createElement('option');
+    opt.value = college;
+    opt.textContent = college;
+    select.appendChild(opt);
+  });
+}
+
+document.getElementById('college').addEventListener('change', function() {
+  const college = this.value;
+  const deptSelect = document.getElementById('department');
+  
+  deptSelect.innerHTML = '<option value="">Select Department</option>';
+  
+  if (college && COLLEGE_DATA[college]) {
+    deptSelect.disabled = false;
+    COLLEGE_DATA[college].forEach(dept => {
+      const opt = document.createElement('option');
+      opt.value = dept;
+      opt.textContent = dept;
+      deptSelect.appendChild(opt);
+    });
+  } else {
+    deptSelect.disabled = true;
+  }
+});
+
+document.getElementById('filterCollege').addEventListener('change', function() {
+  const college = this.value;
+  const deptSelect = document.getElementById('filterDepartment');
+  
+  deptSelect.innerHTML = '<option value="">All Departments</option>';
+  
+  if (college && COLLEGE_DATA[college]) {
+    deptSelect.disabled = false;
+    COLLEGE_DATA[college].forEach(dept => {
+      const opt = document.createElement('option');
+      opt.value = dept;
+      opt.textContent = dept;
+      deptSelect.appendChild(opt);
+    });
+  } else {
+    deptSelect.disabled = true;
+  }
+  
+  loadOverrides();
+});
+
+async function saveOverride() {
+  const college = document.getElementById('college').value;
+  const department = document.getElementById('department').value;
+  const subject = document.getElementById('subject').value.trim();
+  const mentor = document.getElementById('mentor').value.trim();
+  
+  if (!college || !department || !subject || !mentor) {
+    showToast('Please fill all required fields', 'error');
     return;
   }
   
-  const data = {
-    college_name: college,
-    department_name: dept,
-    subject_name: subject,
-    mentor_name: mentor,
-    is_active: true
-  };
+  const saveBtn = document.getElementById('saveText');
+  const originalText = saveBtn.textContent;
+  saveBtn.innerHTML = '<span class="loading"></span> Saving...';
   
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/subject_mentors`, {
-    method: 'POST',
-    headers: {
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=minimal'
-    },
-    body: JSON.stringify(data)
-  });
-  
-  if (res.ok) {
-    alert('Subject added successfully!');
-    loadSubjects();
-    document.getElementById('subjectName').value = '';
-    document.getElementById('mentorName').value = '';
-  } else {
-    alert('Error adding subject');
+  try {
+    const data = {
+      college_name: college,
+      department_name: department,
+      subject_name: subject,
+      mentor_name: mentor,
+      is_active: true,
+      updated_at: new Date().toISOString()
+    };
+    
+    let res;
+    if (editingId) {
+      // Update existing
+      res = await fetch(`${SUPABASE_URL}/rest/v1/subject_mentors?id=eq.${editingId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(data)
+      });
+    } else {
+      // Create new
+      res = await fetch(`${SUPABASE_URL}/rest/v1/subject_mentors`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(data)
+      });
+    }
+    
+    if (res.ok) {
+      showToast(editingId ? 'Override updated successfully!' : 'Override added successfully!', 'success');
+      clearForm();
+      loadOverrides();
+      loadStats();
+    } else {
+      const error = await res.json();
+      showToast('Error saving override: ' + (error.message || 'Unknown error'), 'error');
+    }
+  } catch (err) {
+    showToast('Network error: ' + err.message, 'error');
+  } finally {
+    saveBtn.textContent = originalText;
   }
 }
 
-async function loadSubjects() {
-  const dept = document.getElementById('adminDepartment').value;
-  if (!dept) return;
+async function loadOverrides() {
+  const filterCollege = document.getElementById('filterCollege').value;
+  const filterDept = document.getElementById('filterDepartment').value;
+  const filterStatus = document.getElementById('filterStatus').value;
   
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/subject_mentors?department_name=eq.${encodeURIComponent(dept)}&select=*`,
-    {
+  let url = `${SUPABASE_URL}/rest/v1/subject_mentors?select=*&order=created_at.desc`;
+  
+  if (filterCollege) {
+    url += `&college_name=eq.${encodeURIComponent(filterCollege)}`;
+  }
+  if (filterDept) {
+    url += `&department_name=eq.${encodeURIComponent(filterDept)}`;
+  }
+  if (filterStatus) {
+    url += `&is_active=eq.${filterStatus}`;
+  }
+  
+  try {
+    const res = await fetch(url, {
       headers: {
         'apikey': SUPABASE_ANON_KEY,
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
       }
-    }
-  );
-  
-  const data = await res.json();
-  const tbody = document.getElementById('subjectsBody');
-  tbody.innerHTML = '';
-  
-  data.forEach(row => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${row.college_name}</td>
-      <td>${row.department_name}</td>
-      <td>${row.subject_name}</td>
-      <td>${row.mentor_name}</td>
-      <td><span class="status ${row.is_active ? 'active' : 'inactive'}">${row.is_active ? 'Active' : 'Inactive'}</span></td>
-      <td class="actions">
-        <button class="btn-edit" onclick="editSubject(${row.id})">Edit</button>
-        <button class="btn-delete" onclick="toggleStatus(${row.id}, ${!row.is_active})">
-          ${row.is_active ? 'Deactivate' : 'Activate'}
-        </button>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-async function toggleStatus(id, newStatus) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/subject_mentors?id=eq.${id}`, {
-    method: 'PATCH',
-    headers: {
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=minimal'
-    },
-    body: JSON.stringify({ is_active: newStatus })
-  });
-  
-  if (res.ok) {
-    loadSubjects();
+    });
+    
+    const data = await res.json();
+    displayOverrides(data);
+  } catch (err) {
+    showToast('Error loading overrides: ' + err.message, 'error');
   }
 }
 
-document.getElementById('adminDepartment').addEventListener('change', loadSubjects);
+function displayOverrides(data) {
+  const container = document.getElementById('tableContainer');
+  
+  if (!data || data.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📚</div>
+        <p>No overrides found. Add your first mentor override above.</p>
+      </div>
+    `;
+    return;
+  }
+  
+  let html = `
+    <table>
+      <thead>
+        <tr>
+          <th>College</th>
+          <th>Department</th>
+          <th>Subject</th>
+          <th>Mentor</th>
+          <th>Status</th>
+          <th>Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+  
+  data.forEach(row => {
+    const date = new Date(row.updated_at || row.created_at);
+    const formattedDate = date.toLocaleDateString('en-IN', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    });
+    
+    html += `
+      <tr>
+        <td>${row.college_name}</td>
+        <td>${row.department_name}</td>
+        <td><strong>${row.subject_name}</strong></td>
+        <td>${row.mentor_name}</td>
+        <td>
+          <span class="status ${row.is_active ? 'status-active' : 'status-inactive'}">
+            ${row.is_active ? '✓ Active' : '✕ Inactive'}
+          </span>
+          <span class="status status-override">Override</span>
+        </td>
+        <td style="color: var(--muted); font-size: 13px;">${formattedDate}</td>
+        <td>
+          <div class="actions">
+            <button class="btn btn-small btn-edit" onclick="editOverride(${row.id})">
+              ✏️ Edit
+            </button>
+            <button class="btn btn-small ${row.is_active ? 'btn-delete' : 'btn-activate'}" 
+                    onclick="toggleStatus(${row.id}, ${!row.is_active})">
+              ${row.is_active ? '🗑️ Deactivate' : '✓ Activate'}
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+  
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
 
-loadColleges();
+async function editOverride(id) {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/subject_mentors?id=eq.${id}&select=*`,
+      {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      }
+    );
+    
+    const data = await res.json();
+    if (data && data.length > 0) {
+      const row = data[0];
+      
+      document.getElementById('college').value = row.college_name;
+      document.getElementById('college').dispatchEvent(new Event('change'));
+      
+      setTimeout(() => {
+        document.getElementById('department').value = row.department_name;
+        document.getElementById('subject').value = row.subject_name;
+        document.getElementById('mentor').value = row.mentor_name;
+        
+        editingId = id;
+        document.getElementById('saveText').textContent = 'Update Override';
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        showToast('Editing override - make changes and click Update', 'success');
+      }, 100);
+    }
+  } catch (err) {
+    showToast('Error loading override for edit: ' + err.message, 'error');
+  }
+}
+
+async function toggleStatus(id, newStatus) {
+  if (!confirm(`Are you sure you want to ${newStatus ? 'activate' : 'deactivate'} this override?`)) {
+    return;
+  }
+  
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/subject_mentors?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ 
+        is_active: newStatus,
+        updated_at: new Date().toISOString()
+      })
+    });
+    
+    if (res.ok) {
+      showToast(`Override ${newStatus ? 'activated' : 'deactivated'} successfully!`, 'success');
+      loadOverrides();
+      loadStats();
+    } else {
+      showToast('Error updating status', 'error');
+    }
+  } catch (err) {
+    showToast('Network error: ' + err.message, 'error');
+  }
+}
+
+async function loadStats() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/subject_mentors?select=*`,
+      {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      }
+    );
+    
+    const data = await res.json();
+    
+    const total = data.length;
+    const active = data.filter(d => d.is_active).length;
+    const colleges = new Set(data.map(d => d.college_name)).size;
+    
+    document.getElementById('totalOverrides').textContent = total;
+    document.getElementById('activeOverrides').textContent = active;
+    document.getElementById('totalColleges').textContent = colleges;
+  } catch (err) {
+    console.error('Error loading stats:', err);
+  }
+}
+
+function clearForm() {
+  document.getElementById('college').value = '';
+  document.getElementById('department').value = '';
+  document.getElementById('department').disabled = true;
+  document.getElementById('department').innerHTML = '<option value="">First select college</option>';
+  document.getElementById('subject').value = '';
+  document.getElementById('mentor').value = '';
+  editingId = null;
+  document.getElementById('saveText').textContent = 'Save Override';
+}
+
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = (type === 'success' ? '✅ ' : '❌ ') + msg;
+  toast.className = 'show ' + type;
+  setTimeout(() => toast.className = '', 4000);
+}
+
+// Initialize on load
+init();
 </script>
 </body>
 </html>
