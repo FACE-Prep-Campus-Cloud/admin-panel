@@ -1311,7 +1311,7 @@ function renderStudentVoiceResult(likes,improvements,q6Count,q7Count){
   }
   grid.innerHTML=buildCol(likes,'likes')+buildCol(improvements,'improvements');
   const metaEl=document.getElementById('svMeta');
-  if(metaEl)metaEl.textContent=`AI-generated from ${q6Count} Q6 responses and ${q7Count} Q7 responses · ${new Date().toLocaleTimeString()}`;
+  if(metaEl)metaEl.textContent=`${q6Count} Q6 responses and ${q7Count} Q7 responses · ${new Date().toLocaleTimeString()}`;
   document.getElementById('svRegenBtn').style.display='inline-block';
   svShow('result');
 }
