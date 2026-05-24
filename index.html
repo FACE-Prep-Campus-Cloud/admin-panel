@@ -1302,7 +1302,7 @@ function renderStudentVoiceResult(likes,improvements,q6Count,q7Count){
   const grid=document.getElementById('svGrid');
   function buildCol(items,type){
     const isLikes=type==='likes';
-    const title=isLikes?'What students love about FACE Prep':'What students want improved';
+    const title=isLikes?'What students love about FACE Prep':'What students wants to Improve';
     const qLabel=isLikes?`Q6 · ${q6Count} responses`:`Q7 · ${q7Count} responses`;
     const colClass=isLikes?'likes':'improve';
     const accentColor=isLikes?'#065f46':'#78350f';
