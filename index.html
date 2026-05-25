@@ -1243,9 +1243,6 @@ wrap.style.gridTemplateColumns='repeat(2,1fr)';
     const pal=palette(yesPct);
     return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow-sm);">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
-        <div style="width:36px;height:36px;border-radius:var(--radius-sm);background:${pal.iconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <i class="ti ${q.icon}" style="font-size:18px;color:${pal.iconColor};"></i>
-        </div>
         <div style="flex:1;min-width:0;">
           <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px;">${q.label}</div>
           <div style="font-size:12px;color:var(--ink3);line-height:1.45;">${q.question}</div>
@@ -1273,7 +1270,6 @@ wrap.style.gridTemplateColumns='repeat(2,1fr)';
           <div style="font-size:24px;font-weight:600;line-height:1;color:${pal.pctColor};">${yesPct}%</div>
           <div style="font-size:11px;color:var(--ink3);margin-top:3px;">positive response</div>
         </div>
-        ${donut(yesPct,pal.bar)}
       </div>
     </div>`;
   }).join('');
