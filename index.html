@@ -59,7 +59,6 @@
       border: 1px solid var(--border); box-shadow: 0 4px 16px var(--shadow); overflow: hidden;
     }
 
-    /* LOGIN */
     .login-wrap { padding:1.8rem 1.4rem; }
     .login-wrap h2 {
       font-family:'Syne', sans-serif; font-size:1.5rem; font-weight:700;
@@ -95,7 +94,6 @@
     }
     select option { background:var(--surface); color:var(--text); }
 
-    /* OTP input */
     .otp-info {
       background:rgba(59,130,246,0.06); border:1.5px solid rgba(59,130,246,0.18);
       border-radius:10px; padding:.85rem 1rem; margin-bottom:1.2rem;
@@ -153,7 +151,6 @@
     .alert-success { background:rgba(16,185,129,.08); border:1.5px solid rgba(16,185,129,.2); color:#059669; }
     .alert-info    { background:rgba(245,158,11,.08); border:1.5px solid rgba(245,158,11,.2); color:#d97706; }
 
-    /* DASHBOARD */
     .dashboard { display:none; }
     .user-bar {
       display:flex; justify-content:space-between; align-items:center;
@@ -307,7 +304,7 @@
 <div class="container">
   <header>
     <h1>Peer Review System</h1>
-    <p class="subtitle">I BCA · Project Evaluation & Feedback Portal</p>
+    <p class="subtitle">I BCA · Project Evaluation &amp; Feedback Portal</p>
   </header>
 
   <!-- LOGIN -->
@@ -330,17 +327,17 @@
           <option>Kamaraj College</option>
           <option>Kamaraj Women's College</option>
           <option>SDNB Vaishnav College for Women</option>
-          <option>Patrician College of Arts & Science</option>
+          <option>Patrician College of Arts &amp; Science</option>
           <option>TERF's College of Arts and Science</option>
           <option>Sree Saraswathi Thyagaraja College</option>
           <option>TJS College of Arts and Science</option>
-          <option>Bharathidasan College of Arts & Science</option>
-          <option>Nagarathinam Angalammal Arts & Science College</option>
-          <option>Vinayaga Mission's Research Foundation School of Arts & Science</option>
-          <option>Sri Amaraavathi College of Arts & Science</option>
+          <option>Bharathidasan College of Arts &amp; Science</option>
+          <option>Nagarathinam Angalammal Arts &amp; Science College</option>
+          <option>Vinayaga Mission's Research Foundation School of Arts &amp; Science</option>
+          <option>Sri Amaraavathi College of Arts &amp; Science</option>
           <option>Takshashila University</option>
           <option>Study World Group of Institution</option>
-          <option>Rathinam College of Arts & Science</option>
+          <option>Rathinam College of Arts &amp; Science</option>
           <option>Noorul Islam Centre for Higher Education (NICHE)</option>
           <option>AMET University</option>
           <option>Joy University</option>
@@ -384,7 +381,7 @@
       </div>
       <div class="btn-row">
         <button class="btn-ghost" onclick="backToStep2()">← Back</button>
-        <button id="verifyOtpBtn" class="btn-primary" onclick="verifyOtp()">Verify & Sign In</button>
+        <button id="verifyOtpBtn" class="btn-primary" onclick="verifyOtp()">Verify &amp; Sign In</button>
       </div>
       <div class="resend-row">
         <button class="resend-btn" id="resendBtn" onclick="resendOtp()">Resend OTP</button>
@@ -459,7 +456,11 @@ const SUPABASE_URL      = 'https://zykmcumlzhucnvxqhpgm.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5a21jdW1semh1Y252eHFocGdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NzE5MDYsImV4cCI6MjA5NTM0NzkwNn0.kqUgSpGFSwMXpHkWRihhVJXDtVfl0tGdU24POxmXHWc';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let currentUser = null, reviewedSet = new Set(), currentProject = null, selectedCollege = '', otpEmail = '';
+// ── PASTE YOUR NEW RESEND API KEY HERE (starts with re_) ──
+const RESEND_API_KEY = 're_cnBBcgxD_FJHT5BASkmNXM88r2iV8XTYk';
+
+let currentUser = null, reviewedSet = new Set(), currentProject = null,
+    selectedCollege = '', otpEmail = '', otpCode = '', otpExpiry = 0;
 
 /* ── STEP NAVIGATION ── */
 function setDot(active) {
@@ -473,13 +474,13 @@ function setDot(active) {
 
 function goToStep2() {
   const c = document.getElementById('collegeSelect').value;
-  if (!c) return showAlert('loginAlert','❌ Please select your college first.','error');
+  if (!c) return showAlert('loginAlert','Please select your college first.','error');
   selectedCollege = c;
   document.getElementById('selectedCollegeDisplay').textContent = c;
   document.getElementById('step1').style.display = 'none';
   document.getElementById('step2').style.display = 'block';
   document.getElementById('loginTitle').textContent = 'Enter Your Email';
-  document.getElementById('loginSubtitle').textContent = 'We\'ll send a one-time code to verify you';
+  document.getElementById('loginSubtitle').textContent = "We'll send a one-time code to verify you";
   setDot(2);
   document.getElementById('emailInput').focus();
 }
@@ -497,31 +498,59 @@ function backToStep2() {
   document.getElementById('step3').style.display = 'none';
   document.getElementById('step2').style.display = 'block';
   document.getElementById('loginTitle').textContent = 'Enter Your Email';
-  document.getElementById('loginSubtitle').textContent = 'We\'ll send a one-time code to verify you';
+  document.getElementById('loginSubtitle').textContent = "We'll send a one-time code to verify you";
   document.getElementById('loginAlert').innerHTML = '';
   setDot(2);
 }
 
-/* ── SEND OTP ── */
+/* ── OTP EMAIL TEMPLATE ── */
+function otpEmailHtml(code) {
+  return `<div style="font-family:sans-serif;max-width:420px;margin:auto;padding:2rem;border-radius:12px;border:1px solid #e2e8f0">
+    <h2 style="color:#3b82f6;margin-bottom:0.4rem">Peer Review System</h2>
+    <p style="color:#64748b;margin-bottom:1.5rem;font-size:.9rem">I BCA &middot; Project Evaluation Portal</p>
+    <p style="color:#0f172a;margin-bottom:1rem">Your one-time sign-in code is:</p>
+    <div style="font-size:2.8rem;font-weight:800;letter-spacing:0.35em;color:#0f172a;background:#f1f5f9;padding:1.2rem;border-radius:10px;text-align:center;font-family:monospace">${code}</div>
+    <p style="color:#64748b;font-size:0.82rem;margin-top:1.2rem">This code expires in <strong>10 minutes</strong>. Do not share it with anyone.</p>
+  </div>`;
+}
+
+/* ── SEND OTP via Resend API ── */
 async function sendOtp() {
   const email = document.getElementById('emailInput').value.trim().toLowerCase();
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    return showAlert('loginAlert','❌ Please enter a valid email address.','error');
+    return showAlert('loginAlert','Please enter a valid email address.','error');
 
-  // Check email exists in students table first
-  setLoading('sendOtpBtn', true, 'Checking…');
+  setLoading('sendOtpBtn', true, 'Checking...');
   const { data: student, error: dbErr } = await sb.from('students').select('id').eq('email', email).single();
   if (dbErr || !student) {
-    setLoading('sendOtpBtn', false, 'Send OTP →');
-    return showAlert('loginAlert','❌ This email is not registered. Please check and try again.','error');
+    setLoading('sendOtpBtn', false, 'Send OTP');
+    return showAlert('loginAlert','This email is not registered. Please check and try again.','error');
   }
 
-  // Send OTP via Supabase Auth
-  const { error } = await sb.auth.signInWithOtp({ email });
-  setLoading('sendOtpBtn', false, 'Send OTP →');
-  if (error) return showAlert('loginAlert','❌ Failed to send OTP: ' + error.message,'error');
+  otpCode   = String(Math.floor(100000 + Math.random() * 900000));
+  otpExpiry = Date.now() + 10 * 60 * 1000;
+  otpEmail  = email;
 
-  otpEmail = email;
+  setLoading('sendOtpBtn', true, 'Sending...');
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Peer Review System <onboarding@resend.dev>',
+        to: [email],
+        subject: 'Your sign-in code',
+        html: otpEmailHtml(otpCode)
+      })
+    });
+    const result = await res.json();
+    setLoading('sendOtpBtn', false, 'Send OTP');
+    if (!res.ok) return showAlert('loginAlert','Failed to send OTP: ' + (result.message || 'Unknown error'),'error');
+  } catch(e) {
+    setLoading('sendOtpBtn', false, 'Send OTP');
+    return showAlert('loginAlert','Network error. Please try again.','error');
+  }
+
   document.getElementById('otpEmailDisplay').textContent = email;
   document.getElementById('step2').style.display = 'none';
   document.getElementById('step3').style.display = 'block';
@@ -536,19 +565,17 @@ async function sendOtp() {
 async function verifyOtp() {
   const token = document.getElementById('otpInput').value.trim().replace(/\s/g,'');
   if (token.length !== 6 || !/^\d{6}$/.test(token))
-    return showAlert('loginAlert','❌ Please enter the 6-digit code from your email.','error');
+    return showAlert('loginAlert','Please enter the 6-digit code from your email.','error');
+  if (Date.now() > otpExpiry)
+    return showAlert('loginAlert','Code has expired. Please request a new one.','error');
+  if (token !== otpCode)
+    return showAlert('loginAlert','Incorrect code. Please try again.','error');
 
-  setLoading('verifyOtpBtn', true, 'Verifying…');
-  const { data, error } = await sb.auth.verifyOtp({ email: otpEmail, token, type: 'email' });
-  if (error) {
-    setLoading('verifyOtpBtn', false, 'Verify & Sign In');
-    return showAlert('loginAlert','❌ Invalid or expired code. Please try again.','error');
-  }
-
-  // OTP verified — load student profile
+  setLoading('verifyOtpBtn', true, 'Verifying...');
   const { data: student } = await sb.from('students').select('*').eq('email', otpEmail).single();
   setLoading('verifyOtpBtn', false, 'Verify & Sign In');
-  if (!student) return showAlert('loginAlert','❌ Could not load your profile. Please contact support.','error');
+  if (!student) return showAlert('loginAlert','Could not load your profile. Please contact support.','error');
+  otpCode = '';
   loginSuccess(student);
 }
 
@@ -565,7 +592,7 @@ function startResendTimer() {
   const btn = document.getElementById('resendBtn');
   let secs = 60;
   btn.disabled = true;
-  btn.textContent = `Resend in ${secs}s`;
+  btn.textContent = 'Resend in ' + secs + 's';
   resendTimer = setInterval(() => {
     secs--;
     if (secs <= 0) {
@@ -573,16 +600,32 @@ function startResendTimer() {
       btn.disabled = false;
       btn.textContent = 'Resend OTP';
     } else {
-      btn.textContent = `Resend in ${secs}s`;
+      btn.textContent = 'Resend in ' + secs + 's';
     }
   }, 1000);
 }
+
 async function resendOtp() {
   document.getElementById('loginAlert').innerHTML = '';
-  const { error } = await sb.auth.signInWithOtp({ email: otpEmail });
-  if (error) return showAlert('loginAlert','❌ Could not resend: ' + error.message,'error');
-  showAlert('loginAlert','✓ A new code has been sent to your email.','success');
   document.getElementById('otpInput').value = '';
+  otpCode   = String(Math.floor(100000 + Math.random() * 900000));
+  otpExpiry = Date.now() + 10 * 60 * 1000;
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + RESEND_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Peer Review System <onboarding@resend.dev>',
+        to: [otpEmail],
+        subject: 'Your sign-in code (resent)',
+        html: otpEmailHtml(otpCode)
+      })
+    });
+    if (res.ok) showAlert('loginAlert','A new code has been sent to your email.','success');
+    else showAlert('loginAlert','Could not resend. Please try again.','error');
+  } catch(e) {
+    showAlert('loginAlert','Network error. Please try again.','error');
+  }
   startResendTimer();
 }
 
@@ -602,8 +645,8 @@ function loginSuccess(student) {
 }
 
 function logout() {
-  sb.auth.signOut();
-  currentUser = null; selectedCollege = ''; reviewedSet.clear(); otpEmail = '';
+  currentUser = null; selectedCollege = ''; reviewedSet.clear();
+  otpEmail = ''; otpCode = '';
   if (resendTimer) clearInterval(resendTimer);
   document.getElementById('loginScreen').style.display = 'block';
   document.getElementById('dashboard').style.display   = 'none';
@@ -638,33 +681,26 @@ function switchTab(name) {
 
 async function loadProjects() {
   const c = document.getElementById('projectsContent');
-  c.innerHTML = '<div class="loading">⏳ Loading projects…</div>';
+  c.innerHTML = '<div class="loading">Loading projects...</div>';
   const { data: projects, error } = await sb
     .from('projects').select('*, students(name,course)')
     .neq('register_number', currentUser.register_number).order('register_number');
-  if (error) { c.innerHTML=`<div class="alert alert-error">${error.message}</div>`; return; }
+  if (error) { c.innerHTML='<div class="alert alert-error">'+error.message+'</div>'; return; }
   await loadReviewedSet();
   const done=reviewedSet.size, total=projects.length, pct=total?Math.round(done/total*100):0;
-  let html = `
-    <div class="prog-strip">
-      <div>
-        <div class="count">Reviewed <strong>${done}</strong> of <strong>${total}</strong></div>
-        <div class="prog-bar-wrap" style="width:100%;max-width:180px"><div class="prog-bar" style="width:${pct}%"></div></div>
-      </div>
-      <div class="pct">${pct}%</div>
-    </div>
-    <div class="projects-grid">`;
+  let html = '<div class="prog-strip"><div><div class="count">Reviewed <strong>'+done+'</strong> of <strong>'+total+'</strong></div>'
+    +'<div class="prog-bar-wrap" style="width:100%;max-width:180px"><div class="prog-bar" style="width:'+pct+'%"></div></div></div>'
+    +'<div class="pct">'+pct+'%</div></div><div class="projects-grid">';
   projects.forEach(p => {
     const rev = reviewedSet.has(p.register_number);
-    html += `<div class="project-card">
-      <div class="type-chip">${escHtml(p.project_type||'Project')}</div>
-      <div class="project-title">${escHtml(p.title)}</div>
-      <div class="project-detail"><strong>Student:</strong> ${escHtml(p.students?.name||'—')}</div>
-      <div class="project-detail"><strong>Course:</strong> ${escHtml(p.students?.course||'—')}</div>
-      ${p.problem?`<div class="project-detail" style="margin-top:.4rem;color:var(--muted);font-size:.78rem">${escHtml(p.problem.slice(0,70))}${p.problem.length>70?'…':''}</div>`:''}
-      <button class="review-btn ${rev?'reviewed':''}" ${rev?'disabled':`onclick="openModal('${p.register_number}')"`}>
-        ${rev?'✓ Reviewed':'Review Project'}
-      </button></div>`;
+    html += '<div class="project-card">'
+      +'<div class="type-chip">'+escHtml(p.project_type||'Project')+'</div>'
+      +'<div class="project-title">'+escHtml(p.title)+'</div>'
+      +'<div class="project-detail"><strong>Student:</strong> '+escHtml(p.students?.name||'—')+'</div>'
+      +'<div class="project-detail"><strong>Course:</strong> '+escHtml(p.students?.course||'—')+'</div>'
+      +(p.problem?'<div class="project-detail" style="margin-top:.4rem;color:var(--muted);font-size:.78rem">'+escHtml(p.problem.slice(0,70))+(p.problem.length>70?'…':'')+'</div>':'')
+      +'<button class="review-btn '+(rev?'reviewed':'')+'" '+(rev?'disabled':'onclick="openModal(\''+p.register_number+'\')"')+'>'
+      +(rev?'Reviewed':'Review Project')+'</button></div>';
   });
   html += '</div>';
   c.innerHTML = html;
@@ -675,7 +711,7 @@ async function openModal(reg) {
   if (!p) return alert('Could not load project.');
   currentProject = p;
   document.getElementById('modalTitle').textContent = p.title;
-  document.getElementById('modalSub').textContent   = `${p.project_type||'Project'} · ${p.students?.name||reg}`;
+  document.getElementById('modalSub').textContent   = (p.project_type||'Project') + ' · ' + (p.students?.name||reg);
   document.getElementById('reviewModal').style.display = 'block';
   ['clarity','innovation','execution','usability','overall'].forEach(id=>{document.getElementById(id).value=5;updateScore(id);});
   document.getElementById('comments').value = '';
@@ -687,7 +723,7 @@ document.getElementById('reviewModal').addEventListener('click', e => { if(e.tar
 async function submitReview() {
   if (!currentProject) return;
   if (reviewedSet.has(currentProject.register_number)) { alert('Already reviewed.'); closeModal(); return; }
-  setLoading('submitReviewBtn',true,'Submitting…');
+  setLoading('submitReviewBtn',true,'Submitting...');
   const { error } = await sb.from('reviews').insert({
     reviewer_reg:     currentUser.register_number,
     project_reg:      currentProject.register_number,
@@ -702,32 +738,31 @@ async function submitReview() {
   setLoading('submitReviewBtn',false,'Submit Review');
   if (error) { alert(error.code==='23505'?'Already reviewed.':'Error: '+error.message); closeModal(); return; }
   reviewedSet.add(currentProject.register_number);
-  closeModal(); await loadProjects(); showToast('✓ Review submitted successfully!');
+  closeModal(); await loadProjects(); showToast('Review submitted successfully!');
 }
 
 async function loadMyReviews() {
   const c = document.getElementById('myReviewsContent');
-  c.innerHTML = '<div class="loading">⏳ Loading…</div>';
+  c.innerHTML = '<div class="loading">Loading...</div>';
   const { data, error } = await sb.from('reviews')
     .select('*,projects!reviews_project_reg_fkey(title,project_type)')
     .eq('reviewer_reg',currentUser.register_number).order('created_at',{ascending:false});
-  if (error) { c.innerHTML=`<div class="alert alert-error">${error.message}</div>`; return; }
-  if (!data?.length) { c.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div><h3>No reviews submitted yet</h3><p>Head over to the Projects tab to start reviewing.</p></div>`; return; }
-  let html = `<p class="section-title" style="color:var(--muted2);font-size:.82rem;font-weight:500;font-family:inherit;margin-bottom:1rem">You have submitted <strong style="color:var(--text)">${data.length}</strong> review(s)</p>
-    <div class="tbl-wrap"><table><thead><tr>
-      <th>Project</th><th>Type</th><th>College</th>
-      <th>Clarity</th><th>Innovation</th><th>Execution</th><th>Usability</th><th>Overall</th><th>Avg</th><th>Date</th>
-    </tr></thead><tbody>`;
+  if (error) { c.innerHTML='<div class="alert alert-error">'+error.message+'</div>'; return; }
+  if (!data?.length) { c.innerHTML='<div class="empty-state"><div class="empty-icon">📝</div><h3>No reviews submitted yet</h3><p>Head over to the Projects tab to start reviewing.</p></div>'; return; }
+  let html = '<p class="section-title" style="color:var(--muted2);font-size:.82rem;font-weight:500;font-family:inherit;margin-bottom:1rem">You have submitted <strong style="color:var(--text)">'+data.length+'</strong> review(s)</p>'
+    +'<div class="tbl-wrap"><table><thead><tr><th>Project</th><th>Type</th><th>College</th>'
+    +'<th>Clarity</th><th>Innovation</th><th>Execution</th><th>Usability</th><th>Overall</th><th>Avg</th><th>Date</th>'
+    +'</tr></thead><tbody>';
   data.forEach(r => {
     const avg=((r.clarity+r.innovation+r.execution+r.usability+r.overall)/5).toFixed(1);
-    html+=`<tr>
-      <td><strong>${escHtml(r.projects?.title||'—')}</strong></td>
-      <td><span class="type-chip" style="font-size:.65rem">${escHtml(r.projects?.project_type||'—')}</span></td>
-      <td style="color:var(--muted);font-size:.75rem">${escHtml(r.reviewer_college||'—')}</td>
-      <td>${r.clarity}/10</td><td>${r.innovation}/10</td><td>${r.execution}/10</td>
-      <td>${r.usability}/10</td><td>${r.overall}/10</td>
-      <td><strong style="color:var(--green)">${avg}</strong></td>
-      <td style="color:var(--muted);font-size:.75rem">${new Date(r.created_at).toLocaleDateString('en-IN')}</td></tr>`;
+    html+='<tr>'
+      +'<td><strong>'+escHtml(r.projects?.title||'—')+'</strong></td>'
+      +'<td><span class="type-chip" style="font-size:.65rem">'+escHtml(r.projects?.project_type||'—')+'</span></td>'
+      +'<td style="color:var(--muted);font-size:.75rem">'+escHtml(r.reviewer_college||'—')+'</td>'
+      +'<td>'+r.clarity+'/10</td><td>'+r.innovation+'/10</td><td>'+r.execution+'/10</td>'
+      +'<td>'+r.usability+'/10</td><td>'+r.overall+'/10</td>'
+      +'<td><strong style="color:var(--green)">'+avg+'</strong></td>'
+      +'<td style="color:var(--muted);font-size:.75rem">'+new Date(r.created_at).toLocaleDateString('en-IN')+'</td></tr>';
   });
   html+='</tbody></table></div>';
   c.innerHTML=html;
@@ -735,20 +770,20 @@ async function loadMyReviews() {
 
 async function loadMyProjectStats() {
   const c = document.getElementById('myProjectContent');
-  c.innerHTML = '<div class="loading">⏳ Loading…</div>';
+  c.innerHTML = '<div class="loading">Loading...</div>';
   const { data: myProject } = await sb.from('projects').select('*').eq('register_number',currentUser.register_number).single();
   if (!myProject) { c.innerHTML='<div class="empty-state"><h3>No project found.</h3></div>'; return; }
   const { data: reviews, error } = await sb.from('reviews').select('*').eq('project_reg',currentUser.register_number).order('created_at');
-  if (error) { c.innerHTML=`<div class="alert alert-error">${error.message}</div>`; return; }
+  if (error) { c.innerHTML='<div class="alert alert-error">'+error.message+'</div>'; return; }
 
-  let html = `<div class="card" style="padding:1.5rem;margin-bottom:1.2rem;">
-    <div class="type-chip">${escHtml(myProject.project_type||'Project')}</div>
-    <h2 style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin:0.5rem 0 .7rem;line-height:1.3;color:var(--text)">${escHtml(myProject.title)}</h2>
-    ${myProject.problem?`<div class="project-detail" style="font-size:.82rem">${escHtml(myProject.problem)}</div>`:''}
-  </div>`;
+  let html = '<div class="card" style="padding:1.5rem;margin-bottom:1.2rem;">'
+    +'<div class="type-chip">'+escHtml(myProject.project_type||'Project')+'</div>'
+    +'<h2 style="font-family:\'Syne\',sans-serif;font-size:1.2rem;font-weight:700;margin:0.5rem 0 .7rem;line-height:1.3;color:var(--text)">'+escHtml(myProject.title)+'</h2>'
+    +(myProject.problem?'<div class="project-detail" style="font-size:.82rem">'+escHtml(myProject.problem)+'</div>':'')
+    +'</div>';
 
   if (!reviews?.length) {
-    html+=`<div class="empty-state"><div class="empty-icon">⏳</div><h3>No reviews yet</h3><p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Your peers haven't reviewed your project yet.</p></div>`;
+    html+='<div class="empty-state"><div class="empty-icon">⏳</div><h3>No reviews yet</h3><p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Your peers have not reviewed your project yet.</p></div>';
     c.innerHTML=html; return;
   }
 
@@ -764,34 +799,33 @@ async function loadMyProjectStats() {
     {label:'Overall',    val:avgs.overall,    c:'var(--green)'},
     {label:'Grand Avg',  val:grand,           c:'var(--text)'},
   ];
-  html+=`<div class="stats-grid">${cards.map(card=>`
-    <div class="stat-card">
-      <div class="stat-val" style="color:${card.c}">${card.val}</div>
-      <div class="stat-lbl">${card.label}</div>
-      <div class="prog-bar-wrap" style="margin-top:.6rem"><div class="prog-bar" style="width:${card.val*10}%;background:${card.c}"></div></div>
-    </div>`).join('')}</div>
-  <p style="color:var(--muted);font-size:.82rem;margin-bottom:1.2rem">Based on <strong style="color:var(--text)">${n}</strong> review(s)</p>
-  <div class="section-title">Individual Reviews</div>
-  <div class="tbl-wrap"><table>
-    <thead><tr><th>#</th><th>College</th><th>Clarity</th><th>Innovation</th><th>Execution</th><th>Usability</th><th>Overall</th><th>Avg</th><th>Comments</th><th>Date</th></tr></thead>
-    <tbody>`;
+  html+='<div class="stats-grid">'+cards.map(card=>
+    '<div class="stat-card"><div class="stat-val" style="color:'+card.c+'">'+card.val+'</div>'
+    +'<div class="stat-lbl">'+card.label+'</div>'
+    +'<div class="prog-bar-wrap" style="margin-top:.6rem"><div class="prog-bar" style="width:'+card.val*10+'%;background:'+card.c+'"></div></div></div>'
+  ).join('')+'</div>'
+  +'<p style="color:var(--muted);font-size:.82rem;margin-bottom:1.2rem">Based on <strong style="color:var(--text)">'+n+'</strong> review(s)</p>'
+  +'<div class="section-title">Individual Reviews</div>'
+  +'<div class="tbl-wrap"><table>'
+  +'<thead><tr><th>#</th><th>College</th><th>Clarity</th><th>Innovation</th><th>Execution</th><th>Usability</th><th>Overall</th><th>Avg</th><th>Comments</th><th>Date</th></tr></thead>'
+  +'<tbody>';
   reviews.forEach((r,i)=>{
     const ra=((r.clarity+r.innovation+r.execution+r.usability+r.overall)/5).toFixed(1);
-    html+=`<tr>
-      <td style="color:var(--muted);font-size:.75rem">Peer ${i+1}</td>
-      <td style="color:var(--muted2);font-size:.75rem">${escHtml(r.reviewer_college||'—')}</td>
-      <td>${r.clarity}/10</td><td>${r.innovation}/10</td><td>${r.execution}/10</td>
-      <td>${r.usability}/10</td><td>${r.overall}/10</td>
-      <td><strong style="color:var(--green)">${ra}</strong></td>
-      <td style="color:var(--muted2);font-size:.75rem">${escHtml(r.comments||'—')}</td>
-      <td style="color:var(--muted);font-size:.75rem">${new Date(r.created_at).toLocaleDateString('en-IN')}</td></tr>`;
+    html+='<tr>'
+      +'<td style="color:var(--muted);font-size:.75rem">Peer '+(i+1)+'</td>'
+      +'<td style="color:var(--muted2);font-size:.75rem">'+escHtml(r.reviewer_college||'—')+'</td>'
+      +'<td>'+r.clarity+'/10</td><td>'+r.innovation+'/10</td><td>'+r.execution+'/10</td>'
+      +'<td>'+r.usability+'/10</td><td>'+r.overall+'/10</td>'
+      +'<td><strong style="color:var(--green)">'+ra+'</strong></td>'
+      +'<td style="color:var(--muted2);font-size:.75rem">'+escHtml(r.comments||'—')+'</td>'
+      +'<td style="color:var(--muted);font-size:.75rem">'+new Date(r.created_at).toLocaleDateString('en-IN')+'</td></tr>';
   });
   html+='</tbody></table></div>';
   c.innerHTML=html;
 }
 
 function showAlert(id,msg,type) {
-  document.getElementById(id).innerHTML=`<div class="alert alert-${type}">${msg}</div>`;
+  document.getElementById(id).innerHTML='<div class="alert alert-'+type+'">'+msg+'</div>';
   setTimeout(()=>{ const el=document.getElementById(id); if(el) el.innerHTML=''; },7000);
 }
 function showToast(msg) {
