@@ -1194,48 +1194,33 @@ function renderNPSFollowupYesNo(){
   if(!window.RAW_SHEET_ROWS||window.RAW_SHEET_ROWS.length===0){wrap.innerHTML='<div style="text-align:center;padding:32px;color:var(--ink3);grid-column:1/-1;">No data available.</div>';if(badge)badge.textContent='No data';return;}
 
   const followupQuestions=[
-    {id:'Q2',label:'Campus experience',question:'Satisfied with overall campus experience — classroom, infrastructure & Wi-Fi?',icon:'ti-building'},
-    {id:'Q3',label:'Classroom engagement',question:'Satisfied with classroom engagement — faculty quality & content relevance?',icon:'ti-books'},
-    {id:'Q4',label:'Skill development',question:'Happy with skill development progress so far?',icon:'ti-trending-up'},
-    {id:'Q5',label:'Placement opportunities',question:'Happy with placement opportunities available?',icon:'ti-briefcase'}
+    {id:'campus',   col:'nps_fu1_campusSatisfied',  label:'Campus experience',    question:'Satisfied with overall campus experience — classroom, infrastructure & Wi-Fi?'},
+    {id:'classroom',col:'nps_fu2_classroomSatisfied',label:'Classroom engagement', question:'Satisfied with classroom engagement — faculty quality & content relevance?'},
+    {id:'skill',    col:'nps_fu3_skillDev',          label:'Skill development',    question:'Happy with skill development progress so far?'},
+    {id:'placement',col:'nps_fu4_placement',         label:'Placement opportunities',question:'Happy with placement opportunities available?'}
   ];
 
   const questionStats={};
   followupQuestions.forEach(q=>{questionStats[q.id]={yes:0,no:0,total:0};});
 
   window.RAW_SHEET_ROWS.forEach(row=>{
-    const hasSubject=[1,2,3,4,5,6,7].some(i=>(row[`subject${i}_Name`]||'').trim()!=='');
-    if(!hasSubject)return;
-    [2,3,4,5].forEach(qNum=>{
-      const qKey=`Q${qNum}`;
-      let answer=row[`Q${qNum}`]||row[`q${qNum}`]||'';
-      if(!answer)answer=row[`subject1_Q${qNum}`]||'';
-      answer=answer.trim();
-      if(answer==='Yes'){questionStats[qKey].yes++;questionStats[qKey].total++;}
-      else if(answer==='No'){questionStats[qKey].no++;questionStats[qKey].total++;}
+    followupQuestions.forEach(q=>{
+      const answer=(row[q.col]||'').trim();
+      if(answer==='Yes'){questionStats[q.id].yes++;questionStats[q.id].total++;}
+      else if(answer==='No'){questionStats[q.id].no++;questionStats[q.id].total++;}
     });
   });
 
-  const totalResponses=window.RAW_SHEET_ROWS.filter(row=>[1,2,3,4,5,6,7].some(i=>(row[`subject${i}_Name`]||'').trim()!=='')).length;
+  const totalResponses=window.RAW_SHEET_ROWS.length;
   if(badge)badge.textContent=totalResponses>0?`${totalResponses} total responses`:'No data';
 
   function palette(p){
-    if(p>=70)return{bar:'#1D9E75',iconBg:'#EAF3DE',iconColor:'#3B6D11',statusBg:'#EAF3DE',statusColor:'#3B6D11',statusLabel:'Excellent',pctColor:'#1D9E75'};
-    if(p>=50)return{bar:'#BA7517',iconBg:'#FAEEDA',iconColor:'#633806',statusBg:'#FAEEDA',statusColor:'#633806',statusLabel:'Good',pctColor:'#BA7517'};
-    return{bar:'#E24B4A',iconBg:'#FCEBEB',iconColor:'#791F1F',statusBg:'#FCEBEB',statusColor:'#791F1F',statusLabel:'Needs improvement',pctColor:'#E24B4A'};
+    if(p>=70)return{bar:'#1D9E75',statusBg:'#EAF3DE',statusColor:'#3B6D11',statusLabel:'Excellent',pctColor:'#1D9E75'};
+    if(p>=50)return{bar:'#BA7517',statusBg:'#FAEEDA',statusColor:'#633806',statusLabel:'Good',pctColor:'#BA7517'};
+    return{bar:'#E24B4A',statusBg:'#FCEBEB',statusColor:'#791F1F',statusLabel:'Needs improvement',pctColor:'#E24B4A'};
   }
 
-  function donut(yesPct,color){
-    const r=18,cx=24,cy=24,circ=2*Math.PI*r;
-    const filled=(yesPct/100)*circ;
-    return `<svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="transform:rotate(-90deg)">
-      <circle cx="${cx}" cy="${cy}" r="${r}" stroke="#f5e9c8" stroke-width="5" fill="none"/>
-      <circle cx="${cx}" cy="${cy}" r="${r}" stroke="${color}" stroke-width="5" fill="none"
-        stroke-dasharray="${filled.toFixed(1)} ${(circ-filled).toFixed(1)}" stroke-linecap="round"/>
-    </svg>`;
-  }
-
-wrap.style.gridTemplateColumns='repeat(2,1fr)';
+  wrap.style.gridTemplateColumns='repeat(2,1fr)';
   wrap.style.gap='10px';
   wrap.style.marginTop='4px';
 
@@ -1251,7 +1236,7 @@ wrap.style.gridTemplateColumns='repeat(2,1fr)';
           <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px;">${q.label}</div>
           <div style="font-size:12px;color:var(--ink3);line-height:1.45;">${q.question}</div>
         </div>
-        <span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;background:${pal.statusBg};color:${pal.statusColor};">${pal.statusLabel}</span>
+        <span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;background:${pal.statusBg};color:${pal.statusColor};">${total>0?pal.statusLabel:'No data'}</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:7px;">
         <div style="display:flex;align-items:center;gap:10px;">
@@ -1271,8 +1256,8 @@ wrap.style.gridTemplateColumns='repeat(2,1fr)';
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border);">
         <div>
-          <div style="font-size:24px;font-weight:600;line-height:1;color:${pal.pctColor};">${yesPct}%</div>
-          <div style="font-size:11px;color:var(--ink3);margin-top:3px;">positive response</div>
+          <div style="font-size:24px;font-weight:600;line-height:1;color:${total>0?pal.pctColor:'var(--ink3)'};">${total>0?yesPct+'%':'—'}</div>
+          <div style="font-size:11px;color:var(--ink3);margin-top:3px;">${total>0?`positive · ${total} responses`:'no responses found'}</div>
         </div>
       </div>
     </div>`;
