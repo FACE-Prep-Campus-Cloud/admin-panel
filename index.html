@@ -1048,7 +1048,8 @@ const mentorCount=Object.values(mentorStats).length||1;
 // C = total responses / number of mentors
 const C=totalAllResponses/mentorCount;
 // m = Σ(sum of raw ratings per mentor) / Σn  — pure sum, no rounding
-const totalRawSum=Object.values(mentorStats).reduce((s,m)=>s+m.ratings.reduce((a,b)=>a+b,0),0);
+const totalRawSum = Object.values(mentorStats)
+  .reduce((s, m) => s + m.ratings.reduce((a, b) => a + parseFloat(b.toFixed(2)), 0), 0);
 const globalMean=totalAllResponses>0?totalRawSum/totalAllResponses:0;
 // Store globally so display always uses identical value
 window._BAYESIAN_C=C;
@@ -1056,7 +1057,7 @@ window._BAYESIAN_GLOBAL_MEAN=globalMean;
 MENTORS=Object.values(mentorStats).map(m=>{
   const avg=m.ratings.reduce((a,b)=>a+b,0)/m.ratings.length;
   const totalResponses=m.ratings.length;
-  const sumRatings=m.ratings.reduce((a,b)=>a+b,0); // raw Σ ratings, no rounding
+ const sumRatings = m.ratings.reduce((a, b) => a + parseFloat(b.toFixed(2)), 0); // raw Σ ratings, no rounding
   const avgXResponses=avg*totalResponses;
   // Bayesian = (C × m + Σ ratings) / (C + n)
   const bayesianScore=(C*globalMean+sumRatings)/(C+totalResponses);
