@@ -916,7 +916,6 @@ let chartInstances={};
 let trendRatingInst=null,trendNpsInst=null,trendHitRatioInst=null,trendSegInst=null;
 let needleAnimRAF=null;
 let landingData=[],landingSortState={col:'rank',dir:'asc'},landingLoaded=false;
-let GLOBAL_MEAN=0,GLOBAL_C=0;
 let svRunning=false;
 
 /* ═══════════════════════════════════════════
@@ -1432,7 +1431,7 @@ function renderMentorTable(){
   const list=getFilteredMentors(currentDeptFilter);const isDeptActive=currentDeptFilter&&currentDeptFilter!=='all';
   let displayMean,displayTotal;
   if(isDeptActive){const deptMs=MENTORS.filter(m=>m.depts.some(d=>d===currentDeptFilter));let tw=0,tr=0;deptMs.forEach(m=>{const rs=m.deptRatings[currentDeptFilter]||[];tw+=rs.reduce((a,b)=>a+b,0);tr+=rs.length;});displayMean=tr>0?tw/tr:0;displayTotal=tr;}
-  else{const sumResponses=MENTORS.reduce((s,m)=>s+m.responses,0);displayMean=GLOBAL_MEAN;displayTotal=sumResponses;}
+  else{const sumResponses=MENTORS.reduce((s,m)=>s+m.responses,0);const sumAvgXResp=MENTORS.reduce((s,m)=>s+m.avgXResponses,0);displayMean=sumResponses>0?sumAvgXResp/sumResponses:0;displayTotal=sumResponses;}
   document.getElementById('mtSumGlobalMean').textContent=displayMean>0?displayMean.toFixed(7):'—';document.getElementById('mtSumTotalResp').textContent=displayTotal||'—';document.getElementById('mentorTableCountBadge').textContent=list.length>0?`${list.length} mentors`:'No data';
   if(!list.length){document.getElementById('mentorTableBody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--ink3)">No mentors found</td></tr>';return;}
   const deptLabel=isDeptActive?currentDeptFilter:null;const rankColors={1:'#f5c842',2:'#e0e0e0',3:'#f0c498'};
