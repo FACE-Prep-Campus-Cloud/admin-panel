@@ -171,6 +171,16 @@
     .modal-problem-box .problem-text  { font-size:.82rem; color:var(--muted2); line-height:1.6; }
     .modal-title { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:.15rem; line-height:1.3; color:var(--text); }
     .modal-sub   { color:var(--muted); font-size:.78rem; margin-bottom:1.2rem; }
+    .criteria-group { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:1rem; margin-bottom:.9rem; }
+    .criteria-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:.8rem; font-size:.85rem; font-weight:600; color:var(--text); }
+    .score-display  { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:800; color:var(--accent); }
+    .seg-track { display:flex; border-radius:8px; overflow:hidden; border:1.5px solid var(--border); height:38px; }
+    .seg-btn {
+      flex:1; border:none; border-right:1px solid var(--border);
+      background:var(--surface2); font-size:.78rem; font-weight:700;
+      color:var(--muted2); cursor:pointer; transition:all .15s;
+      font-family:'Instrument Sans',sans-serif;
+      -webkit-tap-highlight-color:transparent;
 
     /* ── RATING SCALE ── */
     .criteria-group {
@@ -262,6 +272,8 @@
       z-index: 1;
       position: relative;
     }
+    .seg-btn:last-child { border-right:none; }
+    .seg-btn.seg-active { color:#fff; }
 
     /* score badge inherits button color */
     .score-badge.has-value[data-color="1"]  { color:#ef4444; border-color:#ef4444; background:rgba(239,68,68,0.07); }
@@ -304,6 +316,7 @@
       .stats-grid { grid-template-columns:1fr; }
       .project-card { padding:1.1rem; }
       .modal-content { padding:1.2rem; margin:.5rem auto; }
+      .criteria-group { padding:.9rem; }
       .criteria-group { padding:.85rem; }
       .rating-btn { min-height: 42px; font-size: .82rem; }
     }
@@ -379,6 +392,7 @@
   <div id="dashboard" class="dashboard">
     <div class="user-bar card">
       <div class="user-info">
+        
         <div>
           <div class="user-name" id="userName"></div>
           <div class="user-meta">Reg: <span id="userReg"></span> · <span id="userCourse"></span></div>
@@ -425,6 +439,9 @@
 
     <!-- CRITERIA GROUPS with new rating grid -->
     <div class="criteria-group">
+      <div class="criteria-label"><span>Problem Clarity</span><span class="score-display"><span id="clarity-display">5</span>/10</span></div>
+      <div class="seg-track" id="clarity-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('clarity',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('clarity',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('clarity',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('clarity',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('clarity',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('clarity',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('clarity',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('clarity',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('clarity',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('clarity',10)">10</button></div>
+      <input type="hidden" id="clarity" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Problem Clarity</span>
         <span class="score-badge" id="clarity-badge">—</span>
@@ -434,6 +451,9 @@
     </div>
 
     <div class="criteria-group">
+      <div class="criteria-label"><span>Innovation</span><span class="score-display"><span id="innovation-display">5</span>/10</span></div>
+      <div class="seg-track" id="innovation-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('innovation',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('innovation',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('innovation',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('innovation',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('innovation',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('innovation',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('innovation',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('innovation',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('innovation',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('innovation',10)">10</button></div>
+      <input type="hidden" id="innovation" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Innovation</span>
         <span class="score-badge" id="innovation-badge">—</span>
@@ -443,6 +463,9 @@
     </div>
 
     <div class="criteria-group">
+      <div class="criteria-label"><span>Execution</span><span class="score-display"><span id="execution-display">5</span>/10</span></div>
+      <div class="seg-track" id="execution-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('execution',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('execution',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('execution',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('execution',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('execution',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('execution',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('execution',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('execution',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('execution',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('execution',10)">10</button></div>
+      <input type="hidden" id="execution" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Execution</span>
         <span class="score-badge" id="execution-badge">—</span>
@@ -452,6 +475,9 @@
     </div>
 
     <div class="criteria-group">
+      <div class="criteria-label"><span>Usability</span><span class="score-display"><span id="usability-display">5</span>/10</span></div>
+      <div class="seg-track" id="usability-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('usability',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('usability',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('usability',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('usability',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('usability',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('usability',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('usability',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('usability',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('usability',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('usability',10)">10</button></div>
+      <input type="hidden" id="usability" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Usability</span>
         <span class="score-badge" id="usability-badge">—</span>
@@ -461,6 +487,9 @@
     </div>
 
     <div class="criteria-group">
+      <div class="criteria-label"><span>Overall Impression</span><span class="score-display"><span id="overall-display">5</span>/10</span></div>
+      <div class="seg-track" id="overall-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('overall',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('overall',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('overall',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('overall',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('overall',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('overall',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('overall',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('overall',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('overall',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('overall',10)">10</button></div>
+      <input type="hidden" id="overall" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Overall Impression</span>
         <span class="score-badge" id="overall-badge">—</span>
@@ -558,23 +587,11 @@ function backToStep1() {
 async function emailLogin() {
   const email = document.getElementById('emailInput').value.trim().toLowerCase();
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    return showAlert('loginAlert','❌ Please enter a valid email address.','error');
+    return showAlert('loginAlert','Please enter a valid email address.','error');
   setLoading('loginBtn', true, 'Signing in…');
-
-  // Only allow KWC I BCA-A students
-  const { data: student, error } = await sb
-    .from('kwc_students')
-    .select('*')
-    .eq('email', email)
-    .eq('college_code', 'KWC')
-    .eq('course', 'I BCA - A')
-    .single();
-
+  const { data: student, error } = await sb.from('students').select('*').eq('email', email).single();
   setLoading('loginBtn', false, 'Sign In');
-
-  if (error || !student)
-    return showAlert('loginAlert','❌ Access denied. Only KWC I BCA-A students can log in here.','error');
-
+  if (error || !student) return showAlert('loginAlert','Email not found. Please check and try again.','error');
   loginSuccess(student);
 }
 document.getElementById('emailInput').addEventListener('keydown', e => { if(e.key==='Enter') emailLogin(); });
@@ -620,6 +637,7 @@ function switchTab(name) {
 }
 
 // ── PROJECTS TAB ─────────────────────────────────────────────
+// Two-step fetch: projects first, then students by register_number
 async function loadProjects() {
   const c = document.getElementById('projectsContent');
   c.innerHTML = '<div class="loading"> Loading projects…</div>';
@@ -635,6 +653,7 @@ async function loadProjects() {
     return;
   }
 
+  // Fetch student names for all projects
   const regs = projects.map(p => p.register_number);
   const { data: students } = await sb.from('students').select('register_number,name,course').in('register_number', regs);
   const stuMap = {};
@@ -675,6 +694,7 @@ async function loadProjects() {
 }
 
 // ── MODAL ────────────────────────────────────────────────────
+// Two-step fetch: project first, then student separately
 async function openModal(reg) {
   const { data: p, error: pe } = await sb.from('projects').select('*').eq('register_number', reg).single();
   if (pe || !p) return alert('Could not load project.');
@@ -696,12 +716,30 @@ async function openModal(reg) {
     problemBox.style.display = 'none';
   }
 
+  document.getElementById('reviewModal').style.display = 'block';
+  initSegs();
   resetRatings();
   document.getElementById('comments').value = '';
   document.getElementById('reviewModal').style.display = 'block';
 }
 
 function closeModal() { document.getElementById('reviewModal').style.display='none'; currentProject=null; }
+const SEG_COLORS = ['#ef4444','#f97316','#f59e0b','#eab308','#84cc16','#22c55e','#10b981','#06b6d4','#3b82f6','#8b5cf6'];
+function setSeg(id, val) {
+  document.getElementById(id).value = val;
+  document.getElementById(id+'-display').textContent = val;
+  const btns = document.getElementById(id+'-seg').querySelectorAll('.seg-btn');
+  btns.forEach(b => {
+    const v = +b.dataset.val;
+    const on = v === val;
+    b.classList.toggle('seg-active', on);
+    b.style.background = on ? SEG_COLORS[v-1] : '';
+  });
+}
+function initSegs() {
+  ['clarity','innovation','execution','usability','overall'].forEach(id => setSeg(id, 5));
+}
+function updateScore(id) { document.getElementById(id+'-display').textContent = document.getElementById(id).value; }
 
 document.getElementById('reviewModal').addEventListener('click', e => {
   if(e.target===document.getElementById('reviewModal')) closeModal();
@@ -743,6 +781,7 @@ async function submitReview() {
 }
 
 // ── MY REVIEWS TAB ───────────────────────────────────────────
+// Two-step: reviews first, then project titles by project_reg list
 async function loadMyReviews() {
   const c = document.getElementById('myReviewsContent');
   c.innerHTML = '<div class="loading"> Loading…</div>';
@@ -757,12 +796,14 @@ async function loadMyReviews() {
 
   if (!reviews?.length) {
     c.innerHTML = `<div class="empty-state">
+      
       <h3>No reviews submitted yet</h3>
       <p>Head over to the Projects tab to start reviewing.</p>
     </div>`;
     return;
   }
 
+  // Fetch project titles for all reviewed project_regs
   const regs = [...new Set(reviews.map(r => r.project_reg))];
   const { data: projects } = await sb
     .from('projects')
@@ -829,6 +870,7 @@ async function loadMyProjectStats() {
 
   if (!reviews?.length) {
     html += `<div class="empty-state">
+      
       <h3>No reviews yet</h3>
       <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Your peers haven't reviewed your project yet.</p>
     </div>`;
