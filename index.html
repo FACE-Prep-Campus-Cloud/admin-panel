@@ -1045,21 +1045,21 @@ function processSheetData(rows){
   NPS_DATA={scores:npsScores,promoters,passives,detractors,npsIndex,avg,median,total,scoreFreq};
 const allRatings=TABLE_DATA.map(r=>r.rating);const totalAllResponses=allRatings.length;
 const mentorCount=Object.values(mentorStats).length||1;
-// C = average number of responses per mentor
+// C = total responses / number of mentors
 const C=totalAllResponses/mentorCount;
-// m = global mean = Σ(mentor_avg × mentor_n) / Σn  — computed from mentor-level data
-const sumWeightedRatings=Object.values(mentorStats).reduce((s,m)=>{
-  const mAvg=m.ratings.reduce((a,b)=>a+b,0)/m.ratings.length;
-  return s+(mAvg*m.ratings.length);
-},0);
-const globalMean=totalAllResponses>0?sumWeightedRatings/totalAllResponses:0;
+// m = Σ(sum of raw ratings per mentor) / Σn  — pure sum, no rounding
+const totalRawSum=Object.values(mentorStats).reduce((s,m)=>s+m.ratings.reduce((a,b)=>a+b,0),0);
+const globalMean=totalAllResponses>0?totalRawSum/totalAllResponses:0;
+// Store globally so display always uses identical value
+window._BAYESIAN_C=C;
+window._BAYESIAN_GLOBAL_MEAN=globalMean;
 MENTORS=Object.values(mentorStats).map(m=>{
   const avg=m.ratings.reduce((a,b)=>a+b,0)/m.ratings.length;
   const totalResponses=m.ratings.length;
-  // Σ ratings = avg × n
+  const sumRatings=m.ratings.reduce((a,b)=>a+b,0); // raw Σ ratings, no rounding
   const avgXResponses=avg*totalResponses;
   // Bayesian = (C × m + Σ ratings) / (C + n)
-  const bayesianScore=(C*globalMean+avgXResponses)/(C+totalResponses);
+  const bayesianScore=(C*globalMean+sumRatings)/(C+totalResponses);
   return{name:m.name,depts:Array.from(m.depts),rating:parseFloat(avg.toFixed(2)),avgXResponses:parseFloat(avgXResponses.toFixed(2)),bayesianRating:parseFloat(bayesianScore.toFixed(7)),subjects:m.subjects.size,responses:totalResponses,qs:m.qs,deptQs:m.deptQs,deptRatings:m.deptRatings};}).sort((a,b)=>b.bayesianRating-a.bayesianRating);
   MENTORS.forEach((m,idx,arr)=>{if(idx===0){m.rank=1;}else if(m.bayesianRating===arr[idx-1].bayesianRating){m.rank=arr[idx-1].rank;}else{m.rank=idx+1;}m.percentile=MENTORS.length>1?Math.round((1-idx/(MENTORS.length-1))*100):100;});
   DEPT_LIST=Array.from(deptSet).sort();updateDeptFilters();
@@ -1446,10 +1446,11 @@ function renderMentorTable(){
   const list=getFilteredMentors(currentDeptFilter);const isDeptActive=currentDeptFilter&&currentDeptFilter!=='all';
   let displayMean,displayTotal;
   if(isDeptActive){const deptMs=MENTORS.filter(m=>m.depts.some(d=>d===currentDeptFilter));let tw=0,tr=0;deptMs.forEach(m=>{const rs=m.deptRatings[currentDeptFilter]||[];tw+=rs.reduce((a,b)=>a+b,0);tr+=rs.length;});displayMean=tr>0?tw/tr:0;displayTotal=tr;}
-  else{const sumResponses=MENTORS.reduce((s,m)=>s+m.responses,0);
-const sumWeighted=MENTORS.reduce((s,m)=>s+(m.rating*m.responses),0);
-displayMean=sumResponses>0?sumWeighted/sumResponses:0;
-       displayTotal=sumResponses;}
+ else{
+  // Use the exact same globalMean used in Bayesian calculation
+  displayMean=window._BAYESIAN_GLOBAL_MEAN||0;
+  displayTotal=MENTORS.reduce((s,m)=>s+m.responses,0);
+}
   document.getElementById('mtSumGlobalMean').textContent=displayMean>0?displayMean.toFixed(4):'—';document.getElementById('mtSumTotalResp').textContent=displayTotal||'—';document.getElementById('mentorTableCountBadge').textContent=list.length>0?`${list.length} mentors`:'No data';
   if(!list.length){document.getElementById('mentorTableBody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--ink3)">No mentors found</td></tr>';return;}
   const deptLabel=isDeptActive?currentDeptFilter:null;const rankColors={1:'#f5c842',2:'#e0e0e0',3:'#f0c498'};
