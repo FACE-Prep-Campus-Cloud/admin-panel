@@ -153,6 +153,8 @@
     .review-btn:active { transform:scale(0.98); }
     .review-btn.reviewed { background:rgba(16,185,129,0.1); color:var(--green); border:1.5px solid rgba(16,185,129,0.25); box-shadow:none; cursor:default; }
     .review-btn.reviewed:active { transform:none; }
+
+    /* ── MODAL ── */
     .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(4px); z-index:1000; overflow-y:auto; padding:1rem; }
     .modal-content { max-width:480px; margin:1rem auto; background:var(--surface); border-radius:16px; padding:1.5rem; border:1px solid var(--border); box-shadow:0 20px 60px rgba(0,0,0,.2); position:relative; }
     .modal-project-info {
@@ -170,24 +172,15 @@
     .modal-problem-box .problem-label { font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:.4rem; }
     .modal-problem-box .problem-text  { font-size:.82rem; color:var(--muted2); line-height:1.6; }
     .modal-title { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:.15rem; line-height:1.3; color:var(--text); }
-    .modal-sub   { color:var(--muted); font-size:.78rem; margin-bottom:1.2rem; }
-    .criteria-group { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:1rem; margin-bottom:.9rem; }
-    .criteria-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:.8rem; font-size:.85rem; font-weight:600; color:var(--text); }
-    .score-display  { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:800; color:var(--accent); }
-    .seg-track { display:flex; border-radius:8px; overflow:hidden; border:1.5px solid var(--border); height:38px; }
-    .seg-btn {
-      flex:1; border:none; border-right:1px solid var(--border);
-      background:var(--surface2); font-size:.78rem; font-weight:700;
-      color:var(--muted2); cursor:pointer; transition:all .15s;
-      font-family:'Instrument Sans',sans-serif;
-      -webkit-tap-highlight-color:transparent;
+    .modal-sub   { color:var(--muted); font-size:.78rem; margin-bottom:1.4rem; }
+    .modal-btns { display:flex; gap:.7rem; margin-top:1.3rem; }
 
-    /* ── RATING SCALE ── */
+    /* ── CRITERIA CARD ── */
     .criteria-group {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 1rem;
+      padding: 1rem 1.1rem;
       margin-bottom: .9rem;
     }
     .criteria-header {
@@ -201,16 +194,18 @@
       font-weight: 600;
       color: var(--text);
     }
+
+    /* ── SCORE BADGE ── */
     .score-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 48px;
-      height: 28px;
-      border-radius: 8px;
+      min-width: 52px;
+      height: 26px;
+      border-radius: 6px;
       font-family: 'Syne', sans-serif;
-      font-size: .9rem;
-      font-weight: 800;
+      font-size: .82rem;
+      font-weight: 700;
       background: var(--surface);
       border: 1.5px solid var(--border2);
       color: var(--muted2);
@@ -218,12 +213,12 @@
       padding: 0 .5rem;
     }
     .score-badge.has-value {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: rgba(59,130,246,0.06);
+      border-color: var(--rc, var(--accent));
+      color: var(--rc, var(--accent));
+      background: color-mix(in srgb, var(--rc, var(--accent)) 8%, transparent);
     }
 
-    /* 5-column grid for 1-10 */
+    /* ── RATING GRID (5×2 = 1–10) ── */
     .rating-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -232,16 +227,16 @@
     .rating-btn {
       width: 100%;
       aspect-ratio: 1 / 1;
-      min-height: 44px;
+      min-height: 40px;
       border: 1.5px solid var(--border2);
       border-radius: 8px;
       background: var(--surface);
       color: var(--muted2);
-      font-size: .85rem;
+      font-size: .83rem;
       font-weight: 700;
       font-family: 'Instrument Sans', sans-serif;
       cursor: pointer;
-      transition: all .15s;
+      transition: background .12s, color .12s, transform .1s, border-color .12s, box-shadow .12s;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -249,9 +244,10 @@
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
-    .rating-btn:active { transform: scale(0.92); }
+    .rating-btn:hover  { background: var(--surface2); }
+    .rating-btn:active { transform: scale(.92); }
 
-    /* Color scale: red → amber → green */
+    /* Color scale per value */
     .rating-btn[data-val="1"]  { --rc: #ef4444; }
     .rating-btn[data-val="2"]  { --rc: #f97316; }
     .rating-btn[data-val="3"]  { --rc: #f59e0b; }
@@ -268,36 +264,36 @@
       border-color: var(--rc);
       color: #fff;
       transform: scale(1.08);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 3px 10px color-mix(in srgb, var(--rc) 40%, transparent);
       z-index: 1;
       position: relative;
     }
-    .seg-btn:last-child { border-right:none; }
-    .seg-btn.seg-active { color:#fff; }
 
-    /* score badge inherits button color */
-    .score-badge.has-value[data-color="1"]  { color:#ef4444; border-color:#ef4444; background:rgba(239,68,68,0.07); }
-    .score-badge.has-value[data-color="2"]  { color:#f97316; border-color:#f97316; background:rgba(249,115,22,0.07); }
-    .score-badge.has-value[data-color="3"]  { color:#f59e0b; border-color:#f59e0b; background:rgba(245,158,11,0.07); }
-    .score-badge.has-value[data-color="4"]  { color:#eab308; border-color:#eab308; background:rgba(234,179,8,0.07); }
-    .score-badge.has-value[data-color="5"]  { color:#84cc16; border-color:#84cc16; background:rgba(132,204,22,0.07); }
-    .score-badge.has-value[data-color="6"]  { color:#22c55e; border-color:#22c55e; background:rgba(34,197,94,0.07); }
-    .score-badge.has-value[data-color="7"]  { color:#10b981; border-color:#10b981; background:rgba(16,185,129,0.07); }
-    .score-badge.has-value[data-color="8"]  { color:#06b6d4; border-color:#06b6d4; background:rgba(6,182,212,0.07); }
-    .score-badge.has-value[data-color="9"]  { color:#3b82f6; border-color:#3b82f6; background:rgba(59,130,246,0.07); }
-    .score-badge.has-value[data-color="10"] { color:#8b5cf6; border-color:#8b5cf6; background:rgba(139,92,246,0.07); }
+    /* scale legend */
+    .scale-legend {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: .68rem;
+      color: var(--muted);
+      padding: 0 2px;
+    }
 
-    .modal-btns { display:flex; gap:.7rem; margin-top:1.3rem; }
+    /* ── TABLE ── */
     .tbl-wrap { border-radius:10px; overflow:hidden; border:1px solid var(--border); overflow-x:auto; -webkit-overflow-scrolling: touch; }
     table { width:100%; border-collapse:collapse; min-width:600px; }
     th, td { padding:.75rem .8rem; text-align:left; border-bottom:1px solid var(--border); font-size:.78rem; }
     th { background:var(--surface2); font-family:'Syne',sans-serif; font-weight:700; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted2); white-space:nowrap; }
     tr:last-child td { border-bottom:none; }
     tr:active td { background:var(--surface2); }
+
+    /* ── STATS ── */
     .stats-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:.8rem; margin-bottom:1.5rem; }
     .stat-card { padding:1.2rem; border-radius:10px; text-align:center; border:1.5px solid var(--border); background:var(--surface); box-shadow:0 2px 8px var(--shadow); }
     .stat-val  { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; }
     .stat-lbl  { font-size:.7rem; color:var(--muted); margin-top:.25rem; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+
+    /* ── MISC ── */
     .loading    { text-align:center; padding:2.5rem; color:var(--muted); font-size:.88rem; }
     .empty-state { text-align:center; padding:3rem 1.5rem; color:var(--muted); }
     .empty-icon { font-size:2.5rem; margin-bottom:.8rem; }
@@ -307,6 +303,7 @@
     @keyframes slideIn { from{transform:translateY(20px);opacity:0} to{transform:none;opacity:1} }
     .divider { height:1px; background:var(--border); margin:1.2rem 0; }
     .section-title { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:.9rem; color:var(--text); }
+
     @media(max-width:480px){
       .container { padding:.8rem; }
       header { padding:1.5rem 0 1rem; }
@@ -316,7 +313,6 @@
       .stats-grid { grid-template-columns:1fr; }
       .project-card { padding:1.1rem; }
       .modal-content { padding:1.2rem; margin:.5rem auto; }
-      .criteria-group { padding:.9rem; }
       .criteria-group { padding:.85rem; }
       .rating-btn { min-height: 42px; font-size: .82rem; }
     }
@@ -326,7 +322,7 @@
 <div class="container">
   <header>
     <h1>Peer Review System</h1>
-    <p class="subtitle">Project Evaluation & Feedback Portal</p>
+    <p class="subtitle">Project Evaluation &amp; Feedback Portal</p>
   </header>
 
   <!-- LOGIN -->
@@ -346,17 +342,17 @@
           <option>Kamaraj College</option>
           <option>Kamaraj Women's College</option>
           <option>SDNB Vaishnav College for Women</option>
-          <option>Patrician College of Arts & Science</option>
+          <option>Patrician College of Arts &amp; Science</option>
           <option>TERF's College of Arts and Science</option>
           <option>Sree Saraswathi Thyagaraja College</option>
           <option>TJS College of Arts and Science</option>
-          <option>Bharathidasan College of Arts & Science</option>
-          <option>Nagarathinam Angalammal Arts & Science College</option>
-          <option>Vinayaga Mission's Research Foundation School of Arts & Science</option>
-          <option>Sri Amaraavathi College of Arts & Science</option>
+          <option>Bharathidasan College of Arts &amp; Science</option>
+          <option>Nagarathinam Angalammal Arts &amp; Science College</option>
+          <option>Vinayaga Mission's Research Foundation School of Arts &amp; Science</option>
+          <option>Sri Amaraavathi College of Arts &amp; Science</option>
           <option>Takshashila University</option>
           <option>Study World Group of Institution</option>
-          <option>Rathinam College of Arts & Science</option>
+          <option>Rathinam College of Arts &amp; Science</option>
           <option>Noorul Islam Centre for Higher Education (NICHE)</option>
           <option>AMET University</option>
           <option>Joy University</option>
@@ -392,7 +388,6 @@
   <div id="dashboard" class="dashboard">
     <div class="user-bar card">
       <div class="user-info">
-        
         <div>
           <div class="user-name" id="userName"></div>
           <div class="user-meta">Reg: <span id="userReg"></span> · <span id="userCourse"></span></div>
@@ -437,64 +432,58 @@
     <div class="modal-title">Rate this Project</div>
     <div class="modal-sub">Tap a number to score each criterion (1 – 10)</div>
 
-    <!-- CRITERIA GROUPS with new rating grid -->
+    <!-- CRITERIA: Problem Clarity -->
     <div class="criteria-group">
-      <div class="criteria-label"><span>Problem Clarity</span><span class="score-display"><span id="clarity-display">5</span>/10</span></div>
-      <div class="seg-track" id="clarity-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('clarity',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('clarity',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('clarity',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('clarity',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('clarity',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('clarity',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('clarity',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('clarity',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('clarity',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('clarity',10)">10</button></div>
-      <input type="hidden" id="clarity" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Problem Clarity</span>
         <span class="score-badge" id="clarity-badge">—</span>
       </div>
       <div class="rating-grid" id="clarity-grid"></div>
+      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
       <input type="hidden" id="clarity" value="">
     </div>
 
+    <!-- CRITERIA: Innovation -->
     <div class="criteria-group">
-      <div class="criteria-label"><span>Innovation</span><span class="score-display"><span id="innovation-display">5</span>/10</span></div>
-      <div class="seg-track" id="innovation-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('innovation',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('innovation',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('innovation',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('innovation',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('innovation',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('innovation',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('innovation',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('innovation',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('innovation',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('innovation',10)">10</button></div>
-      <input type="hidden" id="innovation" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Innovation</span>
         <span class="score-badge" id="innovation-badge">—</span>
       </div>
       <div class="rating-grid" id="innovation-grid"></div>
+      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
       <input type="hidden" id="innovation" value="">
     </div>
 
+    <!-- CRITERIA: Execution -->
     <div class="criteria-group">
-      <div class="criteria-label"><span>Execution</span><span class="score-display"><span id="execution-display">5</span>/10</span></div>
-      <div class="seg-track" id="execution-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('execution',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('execution',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('execution',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('execution',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('execution',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('execution',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('execution',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('execution',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('execution',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('execution',10)">10</button></div>
-      <input type="hidden" id="execution" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Execution</span>
         <span class="score-badge" id="execution-badge">—</span>
       </div>
       <div class="rating-grid" id="execution-grid"></div>
+      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
       <input type="hidden" id="execution" value="">
     </div>
 
+    <!-- CRITERIA: Usability -->
     <div class="criteria-group">
-      <div class="criteria-label"><span>Usability</span><span class="score-display"><span id="usability-display">5</span>/10</span></div>
-      <div class="seg-track" id="usability-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('usability',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('usability',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('usability',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('usability',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('usability',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('usability',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('usability',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('usability',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('usability',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('usability',10)">10</button></div>
-      <input type="hidden" id="usability" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Usability</span>
         <span class="score-badge" id="usability-badge">—</span>
       </div>
       <div class="rating-grid" id="usability-grid"></div>
+      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
       <input type="hidden" id="usability" value="">
     </div>
 
+    <!-- CRITERIA: Overall Impression -->
     <div class="criteria-group">
-      <div class="criteria-label"><span>Overall Impression</span><span class="score-display"><span id="overall-display">5</span>/10</span></div>
-      <div class="seg-track" id="overall-seg"><button type="button" class="seg-btn" data-val="1" onclick="setSeg('overall',1)">1</button><button type="button" class="seg-btn" data-val="2" onclick="setSeg('overall',2)">2</button><button type="button" class="seg-btn" data-val="3" onclick="setSeg('overall',3)">3</button><button type="button" class="seg-btn" data-val="4" onclick="setSeg('overall',4)">4</button><button type="button" class="seg-btn" data-val="5" onclick="setSeg('overall',5)">5</button><button type="button" class="seg-btn" data-val="6" onclick="setSeg('overall',6)">6</button><button type="button" class="seg-btn" data-val="7" onclick="setSeg('overall',7)">7</button><button type="button" class="seg-btn" data-val="8" onclick="setSeg('overall',8)">8</button><button type="button" class="seg-btn" data-val="9" onclick="setSeg('overall',9)">9</button><button type="button" class="seg-btn" data-val="10" onclick="setSeg('overall',10)">10</button></div>
-      <input type="hidden" id="overall" value="5">
       <div class="criteria-header">
         <span class="criteria-name">Overall Impression</span>
         <span class="score-badge" id="overall-badge">—</span>
       </div>
       <div class="rating-grid" id="overall-grid"></div>
+      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
       <input type="hidden" id="overall" value="">
     </div>
 
@@ -516,12 +505,20 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null, reviewedSet = new Set(), currentProject = null, selectedCollege = '';
 
+// ── COLOR MAP ────────────────────────────────────────────────
+const COLOR_MAP = {
+  1:'#ef4444', 2:'#f97316', 3:'#f59e0b', 4:'#eab308', 5:'#84cc16',
+  6:'#22c55e', 7:'#10b981', 8:'#06b6d4', 9:'#3b82f6', 10:'#8b5cf6'
+};
+function getColor(v) { return COLOR_MAP[v] || '#94a3b8'; }
+
 // ── RATING GRID BUILDER ──────────────────────────────────────
 const CRITERIA = ['clarity','innovation','execution','usability','overall'];
 
 function buildRatingGrids() {
   CRITERIA.forEach(id => {
     const grid = document.getElementById(id + '-grid');
+    if (!grid) return;
     grid.innerHTML = '';
     for (let v = 1; v <= 10; v++) {
       const btn = document.createElement('button');
@@ -540,7 +537,7 @@ function setRating(id, val) {
   const badge = document.getElementById(id + '-badge');
   badge.textContent = val + '/10';
   badge.className = 'score-badge has-value';
-  badge.dataset.color = val;
+  badge.style.setProperty('--rc', getColor(val));
 
   const grid = document.getElementById(id + '-grid');
   grid.querySelectorAll('.rating-btn').forEach(btn => {
@@ -554,8 +551,9 @@ function resetRatings() {
     const badge = document.getElementById(id + '-badge');
     badge.textContent = '—';
     badge.className = 'score-badge';
-    badge.removeAttribute('data-color');
-    document.getElementById(id + '-grid').querySelectorAll('.rating-btn').forEach(b => b.classList.remove('active'));
+    badge.style.removeProperty('--rc');
+    const grid = document.getElementById(id + '-grid');
+    if (grid) grid.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('active'));
   });
 }
 
@@ -637,12 +635,10 @@ function switchTab(name) {
 }
 
 // ── PROJECTS TAB ─────────────────────────────────────────────
-// Two-step fetch: projects first, then students by register_number
 async function loadProjects() {
   const c = document.getElementById('projectsContent');
-  c.innerHTML = '<div class="loading"> Loading projects…</div>';
+  c.innerHTML = '<div class="loading">Loading projects…</div>';
 
-  // Get all students from the same college
   const { data: collegeStudents, error: collegeError } = await sb
     .from('students').select('register_number')
     .eq('college', currentUser._college);
@@ -654,7 +650,6 @@ async function loadProjects() {
 
   const collegeRegs = (collegeStudents || []).map(s => s.register_number);
 
-  // Get projects only from students in same college (excluding own project)
   const { data: projects, error } = await sb
     .from('projects').select('*')
     .in('register_number', collegeRegs)
@@ -667,7 +662,6 @@ async function loadProjects() {
     return;
   }
 
-  // Fetch student names for all projects
   const regs = projects.map(p => p.register_number);
   const { data: students } = await sb.from('students').select('register_number,name,course').in('register_number', regs);
   const stuMap = {};
@@ -698,7 +692,7 @@ async function loadProjects() {
       <div class="project-detail"><strong>Course:</strong>  ${escHtml(stu?.course||'—')}</div>
       ${p.problem ? `<div class="project-detail" style="margin-top:.4rem;color:var(--muted);font-size:.78rem">${escHtml(p.problem.slice(0,70))}${p.problem.length>70?'…':''}</div>` : ''}
       <button class="review-btn ${rev?'reviewed':''}" ${rev ? 'disabled' : `onclick="openModal('${escHtml(p.register_number)}')"`}>
-        ${rev ? 'Reviewed' : 'Review Project'}
+        ${rev ? '✓ Reviewed' : 'Review Project'}
       </button>
     </div>`;
   });
@@ -708,7 +702,6 @@ async function loadProjects() {
 }
 
 // ── MODAL ────────────────────────────────────────────────────
-// Two-step fetch: project first, then student separately
 async function openModal(reg) {
   const { data: p, error: pe } = await sb.from('projects').select('*').eq('register_number', reg).single();
   if (pe || !p) return alert('Could not load project.');
@@ -730,30 +723,12 @@ async function openModal(reg) {
     problemBox.style.display = 'none';
   }
 
-  document.getElementById('reviewModal').style.display = 'block';
-  initSegs();
   resetRatings();
   document.getElementById('comments').value = '';
   document.getElementById('reviewModal').style.display = 'block';
 }
 
 function closeModal() { document.getElementById('reviewModal').style.display='none'; currentProject=null; }
-const SEG_COLORS = ['#ef4444','#f97316','#f59e0b','#eab308','#84cc16','#22c55e','#10b981','#06b6d4','#3b82f6','#8b5cf6'];
-function setSeg(id, val) {
-  document.getElementById(id).value = val;
-  document.getElementById(id+'-display').textContent = val;
-  const btns = document.getElementById(id+'-seg').querySelectorAll('.seg-btn');
-  btns.forEach(b => {
-    const v = +b.dataset.val;
-    const on = v === val;
-    b.classList.toggle('seg-active', on);
-    b.style.background = on ? SEG_COLORS[v-1] : '';
-  });
-}
-function initSegs() {
-  ['clarity','innovation','execution','usability','overall'].forEach(id => setSeg(id, 5));
-}
-function updateScore(id) { document.getElementById(id+'-display').textContent = document.getElementById(id).value; }
 
 document.getElementById('reviewModal').addEventListener('click', e => {
   if(e.target===document.getElementById('reviewModal')) closeModal();
@@ -764,7 +739,6 @@ async function submitReview() {
   if (!currentProject) return;
   if (reviewedSet.has(currentProject.register_number)) { alert('Already reviewed.'); closeModal(); return; }
 
-  // Validate all ratings filled
   const missing = CRITERIA.filter(id => !document.getElementById(id).value);
   if (missing.length) {
     alert('Please rate all 5 criteria before submitting.');
@@ -791,14 +765,13 @@ async function submitReview() {
   reviewedSet.add(currentProject.register_number);
   closeModal();
   await loadProjects();
-  showToast('Review submitted successfully!');
+  showToast('Review submitted successfully! ✓');
 }
 
 // ── MY REVIEWS TAB ───────────────────────────────────────────
-// Two-step: reviews first, then project titles by project_reg list
 async function loadMyReviews() {
   const c = document.getElementById('myReviewsContent');
-  c.innerHTML = '<div class="loading"> Loading…</div>';
+  c.innerHTML = '<div class="loading">Loading…</div>';
 
   const { data: reviews, error } = await sb
     .from('reviews')
@@ -810,14 +783,13 @@ async function loadMyReviews() {
 
   if (!reviews?.length) {
     c.innerHTML = `<div class="empty-state">
-      
+      <div class="empty-icon">📋</div>
       <h3>No reviews submitted yet</h3>
       <p>Head over to the Projects tab to start reviewing.</p>
     </div>`;
     return;
   }
 
-  // Fetch project titles for all reviewed project_regs
   const regs = [...new Set(reviews.map(r => r.project_reg))];
   const { data: projects } = await sb
     .from('projects')
@@ -857,7 +829,7 @@ async function loadMyReviews() {
 // ── MY PROJECT STATS TAB ─────────────────────────────────────
 async function loadMyProjectStats() {
   const c = document.getElementById('myProjectContent');
-  c.innerHTML = '<div class="loading"> Loading…</div>';
+  c.innerHTML = '<div class="loading">Loading…</div>';
 
   const { data: myProject, error: pe } = await sb
     .from('projects').select('*')
@@ -865,7 +837,7 @@ async function loadMyProjectStats() {
     .single();
 
   if (pe || !myProject) {
-    c.innerHTML = '<div class="empty-state"><h3>No project found.</h3><p>Your project hasn\'t been added yet.</p></div>';
+    c.innerHTML = '<div class="empty-state"><div class="empty-icon">📂</div><h3>No project found.</h3><p>Your project hasn\'t been added yet.</p></div>';
     return;
   }
 
@@ -884,7 +856,7 @@ async function loadMyProjectStats() {
 
   if (!reviews?.length) {
     html += `<div class="empty-state">
-      
+      <div class="empty-icon">⏳</div>
       <h3>No reviews yet</h3>
       <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Your peers haven't reviewed your project yet.</p>
     </div>`;
