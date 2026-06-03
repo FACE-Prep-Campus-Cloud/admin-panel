@@ -36,81 +36,38 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 14px; }
 body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg2); }
 ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
-
 .page { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
-
-/* SIDEBAR */
 .sidebar { background: var(--bg2); border-right: 1px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; padding: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
 .sidebar-brand { padding: 28px 24px 24px; border-bottom: 1px solid var(--border); }
 .brand-tag { font-size: 9px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
 .brand-name { font-family: var(--font-display); font-size: 22px; color: var(--text); line-height: 1.2; }
 .brand-sub { font-size: 11px; color: var(--text3); margin-top: 5px; letter-spacing: 0.02em; }
-
 .sidebar-section { padding: 20px 16px 8px; }
 .sidebar-section-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); padding: 0 8px 10px; font-weight: 500; }
-
 .filter-group { margin-bottom: 20px; padding: 0 8px; }
 .filter-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; font-weight: 500; }
 .filter-select { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: var(--r); font-family: var(--font-body); font-size: 12px; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238c8880'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
 .filter-select:focus { outline: none; border-color: var(--accent); }
-.filter-select option { background: var(--bg3); }
-
-/* College list in sidebar */
 .college-list { padding: 0 8px; display: flex; flex-direction: column; gap: 4px; }
-.college-item {
-  padding: 9px 12px;
-  border-radius: var(--r);
-  font-size: 11.5px;
-  color: var(--text2);
-  cursor: pointer;
-  transition: all 0.15s;
-  border: 1px solid transparent;
-  line-height: 1.4;
-  font-weight: 400;
-}
+.college-item { padding: 9px 12px; border-radius: var(--r); font-size: 11.5px; color: var(--text2); cursor: pointer; transition: all 0.15s; border: 1px solid transparent; line-height: 1.4; font-weight: 400; }
 .college-item:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
 .college-item.active { background: var(--accent); color: #fff; font-weight: 500; border-color: var(--accent); }
-.college-loading { font-size: 11px; color: var(--text3); padding: 8px 12px; font-style: italic; }
-
 .sidebar-divider { height: 1px; background: var(--border); margin: 12px 8px; }
-
 .btn-export { margin: auto 16px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 16px; border-radius: var(--r); font-family: var(--font-body); font-size: 12px; font-weight: 500; cursor: pointer; letter-spacing: 0.04em; transition: all 0.2s; }
 .btn-export:hover { background: var(--accent); color: var(--bg); }
 .btn-export:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-export svg { width: 14px; height: 14px; }
-
-/* MAIN */
 .main { padding: 32px 36px; overflow-x: hidden; }
-
 .main-header { margin-bottom: 28px; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 .main-title { font-family: var(--font-display); font-size: 32px; color: var(--text); line-height: 1.1; }
 .main-title em { font-style: italic; color: var(--accent); }
 .main-meta { font-size: 11px; color: var(--text3); margin-top: 6px; letter-spacing: 0.04em; }
 .response-badge { background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 6px 14px; font-size: 11px; color: var(--text2); display: inline-flex; align-items: center; gap: 6px; }
 .response-badge span { color: var(--accent); font-weight: 500; font-size: 13px; }
-
-/* BLANK STATE */
-.blank-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  text-align: center;
-  padding: 60px 40px;
-}
-.blank-state-icon {
-  width: 72px; height: 72px;
-  background: var(--bg3);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 20px;
-  border: 1px solid var(--border2);
-}
+.blank-state { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 60px 40px; }
+.blank-state-icon { width: 72px; height: 72px; background: var(--bg3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px solid var(--border2); }
 .blank-state-icon svg { width: 32px; height: 32px; color: var(--text3); }
 .blank-state h2 { font-family: var(--font-display); font-size: 24px; color: var(--text); margin-bottom: 10px; line-height: 1.2; }
 .blank-state h2 em { font-style: italic; color: var(--accent); }
@@ -118,50 +75,35 @@ body { background: var(--bg); color: var(--text); font-family: var(--font-body);
 .blank-state-arrow { margin-top: 24px; font-size: 12px; color: var(--accent); display: flex; align-items: center; gap: 6px; font-weight: 500; letter-spacing: 0.04em; }
 .blank-state-arrow svg { width: 16px; height: 16px; animation: arrowPulse 1.4s ease-in-out infinite; }
 @keyframes arrowPulse { 0%,100% { transform: translateX(0); } 50% { transform: translateX(-5px); } }
-
-/* Loading / empty states */
-.loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px 20px; color: var(--text3); font-size: 13px; }
-.spinner { width: 28px; height: 28px; border: 2px solid var(--bg4); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* DASHBOARD CONTENT — hidden until college selected */
 #dashContent { display: none; }
 #dashContent.visible { display: block; }
-
-/* KPI GRID */
 .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 18px 20px; position: relative; overflow: hidden; transition: border-color 0.2s; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 18px 20px; position: relative; overflow: hidden; transition: border-color 0.2s; animation: fadeUp 0.35s ease both; }
 .kpi-card:hover { border-color: var(--border2); }
 .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: var(--r2) var(--r2) 0 0; }
 .kpi-card.green::before { background: var(--green); }
 .kpi-card.blue::before { background: var(--accent3); }
 .kpi-card.orange::before { background: var(--orange); }
 .kpi-card.yellow::before { background: var(--yellow); }
+.kpi-card:nth-child(1){animation-delay:0.04s}.kpi-card:nth-child(2){animation-delay:0.08s}.kpi-card:nth-child(3){animation-delay:0.12s}.kpi-card:nth-child(4){animation-delay:0.16s}
 .kpi-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; font-weight: 500; }
 .kpi-value { font-family: var(--font-display); font-size: 34px; color: var(--text); line-height: 1; }
 .kpi-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
 .kpi-interp { display: inline-block; margin-top: 8px; font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 500; letter-spacing:0.02em; }
-
-/* COLLEGE NAME HEADER */
-.college-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.college-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
 .college-header-name { font-family: var(--font-display); font-size: 20px; color: var(--text); }
 .college-header-badge { background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--text3); }
-
-/* SAT METRICS */
 .sat-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 24px; }
-.sat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px 18px; }
+.sat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px 18px; animation: fadeUp 0.35s ease both; }
+.sat-card:nth-child(1){animation-delay:0.08s}.sat-card:nth-child(2){animation-delay:0.12s}.sat-card:nth-child(3){animation-delay:0.16s}.sat-card:nth-child(4){animation-delay:0.20s}.sat-card:nth-child(5){animation-delay:0.24s}
 .sat-name { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
 .sat-pct { font-family: var(--font-display); font-size: 28px; color: var(--text); line-height: 1; }
 .sat-bar { height: 3px; background: var(--bg4); border-radius: 2px; margin-top: 10px; }
 .sat-fill { height: 100%; border-radius: 2px; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
-
-/* CHARTS ROW */
 .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
 .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; }
 .card-title { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
 .card-title::before { content: ''; width: 3px; height: 14px; border-radius: 2px; background: var(--accent); display: inline-block; }
-
-/* RANKING TABLE */
 .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; margin-bottom: 24px; }
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -174,7 +116,7 @@ tbody td { padding: 11px 12px; color: var(--text2); vertical-align: middle; whit
 tbody td.right { text-align: right; }
 .rank-circle { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; }
 .rank-1 { background: rgba(245,166,35,0.2); color: #f5a623; }
-.rank-2 { background: rgba(192,192,210,0.2); color: #c0c0d2; }
+.rank-2 { background: rgba(192,192,210,0.2); color: #9090a8; }
 .rank-3 { background: rgba(180,100,60,0.2); color: #b4643c; }
 .rank-other { background: var(--bg4); color: var(--text2); }
 .college-name { color: var(--text); font-weight: 500; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -184,146 +126,96 @@ tbody td.right { text-align: right; }
 .nps-bar { display: flex; align-items: center; gap: 8px; }
 .nps-mini { height: 4px; border-radius: 2px; background: var(--bg4); width: 60px; overflow: hidden; }
 .nps-mini-fill { height: 100%; border-radius: 2px; background: var(--accent3); }
-
-/* BOTTOM ROW */
 .bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-
-/* QUALITATIVE */
 .qual-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; }
-.qual-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.qual-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
 .qual-tab { padding: 6px 14px; border-radius: 20px; font-size: 11px; border: 1px solid var(--border); background: transparent; color: var(--text3); cursor: pointer; transition: all 0.15s; font-family: var(--font-body); }
 .qual-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 500; }
 .qual-tab:hover:not(.active) { border-color: var(--border2); color: var(--text2); }
 .qual-list { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; padding-right: 4px; }
 .qual-item { background: var(--bg3); border-radius: var(--r); padding: 12px 14px; border-left: 2px solid transparent; transition: border-color 0.15s; }
-.qual-item:hover { border-left-color: #0f8f5f; }
-.qual-college { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 5px; }
+.qual-item:hover { border-left-color: var(--accent); }
 .qual-text { font-size: 12px; color: var(--text2); line-height: 1.6; }
-
-/* DONUT CHARTS GRID */
 .donuts-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; }
 .donuts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .donut-item { display: flex; align-items: center; gap: 12px; background: var(--bg3); border-radius: var(--r); padding: 12px; }
-.donut-canvas-wrap { width: 56px; height: 56px; flex-shrink: 0; position: relative; }
+.donut-canvas-wrap { width: 56px; height: 56px; flex-shrink: 0; }
 .donut-canvas-wrap canvas { width: 56px !important; height: 56px !important; }
 .donut-label { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
 .donut-pct { font-family: var(--font-display); font-size: 20px; color: var(--text); }
-
-/* NOTICE */
 .notice { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; font-size: 11px; color: var(--text3); line-height: 1.6; display: flex; gap: 10px; align-items: flex-start; }
-.notice-icon { color: #d4820a; flex-shrink: 0; margin-top: 1px; }
-
-/* Score colors */
+.weight-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.weight-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
+.weight-dot { width: 6px; height: 6px; border-radius: 50%; }
 .c-exceptional { color: #0a6e48; background: rgba(15,143,95,0.12); }
 .c-strong { color: #1a52a8; background: rgba(45,111,207,0.12); }
 .c-stable { color: #8a6700; background: rgba(196,154,0,0.12); }
 .c-moderate { color: #9e5a00; background: rgba(212,130,10,0.12); }
 .c-high { color: #a84200; background: rgba(200,90,20,0.12); }
 .c-critical { color: #9e1f1f; background: rgba(199,51,51,0.12); }
-
-/* Weightage legend */
-.weight-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-.weight-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
-.weight-dot { width: 6px; height: 6px; border-radius: 50%; }
-
-/* Error banner */
-.error-banner { background: rgba(199,51,51,0.08); border: 1px solid rgba(199,51,51,0.2); border-radius: var(--r); padding: 12px 16px; font-size: 12px; color: var(--red); margin-bottom: 16px; display: none; }
-
 @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-.kpi-card { animation: fadeUp 0.35s ease both; }
-.kpi-card:nth-child(1){animation-delay:0.04s}.kpi-card:nth-child(2){animation-delay:0.08s}.kpi-card:nth-child(3){animation-delay:0.12s}.kpi-card:nth-child(4){animation-delay:0.16s}
-.sat-card { animation: fadeUp 0.35s ease both; }
-.sat-card:nth-child(1){animation-delay:0.08s}.sat-card:nth-child(2){animation-delay:0.12s}.sat-card:nth-child(3){animation-delay:0.16s}.sat-card:nth-child(4){animation-delay:0.20s}.sat-card:nth-child(5){animation-delay:0.24s}
-
-@media (max-width: 1300px) {
-  .kpi-grid { grid-template-columns: repeat(4, 1fr); }
-  .sat-row { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 1100px) {
-  .page { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; }
-  .charts-row, .bottom-row { grid-template-columns: 1fr; }
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-}
+.loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px 20px; color: var(--text3); font-size: 13px; }
+@media (max-width: 1300px) { .sat-row { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 1100px) { .page { grid-template-columns: 1fr; } .sidebar { position: static; height: auto; } .charts-row, .bottom-row { grid-template-columns: 1fr; } .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .main { padding: 20px 16px; } .kpi-grid { grid-template-columns: 1fr 1fr; } .sat-row { grid-template-columns: 1fr 1fr; } }
 </style>
 </head>
 <body>
 <div class="page">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-brand">
       <div class="brand-tag">Operations Dashboard</div>
       <div class="brand-name">Campus<br>Dashboard</div>
       <div class="brand-sub">FACE Prep · Campus Management</div>
     </div>
-
     <div class="sidebar-section">
       <div class="sidebar-section-label">Select College</div>
-      <div class="college-list" id="collegeList">
-        <div class="college-loading">Loading colleges…</div>
-      </div>
+      <div class="college-list" id="collegeList"></div>
     </div>
-
     <div style="flex:1"></div>
-
     <div style="padding: 0 16px 8px;">
       <div class="sidebar-divider"></div>
       <div class="filter-group" style="margin-bottom:12px;">
         <div class="filter-label">Filter by Month</div>
         <select class="filter-select" id="filterMonth" onchange="applyMonthFilter()">
           <option value="all">All Months</option>
+          <option value="May 2026">May 2026</option>
+          <option value="June 2026" disabled>June 2026 (upcoming)</option>
         </select>
       </div>
     </div>
-
     <button class="btn-export" id="exportBtn" onclick="exportCSV()" disabled>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Export CSV
     </button>
   </aside>
 
-  <!-- MAIN CONTENT -->
   <main class="main">
     <div class="main-header">
       <div>
         <div class="main-title">Campus <em>Dashboard</em></div>
         <div class="main-meta">Institutional satisfaction · Partnership health · NPS analytics</div>
       </div>
-      <div class="response-badge">Total responses: <span id="totalRespBadge">—</span></div>
+      <div class="response-badge">Total responses: <span id="totalRespBadge">20</span></div>
     </div>
 
-    <!-- ERROR BANNER -->
-    <div class="error-banner" id="errorBanner"></div>
-
-    <!-- BLANK STATE (shown until a college is selected) -->
     <div class="blank-state" id="blankState">
       <div class="blank-state-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-          <polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </div>
       <h2>Select a <em>college</em> to begin</h2>
       <p>Choose an institution from the sidebar to view its satisfaction metrics, NPS score, composite ranking and qualitative feedback.</p>
       <div class="blank-state-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         Pick a college from the left panel
       </div>
     </div>
 
-    <!-- DASHBOARD CONTENT (hidden until college selected) -->
     <div id="dashContent">
-
-      <!-- Selected college header -->
       <div class="college-header">
         <div class="college-header-name" id="selectedCollegeName">—</div>
         <div class="college-header-badge" id="selectedCollegeMonth">All Months</div>
       </div>
-
-      <!-- Composite weightage legend -->
       <div class="weight-legend">
         <span class="weight-pill"><span class="weight-dot" style="background:#2d6fcf"></span>NPS 40%</span>
         <span class="weight-pill"><span class="weight-dot" style="background:#7eb3ff"></span>Faculty 15%</span>
@@ -332,16 +224,12 @@ tbody td.right { text-align: right; }
         <span class="weight-pill"><span class="weight-dot" style="background:#f5a623"></span>Skill Dev 10%</span>
         <span class="weight-pill"><span class="weight-dot" style="background:#ff6b6b"></span>Placement 10%</span>
       </div>
-
-      <!-- KPI CARDS -->
       <div class="kpi-grid">
         <div class="kpi-card green"><div class="kpi-label">NPS Average</div><div class="kpi-value" id="kNps">—</div><div class="kpi-sub">Scale 0–10</div></div>
         <div class="kpi-card blue"><div class="kpi-label">Composite Score</div><div class="kpi-value" id="kComposite">—</div><div id="kInterpBadge"></div></div>
         <div class="kpi-card orange"><div class="kpi-label">Campus Rank</div><div class="kpi-value" id="kRank">—</div><div class="kpi-sub" id="kRankSub">—</div></div>
         <div class="kpi-card yellow"><div class="kpi-label">Total Responses</div><div class="kpi-value" id="kResponses">—</div><div class="kpi-sub">submissions</div></div>
       </div>
-
-      <!-- SAT METRICS -->
       <div class="sat-row">
         <div class="sat-card"><div class="sat-name">Faculty</div><div class="sat-pct" id="sFaculty">—</div><div class="sat-bar"><div class="sat-fill" id="bFaculty" style="width:0%;background:#7eb3ff"></div></div></div>
         <div class="sat-card"><div class="sat-name">Content</div><div class="sat-pct" id="sContent">—</div><div class="sat-bar"><div class="sat-fill" id="bContent" style="width:0%;background:#4ade9a"></div></div></div>
@@ -349,24 +237,16 @@ tbody td.right { text-align: right; }
         <div class="sat-card"><div class="sat-name">Skill Dev</div><div class="sat-pct" id="sSkill">—</div><div class="sat-bar"><div class="sat-fill" id="bSkill" style="width:0%;background:#f5a623"></div></div></div>
         <div class="sat-card"><div class="sat-name">Placement</div><div class="sat-pct" id="sPlacement">—</div><div class="sat-bar"><div class="sat-fill" id="bPlacement" style="width:0%;background:#ff6b6b"></div></div></div>
       </div>
-
-      <!-- CHARTS ROW -->
       <div class="charts-row">
         <div class="chart-card">
           <div class="card-title">Composite score breakdown</div>
-          <div style="position:relative;height:280px;" id="barWrap">
-            <div class="loading-state"><div class="spinner"></div>Loading…</div>
-          </div>
+          <div style="position:relative;height:280px;" id="barWrap"></div>
         </div>
         <div class="chart-card">
-          <div class="card-title">Monthly NPS trend</div>
-          <div style="position:relative;height:280px;" id="npsWrap">
-            <div class="loading-state"><div class="spinner"></div>Loading…</div>
-          </div>
+          <div class="card-title">Monthly NPS — May 2026</div>
+          <div style="position:relative;height:280px;" id="npsWrap"></div>
         </div>
       </div>
-
-      <!-- RANKING TABLE — all colleges for context -->
       <div class="table-card">
         <div class="card-title">All campuses ranking</div>
         <div class="table-wrap">
@@ -386,14 +266,10 @@ tbody td.right { text-align: right; }
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody id="rankBody">
-              <tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3);font-size:12px;">No data loaded yet.</td></tr>
-            </tbody>
+            <tbody id="rankBody"></tbody>
           </table>
         </div>
       </div>
-
-      <!-- BOTTOM ROW -->
       <div class="bottom-row">
         <div class="qual-card">
           <div class="card-title">Qualitative feedback</div>
@@ -401,153 +277,81 @@ tbody td.right { text-align: right; }
             <button class="qual-tab active" id="tabPos" onclick="switchQual('pos')">What FACE Prep did best</button>
             <button class="qual-tab" id="tabImp" onclick="switchQual('imp')">Improvements expected</button>
           </div>
-          <div class="qual-list" id="qualList">
-            <div class="qual-item"><div class="qual-text" style="color:var(--text3)">No feedback loaded yet.</div></div>
-          </div>
+          <div class="qual-list" id="qualList"></div>
         </div>
         <div class="donuts-card">
           <div class="card-title">Yes/No distribution</div>
-          <div class="donuts-grid" id="donutsGrid">
-            <div class="loading-state" style="grid-column:1/-1"><div class="spinner"></div>Loading…</div>
-          </div>
+          <div class="donuts-grid" id="donutsGrid"></div>
         </div>
       </div>
-
       <div class="notice">
-        <div class="notice-icon">⚠</div>
-        <div>Composite score = <strong>NPS×10 × 40%</strong> + Faculty × 15% + Content × 15% + Operations × 10% + Skill Dev × 10% + Placement × 10%. Scores are indicative due to limited response volume.</div>
+        <div style="color:#d4820a;flex-shrink:0;margin-top:1px">⚠</div>
+        <div>Composite score = <strong>NPS×10 × 40%</strong> + Faculty × 15% + Content × 15% + Operations × 10% + Skill Dev × 10% + Placement × 10%. Data: May 2026 survey. June 2026 responses will be added next cycle.</div>
       </div>
-
-    </div><!-- /dashContent -->
+    </div>
   </main>
 </div>
 
 <script>
-/* ─── CONFIG ──────────────────────────────── */
-const SUPABASE_URL      = 'https://rysajbwcuieovbsllaas.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5c2FqYndjdWllb3Zic2xsYWFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NjI3MjgsImV4cCI6MjA5NjAzODcyOH0.2WenjYKsfQYAeUJxVJcEVQwqYUlfwrYltrMuC9Ggu4A';
+/* ═══════════════════════════════════════════════
+   SURVEY DATA — May 2026
+   To add June 2026: append rows with month:"June 2026"
+   ═══════════════════════════════════════════════ */
+const RAW_DATA = [
+  { college:"Vinayaga Mission's Research Foundation School of Arts and Science", month:"May 2026", nps:6,  faculty:"No",  content:"No",  ops:"No",  skill:"Yes", placement:"No",  positive:"Students gave good stage performances. Soft skills development was evident.", improvement:"Better coordination with the institutional regulations and norms at all levels" },
+  { college:"Sri Amaraavathi College of Arts and Science",                        month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Practical and Hands on Training",                                              improvement:"Students shall be permitted to participate in co curricular and extra curricular activities" },
+  { college:"Kamaraj College",                                                    month:"May 2026", nps:10, faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Good administration, providing strong academic knowledge and proper documentation", improvement:"Can provide blazers for faculty" },
+  { college:"Asian School of Business",                                           month:"May 2026", nps:9,  faculty:"Yes", content:"No",  ops:"Yes", skill:"Yes", placement:"No",  positive:"Admissions, faculty recruitment and marketing",                               improvement:"Put together a syllabus that has weightage for academics and skill development alike" },
+  { college:"Noorul Islam Centre for Higher Education (NICHE)",                   month:"May 2026", nps:8,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Industry-oriented skill development, effective student engagement, interactive training sessions", improvement:"Recruitment of additional staff members to ensure better coordination and personalized support" },
+  { college:"Rathinam Global Deemed to be University",                            month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"No",  positive:"Students obedient, Dress code, Upskill Level",                                improvement:"Participation in events at Top Universities, Workshops / Conferences / Publications" },
+  { college:"Joy University",                                                     month:"May 2026", nps:10, faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Consistent support in student training and placement preparation through well-structured sessions", improvement:"More customized training sessions based on students skill levels and domain interests" },
+  { college:"Joy University",                                                     month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"No",  placement:"No",  positive:"Teaching is good",                                                           improvement:"More practical and skill development training needed" },
+  { college:"AMET University",                                                    month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"No",  positive:"Disciplined learning, enhancing employability skills, preparing students for placement", improvement:"Faculty Retention" },
+  { college:"S-VYASA University",                                                 month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Internship and keeping students updated about advancements",                  improvement:"Student Placements" },
+  { college:"S-VYASA University",                                                 month:"May 2026", nps:10, faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Industrial exposure",                                                        improvement:"More student involvement in technical events and skill enrichment" },
+  { college:"Nagarathinam Angalammal Arts and Science College",                   month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Face prep motivated students in coding aspects",                              improvement:"Need to give AI very strong among the students" },
+  { college:"Kamaraj College",                                                    month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Students Activities",                                                         improvement:"Strict Disciplinary Action" },
+  { college:"Asian School of Business",                                           month:"May 2026", nps:8,  faculty:"Yes", content:"Yes", ops:"No",  skill:"No",  placement:"Yes", positive:"BCOM Students got SEBI certification, 1M1B Internship opportunity",           improvement:"Number of skill development activities should be proportional to available working days" },
+  { college:"Kamaraj Women's College",                                            month:"May 2026", nps:10, faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Effective training sessions, improving student engagement, continuous placement support", improvement:"Improved teamwork and smoother communication in the next quarter" },
+  { college:"Asian School of Business",                                           month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Delivered the programme well. Handling admissions well",                      improvement:"Improve pass percentage" },
+  { college:"SDNB Vaishnav College for Women",                                    month:"May 2026", nps:8,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Projects by students",                                                       improvement:"Qualified faculty recruitment and faculty training" },
+  { college:"Takshashila University",                                              month:"May 2026", nps:7,  faculty:"No",  content:"Yes", ops:"Yes", skill:"Yes", placement:"No",  positive:"Exposure to new technologies, Training for future jobs, follow up of student performance", improvement:"Please concentrate on all levels of students" },
+  { college:"Sree Saraswathi Thyagaraja College",                                 month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"The skills of the students were enhanced",                                   improvement:"Their development level should be showcased to other students" },
+  { college:"Bharathidasan College of Arts and Science",                          month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Nil",                                                                       improvement:"Nil" }
+];
 
-let RAW_DATA        = [];
+/* ═══════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════ */
 let selectedCollege = null;
 let currentQual     = 'pos';
 let barChartInst    = null;
 let npsChartInst    = null;
 const donutInstances = {};
 
-/* ─── SUPABASE FETCH ──────────────────────── */
-async function fetchFromSupabase() {
-  const list   = document.getElementById('collegeList');
-  const banner = document.getElementById('errorBanner');
-  list.innerHTML = '<div class="college-loading">Loading colleges…</div>';
-  banner.style.display = 'none';
-
-  try {
-    let allRows = [];
-    let offset  = 0;
-    const limit = 1000;
-
-    // Paginate through all rows (Supabase default limit is 1000)
-    while (true) {
-      const url = `${SUPABASE_URL}/rest/v1/survey_responses` +
-        `?select=college_university,month,nps_score,faculty_satisfaction,content_quality,` +
-        `operations_satisfaction,skill_development,placement_support,positive_feedback,improvement_feedback` +
-        `&order=id.asc&limit=${limit}&offset=${offset}`;
-
-      const res = await fetch(url, {
-        headers: {
-          'apikey':        SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          'Content-Type':  'application/json'
-        }
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`Supabase error ${res.status}: ${errText}`);
-      }
-
-      const batch = await res.json();
-      if (!Array.isArray(batch) || batch.length === 0) break;
-
-      allRows = allRows.concat(batch);
-      if (batch.length < limit) break;
-      offset += limit;
-    }
-
-    if (!allRows.length) {
-      list.innerHTML = '<div class="college-loading">No data found.</div>';
-      return;
-    }
-
-    // Normalise field names to what the rest of the code expects
-    RAW_DATA = allRows.map(r => ({
-      college:     (r.college_university || '').trim(),
-      month:       (r.month              || 'Unknown').trim(),
-      nps:         parseFloat(r.nps_score) || 0,
-      faculty:     normaliseYesNo(r.faculty_satisfaction),
-      content:     normaliseYesNo(r.content_quality),
-      ops:         normaliseYesNo(r.operations_satisfaction),
-      skill:       normaliseYesNo(r.skill_development),
-      placement:   normaliseYesNo(r.placement_support),
-      positive:    (r.positive_feedback    || '').trim(),
-      improvement: (r.improvement_feedback || '').trim()
-    })).filter(r => r.college);
-
-    buildCollegeList();
-    buildMonthFilter();
-    document.getElementById('totalRespBadge').textContent = RAW_DATA.length;
-
-  } catch (err) {
-    console.error('fetchFromSupabase:', err);
-    list.innerHTML = '<div class="college-loading" style="color:var(--red)">Failed to load data.</div>';
-    banner.textContent = `⚠ Could not fetch data: ${err.message}`;
-    banner.style.display = 'flex';
-  }
-}
-
-/**
- * Handles both raw Yes/No strings and numeric satisfaction scores.
- * Returns 'Yes' or 'No' so calcMetrics() can use filter(r => r[key] === 'Yes').
- */
-function normaliseYesNo(val) {
-  if (val === null || val === undefined || val === '') return 'No';
-  const s = String(val).trim().toLowerCase();
-  // Already a yes/no
-  if (s === 'yes' || s === 'true' || s === '1') return 'Yes';
-  if (s === 'no'  || s === 'false'|| s === '0') return 'No';
-  // Numeric scale: treat >= 4 out of 5 (or >= 7 out of 10) as Yes
-  const n = parseFloat(s);
-  if (!isNaN(n)) {
-    if (n <= 5)  return n >= 4 ? 'Yes' : 'No';  // 1–5 scale
-    if (n <= 10) return n >= 7 ? 'Yes' : 'No';  // 1–10 scale
-    return n >= 70 ? 'Yes' : 'No';              // percentage scale
-  }
-  return 'No';
-}
-
-/* ─── SIDEBAR COLLEGE LIST ────────────────── */
-function buildCollegeList() {
+/* ═══════════════════════════════════════════════
+   BOOT — build sidebar
+   ═══════════════════════════════════════════════ */
+(function init() {
   const colleges = [...new Set(RAW_DATA.map(r => r.college))].sort();
   const list = document.getElementById('collegeList');
-  if (!colleges.length) {
-    list.innerHTML = '<div class="college-loading">No data found.</div>';
-    return;
-  }
   list.innerHTML = colleges.map(c =>
-    `<div class="college-item" data-college="${escAttr(c)}" onclick="selectCollege(${JSON.stringify(c)})">
-      ${escHtml(c)}
-    </div>`
+    `<div class="college-item" data-college="${esc(c)}" onclick="selectCollege(${JSON.stringify(c)})">${esc(c)}</div>`
   ).join('');
+  document.getElementById('totalRespBadge').textContent = RAW_DATA.length;
+})();
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function escAttr(s) { return s.replace(/"/g, '&quot;'); }
-function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
+/* ═══════════════════════════════════════════════
+   COLLEGE SELECTION
+   ═══════════════════════════════════════════════ */
 function selectCollege(name) {
   selectedCollege = name;
-  document.querySelectorAll('.college-item').forEach(el => {
-    el.classList.toggle('active', el.dataset.college === name);
-  });
+  document.querySelectorAll('.college-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.college === name));
   document.getElementById('selectedCollegeName').textContent = name;
   document.getElementById('blankState').style.display = 'none';
   document.getElementById('dashContent').classList.add('visible');
@@ -555,89 +359,64 @@ function selectCollege(name) {
   renderDashboard();
 }
 
-/* ─── MONTH FILTER ────────────────────────── */
-function buildMonthFilter() {
-  const months = [...new Set(RAW_DATA.map(r => r.month))].sort();
-  const sm = document.getElementById('filterMonth');
-  sm.querySelectorAll('option:not([value="all"])').forEach(o => o.remove());
-  months.forEach(m => {
-    const o = document.createElement('option');
-    o.value = m; o.textContent = m; sm.appendChild(o);
-  });
-}
-
+/* ═══════════════════════════════════════════════
+   FILTER
+   ═══════════════════════════════════════════════ */
 function applyMonthFilter() {
   if (selectedCollege) renderDashboard();
 }
+function getSelectedMonth() { return document.getElementById('filterMonth').value; }
 
-function getSelectedMonth() {
-  return document.getElementById('filterMonth').value;
-}
-
-/* ─── FILTERED ROWS FOR SELECTED COLLEGE ─── */
 function getCollegeRows() {
   const m = getSelectedMonth();
-  return RAW_DATA.filter(r =>
-    r.college === selectedCollege &&
-    (m === 'all' || r.month === m)
-  );
+  return RAW_DATA.filter(r => r.college === selectedCollege && (m === 'all' || r.month === m));
 }
-
-/* ─── ALL COLLEGES ROWS (for ranking table) ─ */
 function getAllRows() {
   const m = getSelectedMonth();
   return RAW_DATA.filter(r => m === 'all' || r.month === m);
 }
 
-/* ─── METRICS ─────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   METRICS
+   ═══════════════════════════════════════════════ */
 function calcMetrics(rows) {
   if (!rows.length) return null;
   const npsAvg    = rows.reduce((s, r) => s + r.nps, 0) / rows.length;
-  const calcYes   = key => (rows.filter(r => r[key] === 'Yes').length / rows.length) * 100;
-  const faculty   = calcYes('faculty');
-  const content   = calcYes('content');
-  const ops       = calcYes('ops');
-  const skill     = calcYes('skill');
-  const placement = calcYes('placement');
+  const pct       = key => (rows.filter(r => r[key] === 'Yes').length / rows.length) * 100;
+  const faculty   = pct('faculty');
+  const content   = pct('content');
+  const ops       = pct('ops');
+  const skill     = pct('skill');
+  const placement = pct('placement');
   const normNps   = npsAvg * 10;
-  const composite = (0.40 * normNps)
-                  + (0.15 * faculty)
-                  + (0.15 * content)
-                  + (0.10 * ops)
-                  + (0.10 * skill)
-                  + (0.10 * placement);
+  const composite = 0.40*normNps + 0.15*faculty + 0.15*content + 0.10*ops + 0.10*skill + 0.10*placement;
   return { npsAvg, faculty, content, ops, skill, placement, normNps, composite, totalResp: rows.length };
 }
 
 function getInterp(s) {
-  if (s >= 90) return { label: 'Exceptional',   cls: 'c-exceptional', dot: '#4ade9a' };
-  if (s >= 80) return { label: 'Strong',         cls: 'c-strong',      dot: '#7eb3ff' };
-  if (s >= 70) return { label: 'Stable',         cls: 'c-stable',      dot: '#ffd166' };
-  if (s >= 60) return { label: 'Moderate Risk',  cls: 'c-moderate',    dot: '#f5a623' };
-  if (s >= 50) return { label: 'High Attention', cls: 'c-high',        dot: '#ff8c42' };
-  return             { label: 'Critical Risk',   cls: 'c-critical',    dot: '#ff6b6b' };
+  if (s >= 90) return { label:'Exceptional',   cls:'c-exceptional', dot:'#4ade9a' };
+  if (s >= 80) return { label:'Strong',         cls:'c-strong',      dot:'#7eb3ff' };
+  if (s >= 70) return { label:'Stable',         cls:'c-stable',      dot:'#ffd166' };
+  if (s >= 60) return { label:'Moderate Risk',  cls:'c-moderate',    dot:'#f5a623' };
+  if (s >= 50) return { label:'High Attention', cls:'c-high',        dot:'#ff8c42' };
+  return             { label:'Critical Risk',   cls:'c-critical',    dot:'#ff6b6b' };
 }
 
-/* ─── RENDER DASHBOARD ────────────────────── */
+/* ═══════════════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════════════ */
 function renderDashboard() {
   const rows    = getCollegeRows();
   const metrics = calcMetrics(rows);
   const m       = getSelectedMonth();
-
-  document.getElementById('selectedCollegeMonth').textContent =
-    m === 'all' ? 'All Months' : m;
-  document.getElementById('totalRespBadge').textContent = RAW_DATA.length;
+  document.getElementById('selectedCollegeMonth').textContent = m === 'all' ? 'All Months' : m;
 
   if (!metrics) {
-    ['kNps','kComposite','kRank','kResponses'].forEach(id =>
-      document.getElementById(id).textContent = '—');
+    ['kNps','kComposite','kRank','kResponses'].forEach(id => document.getElementById(id).textContent = '—');
     document.getElementById('kInterpBadge').innerHTML = '';
-    ['sFaculty','sContent','sOps','sSkill','sPlacement'].forEach(id =>
-      document.getElementById(id).textContent = '—');
-    ['bFaculty','bContent','bOps','bSkill','bPlacement'].forEach(id =>
-      document.getElementById(id).style.width = '0%');
-    document.getElementById('rankBody').innerHTML =
-      '<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3);font-size:12px;">No data for this selection.</td></tr>';
+    ['sFaculty','sContent','sOps','sSkill','sPlacement'].forEach(id => document.getElementById(id).textContent = '—');
+    ['bFaculty','bContent','bOps','bSkill','bPlacement'].forEach(id => { document.getElementById(id).style.width='0%'; });
+    document.getElementById('rankBody').innerHTML = '<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3);font-size:12px;">No data for this selection.</td></tr>';
     document.getElementById('barWrap').innerHTML  = '<div class="loading-state">No data.</div>';
     document.getElementById('npsWrap').innerHTML  = '<div class="loading-state">No data.</div>';
     renderQual(rows);
@@ -645,30 +424,30 @@ function renderDashboard() {
     return;
   }
 
-  document.getElementById('kNps').textContent       = metrics.npsAvg.toFixed(2);
-  document.getElementById('kComposite').textContent = metrics.composite.toFixed(2);
+  document.getElementById('kNps').textContent        = metrics.npsAvg.toFixed(2);
+  document.getElementById('kComposite').textContent  = metrics.composite.toFixed(2);
   document.getElementById('kResponses').textContent  = metrics.totalResp;
   const interp = getInterp(metrics.composite);
-  document.getElementById('kInterpBadge').innerHTML =
-    `<span class="kpi-interp ${interp.cls}">${interp.label}</span>`;
+  document.getElementById('kInterpBadge').innerHTML  = `<span class="kpi-interp ${interp.cls}">${interp.label}</span>`;
 
-  const allRows    = getAllRows();
-  const campusMap  = {};
+  // Ranking
+  const allRows   = getAllRows();
+  const campusMap = {};
   allRows.forEach(r => { (campusMap[r.college] = campusMap[r.college] || []).push(r); });
   const allMetrics = Object.entries(campusMap)
     .map(([c, rs]) => ({ college: c, ...calcMetrics(rs) }))
-    .sort((a, b) => b.composite - a.composite || b.npsAvg - a.npsAvg || b.totalResp - a.totalResp);
+    .sort((a, b) => b.composite - a.composite || b.npsAvg - a.npsAvg);
 
   const rankIdx = allMetrics.findIndex(c => c.college === selectedCollege);
   document.getElementById('kRank').textContent    = rankIdx >= 0 ? `#${rankIdx + 1}` : '—';
   document.getElementById('kRankSub').textContent = rankIdx >= 0 ? `of ${allMetrics.length} campuses` : '';
 
   [
-    ['sFaculty','bFaculty', metrics.faculty],
-    ['sContent','bContent', metrics.content],
-    ['sOps',    'bOps',     metrics.ops],
-    ['sSkill',  'bSkill',   metrics.skill],
-    ['sPlacement','bPlacement', metrics.placement]
+    ['sFaculty','bFaculty', metrics.faculty,  '#7eb3ff'],
+    ['sContent','bContent', metrics.content,  '#4ade9a'],
+    ['sOps',    'bOps',     metrics.ops,      '#ffd166'],
+    ['sSkill',  'bSkill',   metrics.skill,    '#f5a623'],
+    ['sPlacement','bPlacement', metrics.placement, '#ff6b6b']
   ].forEach(([vi, bi, val]) => {
     document.getElementById(vi).textContent = val.toFixed(1) + '%';
     setTimeout(() => { document.getElementById(bi).style.width = val.toFixed(1) + '%'; }, 80);
@@ -681,10 +460,10 @@ function renderDashboard() {
   renderDonuts(metrics);
 }
 
-/* ─── BAR CHART ───────────────────────────── */
+/* ─── BAR CHART ─────────────────────────────── */
 function renderBarChart(m) {
   const wrap = document.getElementById('barWrap');
-  wrap.innerHTML = `<canvas id="barChart" style="position:absolute;inset:0" role="img" aria-label="Composite score breakdown"></canvas>`;
+  wrap.innerHTML = `<canvas id="barChart" style="position:absolute;inset:0"></canvas>`;
   if (barChartInst) { barChartInst.destroy(); barChartInst = null; }
   const labels  = ['NPS (×10)', 'Faculty', 'Content', 'Operations', 'Skill Dev', 'Placement'];
   const rawVals = [m.normNps, m.faculty, m.content, m.ops, m.skill, m.placement];
@@ -702,19 +481,21 @@ function renderBarChart(m) {
   });
 }
 
-/* ─── LINE CHART ──────────────────────────── */
+/* ─── NPS DISPLAY ───────────────────────────── */
 function renderNpsChart(rows) {
   const wrap = document.getElementById('npsWrap');
+  // Group by month
   const byMonth = {};
   rows.forEach(r => { (byMonth[r.month] = byMonth[r.month] || []).push(r.nps); });
   const months = Object.keys(byMonth).sort();
+
   if (months.length < 2) {
     const avg = rows.length ? (rows.reduce((s, r) => s + r.nps, 0) / rows.length).toFixed(2) : '—';
-    wrap.innerHTML = `<div class="loading-state" style="flex-direction:row;gap:16px;"><div style="text-align:center"><div style="font-family:var(--font-display);font-size:48px;color:var(--text);line-height:1">${avg}</div><div style="font-size:11px;color:var(--text3);margin-top:6px">Average NPS (0–10)</div></div></div>`;
+    wrap.innerHTML = `<div class="loading-state" style="flex-direction:row;gap:16px;height:100%;justify-content:center;"><div style="text-align:center"><div style="font-family:var(--font-display);font-size:64px;color:var(--text);line-height:1">${avg}</div><div style="font-size:11px;color:var(--text3);margin-top:8px">Average NPS · May 2026 · Scale 0–10</div></div></div>`;
     if (npsChartInst) { npsChartInst.destroy(); npsChartInst = null; }
     return;
   }
-  wrap.innerHTML = `<canvas id="npsChart" style="position:absolute;inset:0" role="img" aria-label="Monthly NPS trend"></canvas>`;
+  wrap.innerHTML = `<canvas id="npsChart" style="position:absolute;inset:0"></canvas>`;
   if (npsChartInst) { npsChartInst.destroy(); npsChartInst = null; }
   const avgs = months.map(mo => {
     const vals = byMonth[mo];
@@ -723,11 +504,11 @@ function renderNpsChart(rows) {
   npsChartInst = new Chart(document.getElementById('npsChart').getContext('2d'), {
     type: 'line',
     data: { labels: months, datasets: [{ label: 'NPS Avg', data: avgs, borderColor: 'rgba(45,111,207,0.9)', backgroundColor: 'rgba(45,111,207,0.08)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: 'rgba(45,111,207,1)', tension: 0.3, fill: true }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: v => `NPS: ${v.raw}` } } }, scales: { x: { grid: { display: false }, ticks: { color: '#5a5652', font: { size: 10 } } }, y: { min: 0, max: 10, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#8c8880', font: { size: 10 } } } } }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#5a5652', font: { size: 10 } } }, y: { min: 0, max: 10, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#8c8880', font: { size: 10 } } } } }
   });
 }
 
-/* ─── RANKING TABLE ───────────────────────── */
+/* ─── RANKING TABLE ─────────────────────────── */
 function renderTable(ranked, highlight) {
   document.getElementById('rankBody').innerHTML = ranked.map((r, i) => {
     const interp = getInterp(r.composite);
@@ -735,7 +516,7 @@ function renderTable(ranked, highlight) {
     const isHL = r.college === highlight;
     return `<tr style="${isHL ? 'background:rgba(15,143,95,0.06);' : ''}">
       <td><span class="rank-circle ${rc}">${i + 1}</span></td>
-      <td><span class="college-name" title="${escAttr(r.college)}" style="${isHL ? 'color:var(--accent);' : ''}">${escHtml(r.college)}${isHL ? ' ◀' : ''}</span></td>
+      <td><span class="college-name" title="${esc(r.college)}" style="${isHL ? 'color:var(--accent);' : ''}">${esc(r.college)}${isHL ? ' ◀' : ''}</span></td>
       <td class="right"><span class="score-chip ${interp.cls}">${r.composite.toFixed(2)}</span></td>
       <td class="right"><div class="nps-bar"><span style="color:var(--text)">${r.npsAvg.toFixed(2)}</span><div class="nps-mini"><div class="nps-mini-fill" style="width:${(r.npsAvg/10*100).toFixed(1)}%"></div></div></div></td>
       <td class="right">${r.faculty.toFixed(1)}%</td>
@@ -749,13 +530,13 @@ function renderTable(ranked, highlight) {
   }).join('');
 }
 
-/* ─── QUALITATIVE ─────────────────────────── */
+/* ─── QUALITATIVE ───────────────────────────── */
 function renderQual(rows) {
   const key = currentQual === 'pos' ? 'positive' : 'improvement';
-  const items = rows.filter(r => r[key]).map(r => `
-    <div class="qual-item">
-      <div class="qual-text">${escHtml(r[key])}</div>
-    </div>`).join('');
+  const items = rows
+    .filter(r => r[key] && r[key].toLowerCase() !== 'nil')
+    .map(r => `<div class="qual-item"><div class="qual-text">${esc(r[key])}</div></div>`)
+    .join('');
   document.getElementById('qualList').innerHTML = items ||
     '<div class="qual-item"><div class="qual-text" style="color:var(--text3)">No feedback for this selection.</div></div>';
 }
@@ -767,28 +548,22 @@ function switchQual(mode) {
   if (selectedCollege) renderQual(getCollegeRows());
 }
 
-/* ─── DONUTS ──────────────────────────────── */
+/* ─── DONUTS ────────────────────────────────── */
 function renderDonuts(m) {
   const grid = document.getElementById('donutsGrid');
-  if (!m) {
-    grid.innerHTML = '<div class="loading-state" style="grid-column:1/-1"><div class="spinner"></div>No data…</div>';
-    return;
-  }
-  const metrics = [
-    { label: 'Faculty',    val: m.faculty,  color: '#7eb3ff' },
-    { label: 'Content',    val: m.content,  color: '#4ade9a' },
-    { label: 'Operations', val: m.ops,      color: '#ffd166' },
-    { label: 'Skill Dev',  val: m.skill,    color: '#f5a623' },
+  if (!m) { grid.innerHTML = '<div class="loading-state" style="grid-column:1/-1">Select a college.</div>'; return; }
+  const mets = [
+    { label:'Faculty',    val: m.faculty,   color:'#7eb3ff' },
+    { label:'Content',    val: m.content,   color:'#4ade9a' },
+    { label:'Operations', val: m.ops,       color:'#ffd166' },
+    { label:'Skill Dev',  val: m.skill,     color:'#f5a623' },
   ];
-  grid.innerHTML = metrics.map((mt, i) => `
+  grid.innerHTML = mets.map((mt, i) => `
     <div class="donut-item">
       <div class="donut-canvas-wrap"><canvas id="donut_${i}" width="56" height="56"></canvas></div>
-      <div>
-        <div class="donut-label">${mt.label}</div>
-        <div class="donut-pct">${mt.val.toFixed(1)}%</div>
-      </div>
+      <div><div class="donut-label">${mt.label}</div><div class="donut-pct">${mt.val.toFixed(1)}%</div></div>
     </div>`).join('');
-  metrics.forEach((mt, i) => {
+  mets.forEach((mt, i) => {
     if (donutInstances[i]) { donutInstances[i].destroy(); }
     donutInstances[i] = new Chart(document.getElementById(`donut_${i}`).getContext('2d'), {
       type: 'doughnut',
@@ -798,15 +573,15 @@ function renderDonuts(m) {
   });
 }
 
-/* ─── EXPORT CSV ──────────────────────────── */
+/* ─── EXPORT CSV ────────────────────────────── */
 function exportCSV() {
   if (!selectedCollege) return;
   const rows = getCollegeRows();
   const m    = calcMetrics(rows);
   if (!m) return;
-  const header = ['College','Month','NPS Avg','Normalized NPS','Composite Score','Interpretation','Faculty %','Content %','Ops %','Skill %','Placement %','Responses'];
   const mo     = getSelectedMonth();
   const interp = getInterp(m.composite);
+  const header = ['College','Month','NPS Avg','Normalized NPS','Composite Score','Interpretation','Faculty %','Content %','Ops %','Skill %','Placement %','Responses'];
   const data   = [[selectedCollege, mo, m.npsAvg.toFixed(2), m.normNps.toFixed(2), m.composite.toFixed(2), interp.label, m.faculty.toFixed(2), m.content.toFixed(2), m.ops.toFixed(2), m.skill.toFixed(2), m.placement.toFixed(2), m.totalResp]];
   const csv = [header, ...data].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
   const a = document.createElement('a');
@@ -814,9 +589,6 @@ function exportCSV() {
   a.download = `faceprep_${selectedCollege.replace(/\s+/g,'_')}.csv`;
   a.click();
 }
-
-/* ─── BOOT ────────────────────────────────── */
-fetchFromSupabase();
 </script>
 </body>
 </html>
