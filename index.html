@@ -1,946 +1,725 @@
-<!DOCTYPE html>
+python3 << 'PYEOF'
+with open('/tmp/new_fetch.txt') as f:
+    new_fetch = f.read()
+
+# Full HTML — reconstructed from document 2 with patch applied
+html = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Peer Review System — I BCA</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:        #f8fafc;
-      --surface:   #ffffff;
-      --surface2:  #f1f5f9;
-      --border:    #e2e8f0;
-      --border2:   #cbd5e1;
-      --accent:    #3b82f6;
-      --accent2:   #8b5cf6;
-      --green:     #10b981;
-      --amber:     #f59e0b;
-      --rose:      #ef4444;
-      --text:      #0f172a;
-      --muted:     #64748b;
-      --muted2:    #475569;
-      --shadow:    rgba(0,0,0,0.08);
-      --shadow2:   rgba(0,0,0,0.12);
-    }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body {
-      font-family:'Instrument Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-    body::before {
-      content:'';
-      position:fixed; inset:0; z-index:0; pointer-events:none;
-      background-image:
-        radial-gradient(ellipse 70% 40% at 50% 0%, rgba(59,130,246,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 30% at 80% 100%, rgba(139,92,246,0.05) 0%, transparent 50%);
-    }
-    .container { max-width:480px; margin:0 auto; padding:1rem; position:relative; z-index:1; }
-    header { text-align:center; padding: 2rem 0 1.5rem; }
-    h1 {
-      font-family:'Syne', sans-serif;
-      font-size:clamp(1.8rem,8vw,2.4rem);
-      font-weight:800;
-      letter-spacing:-1.5px;
-      line-height:1.1;
-      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-      margin-bottom:.6rem;
-    }
-    .subtitle { font-size:.9rem; color:var(--muted); font-weight:400; letter-spacing:.01em; }
-    .card {
-      background: var(--surface);
-      border-radius:16px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 16px var(--shadow);
-      overflow: hidden;
-    }
-    .login-wrap { padding:1.8rem 1.4rem; }
-    .login-wrap h2 { font-family:'Syne', sans-serif; font-size:1.5rem; font-weight:700; text-align:center; margin-bottom:.3rem; letter-spacing:-.5px; color:var(--text); }
-    .login-sub { text-align:center; color:var(--muted); font-size:.85rem; margin-bottom:1.5rem; }
-    .step-indicator { display:flex; justify-content:center; gap:.5rem; margin-bottom:1.5rem; }
-    .step-dot { width:24px; height:3px; border-radius:3px; background:var(--border2); transition:all .3s; }
-    .step-dot.active { background:var(--accent); }
-    .step-dot.done   { background:var(--green); }
-    .form-group { margin-bottom:1.2rem; }
-    label { display:block; margin-bottom:.45rem; font-size:.75rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--muted2); }
-    input, textarea, select {
-      width:100%; padding:.8rem 1rem;
-      background:var(--surface2);
-      border:1.5px solid var(--border);
-      border-radius:10px; color:var(--text);
-      font-size:.9rem; font-family:'Instrument Sans', sans-serif;
-      transition:all .2s;
-    }
-    input:focus, textarea:focus, select:focus {
-      outline:none; border-color: var(--accent); background:var(--surface);
-      box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-    }
-    input::placeholder { color:var(--muted); }
-    textarea { resize:vertical; min-height:90px; }
-    select {
-      cursor:pointer; -webkit-appearance:none; appearance:none;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-      background-repeat:no-repeat; background-position:calc(100% - .9rem) center; padding-right:2.5rem;
-    }
-    select option { background:var(--surface); color:var(--text); }
-    .selected-college-pill {
-      display:flex; align-items:center; gap:.6rem;
-      background:rgba(16,185,129,0.08); border:1.5px solid rgba(16,185,129,0.25);
-      border-radius:10px; padding:.7rem .9rem; margin-bottom:1.2rem;
-    }
-    .selected-college-pill .pill-label { font-size:.7rem; color:var(--muted); display:block; margin-bottom:.05rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
-    .selected-college-pill .pill-val   { font-size:.88rem; font-weight:600; color:var(--green); }
-    button {
-      width:100%; padding:.85rem 1.4rem; border:none; border-radius:10px;
-      font-size:.9rem; font-weight:600; cursor:pointer; transition:all .2s;
-      font-family:'Instrument Sans', sans-serif; letter-spacing:.01em;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; box-shadow: 0 4px 12px rgba(59,130,246,0.25); }
-    .btn-primary:active { transform:scale(0.98); }
-    .btn-primary:disabled { opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
-    .btn-ghost { background:var(--surface2); color:var(--text); border:1.5px solid var(--border); }
-    .btn-ghost:active { background:var(--border); }
-    .btn-sm { width:auto; padding:.5rem 1rem; font-size:.8rem; border-radius:8px; }
-    .btn-row { display:flex; gap:.7rem; }
-    .btn-row .btn-ghost { flex:0 0 auto; width:auto; }
-    .btn-row .btn-primary { flex:1; }
-    .alert { padding:.8rem 1rem; border-radius:8px; margin-bottom:1rem; font-size:.85rem; font-weight:500; }
-    .alert-error   { background:rgba(239,68,68,.08); border:1.5px solid rgba(239,68,68,.2); color:#dc2626; }
-    .alert-success { background:rgba(16,185,129,.08);  border:1.5px solid rgba(16,185,129,.2);  color:#059669; }
-    .alert-info    { background:rgba(245,158,11,.08);  border:1.5px solid rgba(245,158,11,.2);  color:#d97706; }
-    .dashboard { display:none; }
-    .user-bar { display:flex; justify-content:space-between; align-items:center; padding:1.2rem; margin-bottom:1.2rem; gap:.8rem; flex-wrap:wrap; }
-    .user-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; font-size:.9rem; color:#fff; flex-shrink:0; }
-    .user-info { display:flex; align-items:center; gap:.8rem; }
-    .user-name  { font-family:'Syne',sans-serif; font-size:.95rem; font-weight:700; color:var(--text); }
-    .user-meta  { font-size:.75rem; color:var(--muted); margin-top:.1rem; }
-    .college-badge { display:inline-flex; align-items:center; gap:.3rem; background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.2); border-radius:100px; padding:.2rem .7rem; font-size:.7rem; font-weight:600; color:var(--accent); margin-top:.25rem; }
-    .tabs { display:flex; gap:0; margin-bottom:1.2rem; background:var(--surface2); padding:.3rem; border-radius:10px; border:1px solid var(--border); overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .tab { padding:.6rem 1rem; flex:1; text-align:center; border-radius:7px; cursor:pointer; transition:all .2s; font-weight:600; font-size:.8rem; color:var(--muted2); white-space:nowrap; -webkit-tap-highlight-color: transparent; }
-    .tab.active { background:var(--surface); color:var(--accent); box-shadow:0 2px 8px var(--shadow); }
-    .tab-content { display:none; }
-    .tab-content.active { display:block; }
-    .prog-strip { display:flex; justify-content:space-between; align-items:center; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:1rem; margin-bottom:1.2rem; gap:.8rem; }
-    .prog-strip .label { font-size:.8rem; color:var(--muted2); }
-    .prog-strip .count { font-family:'Syne',sans-serif; font-size:.9rem; font-weight:700; color:var(--text); }
-    .prog-strip .pct   { font-size:.8rem; color:var(--accent); font-weight:700; white-space:nowrap; }
-    .prog-bar-wrap { height:5px; border-radius:5px; background:var(--border); overflow:hidden; margin-top:.5rem; }
-    .prog-bar      { height:100%; border-radius:5px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .8s cubic-bezier(.16,1,.3,1); }
-    .projects-grid { display:flex; flex-direction:column; gap:1rem; margin-top:1.2rem; }
-    .project-card { background:var(--surface); border-radius:12px; padding:1.3rem; border:1.5px solid var(--border); transition:all .2s; position:relative; box-shadow:0 2px 8px var(--shadow); }
-    .project-card:active { transform:scale(0.98); box-shadow:0 4px 16px var(--shadow2); }
-    .type-chip { display:inline-block; background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.2); color:#7c3aed; border-radius:6px; padding:.15rem .55rem; font-size:.68rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; margin-bottom:.7rem; }
-    .project-title  { font-family:'Syne',sans-serif; font-size:.98rem; font-weight:700; margin-bottom:.5rem; line-height:1.3; color:var(--text); }
-    .project-detail { font-size:.8rem; color:var(--muted2); margin-bottom:.3rem; }
-    .project-detail strong { color:var(--text); font-weight:600; }
-    .review-btn {
-      margin-top:1rem; padding:.7rem; font-size:.82rem; font-weight:700;
-      border-radius:8px; width:100%; cursor:pointer; border:none;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:#fff; transition:all .2s;
-      box-shadow:0 3px 10px rgba(59,130,246,0.2);
-      font-family:'Instrument Sans',sans-serif; letter-spacing:.01em;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .review-btn:active { transform:scale(0.98); }
-    .review-btn.reviewed { background:rgba(16,185,129,0.1); color:var(--green); border:1.5px solid rgba(16,185,129,0.25); box-shadow:none; cursor:default; }
-    .review-btn.reviewed:active { transform:none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Dashboard — FACE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bg: #f5f3ef;
+  --bg2: #ede9e3;
+  --bg3: #e4dfd7;
+  --bg4: #d4cec5;
+  --surface: #ffffff;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.15);
+  --text: #1a1714;
+  --text2: #5a5652;
+  --text3: #8c8880;
+  --accent: #0f8f5f;
+  --accent2: #d4820a;
+  --accent3: #2d6fcf;
+  --red: #c73333;
+  --orange: #d4820a;
+  --yellow: #c49a00;
+  --green: #0f8f5f;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --r: 10px;
+  --r2: 16px;
+  --shadow: 0 2px 16px rgba(0,0,0,0.1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-    /* ── MODAL ── */
-    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(4px); z-index:1000; overflow-y:auto; padding:1rem; }
-    .modal-content { max-width:480px; margin:1rem auto; background:var(--surface); border-radius:16px; padding:1.5rem; border:1px solid var(--border); box-shadow:0 20px 60px rgba(0,0,0,.2); position:relative; }
-    .modal-project-info {
-      background: linear-gradient(135deg, rgba(59,130,246,0.05) 0%, rgba(139,92,246,0.06) 100%);
-      border: 1.5px solid rgba(59,130,246,0.15);
-      border-radius: 12px;
-      padding: 1rem 1.1rem;
-      margin-bottom: 1.4rem;
-    }
-    .modal-project-info .info-title { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:var(--text); line-height:1.3; margin-bottom:.6rem; }
-    .modal-project-info .info-row { display:flex; align-items:baseline; gap:.4rem; font-size:.78rem; color:var(--muted2); margin-bottom:.3rem; }
-    .modal-project-info .info-row .info-key { font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-size:.68rem; flex-shrink:0; }
-    .modal-project-info .info-row .info-val { color:var(--text); font-weight:500; }
-    .modal-problem-box { margin-top:.75rem; padding-top:.75rem; border-top:1px solid rgba(59,130,246,0.12); }
-    .modal-problem-box .problem-label { font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:.4rem; }
-    .modal-problem-box .problem-text  { font-size:.82rem; color:var(--muted2); line-height:1.6; }
-    .modal-title { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:.15rem; line-height:1.3; color:var(--text); }
-    .modal-sub   { color:var(--muted); font-size:.78rem; margin-bottom:1.4rem; }
-    .modal-btns { display:flex; gap:.7rem; margin-top:1.3rem; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
 
-    /* ── CRITERIA CARD ── */
-    .criteria-group {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem 1.1rem;
-      margin-bottom: .9rem;
-    }
-    .criteria-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: .75rem;
-    }
-    .criteria-name {
-      font-size: .85rem;
-      font-weight: 600;
-      color: var(--text);
-    }
+.page { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
 
-    /* ── SCORE BADGE ── */
-    .score-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 52px;
-      height: 26px;
-      border-radius: 6px;
-      font-family: 'Syne', sans-serif;
-      font-size: .82rem;
-      font-weight: 700;
-      background: var(--surface);
-      border: 1.5px solid var(--border2);
-      color: var(--muted2);
-      transition: all .2s;
-      padding: 0 .5rem;
-    }
-    .score-badge.has-value {
-      border-color: var(--rc, var(--accent));
-      color: var(--rc, var(--accent));
-      background: color-mix(in srgb, var(--rc, var(--accent)) 8%, transparent);
-    }
+/* SIDEBAR */
+.sidebar { background: var(--bg2); border-right: 1px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; padding: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.sidebar-brand { padding: 28px 24px 24px; border-bottom: 1px solid var(--border); }
+.brand-tag { font-size: 9px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.brand-name { font-family: var(--font-display); font-size: 22px; color: var(--text); line-height: 1.2; }
+.brand-sub { font-size: 11px; color: var(--text3); margin-top: 5px; letter-spacing: 0.02em; }
 
-    /* ── RATING GRID (5×2 = 1–10) ── */
-    .rating-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
-    }
-    .rating-btn {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      min-height: 40px;
-      border: 1.5px solid var(--border2);
-      border-radius: 8px;
-      background: var(--surface);
-      color: var(--muted2);
-      font-size: .83rem;
-      font-weight: 700;
-      font-family: 'Instrument Sans', sans-serif;
-      cursor: pointer;
-      transition: background .12s, color .12s, transform .1s, border-color .12s, box-shadow .12s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-    .rating-btn:hover  { background: var(--surface2); }
-    .rating-btn:active { transform: scale(.92); }
+.sidebar-section { padding: 20px 16px 8px; }
+.sidebar-section-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); padding: 0 8px 10px; font-weight: 500; }
 
-    /* Color scale per value */
-    .rating-btn[data-val="1"]  { --rc: #ef4444; }
-    .rating-btn[data-val="2"]  { --rc: #f97316; }
-    .rating-btn[data-val="3"]  { --rc: #f59e0b; }
-    .rating-btn[data-val="4"]  { --rc: #eab308; }
-    .rating-btn[data-val="5"]  { --rc: #84cc16; }
-    .rating-btn[data-val="6"]  { --rc: #22c55e; }
-    .rating-btn[data-val="7"]  { --rc: #10b981; }
-    .rating-btn[data-val="8"]  { --rc: #06b6d4; }
-    .rating-btn[data-val="9"]  { --rc: #3b82f6; }
-    .rating-btn[data-val="10"] { --rc: #8b5cf6; }
+.filter-group { margin-bottom: 20px; padding: 0 8px; }
+.filter-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; font-weight: 500; }
+.filter-select { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: var(--r); font-family: var(--font-body); font-size: 12px; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238c8880'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+.filter-select:focus { outline: none; border-color: var(--accent); }
+.filter-select option { background: var(--bg3); }
 
-    .rating-btn.active {
-      background: var(--rc);
-      border-color: var(--rc);
-      color: #fff;
-      transform: scale(1.08);
-      box-shadow: 0 3px 10px color-mix(in srgb, var(--rc) 40%, transparent);
-      z-index: 1;
-      position: relative;
-    }
+/* College list in sidebar */
+.college-list { padding: 0 8px; display: flex; flex-direction: column; gap: 4px; }
+.college-item {
+  padding: 9px 12px;
+  border-radius: var(--r);
+  font-size: 11.5px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+  line-height: 1.4;
+  font-weight: 400;
+}
+.college-item:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
+.college-item.active { background: var(--accent); color: #fff; font-weight: 500; border-color: var(--accent); }
+.college-loading { font-size: 11px; color: var(--text3); padding: 8px 12px; font-style: italic; }
 
-    /* scale legend */
-    .scale-legend {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 6px;
-      font-size: .68rem;
-      color: var(--muted);
-      padding: 0 2px;
-    }
+.sidebar-divider { height: 1px; background: var(--border); margin: 12px 8px; }
 
-    /* ── TABLE ── */
-    .tbl-wrap { border-radius:10px; overflow:hidden; border:1px solid var(--border); overflow-x:auto; -webkit-overflow-scrolling: touch; }
-    table { width:100%; border-collapse:collapse; min-width:600px; }
-    th, td { padding:.75rem .8rem; text-align:left; border-bottom:1px solid var(--border); font-size:.78rem; }
-    th { background:var(--surface2); font-family:'Syne',sans-serif; font-weight:700; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted2); white-space:nowrap; }
-    tr:last-child td { border-bottom:none; }
-    tr:active td { background:var(--surface2); }
+.btn-export { margin: auto 16px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 16px; border-radius: var(--r); font-family: var(--font-body); font-size: 12px; font-weight: 500; cursor: pointer; letter-spacing: 0.04em; transition: all 0.2s; }
+.btn-export:hover { background: var(--accent); color: var(--bg); }
+.btn-export:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-export svg { width: 14px; height: 14px; }
 
-    /* ── STATS ── */
-    .stats-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:.8rem; margin-bottom:1.5rem; }
-    .stat-card { padding:1.2rem; border-radius:10px; text-align:center; border:1.5px solid var(--border); background:var(--surface); box-shadow:0 2px 8px var(--shadow); }
-    .stat-val  { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; }
-    .stat-lbl  { font-size:.7rem; color:var(--muted); margin-top:.25rem; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+/* MAIN */
+.main { padding: 32px 36px; overflow-x: hidden; }
 
-    /* ── MISC ── */
-    .loading    { text-align:center; padding:2.5rem; color:var(--muted); font-size:.88rem; }
-    .empty-state { text-align:center; padding:3rem 1.5rem; color:var(--muted); }
-    .empty-icon { font-size:2.5rem; margin-bottom:.8rem; }
-    .empty-state h3 { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:var(--muted2); margin-bottom:.3rem; }
-    .empty-state p { font-size:.85rem; }
-    .toast { position:fixed; bottom:1.5rem; left:1rem; right:1rem; z-index:9999; background:var(--surface); border:1.5px solid rgba(16,185,129,0.3); color:var(--green); padding:.85rem 1.2rem; border-radius:10px; font-weight:600; font-size:.85rem; text-align:center; animation:slideIn .3s cubic-bezier(.16,1,.3,1); box-shadow:0 8px 24px var(--shadow2); }
-    @keyframes slideIn { from{transform:translateY(20px);opacity:0} to{transform:none;opacity:1} }
-    .divider { height:1px; background:var(--border); margin:1.2rem 0; }
-    .section-title { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:.9rem; color:var(--text); }
+.main-header { margin-bottom: 28px; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.main-title { font-family: var(--font-display); font-size: 32px; color: var(--text); line-height: 1.1; }
+.main-title em { font-style: italic; color: var(--accent); }
+.main-meta { font-size: 11px; color: var(--text3); margin-top: 6px; letter-spacing: 0.04em; }
+.response-badge { background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 6px 14px; font-size: 11px; color: var(--text2); display: inline-flex; align-items: center; gap: 6px; }
+.response-badge span { color: var(--accent); font-weight: 500; font-size: 13px; }
 
-    @media(max-width:480px){
-      .container { padding:.8rem; }
-      header { padding:1.5rem 0 1rem; }
-      h1 { font-size:1.8rem; }
-      .login-wrap { padding:1.4rem 1.1rem; }
-      .user-bar { padding:1rem; }
-      .stats-grid { grid-template-columns:1fr; }
-      .project-card { padding:1.1rem; }
-      .modal-content { padding:1.2rem; margin:.5rem auto; }
-      .criteria-group { padding:.85rem; }
-      .rating-btn { min-height: 42px; font-size: .82rem; }
-    }
-  </style>
+/* BLANK STATE */
+.blank-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 60px 40px;
+}
+.blank-state-icon {
+  width: 72px; height: 72px;
+  background: var(--bg3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  border: 1px solid var(--border2);
+}
+.blank-state-icon svg { width: 32px; height: 32px; color: var(--text3); }
+.blank-state h2 { font-family: var(--font-display); font-size: 24px; color: var(--text); margin-bottom: 10px; line-height: 1.2; }
+.blank-state h2 em { font-style: italic; color: var(--accent); }
+.blank-state p { font-size: 13px; color: var(--text3); line-height: 1.7; max-width: 340px; }
+.blank-state-arrow { margin-top: 24px; font-size: 12px; color: var(--accent); display: flex; align-items: center; gap: 6px; font-weight: 500; letter-spacing: 0.04em; }
+.blank-state-arrow svg { width: 16px; height: 16px; animation: arrowPulse 1.4s ease-in-out infinite; }
+@keyframes arrowPulse { 0%,100% { transform: translateX(0); } 50% { transform: translateX(-5px); } }
+
+/* Loading / empty states */
+.loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px 20px; color: var(--text3); font-size: 13px; }
+.spinner { width: 28px; height: 28px; border: 2px solid var(--bg4); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* DASHBOARD CONTENT — hidden until college selected */
+#dashContent { display: none; }
+#dashContent.visible { display: block; }
+
+/* KPI GRID */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 18px 20px; position: relative; overflow: hidden; transition: border-color 0.2s; }
+.kpi-card:hover { border-color: var(--border2); }
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: var(--r2) var(--r2) 0 0; }
+.kpi-card.green::before { background: var(--green); }
+.kpi-card.blue::before { background: var(--accent3); }
+.kpi-card.orange::before { background: var(--orange); }
+.kpi-card.yellow::before { background: var(--yellow); }
+.kpi-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; font-weight: 500; }
+.kpi-value { font-family: var(--font-display); font-size: 34px; color: var(--text); line-height: 1; }
+.kpi-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
+.kpi-interp { display: inline-block; margin-top: 8px; font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 500; letter-spacing:0.02em; }
+
+/* COLLEGE NAME HEADER */
+.college-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.college-header-name { font-family: var(--font-display); font-size: 20px; color: var(--text); }
+.college-header-badge { background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--text3); }
+
+/* SAT METRICS */
+.sat-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 24px; }
+.sat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px 18px; }
+.sat-name { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+.sat-pct { font-family: var(--font-display); font-size: 28px; color: var(--text); line-height: 1; }
+.sat-bar { height: 3px; background: var(--bg4); border-radius: 2px; margin-top: 10px; }
+.sat-fill { height: 100%; border-radius: 2px; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
+
+/* CHARTS ROW */
+.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; }
+.card-title { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.card-title::before { content: ''; width: 3px; height: 14px; border-radius: 2px; background: var(--accent); display: inline-block; }
+
+/* RANKING TABLE */
+.table-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; margin-bottom: 24px; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+thead th { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); font-weight: 500; padding: 0 12px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+thead th.right { text-align: right; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg3); }
+tbody td { padding: 11px 12px; color: var(--text2); vertical-align: middle; white-space: nowrap; }
+tbody td.right { text-align: right; }
+.rank-circle { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; }
+.rank-1 { background: rgba(245,166,35,0.2); color: #f5a623; }
+.rank-2 { background: rgba(192,192,210,0.2); color: #c0c0d2; }
+.rank-3 { background: rgba(180,100,60,0.2); color: #b4643c; }
+.rank-other { background: var(--bg4); color: var(--text2); }
+.college-name { color: var(--text); font-weight: 500; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.score-chip { display: inline-flex; align-items: center; justify-content: center; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; min-width: 52px; }
+.status-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; }
+.status-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.nps-bar { display: flex; align-items: center; gap: 8px; }
+.nps-mini { height: 4px; border-radius: 2px; background: var(--bg4); width: 60px; overflow: hidden; }
+.nps-mini-fill { height: 100%; border-radius: 2px; background: var(--accent3); }
+
+/* BOTTOM ROW */
+.bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+
+/* QUALITATIVE */
+.qual-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; }
+.qual-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.qual-tab { padding: 6px 14px; border-radius: 20px; font-size: 11px; border: 1px solid var(--border); background: transparent; color: var(--text3); cursor: pointer; transition: all 0.15s; font-family: var(--font-body); }
+.qual-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 500; }
+.qual-tab:hover:not(.active) { border-color: var(--border2); color: var(--text2); }
+.qual-list { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; padding-right: 4px; }
+.qual-item { background: var(--bg3); border-radius: var(--r); padding: 12px 14px; border-left: 2px solid transparent; transition: border-color 0.15s; }
+.qual-item:hover { border-left-color: #0f8f5f; }
+.qual-college { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 5px; }
+.qual-text { font-size: 12px; color: var(--text2); line-height: 1.6; }
+
+/* DONUT CHARTS GRID */
+.donuts-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; }
+.donuts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.donut-item { display: flex; align-items: center; gap: 12px; background: var(--bg3); border-radius: var(--r); padding: 12px; }
+.donut-canvas-wrap { width: 56px; height: 56px; flex-shrink: 0; position: relative; }
+.donut-canvas-wrap canvas { width: 56px !important; height: 56px !important; }
+.donut-label { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
+.donut-pct { font-family: var(--font-display); font-size: 20px; color: var(--text); }
+
+/* NOTICE */
+.notice { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; font-size: 11px; color: var(--text3); line-height: 1.6; display: flex; gap: 10px; align-items: flex-start; }
+.notice-icon { color: #d4820a; flex-shrink: 0; margin-top: 1px; }
+
+/* Score colors */
+.c-exceptional { color: #0a6e48; background: rgba(15,143,95,0.12); }
+.c-strong { color: #1a52a8; background: rgba(45,111,207,0.12); }
+.c-stable { color: #8a6700; background: rgba(196,154,0,0.12); }
+.c-moderate { color: #9e5a00; background: rgba(212,130,10,0.12); }
+.c-high { color: #a84200; background: rgba(200,90,20,0.12); }
+.c-critical { color: #9e1f1f; background: rgba(199,51,51,0.12); }
+
+/* Weightage legend */
+.weight-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.weight-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
+.weight-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+.kpi-card { animation: fadeUp 0.35s ease both; }
+.kpi-card:nth-child(1){animation-delay:0.04s}.kpi-card:nth-child(2){animation-delay:0.08s}.kpi-card:nth-child(3){animation-delay:0.12s}.kpi-card:nth-child(4){animation-delay:0.16s}
+.sat-card { animation: fadeUp 0.35s ease both; }
+.sat-card:nth-child(1){animation-delay:0.08s}.sat-card:nth-child(2){animation-delay:0.12s}.sat-card:nth-child(3){animation-delay:0.16s}.sat-card:nth-child(4){animation-delay:0.20s}.sat-card:nth-child(5){animation-delay:0.24s}
+
+@media (max-width: 1300px) {
+  .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+  .sat-row { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 1100px) {
+  .page { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; }
+  .charts-row, .bottom-row { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <h1>Peer Review System</h1>
-    <p class="subtitle">Project Evaluation &amp; Feedback Portal</p>
-  </header>
+<div class="page">
 
-  <!-- LOGIN -->
-  <div id="loginScreen" class="login-wrap card">
-    <h2>Welcome Back</h2>
-    <p class="login-sub">Sign in with your registered email to continue</p>
-    <div class="step-indicator">
-      <div class="step-dot active" id="dot1"></div>
-      <div class="step-dot"        id="dot2"></div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-tag">Operations Dashboard</div>
+      <div class="brand-name">Campus<br>Dashboard</div>
+      <div class="brand-sub">FACE Prep · Campus Management</div>
     </div>
-    <div id="loginAlert"></div>
-    <div id="step1">
-      <div class="form-group">
-        <label>Your College</label>
-        <select id="collegeSelect">
-          <option value="">— Select your institution —</option>
-          <option>Kamaraj College</option>
-          <option>Kamaraj Women's College</option>
-          <option>SDNB Vaishnav College for Women</option>
-          <option>Patrician College of Arts &amp; Science</option>
-          <option>TERF's College of Arts and Science</option>
-          <option>Sree Saraswathi Thyagaraja College</option>
-          <option>TJS College of Arts and Science</option>
-          <option>Bharathidasan College of Arts &amp; Science</option>
-          <option>Nagarathinam Angalammal Arts &amp; Science College</option>
-          <option>Vinayaga Mission's Research Foundation School of Arts &amp; Science</option>
-          <option>Sri Amaraavathi College of Arts &amp; Science</option>
-          <option>Takshashila University</option>
-          <option>Study World Group of Institution</option>
-          <option>Rathinam College of Arts &amp; Science</option>
-          <option>Noorul Islam Centre for Higher Education (NICHE)</option>
-          <option>AMET University</option>
-          <option>Joy University</option>
-          <option>Sasurie College of Arts and Science</option>
-          <option>Alliance University</option>
-          <option>Kristu Jayanti (Deemed to be University)</option>
-          <option>S-VYASA University</option>
-          <option>Asian School of Business</option>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Select College</div>
+      <div class="college-list" id="collegeList">
+        <div class="college-loading">Loading colleges…</div>
+      </div>
+    </div>
+
+    <div style="flex:1"></div>
+
+    <div style="padding: 0 16px 8px;">
+      <div class="sidebar-divider"></div>
+      <div class="filter-group" style="margin-bottom:12px;">
+        <div class="filter-label">Filter by Month</div>
+        <select class="filter-select" id="filterMonth" onchange="applyMonthFilter()">
+          <option value="all">All Months</option>
         </select>
       </div>
-      <button class="btn-primary" onclick="goToStep2()">Continue →</button>
     </div>
-    <div id="step2" style="display:none">
-      <div class="selected-college-pill">
-        <span></span>
-        <div>
-          <span class="pill-label">Selected College</span>
-          <span class="pill-val" id="selectedCollegeDisplay"></span>
+
+    <button class="btn-export" id="exportBtn" onclick="exportCSV()" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export CSV
+    </button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="main-header">
+      <div>
+        <div class="main-title">Campus <em>Dashboard</em></div>
+        <div class="main-meta">Institutional satisfaction · Partnership health · NPS analytics</div>
+      </div>
+      <div class="response-badge">Total responses: <span id="totalRespBadge">—</span></div>
+    </div>
+
+    <!-- BLANK STATE (shown until a college is selected) -->
+    <div class="blank-state" id="blankState">
+      <div class="blank-state-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <h2>Select a <em>college</em> to begin</h2>
+      <p>Choose an institution from the sidebar to view its satisfaction metrics, NPS score, composite ranking and qualitative feedback.</p>
+      <div class="blank-state-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Pick a college from the left panel
+      </div>
+    </div>
+
+    <!-- DASHBOARD CONTENT (hidden until college selected) -->
+    <div id="dashContent">
+
+      <!-- Selected college header -->
+      <div class="college-header">
+        <div class="college-header-name" id="selectedCollegeName">—</div>
+        <div class="college-header-badge" id="selectedCollegeMonth">All Months</div>
+      </div>
+
+      <!-- Composite weightage legend -->
+      <div class="weight-legend">
+        <span class="weight-pill"><span class="weight-dot" style="background:#2d6fcf"></span>NPS 40%</span>
+        <span class="weight-pill"><span class="weight-dot" style="background:#7eb3ff"></span>Faculty 15%</span>
+        <span class="weight-pill"><span class="weight-dot" style="background:#4ade9a"></span>Content 15%</span>
+        <span class="weight-pill"><span class="weight-dot" style="background:#ffd166"></span>Operations 10%</span>
+        <span class="weight-pill"><span class="weight-dot" style="background:#f5a623"></span>Skill Dev 10%</span>
+        <span class="weight-pill"><span class="weight-dot" style="background:#ff6b6b"></span>Placement 10%</span>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-grid">
+        <div class="kpi-card green"><div class="kpi-label">NPS Average</div><div class="kpi-value" id="kNps">—</div><div class="kpi-sub">Scale 0–10</div></div>
+        <div class="kpi-card blue"><div class="kpi-label">Composite Score</div><div class="kpi-value" id="kComposite">—</div><div id="kInterpBadge"></div></div>
+        <div class="kpi-card orange"><div class="kpi-label">Campus Rank</div><div class="kpi-value" id="kRank">—</div><div class="kpi-sub" id="kRankSub">—</div></div>
+        <div class="kpi-card yellow"><div class="kpi-label">Total Responses</div><div class="kpi-value" id="kResponses">—</div><div class="kpi-sub">submissions</div></div>
+      </div>
+
+      <!-- SAT METRICS -->
+      <div class="sat-row">
+        <div class="sat-card"><div class="sat-name">Faculty</div><div class="sat-pct" id="sFaculty">—</div><div class="sat-bar"><div class="sat-fill" id="bFaculty" style="width:0%;background:#7eb3ff"></div></div></div>
+        <div class="sat-card"><div class="sat-name">Content</div><div class="sat-pct" id="sContent">—</div><div class="sat-bar"><div class="sat-fill" id="bContent" style="width:0%;background:#4ade9a"></div></div></div>
+        <div class="sat-card"><div class="sat-name">Operations</div><div class="sat-pct" id="sOps">—</div><div class="sat-bar"><div class="sat-fill" id="bOps" style="width:0%;background:#ffd166"></div></div></div>
+        <div class="sat-card"><div class="sat-name">Skill Dev</div><div class="sat-pct" id="sSkill">—</div><div class="sat-bar"><div class="sat-fill" id="bSkill" style="width:0%;background:#f5a623"></div></div></div>
+        <div class="sat-card"><div class="sat-name">Placement</div><div class="sat-pct" id="sPlacement">—</div><div class="sat-bar"><div class="sat-fill" id="bPlacement" style="width:0%;background:#ff6b6b"></div></div></div>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="card-title">Composite score breakdown</div>
+          <div style="position:relative;height:280px;" id="barWrap">
+            <div class="loading-state"><div class="spinner"></div>Loading…</div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Monthly NPS trend</div>
+          <div style="position:relative;height:280px;" id="npsWrap">
+            <div class="loading-state"><div class="spinner"></div>Loading…</div>
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>Registered Email</label>
-        <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email" />
-      </div>
-      <div class="btn-row">
-        <button class="btn-ghost" onclick="backToStep1()">← Back</button>
-        <button id="loginBtn" class="btn-primary" onclick="emailLogin()">Sign In</button>
-      </div>
-    </div>
-  </div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="dashboard">
-    <div class="user-bar card">
-      <div class="user-info">
-        <div>
-          <div class="user-name" id="userName"></div>
-          <div class="user-meta">Reg: <span id="userReg"></span> · <span id="userCourse"></span></div>
-          <div class="college-badge"><span id="userCollegeBadge"></span></div>
+      <!-- RANKING TABLE — all colleges for context -->
+      <div class="table-card">
+        <div class="card-title">All campuses ranking</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>College</th>
+                <th class="right">Composite</th>
+                <th class="right">NPS Avg</th>
+                <th class="right">Faculty %</th>
+                <th class="right">Content %</th>
+                <th class="right">Ops %</th>
+                <th class="right">Skill %</th>
+                <th class="right">Placement %</th>
+                <th class="right">Responses</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="rankBody">
+              <tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3);font-size:12px;">No data loaded yet.</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <button class="btn-ghost btn-sm" onclick="logout()">Sign Out</button>
-    </div>
 
-    <div class="tabs">
-      <div class="tab active" id="tab-projects"  onclick="switchTab('projects')">Projects</div>
-      <div class="tab"        id="tab-myReviews" onclick="switchTab('myReviews')">My Reviews</div>
-      <div class="tab"        id="tab-myProject" onclick="switchTab('myProject')">My Stats</div>
-    </div>
-
-    <div id="projectsTab"  class="tab-content active"><div id="projectsContent"></div></div>
-    <div id="myReviewsTab" class="tab-content"><div id="myReviewsContent"></div></div>
-    <div id="myProjectTab" class="tab-content"><div id="myProjectContent"></div></div>
-  </div>
-</div>
-
-<!-- REVIEW MODAL -->
-<div id="reviewModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-project-info" id="modalProjectInfo">
-      <div class="type-chip" id="modalProjectType"></div>
-      <div class="info-title"  id="modalProjectTitle"></div>
-      <div class="info-row">
-        <span class="info-key">Student</span>
-        <span class="info-val" id="modalStudentName"></span>
+      <!-- BOTTOM ROW -->
+      <div class="bottom-row">
+        <div class="qual-card">
+          <div class="card-title">Qualitative feedback</div>
+          <div class="qual-tabs">
+            <button class="qual-tab active" id="tabPos" onclick="switchQual('pos')">What FACE Prep did best</button>
+            <button class="qual-tab" id="tabImp" onclick="switchQual('imp')">Improvements expected</button>
+          </div>
+          <div class="qual-list" id="qualList">
+            <div class="qual-item"><div class="qual-text" style="color:var(--text3)">No feedback loaded yet.</div></div>
+          </div>
+        </div>
+        <div class="donuts-card">
+          <div class="card-title">Yes/No distribution</div>
+          <div class="donuts-grid" id="donutsGrid">
+            <div class="loading-state" style="grid-column:1/-1"><div class="spinner"></div>Loading…</div>
+          </div>
+        </div>
       </div>
-      <div class="info-row">
-        <span class="info-key">Course</span>
-        <span class="info-val" id="modalStudentCourse"></span>
-      </div>
-      <div class="modal-problem-box" id="modalProblemBox">
-        <div class="problem-label">Problem Statement</div>
-        <div class="problem-text" id="modalProblemText"></div>
-      </div>
-    </div>
 
-    <div class="modal-title">Rate this Project</div>
-    <div class="modal-sub">Tap a number to score each criterion (1 – 10)</div>
-
-    <!-- CRITERIA: Problem Clarity -->
-    <div class="criteria-group">
-      <div class="criteria-header">
-        <span class="criteria-name">Problem Clarity</span>
-        <span class="score-badge" id="clarity-badge">—</span>
+      <div class="notice">
+        <div class="notice-icon">⚠</div>
+        <div>Composite score = <strong>NPS×10 × 40%</strong> + Faculty × 15% + Content × 15% + Operations × 10% + Skill Dev × 10% + Placement × 10%. Scores are indicative due to limited response volume.</div>
       </div>
-      <div class="rating-grid" id="clarity-grid"></div>
-      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
-      <input type="hidden" id="clarity" value="">
-    </div>
 
-    <!-- CRITERIA: Innovation -->
-    <div class="criteria-group">
-      <div class="criteria-header">
-        <span class="criteria-name">Innovation</span>
-        <span class="score-badge" id="innovation-badge">—</span>
-      </div>
-      <div class="rating-grid" id="innovation-grid"></div>
-      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
-      <input type="hidden" id="innovation" value="">
-    </div>
-
-    <!-- CRITERIA: Execution -->
-    <div class="criteria-group">
-      <div class="criteria-header">
-        <span class="criteria-name">Execution</span>
-        <span class="score-badge" id="execution-badge">—</span>
-      </div>
-      <div class="rating-grid" id="execution-grid"></div>
-      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
-      <input type="hidden" id="execution" value="">
-    </div>
-
-    <!-- CRITERIA: Usability -->
-    <div class="criteria-group">
-      <div class="criteria-header">
-        <span class="criteria-name">Usability</span>
-        <span class="score-badge" id="usability-badge">—</span>
-      </div>
-      <div class="rating-grid" id="usability-grid"></div>
-      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
-      <input type="hidden" id="usability" value="">
-    </div>
-
-    <!-- CRITERIA: Overall Impression -->
-    <div class="criteria-group">
-      <div class="criteria-header">
-        <span class="criteria-name">Overall Impression</span>
-        <span class="score-badge" id="overall-badge">—</span>
-      </div>
-      <div class="rating-grid" id="overall-grid"></div>
-      <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
-      <input type="hidden" id="overall" value="">
-    </div>
-
-    <div class="form-group" style="margin-top:1rem;">
-      <label>Comments <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
-      <textarea id="comments" placeholder="Share your honest feedback…"></textarea>
-    </div>
-    <div class="modal-btns">
-      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
-      <button id="submitReviewBtn" class="btn-primary" onclick="submitReview()">Submit Review</button>
-    </div>
-  </div>
+    </div><!-- /dashContent -->
+  </main>
 </div>
 
 <script>
-const SUPABASE_URL      = 'https://zykmcumlzhucnvxqhpgm.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5a21jdW1semh1Y252eHFocGdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NzE5MDYsImV4cCI6MjA5NTM0NzkwNn0.kqUgSpGFSwMXpHkWRihhVJXDtVfl0tGdU24POxmXHWc';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+/* ─── CONFIG ──────────────────────────────── */
+const SUPABASE_URL      = 'https://rysajbwcuieovbsllaas.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5c2FqYndjdWllb3Zic2xsYWFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NjI3MjgsImV4cCI6MjA5NjAzODcyOH0.2WenjYKsfQYAeUJxVJcEVQwqYUlfwrYltrMuC9Ggu4A';
 
-let currentUser = null, reviewedSet = new Set(), currentProject = null, selectedCollege = '';
+let RAW_DATA        = [];
+let selectedCollege = null;
+let currentQual     = 'pos';
+let barChartInst    = null;
+let npsChartInst    = null;
+const donutInstances = {};
 
-// ── COLOR MAP ────────────────────────────────────────────────
-const COLOR_MAP = {
-  1:'#ef4444', 2:'#f97316', 3:'#f59e0b', 4:'#eab308', 5:'#84cc16',
-  6:'#22c55e', 7:'#10b981', 8:'#06b6d4', 9:'#3b82f6', 10:'#8b5cf6'
-};
-function getColor(v) { return COLOR_MAP[v] || '#94a3b8'; }
+""" + new_fetch + r"""
 
-// ── RATING GRID BUILDER ──────────────────────────────────────
-const CRITERIA = ['clarity','innovation','execution','usability','overall'];
+/* ─── SIDEBAR COLLEGE LIST ────────────────── */
+function buildCollegeList() {
+  const colleges = [...new Set(RAW_DATA.map(r => r.college))].sort();
+  const list = document.getElementById('collegeList');
+  if (!colleges.length) {
+    list.innerHTML = '<div class="college-loading">No data found.</div>';
+    return;
+  }
+  list.innerHTML = colleges.map(c =>
+    `<div class="college-item" data-college="${c}" onclick="selectCollege('${c.replace(/'/g,"\\'")}')">
+      ${c}
+    </div>`
+  ).join('');
+}
 
-function buildRatingGrids() {
-  CRITERIA.forEach(id => {
-    const grid = document.getElementById(id + '-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
-    for (let v = 1; v <= 10; v++) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'rating-btn';
-      btn.dataset.val = v;
-      btn.textContent = v;
-      btn.onclick = () => setRating(id, v);
-      grid.appendChild(btn);
+function selectCollege(name) {
+  selectedCollege = name;
+  document.querySelectorAll('.college-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.college === name);
+  });
+  document.getElementById('selectedCollegeName').textContent = name;
+  document.getElementById('blankState').style.display = 'none';
+  document.getElementById('dashContent').classList.add('visible');
+  document.getElementById('exportBtn').disabled = false;
+  renderDashboard();
+}
+
+/* ─── MONTH FILTER ────────────────────────── */
+function buildMonthFilter() {
+  const months = [...new Set(RAW_DATA.map(r => r.month))].sort();
+  const sm = document.getElementById('filterMonth');
+  sm.querySelectorAll('option:not([value="all"])').forEach(o => o.remove());
+  months.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m; o.textContent = m; sm.appendChild(o);
+  });
+}
+
+function applyMonthFilter() {
+  if (selectedCollege) renderDashboard();
+}
+
+function getSelectedMonth() {
+  return document.getElementById('filterMonth').value;
+}
+
+/* ─── FILTERED ROWS FOR SELECTED COLLEGE ─── */
+function getCollegeRows() {
+  const m = getSelectedMonth();
+  return RAW_DATA.filter(r =>
+    r.college === selectedCollege &&
+    (m === 'all' || r.month === m)
+  );
+}
+
+/* ─── ALL COLLEGES ROWS (for ranking table) ─ */
+function getAllRows() {
+  const m = getSelectedMonth();
+  return RAW_DATA.filter(r => m === 'all' || r.month === m);
+}
+
+/* ─── METRICS ─────────────────────────────── */
+function calcMetrics(rows) {
+  if (!rows.length) return null;
+  const npsAvg    = rows.reduce((s, r) => s + r.nps, 0) / rows.length;
+  const calcYes   = key => (rows.filter(r => r[key] === 'Yes').length / rows.length) * 100;
+  const faculty   = calcYes('faculty');
+  const content   = calcYes('content');
+  const ops       = calcYes('ops');
+  const skill     = calcYes('skill');
+  const placement = calcYes('placement');
+  const normNps   = npsAvg * 10;
+  const composite = (0.40 * normNps)
+                  + (0.15 * faculty)
+                  + (0.15 * content)
+                  + (0.10 * ops)
+                  + (0.10 * skill)
+                  + (0.10 * placement);
+  return { npsAvg, faculty, content, ops, skill, placement, normNps, composite, totalResp: rows.length };
+}
+
+function getInterp(s) {
+  if (s >= 90) return { label: 'Exceptional',   cls: 'c-exceptional', dot: '#4ade9a' };
+  if (s >= 80) return { label: 'Strong',         cls: 'c-strong',      dot: '#7eb3ff' };
+  if (s >= 70) return { label: 'Stable',         cls: 'c-stable',      dot: '#ffd166' };
+  if (s >= 60) return { label: 'Moderate Risk',  cls: 'c-moderate',    dot: '#f5a623' };
+  if (s >= 50) return { label: 'High Attention', cls: 'c-high',        dot: '#ff8c42' };
+  return             { label: 'Critical Risk',   cls: 'c-critical',    dot: '#ff6b6b' };
+}
+
+/* ─── RENDER DASHBOARD ────────────────────── */
+function renderDashboard() {
+  const rows    = getCollegeRows();
+  const metrics = calcMetrics(rows);
+  const m       = getSelectedMonth();
+
+  document.getElementById('selectedCollegeMonth').textContent =
+    m === 'all' ? 'All Months' : m;
+  document.getElementById('totalRespBadge').textContent = rows.length || '—';
+
+  if (!metrics) {
+    ['kNps','kComposite','kRank','kResponses'].forEach(id =>
+      document.getElementById(id).textContent = '—');
+    document.getElementById('kInterpBadge').innerHTML = '';
+    ['sFaculty','sContent','sOps','sSkill','sPlacement'].forEach(id =>
+      document.getElementById(id).textContent = '—');
+    ['bFaculty','bContent','bOps','bSkill','bPlacement'].forEach(id =>
+      document.getElementById(id).style.width = '0%');
+    document.getElementById('rankBody').innerHTML =
+      '<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3);font-size:12px;">No data for this selection.</td></tr>';
+    document.getElementById('barWrap').innerHTML  = '<div class="loading-state">No data.</div>';
+    document.getElementById('npsWrap').innerHTML  = '<div class="loading-state">No data.</div>';
+    renderQual(rows);
+    renderDonuts(null);
+    return;
+  }
+
+  document.getElementById('kNps').textContent       = metrics.npsAvg.toFixed(2);
+  document.getElementById('kComposite').textContent = metrics.composite.toFixed(2);
+  document.getElementById('kResponses').textContent  = metrics.totalResp;
+  const interp = getInterp(metrics.composite);
+  document.getElementById('kInterpBadge').innerHTML =
+    `<span class="kpi-interp ${interp.cls}">${interp.label}</span>`;
+
+  const allRows    = getAllRows();
+  const campusMap  = {};
+  allRows.forEach(r => { (campusMap[r.college] = campusMap[r.college] || []).push(r); });
+  const allMetrics = Object.entries(campusMap)
+    .map(([c, rs]) => ({ college: c, ...calcMetrics(rs) }))
+    .sort((a, b) => b.composite - a.composite || b.npsAvg - a.npsAvg || b.totalResp - a.totalResp);
+
+  const rankIdx = allMetrics.findIndex(c => c.college === selectedCollege);
+  document.getElementById('kRank').textContent    = rankIdx >= 0 ? `#${rankIdx + 1}` : '—';
+  document.getElementById('kRankSub').textContent = rankIdx >= 0 ? `of ${allMetrics.length} campuses` : '';
+
+  [
+    ['sFaculty','bFaculty', metrics.faculty],
+    ['sContent','bContent', metrics.content],
+    ['sOps',    'bOps',     metrics.ops],
+    ['sSkill',  'bSkill',   metrics.skill],
+    ['sPlacement','bPlacement', metrics.placement]
+  ].forEach(([vi, bi, val]) => {
+    document.getElementById(vi).textContent = val.toFixed(1) + '%';
+    setTimeout(() => { document.getElementById(bi).style.width = val.toFixed(1) + '%'; }, 80);
+  });
+
+  renderBarChart(metrics);
+  renderNpsChart(rows);
+  renderTable(allMetrics, selectedCollege);
+  renderQual(rows);
+  renderDonuts(metrics);
+}
+
+/* ─── BAR CHART ───────────────────────────── */
+function renderBarChart(m) {
+  const wrap = document.getElementById('barWrap');
+  wrap.innerHTML = `<canvas id="barChart" style="position:absolute;inset:0" role="img" aria-label="Composite score breakdown"></canvas>`;
+  if (barChartInst) barChartInst.destroy();
+  const labels = ['NPS (×10)', 'Faculty', 'Content', 'Operations', 'Skill Dev', 'Placement'];
+  const rawVals = [m.normNps, m.faculty, m.content, m.ops, m.skill, m.placement];
+  const weights = [0.40, 0.15, 0.15, 0.10, 0.10, 0.10];
+  const weighted = rawVals.map((v, i) => parseFloat((v * weights[i]).toFixed(2)));
+  const colors   = ['rgba(45,111,207,0.8)','rgba(126,179,255,0.8)','rgba(74,222,154,0.8)','rgba(255,209,102,0.8)','rgba(245,166,35,0.8)','rgba(255,107,107,0.8)'];
+  barChartInst = new Chart(document.getElementById('barChart').getContext('2d'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Weighted contribution', data: weighted, backgroundColor: colors, borderRadius: 4, borderSkipped: false }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => { const i = ctx.dataIndex; return [`Raw: ${rawVals[i].toFixed(1)}%`, `Weighted (${(weights[i]*100).toFixed(0)}%): ${ctx.raw}`]; } } } },
+      scales: { x: { grid: { display: false }, ticks: { color: '#5a5652', font: { size: 10 } } }, y: { min: 0, max: 40, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#8c8880', font: { size: 10 } } } }
     }
   });
 }
 
-function setRating(id, val) {
-  document.getElementById(id).value = val;
-  const badge = document.getElementById(id + '-badge');
-  badge.textContent = val + '/10';
-  badge.className = 'score-badge has-value';
-  badge.style.setProperty('--rc', getColor(val));
-
-  const grid = document.getElementById(id + '-grid');
-  grid.querySelectorAll('.rating-btn').forEach(btn => {
-    btn.classList.toggle('active', +btn.dataset.val === val);
+/* ─── LINE CHART ──────────────────────────── */
+function renderNpsChart(rows) {
+  const wrap = document.getElementById('npsWrap');
+  const byMonth = {};
+  rows.forEach(r => { (byMonth[r.month] = byMonth[r.month] || []).push(r.nps); });
+  const months = Object.keys(byMonth).sort();
+  if (months.length < 2) {
+    const avg = rows.length ? (rows.reduce((s, r) => s + r.nps, 0) / rows.length).toFixed(2) : '—';
+    wrap.innerHTML = `<div class="loading-state" style="flex-direction:row;gap:16px;"><div style="text-align:center"><div style="font-family:var(--font-display);font-size:48px;color:var(--text);line-height:1">${avg}</div><div style="font-size:11px;color:var(--text3);margin-top:6px">Average NPS (0–10)</div></div></div>`;
+    return;
+  }
+  wrap.innerHTML = `<canvas id="npsChart" style="position:absolute;inset:0" role="img" aria-label="Monthly NPS trend"></canvas>`;
+  if (npsChartInst) npsChartInst.destroy();
+  const avgs = months.map(m => { const vals = byMonth[m]; return parseFloat((vals.reduce((s, v) => s + v, 0) / vals.length).toFixed(2)); });
+  npsChartInst = new Chart(document.getElementById('npsChart').getContext('2d'), {
+    type: 'line',
+    data: { labels: months, datasets: [{ label: 'NPS Avg', data: avgs, borderColor: 'rgba(45,111,207,0.9)', backgroundColor: 'rgba(45,111,207,0.08)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: 'rgba(45,111,207,1)', tension: 0.3, fill: true }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: v => `NPS: ${v.raw}` } } }, scales: { x: { grid: { display: false }, ticks: { color: '#5a5652', font: { size: 10 } } }, y: { min: 0, max: 10, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#8c8880', font: { size: 10 } } } } }
   });
 }
 
-function resetRatings() {
-  CRITERIA.forEach(id => {
-    document.getElementById(id).value = '';
-    const badge = document.getElementById(id + '-badge');
-    badge.textContent = '—';
-    badge.className = 'score-badge';
-    badge.style.removeProperty('--rc');
-    const grid = document.getElementById(id + '-grid');
-    if (grid) grid.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('active'));
-  });
-}
-
-// Build grids on load
-buildRatingGrids();
-
-// ── LOGIN ────────────────────────────────────────────────────
-function goToStep2() {
-  const c = document.getElementById('collegeSelect').value;
-  if (!c) return showAlert('loginAlert','Please select your college first.','error');
-  selectedCollege = c;
-  document.getElementById('selectedCollegeDisplay').textContent = c;
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'block';
-  document.getElementById('dot1').classList.replace('active','done');
-  document.getElementById('dot2').classList.add('active');
-  document.getElementById('emailInput').focus();
-}
-
-function backToStep1() {
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('step1').style.display = 'block';
-  document.getElementById('dot2').classList.remove('active');
-  document.getElementById('dot1').classList.remove('done');
-  document.getElementById('dot1').classList.add('active');
-  document.getElementById('loginAlert').innerHTML = '';
-}
-
-async function emailLogin() {
-  const email = document.getElementById('emailInput').value.trim().toLowerCase();
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    return showAlert('loginAlert','Please enter a valid email address.','error');
-  setLoading('loginBtn', true, 'Signing in…');
-  const { data: student, error } = await sb.from('students').select('*').eq('email', email).single();
-  setLoading('loginBtn', false, 'Sign In');
-  if (error || !student) return showAlert('loginAlert','Email not found. Please check and try again.','error');
-  loginSuccess(student);
-}
-document.getElementById('emailInput').addEventListener('keydown', e => { if(e.key==='Enter') emailLogin(); });
-
-function loginSuccess(student) {
-  currentUser = student;
-  currentUser._college = student.college || selectedCollege;
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('dashboard').style.display   = 'block';
-  document.getElementById('userName').textContent         = student.name;
-  document.getElementById('userReg').textContent          = student.register_number;
-  document.getElementById('userCourse').textContent       = student.course;
-  document.getElementById('userCollegeBadge').textContent = currentUser._college;
-  loadReviewedSet().then(() => loadProjects());
-}
-
-function logout() {
-  currentUser = null; selectedCollege = ''; reviewedSet.clear();
-  document.getElementById('loginScreen').style.display = 'block';
-  document.getElementById('dashboard').style.display   = 'none';
-  document.getElementById('emailInput').value = '';
-  document.getElementById('loginAlert').innerHTML = '';
-  document.getElementById('collegeSelect').value = '';
-  backToStep1();
-}
-
-// ── REVIEWED SET ─────────────────────────────────────────────
-async function loadReviewedSet() {
-  const { data } = await sb.from('reviews').select('project_reg').eq('reviewer_reg', currentUser.register_number);
-  reviewedSet.clear();
-  (data||[]).forEach(r => reviewedSet.add(r.project_reg));
-}
-
-// ── TABS ─────────────────────────────────────────────────────
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  document.getElementById(name+'Tab').classList.add('active');
-  if(name==='projects')  loadProjects();
-  if(name==='myReviews') loadMyReviews();
-  if(name==='myProject') loadMyProjectStats();
-}
-
-// ── PROJECTS TAB ─────────────────────────────────────────────
-async function loadProjects() {
-  const c = document.getElementById('projectsContent');
-  c.innerHTML = '<div class="loading">Loading projects…</div>';
-
-  const { data: collegeStudents, error: collegeError } = await sb
-    .from('students').select('register_number')
-    .eq('college', currentUser._college);
-
-  if (collegeError) {
-    c.innerHTML = `<div class="alert alert-error">Error loading college data: ${collegeError.message}</div>`;
-    return;
-  }
-
-  const collegeRegs = (collegeStudents || []).map(s => s.register_number);
-
-  const { data: projects, error } = await sb
-    .from('projects').select('*')
-    .in('register_number', collegeRegs)
-    .neq('register_number', currentUser.register_number)
-    .order('register_number');
-
-  if (error) { c.innerHTML=`<div class="alert alert-error">${error.message}</div>`; return; }
-  if (!projects?.length) {
-    c.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Check back later.</p></div>';
-    return;
-  }
-
-  const regs = projects.map(p => p.register_number);
-  const { data: students } = await sb.from('students').select('register_number,name,course').in('register_number', regs);
-  const stuMap = {};
-  (students||[]).forEach(s => stuMap[s.register_number] = s);
-
-  await loadReviewedSet();
-  const done=reviewedSet.size, total=projects.length, pct=total?Math.round(done/total*100):0;
-
-  let html = `
-    <div class="prog-strip">
-      <div>
-        <div class="count">Reviewed <strong>${done}</strong> of <strong>${total}</strong></div>
-        <div class="prog-bar-wrap" style="width:100%;max-width:180px">
-          <div class="prog-bar" style="width:${pct}%"></div>
-        </div>
-      </div>
-      <div class="pct">${pct}%</div>
-    </div>
-    <div class="projects-grid">`;
-
-  projects.forEach(p => {
-    const stu = stuMap[p.register_number];
-    const rev = reviewedSet.has(p.register_number);
-    html += `<div class="project-card">
-      <div class="type-chip">${escHtml(p.project_type||'Project')}</div>
-      <div class="project-title">${escHtml(p.title)}</div>
-      <div class="project-detail"><strong>Student:</strong> ${escHtml(stu?.name||'—')}</div>
-      <div class="project-detail"><strong>Course:</strong>  ${escHtml(stu?.course||'—')}</div>
-      ${p.problem ? `<div class="project-detail" style="margin-top:.4rem;color:var(--muted);font-size:.78rem">${escHtml(p.problem.slice(0,70))}${p.problem.length>70?'…':''}</div>` : ''}
-      <button class="review-btn ${rev?'reviewed':''}" ${rev ? 'disabled' : `onclick="openModal('${escHtml(p.register_number)}')"`}>
-        ${rev ? '✓ Reviewed' : 'Review Project'}
-      </button>
-    </div>`;
-  });
-
-  html += '</div>';
-  c.innerHTML = html;
-}
-
-// ── MODAL ────────────────────────────────────────────────────
-async function openModal(reg) {
-  const { data: p, error: pe } = await sb.from('projects').select('*').eq('register_number', reg).single();
-  if (pe || !p) return alert('Could not load project.');
-
-  const { data: stu } = await sb.from('students').select('name,course').eq('register_number', reg).single();
-
-  currentProject = p;
-
-  document.getElementById('modalProjectType').textContent   = p.project_type || 'Project';
-  document.getElementById('modalProjectTitle').textContent  = p.title;
-  document.getElementById('modalStudentName').textContent   = stu?.name  || reg;
-  document.getElementById('modalStudentCourse').textContent = stu?.course || '—';
-
-  const problemBox = document.getElementById('modalProblemBox');
-  if (p.problem) {
-    document.getElementById('modalProblemText').textContent = p.problem;
-    problemBox.style.display = 'block';
-  } else {
-    problemBox.style.display = 'none';
-  }
-
-  resetRatings();
-  document.getElementById('comments').value = '';
-  document.getElementById('reviewModal').style.display = 'block';
-}
-
-function closeModal() { document.getElementById('reviewModal').style.display='none'; currentProject=null; }
-
-document.getElementById('reviewModal').addEventListener('click', e => {
-  if(e.target===document.getElementById('reviewModal')) closeModal();
-});
-
-// ── SUBMIT REVIEW ────────────────────────────────────────────
-async function submitReview() {
-  if (!currentProject) return;
-  if (reviewedSet.has(currentProject.register_number)) { alert('Already reviewed.'); closeModal(); return; }
-
-  const missing = CRITERIA.filter(id => !document.getElementById(id).value);
-  if (missing.length) {
-    alert('Please rate all 5 criteria before submitting.');
-    return;
-  }
-
-  setLoading('submitReviewBtn', true, 'Submitting…');
-  const { error } = await sb.from('reviews').insert({
-    reviewer_reg:     currentUser.register_number,
-    project_reg:      currentProject.register_number,
-    reviewer_college: currentUser._college || null,
-    clarity:    +document.getElementById('clarity').value,
-    innovation: +document.getElementById('innovation').value,
-    execution:  +document.getElementById('execution').value,
-    usability:  +document.getElementById('usability').value,
-    overall:    +document.getElementById('overall').value,
-    comments:   document.getElementById('comments').value.trim() || null
-  });
-  setLoading('submitReviewBtn', false, 'Submit Review');
-  if (error) {
-    alert(error.code === '23505' ? 'Already reviewed.' : 'Error: ' + error.message);
-    closeModal(); return;
-  }
-  reviewedSet.add(currentProject.register_number);
-  closeModal();
-  await loadProjects();
-  showToast('Review submitted successfully! ✓');
-}
-
-// ── MY REVIEWS TAB ───────────────────────────────────────────
-async function loadMyReviews() {
-  const c = document.getElementById('myReviewsContent');
-  c.innerHTML = '<div class="loading">Loading…</div>';
-
-  const { data: reviews, error } = await sb
-    .from('reviews')
-    .select('*')
-    .eq('reviewer_reg', currentUser.register_number)
-    .order('created_at', { ascending: false });
-
-  if (error) { c.innerHTML=`<div class="alert alert-error">${error.message}</div>`; return; }
-
-  if (!reviews?.length) {
-    c.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">📋</div>
-      <h3>No reviews submitted yet</h3>
-      <p>Head over to the Projects tab to start reviewing.</p>
-    </div>`;
-    return;
-  }
-
-  const regs = [...new Set(reviews.map(r => r.project_reg))];
-  const { data: projects } = await sb
-    .from('projects')
-    .select('register_number,title,project_type')
-    .in('register_number', regs);
-
-  const projMap = {};
-  (projects||[]).forEach(p => projMap[p.register_number] = p);
-
-  let html = `<p style="color:var(--muted2);font-size:.82rem;font-weight:500;margin-bottom:1rem">
-    You have submitted <strong style="color:var(--text)">${reviews.length}</strong> review(s)</p>
-    <div class="tbl-wrap"><table>
-      <thead><tr>
-        <th>Project</th><th>Type</th><th>College</th>
-        <th>Clarity</th><th>Innovation</th><th>Execution</th>
-        <th>Usability</th><th>Overall</th><th>Avg</th><th>Date</th>
-      </tr></thead><tbody>`;
-
-  reviews.forEach(r => {
-    const proj = projMap[r.project_reg];
-    const avg  = ((r.clarity+r.innovation+r.execution+r.usability+r.overall)/5).toFixed(1);
-    html += `<tr>
-      <td><strong>${escHtml(proj?.title || r.project_reg)}</strong></td>
-      <td><span class="type-chip" style="font-size:.65rem">${escHtml(proj?.project_type||'—')}</span></td>
-      <td style="color:var(--muted);font-size:.75rem">${escHtml(r.reviewer_college||'—')}</td>
-      <td>${r.clarity}/10</td><td>${r.innovation}/10</td><td>${r.execution}/10</td>
-      <td>${r.usability}/10</td><td>${r.overall}/10</td>
-      <td><strong style="color:var(--green)">${avg}</strong></td>
-      <td style="color:var(--muted);font-size:.75rem">${new Date(r.created_at).toLocaleDateString('en-IN')}</td>
+/* ─── RANKING TABLE ───────────────────────── */
+function renderTable(ranked, highlight) {
+  document.getElementById('rankBody').innerHTML = ranked.map((r, i) => {
+    const interp = getInterp(r.composite);
+    const rc  = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
+    const isHL = r.college === highlight;
+    return `<tr style="${isHL ? 'background:rgba(15,143,95,0.06);' : ''}">
+      <td><span class="rank-circle ${rc}">${i + 1}</span></td>
+      <td><span class="college-name" title="${r.college}" style="${isHL ? 'color:var(--accent);' : ''}">${r.college}${isHL ? ' ◀' : ''}</span></td>
+      <td class="right"><span class="score-chip ${interp.cls}">${r.composite.toFixed(2)}</span></td>
+      <td class="right"><div class="nps-bar"><span style="color:var(--text)">${r.npsAvg.toFixed(2)}</span><div class="nps-mini"><div class="nps-mini-fill" style="width:${(r.npsAvg/10*100).toFixed(1)}%"></div></div></div></td>
+      <td class="right">${r.faculty.toFixed(1)}%</td>
+      <td class="right">${r.content.toFixed(1)}%</td>
+      <td class="right">${r.ops.toFixed(1)}%</td>
+      <td class="right">${r.skill.toFixed(1)}%</td>
+      <td class="right">${r.placement.toFixed(1)}%</td>
+      <td class="right">${r.totalResp}</td>
+      <td><span class="status-chip ${interp.cls}"><span class="status-dot" style="background:${interp.dot}"></span>${interp.label}</span></td>
     </tr>`;
-  });
-
-  html += '</tbody></table></div>';
-  c.innerHTML = html;
+  }).join('');
 }
 
-// ── MY PROJECT STATS TAB ─────────────────────────────────────
-async function loadMyProjectStats() {
-  const c = document.getElementById('myProjectContent');
-  c.innerHTML = '<div class="loading">Loading…</div>';
+/* ─── QUALITATIVE ─────────────────────────── */
+function renderQual(rows) {
+  const key = currentQual === 'pos' ? 'positive' : 'improvement';
+  document.getElementById('qualList').innerHTML = rows.filter(r => r[key]).map(r => `
+    <div class="qual-item">
+      <div class="qual-text">${r[key]}</div>
+    </div>`).join('')
+    || '<div class="qual-item"><div class="qual-text" style="color:var(--text3)">No feedback for this selection.</div></div>';
+}
 
-  const { data: myProject, error: pe } = await sb
-    .from('projects').select('*')
-    .eq('register_number', currentUser.register_number)
-    .single();
+function switchQual(mode) {
+  currentQual = mode;
+  document.getElementById('tabPos').className = 'qual-tab' + (mode === 'pos' ? ' active' : '');
+  document.getElementById('tabImp').className = 'qual-tab' + (mode === 'imp' ? ' active' : '');
+  if (selectedCollege) renderQual(getCollegeRows());
+}
 
-  if (pe || !myProject) {
-    c.innerHTML = '<div class="empty-state"><div class="empty-icon">📂</div><h3>No project found.</h3><p>Your project hasn\'t been added yet.</p></div>';
+/* ─── DONUTS ──────────────────────────────── */
+function renderDonuts(m) {
+  const grid = document.getElementById('donutsGrid');
+  if (!m) {
+    grid.innerHTML = '<div class="loading-state" style="grid-column:1/-1"><div class="spinner"></div>No data…</div>';
     return;
   }
-
-  const { data: reviews, error: re } = await sb
-    .from('reviews').select('*')
-    .eq('project_reg', currentUser.register_number)
-    .order('created_at');
-
-  if (re) { c.innerHTML=`<div class="alert alert-error">${re.message}</div>`; return; }
-
-  let html = `<div class="card" style="padding:1.5rem;margin-bottom:1.2rem;">
-    <div class="type-chip">${escHtml(myProject.project_type||'Project')}</div>
-    <h2 style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin:.5rem 0 .7rem;line-height:1.3;color:var(--text)">${escHtml(myProject.title)}</h2>
-    ${myProject.problem ? `<div class="project-detail" style="font-size:.82rem">${escHtml(myProject.problem)}</div>` : ''}
-  </div>`;
-
-  if (!reviews?.length) {
-    html += `<div class="empty-state">
-      <div class="empty-icon">⏳</div>
-      <h3>No reviews yet</h3>
-      <p style="color:var(--muted);font-size:.85rem;margin-top:.4rem">Your peers haven't reviewed your project yet.</p>
-    </div>`;
-    c.innerHTML = html; return;
-  }
-
-  const n = reviews.length;
-  const avg = f => (reviews.reduce((s,r) => s + r[f], 0) / n).toFixed(1);
-  const avgs = {
-    clarity:    avg('clarity'),
-    innovation: avg('innovation'),
-    execution:  avg('execution'),
-    usability:  avg('usability'),
-    overall:    avg('overall')
-  };
-  const grand = (Object.values(avgs).reduce((s,v) => s + (+v), 0) / 5).toFixed(1);
-
-  const cards = [
-    { label:'Clarity',    val:avgs.clarity,    color:'var(--accent)'  },
-    { label:'Innovation', val:avgs.innovation, color:'#8b5cf6'        },
-    { label:'Execution',  val:avgs.execution,  color:'var(--amber)'   },
-    { label:'Usability',  val:avgs.usability,  color:'#06b6d4'        },
-    { label:'Overall',    val:avgs.overall,    color:'var(--green)'   },
-    { label:'Grand Avg',  val:grand,           color:'var(--text)'    },
+  const metrics = [
+    { label: 'Faculty',    val: m.faculty,  color: '#7eb3ff' },
+    { label: 'Content',    val: m.content,  color: '#4ade9a' },
+    { label: 'Operations', val: m.ops,      color: '#ffd166' },
+    { label: 'Skill Dev',  val: m.skill,    color: '#f5a623' },
   ];
-
-  html += `<div class="stats-grid">
-    ${cards.map(card => `
-      <div class="stat-card">
-        <div class="stat-val" style="color:${card.color}">${card.val}</div>
-        <div class="stat-lbl">${card.label}</div>
-        <div class="prog-bar-wrap" style="margin-top:.6rem">
-          <div class="prog-bar" style="width:${card.val*10}%;background:${card.color}"></div>
-        </div>
-      </div>`).join('')}
-  </div>
-  <p style="color:var(--muted);font-size:.82rem;margin-bottom:1.2rem">
-    Based on <strong style="color:var(--text)">${n}</strong> review(s)
-  </p>
-  <div class="section-title">Individual Reviews</div>
-  <div class="tbl-wrap"><table>
-    <thead><tr>
-      <th>#</th><th>College</th><th>Clarity</th><th>Innovation</th>
-      <th>Execution</th><th>Usability</th><th>Overall</th><th>Avg</th><th>Comments</th><th>Date</th>
-    </tr></thead><tbody>`;
-
-  reviews.forEach((r, i) => {
-    const ra = ((r.clarity+r.innovation+r.execution+r.usability+r.overall)/5).toFixed(1);
-    html += `<tr>
-      <td style="color:var(--muted);font-size:.75rem">Peer ${i+1}</td>
-      <td style="color:var(--muted2);font-size:.75rem">${escHtml(r.reviewer_college||'—')}</td>
-      <td>${r.clarity}/10</td><td>${r.innovation}/10</td><td>${r.execution}/10</td>
-      <td>${r.usability}/10</td><td>${r.overall}/10</td>
-      <td><strong style="color:var(--green)">${ra}</strong></td>
-      <td style="color:var(--muted2);font-size:.75rem;max-width:140px">${escHtml(r.comments||'—')}</td>
-      <td style="color:var(--muted);font-size:.75rem">${new Date(r.created_at).toLocaleDateString('en-IN')}</td>
-    </tr>`;
+  grid.innerHTML = metrics.map((mt, i) => `
+    <div class="donut-item">
+      <div class="donut-canvas-wrap"><canvas id="donut_${i}" width="56" height="56"></canvas></div>
+      <div>
+        <div class="donut-label">${mt.label}</div>
+        <div class="donut-pct">${mt.val.toFixed(1)}%</div>
+      </div>
+    </div>`).join('');
+  metrics.forEach((mt, i) => {
+    if (donutInstances[i]) donutInstances[i].destroy();
+    donutInstances[i] = new Chart(document.getElementById(`donut_${i}`).getContext('2d'), {
+      type: 'doughnut',
+      data: { datasets: [{ data: [mt.val, 100 - mt.val], backgroundColor: [mt.color, 'rgba(0,0,0,0.08)'], borderWidth: 0 }] },
+      options: { cutout: '72%', plugins: { legend: { display: false }, tooltip: { enabled: false } }, animation: { duration: 600 } }
+    });
   });
-
-  html += '</tbody></table></div>';
-  c.innerHTML = html;
 }
 
-// ── HELPERS ──────────────────────────────────────────────────
-function showAlert(id, msg, type) {
-  document.getElementById(id).innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
-  setTimeout(() => document.getElementById(id).innerHTML = '', 7000);
+/* ─── EXPORT CSV ──────────────────────────── */
+function exportCSV() {
+  if (!selectedCollege) return;
+  const rows = getCollegeRows();
+  const m    = calcMetrics(rows);
+  if (!m) return;
+  const header = ['College','Month','NPS Avg','Normalized NPS','Composite Score','Interpretation','Faculty %','Content %','Ops %','Skill %','Placement %','Responses'];
+  const mo     = getSelectedMonth();
+  const interp = getInterp(m.composite);
+  const data   = [[selectedCollege, mo, m.npsAvg.toFixed(2), m.normNps.toFixed(2), m.composite.toFixed(2), interp.label, m.faculty.toFixed(2), m.content.toFixed(2), m.ops.toFixed(2), m.skill.toFixed(2), m.placement.toFixed(2), m.totalResp]];
+  const csv = [header, ...data].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = `faceprep_${selectedCollege.replace(/\s+/g,'_')}.csv`;
+  a.click();
 }
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 4000);
-}
-function setLoading(id, on, label) {
-  const b = document.getElementById(id);
-  b.disabled = on;
-  b.textContent = label;
-}
-function escHtml(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+
+/* ─── BOOT ────────────────────────────────── */
+fetchFromSupabase();
 </script>
 </body>
-</html>
+</html>"""
+
