@@ -1,9 +1,4 @@
-python3 << 'PYEOF'
-with open('/tmp/new_fetch.txt') as f:
-    new_fetch = f.read()
-
-# Full HTML — reconstructed from document 2 with patch applied
-html = r"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -231,6 +226,9 @@ tbody td.right { text-align: right; }
 .weight-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
 .weight-dot { width: 6px; height: 6px; border-radius: 50%; }
 
+/* Error banner */
+.error-banner { background: rgba(199,51,51,0.08); border: 1px solid rgba(199,51,51,0.2); border-radius: var(--r); padding: 12px 16px; font-size: 12px; color: var(--red); margin-bottom: 16px; display: none; }
+
 @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 .kpi-card { animation: fadeUp 0.35s ease both; }
 .kpi-card:nth-child(1){animation-delay:0.04s}.kpi-card:nth-child(2){animation-delay:0.08s}.kpi-card:nth-child(3){animation-delay:0.12s}.kpi-card:nth-child(4){animation-delay:0.16s}
@@ -294,6 +292,9 @@ tbody td.right { text-align: right; }
       </div>
       <div class="response-badge">Total responses: <span id="totalRespBadge">—</span></div>
     </div>
+
+    <!-- ERROR BANNER -->
+    <div class="error-banner" id="errorBanner"></div>
 
     <!-- BLANK STATE (shown until a college is selected) -->
     <div class="blank-state" id="blankState">
@@ -433,7 +434,96 @@ let barChartInst    = null;
 let npsChartInst    = null;
 const donutInstances = {};
 
-""" + new_fetch + r"""
+/* ─── SUPABASE FETCH ──────────────────────── */
+async function fetchFromSupabase() {
+  const list   = document.getElementById('collegeList');
+  const banner = document.getElementById('errorBanner');
+  list.innerHTML = '<div class="college-loading">Loading colleges…</div>';
+  banner.style.display = 'none';
+
+  try {
+    let allRows = [];
+    let offset  = 0;
+    const limit = 1000;
+
+    // Paginate through all rows (Supabase default limit is 1000)
+    while (true) {
+      const url = `${SUPABASE_URL}/rest/v1/survey_responses` +
+        `?select=college_university,month,nps_score,faculty_satisfaction,content_quality,` +
+        `operations_satisfaction,skill_development,placement_support,positive_feedback,improvement_feedback` +
+        `&order=id.asc&limit=${limit}&offset=${offset}`;
+
+      const res = await fetch(url, {
+        headers: {
+          'apikey':        SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type':  'application/json'
+        }
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Supabase error ${res.status}: ${errText}`);
+      }
+
+      const batch = await res.json();
+      if (!Array.isArray(batch) || batch.length === 0) break;
+
+      allRows = allRows.concat(batch);
+      if (batch.length < limit) break;
+      offset += limit;
+    }
+
+    if (!allRows.length) {
+      list.innerHTML = '<div class="college-loading">No data found.</div>';
+      return;
+    }
+
+    // Normalise field names to what the rest of the code expects
+    RAW_DATA = allRows.map(r => ({
+      college:     (r.college_university || '').trim(),
+      month:       (r.month              || 'Unknown').trim(),
+      nps:         parseFloat(r.nps_score) || 0,
+      faculty:     normaliseYesNo(r.faculty_satisfaction),
+      content:     normaliseYesNo(r.content_quality),
+      ops:         normaliseYesNo(r.operations_satisfaction),
+      skill:       normaliseYesNo(r.skill_development),
+      placement:   normaliseYesNo(r.placement_support),
+      positive:    (r.positive_feedback    || '').trim(),
+      improvement: (r.improvement_feedback || '').trim()
+    })).filter(r => r.college);
+
+    buildCollegeList();
+    buildMonthFilter();
+    document.getElementById('totalRespBadge').textContent = RAW_DATA.length;
+
+  } catch (err) {
+    console.error('fetchFromSupabase:', err);
+    list.innerHTML = '<div class="college-loading" style="color:var(--red)">Failed to load data.</div>';
+    banner.textContent = `⚠ Could not fetch data: ${err.message}`;
+    banner.style.display = 'flex';
+  }
+}
+
+/**
+ * Handles both raw Yes/No strings and numeric satisfaction scores.
+ * Returns 'Yes' or 'No' so calcMetrics() can use filter(r => r[key] === 'Yes').
+ */
+function normaliseYesNo(val) {
+  if (val === null || val === undefined || val === '') return 'No';
+  const s = String(val).trim().toLowerCase();
+  // Already a yes/no
+  if (s === 'yes' || s === 'true' || s === '1') return 'Yes';
+  if (s === 'no'  || s === 'false'|| s === '0') return 'No';
+  // Numeric scale: treat >= 4 out of 5 (or >= 7 out of 10) as Yes
+  const n = parseFloat(s);
+  if (!isNaN(n)) {
+    if (n <= 5)  return n >= 4 ? 'Yes' : 'No';  // 1–5 scale
+    if (n <= 10) return n >= 7 ? 'Yes' : 'No';  // 1–10 scale
+    return n >= 70 ? 'Yes' : 'No';              // percentage scale
+  }
+  return 'No';
+}
 
 /* ─── SIDEBAR COLLEGE LIST ────────────────── */
 function buildCollegeList() {
@@ -444,11 +534,14 @@ function buildCollegeList() {
     return;
   }
   list.innerHTML = colleges.map(c =>
-    `<div class="college-item" data-college="${c}" onclick="selectCollege('${c.replace(/'/g,"\\'")}')">
-      ${c}
+    `<div class="college-item" data-college="${escAttr(c)}" onclick="selectCollege(${JSON.stringify(c)})">
+      ${escHtml(c)}
     </div>`
   ).join('');
 }
+
+function escAttr(s) { return s.replace(/"/g, '&quot;'); }
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function selectCollege(name) {
   selectedCollege = name;
@@ -533,7 +626,7 @@ function renderDashboard() {
 
   document.getElementById('selectedCollegeMonth').textContent =
     m === 'all' ? 'All Months' : m;
-  document.getElementById('totalRespBadge').textContent = rows.length || '—';
+  document.getElementById('totalRespBadge').textContent = RAW_DATA.length;
 
   if (!metrics) {
     ['kNps','kComposite','kRank','kResponses'].forEach(id =>
@@ -592,8 +685,8 @@ function renderDashboard() {
 function renderBarChart(m) {
   const wrap = document.getElementById('barWrap');
   wrap.innerHTML = `<canvas id="barChart" style="position:absolute;inset:0" role="img" aria-label="Composite score breakdown"></canvas>`;
-  if (barChartInst) barChartInst.destroy();
-  const labels = ['NPS (×10)', 'Faculty', 'Content', 'Operations', 'Skill Dev', 'Placement'];
+  if (barChartInst) { barChartInst.destroy(); barChartInst = null; }
+  const labels  = ['NPS (×10)', 'Faculty', 'Content', 'Operations', 'Skill Dev', 'Placement'];
   const rawVals = [m.normNps, m.faculty, m.content, m.ops, m.skill, m.placement];
   const weights = [0.40, 0.15, 0.15, 0.10, 0.10, 0.10];
   const weighted = rawVals.map((v, i) => parseFloat((v * weights[i]).toFixed(2)));
@@ -618,11 +711,15 @@ function renderNpsChart(rows) {
   if (months.length < 2) {
     const avg = rows.length ? (rows.reduce((s, r) => s + r.nps, 0) / rows.length).toFixed(2) : '—';
     wrap.innerHTML = `<div class="loading-state" style="flex-direction:row;gap:16px;"><div style="text-align:center"><div style="font-family:var(--font-display);font-size:48px;color:var(--text);line-height:1">${avg}</div><div style="font-size:11px;color:var(--text3);margin-top:6px">Average NPS (0–10)</div></div></div>`;
+    if (npsChartInst) { npsChartInst.destroy(); npsChartInst = null; }
     return;
   }
   wrap.innerHTML = `<canvas id="npsChart" style="position:absolute;inset:0" role="img" aria-label="Monthly NPS trend"></canvas>`;
-  if (npsChartInst) npsChartInst.destroy();
-  const avgs = months.map(m => { const vals = byMonth[m]; return parseFloat((vals.reduce((s, v) => s + v, 0) / vals.length).toFixed(2)); });
+  if (npsChartInst) { npsChartInst.destroy(); npsChartInst = null; }
+  const avgs = months.map(mo => {
+    const vals = byMonth[mo];
+    return parseFloat((vals.reduce((s, v) => s + v, 0) / vals.length).toFixed(2));
+  });
   npsChartInst = new Chart(document.getElementById('npsChart').getContext('2d'), {
     type: 'line',
     data: { labels: months, datasets: [{ label: 'NPS Avg', data: avgs, borderColor: 'rgba(45,111,207,0.9)', backgroundColor: 'rgba(45,111,207,0.08)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: 'rgba(45,111,207,1)', tension: 0.3, fill: true }] },
@@ -638,7 +735,7 @@ function renderTable(ranked, highlight) {
     const isHL = r.college === highlight;
     return `<tr style="${isHL ? 'background:rgba(15,143,95,0.06);' : ''}">
       <td><span class="rank-circle ${rc}">${i + 1}</span></td>
-      <td><span class="college-name" title="${r.college}" style="${isHL ? 'color:var(--accent);' : ''}">${r.college}${isHL ? ' ◀' : ''}</span></td>
+      <td><span class="college-name" title="${escAttr(r.college)}" style="${isHL ? 'color:var(--accent);' : ''}">${escHtml(r.college)}${isHL ? ' ◀' : ''}</span></td>
       <td class="right"><span class="score-chip ${interp.cls}">${r.composite.toFixed(2)}</span></td>
       <td class="right"><div class="nps-bar"><span style="color:var(--text)">${r.npsAvg.toFixed(2)}</span><div class="nps-mini"><div class="nps-mini-fill" style="width:${(r.npsAvg/10*100).toFixed(1)}%"></div></div></div></td>
       <td class="right">${r.faculty.toFixed(1)}%</td>
@@ -655,11 +752,12 @@ function renderTable(ranked, highlight) {
 /* ─── QUALITATIVE ─────────────────────────── */
 function renderQual(rows) {
   const key = currentQual === 'pos' ? 'positive' : 'improvement';
-  document.getElementById('qualList').innerHTML = rows.filter(r => r[key]).map(r => `
+  const items = rows.filter(r => r[key]).map(r => `
     <div class="qual-item">
-      <div class="qual-text">${r[key]}</div>
-    </div>`).join('')
-    || '<div class="qual-item"><div class="qual-text" style="color:var(--text3)">No feedback for this selection.</div></div>';
+      <div class="qual-text">${escHtml(r[key])}</div>
+    </div>`).join('');
+  document.getElementById('qualList').innerHTML = items ||
+    '<div class="qual-item"><div class="qual-text" style="color:var(--text3)">No feedback for this selection.</div></div>';
 }
 
 function switchQual(mode) {
@@ -691,7 +789,7 @@ function renderDonuts(m) {
       </div>
     </div>`).join('');
   metrics.forEach((mt, i) => {
-    if (donutInstances[i]) donutInstances[i].destroy();
+    if (donutInstances[i]) { donutInstances[i].destroy(); }
     donutInstances[i] = new Chart(document.getElementById(`donut_${i}`).getContext('2d'), {
       type: 'doughnut',
       data: { datasets: [{ data: [mt.val, 100 - mt.val], backgroundColor: [mt.color, 'rgba(0,0,0,0.08)'], borderWidth: 0 }] },
@@ -721,5 +819,4 @@ function exportCSV() {
 fetchFromSupabase();
 </script>
 </body>
-</html>"""
-
+</html>
