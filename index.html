@@ -179,8 +179,8 @@ tbody td.right { text-align: right; }
         <div class="filter-label">Filter by Month</div>
         <select class="filter-select" id="filterMonth" onchange="applyMonthFilter()">
           <option value="all">All Months</option>
-          <option value="May 2026">May 2026</option>
-          <option value="June 2026" disabled>June 2026 (upcoming)</option>
+          <option value="May 2026" selected>May 2026</option>
+          <option value="June 2026">June 2026</option>
         </select>
       </div>
     </div>
@@ -243,7 +243,7 @@ tbody td.right { text-align: right; }
           <div style="position:relative;height:280px;" id="barWrap"></div>
         </div>
         <div class="chart-card">
-          <div class="card-title">Monthly NPS — May 2026</div>
+          <div class="card-title" id="npsChartTitle">NPS — May 2026</div>
           <div style="position:relative;height:280px;" id="npsWrap"></div>
         </div>
       </div>
@@ -317,7 +317,7 @@ const RAW_DATA = [
   { college:"SDNB Vaishnav College for Women",                                    month:"May 2026", nps:8,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Projects by students",                                                       improvement:"Qualified faculty recruitment and faculty training" },
   { college:"Takshashila University",                                              month:"May 2026", nps:7,  faculty:"No",  content:"Yes", ops:"Yes", skill:"Yes", placement:"No",  positive:"Exposure to new technologies, Training for future jobs, follow up of student performance", improvement:"Please concentrate on all levels of students" },
   { college:"Sree Saraswathi Thyagaraja College",                                 month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"The skills of the students were enhanced",                                   improvement:"Their development level should be showcased to other students" },
-  { college:"Bharathidasan College of Arts and Science",                          month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Nil",                                                                       improvement:"Nil" }
+  { college:"Bharathidasan College of Arts and Science",                          month:"June 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Nil",                                                                       improvement:"Nil" }
 ];
 
 /* ═══════════════════════════════════════════════
@@ -333,13 +333,30 @@ const donutInstances = {};
    BOOT — build sidebar
    ═══════════════════════════════════════════════ */
 (function init() {
-  const colleges = [...new Set(RAW_DATA.map(r => r.college))].sort();
+  buildCollegeList();
+  updateTotalBadge();
+})();
+
+function buildCollegeList() {
+  const m = getSelectedMonth();
+  const filtered = RAW_DATA.filter(r => m === 'all' || r.month === m);
+  const colleges = [...new Set(filtered.map(r => r.college))].sort();
   const list = document.getElementById('collegeList');
   list.innerHTML = colleges.map(c =>
     `<div class="college-item" data-college="${esc(c)}" onclick="selectCollege(${JSON.stringify(c)})">${esc(c)}</div>`
   ).join('');
-  document.getElementById('totalRespBadge').textContent = RAW_DATA.length;
-})();
+  // Re-highlight if a college is still valid in new filter
+  if (selectedCollege) {
+    document.querySelectorAll('.college-item').forEach(el =>
+      el.classList.toggle('active', el.dataset.college === selectedCollege));
+  }
+}
+
+function updateTotalBadge() {
+  const m = getSelectedMonth();
+  const count = RAW_DATA.filter(r => m === 'all' || r.month === m).length;
+  document.getElementById('totalRespBadge').textContent = count;
+}
 
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -363,7 +380,20 @@ function selectCollege(name) {
    FILTER
    ═══════════════════════════════════════════════ */
 function applyMonthFilter() {
-  if (selectedCollege) renderDashboard();
+  buildCollegeList();
+  updateTotalBadge();
+  // If selected college has no data in new month, hide dashboard
+  if (selectedCollege) {
+    const rows = getCollegeRows();
+    if (!rows.length) {
+      document.getElementById('dashContent').classList.remove('visible');
+      document.getElementById('blankState').style.display = '';
+      selectedCollege = null;
+      document.getElementById('exportBtn').disabled = true;
+    } else {
+      renderDashboard();
+    }
+  }
 }
 function getSelectedMonth() { return document.getElementById('filterMonth').value; }
 
@@ -410,6 +440,7 @@ function renderDashboard() {
   const metrics = calcMetrics(rows);
   const m       = getSelectedMonth();
   document.getElementById('selectedCollegeMonth').textContent = m === 'all' ? 'All Months' : m;
+  document.getElementById('npsChartTitle').textContent = `NPS — ${m === 'all' ? 'All Months' : m}`;
 
   if (!metrics) {
     ['kNps','kComposite','kRank','kResponses'].forEach(id => document.getElementById(id).textContent = '—');
