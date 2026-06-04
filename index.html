@@ -692,7 +692,7 @@ function renderWeekCards(activeWeek){
         </button>
       </div>
       <div class="week-card-body">
-        <textarea class="week-textarea" id="wk-ta-${w}" placeholder="Week ${w} update: what was done, any blockers, next steps\u2026" oninput="weekDraft[${w}].note=this.value">${safeNote}</textarea>
+        <textarea class="week-textarea" id="wk-ta-${w}" placeholder="Week ${w} update: what was done in this week\u2026" oninput="weekDraft[${w}].note=this.value">${safeNote}</textarea>
       </div>
     </div>`;
   }).join('');
