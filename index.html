@@ -1,624 +1,880 @@
+cat > /mnt/user-data/outputs/tracker_updated.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campus Dashboard — FACE Prep</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<title>Project Tracker Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #f5f3ef;
-  --bg2: #ede9e3;
-  --bg3: #e4dfd7;
-  --bg4: #d4cec5;
-  --surface: #ffffff;
-  --border: rgba(0,0,0,0.08);
-  --border2: rgba(0,0,0,0.15);
-  --text: #1a1714;
-  --text2: #5a5652;
-  --text3: #8c8880;
-  --accent: #0f8f5f;
-  --accent2: #d4820a;
-  --accent3: #2d6fcf;
-  --red: #c73333;
-  --orange: #d4820a;
-  --yellow: #c49a00;
-  --green: #0f8f5f;
-  --font-display: 'DM Serif Display', Georgia, serif;
-  --font-body: 'DM Sans', system-ui, sans-serif;
-  --r: 10px;
-  --r2: 16px;
-  --shadow: 0 2px 16px rgba(0,0,0,0.1);
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 14px; }
-body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg2); }
-::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
-.page { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
-.sidebar { background: var(--bg2); border-right: 1px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; padding: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
-.sidebar-brand { padding: 28px 24px 24px; border-bottom: 1px solid var(--border); }
-.brand-tag { font-size: 9px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-.brand-name { font-family: var(--font-display); font-size: 22px; color: var(--text); line-height: 1.2; }
-.brand-sub { font-size: 11px; color: var(--text3); margin-top: 5px; letter-spacing: 0.02em; }
-.sidebar-section { padding: 20px 16px 8px; }
-.sidebar-section-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); padding: 0 8px 10px; font-weight: 500; }
-.filter-group { margin-bottom: 20px; padding: 0 8px; }
-.filter-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; font-weight: 500; }
-.filter-select { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: var(--r); font-family: var(--font-body); font-size: 12px; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238c8880'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
-.filter-select:focus { outline: none; border-color: var(--accent); }
-.college-list { padding: 0 8px; display: flex; flex-direction: column; gap: 4px; }
-.college-item { padding: 9px 12px; border-radius: var(--r); font-size: 11.5px; color: var(--text2); cursor: pointer; transition: all 0.15s; border: 1px solid transparent; line-height: 1.4; font-weight: 400; }
-.college-item:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
-.college-item.active { background: var(--accent); color: #fff; font-weight: 500; border-color: var(--accent); }
-.sidebar-divider { height: 1px; background: var(--border); margin: 12px 8px; }
-.btn-export { margin: auto 16px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 16px; border-radius: var(--r); font-family: var(--font-body); font-size: 12px; font-weight: 500; cursor: pointer; letter-spacing: 0.04em; transition: all 0.2s; }
-.btn-export:hover { background: var(--accent); color: var(--bg); }
-.btn-export:disabled { opacity: 0.4; cursor: not-allowed; }
-.main { padding: 32px 36px; overflow-x: hidden; }
-.main-header { margin-bottom: 28px; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-.main-title { font-family: var(--font-display); font-size: 32px; color: var(--text); line-height: 1.1; }
-.main-title em { font-style: italic; color: var(--accent); }
-.main-meta { font-size: 11px; color: var(--text3); margin-top: 6px; letter-spacing: 0.04em; }
-.response-badge { background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 6px 14px; font-size: 11px; color: var(--text2); display: inline-flex; align-items: center; gap: 6px; }
-.response-badge span { color: var(--accent); font-weight: 500; font-size: 13px; }
-.blank-state { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 60px 40px; }
-.blank-state-icon { width: 72px; height: 72px; background: var(--bg3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px solid var(--border2); }
-.blank-state-icon svg { width: 32px; height: 32px; color: var(--text3); }
-.blank-state h2 { font-family: var(--font-display); font-size: 24px; color: var(--text); margin-bottom: 10px; line-height: 1.2; }
-.blank-state h2 em { font-style: italic; color: var(--accent); }
-.blank-state p { font-size: 13px; color: var(--text3); line-height: 1.7; max-width: 340px; }
-.blank-state-arrow { margin-top: 24px; font-size: 12px; color: var(--accent); display: flex; align-items: center; gap: 6px; font-weight: 500; letter-spacing: 0.04em; }
-.blank-state-arrow svg { width: 16px; height: 16px; animation: arrowPulse 1.4s ease-in-out infinite; }
-@keyframes arrowPulse { 0%,100% { transform: translateX(0); } 50% { transform: translateX(-5px); } }
-#dashContent { display: none; }
-#dashContent.visible { display: block; }
-.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 18px 20px; position: relative; overflow: hidden; transition: border-color 0.2s; animation: fadeUp 0.35s ease both; }
-.kpi-card:hover { border-color: var(--border2); }
-.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: var(--r2) var(--r2) 0 0; }
-.kpi-card.green::before { background: var(--green); }
-.kpi-card.blue::before { background: var(--accent3); }
-.kpi-card.orange::before { background: var(--orange); }
-.kpi-card.yellow::before { background: var(--yellow); }
-.kpi-card:nth-child(1){animation-delay:0.04s}.kpi-card:nth-child(2){animation-delay:0.08s}.kpi-card:nth-child(3){animation-delay:0.12s}.kpi-card:nth-child(4){animation-delay:0.16s}
-.kpi-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; font-weight: 500; }
-.kpi-value { font-family: var(--font-display); font-size: 34px; color: var(--text); line-height: 1; }
-.kpi-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
-.kpi-interp { display: inline-block; margin-top: 8px; font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 500; letter-spacing:0.02em; }
-.college-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-.college-header-name { font-family: var(--font-display); font-size: 20px; color: var(--text); }
-.college-header-badge { background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--text3); }
-.sat-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 24px; }
-.sat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px 18px; animation: fadeUp 0.35s ease both; }
-.sat-card:nth-child(1){animation-delay:0.08s}.sat-card:nth-child(2){animation-delay:0.12s}.sat-card:nth-child(3){animation-delay:0.16s}.sat-card:nth-child(4){animation-delay:0.20s}.sat-card:nth-child(5){animation-delay:0.24s}
-.sat-name { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
-.sat-pct { font-family: var(--font-display); font-size: 28px; color: var(--text); line-height: 1; }
-.sat-bar { height: 3px; background: var(--bg4); border-radius: 2px; margin-top: 10px; }
-.sat-fill { height: 100%; border-radius: 2px; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
-.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-.chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; }
-.card-title { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
-.card-title::before { content: ''; width: 3px; height: 14px; border-radius: 2px; background: var(--accent); display: inline-block; }
-.table-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; margin-bottom: 24px; }
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-thead th { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); font-weight: 500; padding: 0 12px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
-thead th.right { text-align: right; }
-tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: var(--bg3); }
-tbody td { padding: 11px 12px; color: var(--text2); vertical-align: middle; white-space: nowrap; }
-tbody td.right { text-align: right; }
-.rank-circle { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; }
-.rank-1 { background: rgba(245,166,35,0.2); color: #f5a623; }
-.rank-2 { background: rgba(192,192,210,0.2); color: #9090a8; }
-.rank-3 { background: rgba(180,100,60,0.2); color: #b4643c; }
-.rank-other { background: var(--bg4); color: var(--text2); }
-.college-name { color: var(--text); font-weight: 500; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.score-chip { display: inline-flex; align-items: center; justify-content: center; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; min-width: 52px; }
-.status-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; }
-.status-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-.nps-bar { display: flex; align-items: center; gap: 8px; }
-.nps-mini { height: 4px; border-radius: 2px; background: var(--bg4); width: 60px; overflow: hidden; }
-.nps-mini-fill { height: 100%; border-radius: 2px; background: var(--accent3); }
-.bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-.qual-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; }
-.qual-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
-.qual-tab { padding: 6px 14px; border-radius: 20px; font-size: 11px; border: 1px solid var(--border); background: transparent; color: var(--text3); cursor: pointer; transition: all 0.15s; font-family: var(--font-body); }
-.qual-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 500; }
-.qual-tab:hover:not(.active) { border-color: var(--border2); color: var(--text2); }
-.qual-list { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; padding-right: 4px; }
-.qual-item { background: var(--bg3); border-radius: var(--r); padding: 12px 14px; border-left: 2px solid transparent; transition: border-color 0.15s; }
-.qual-item:hover { border-left-color: var(--accent); }
-.qual-text { font-size: 12px; color: var(--text2); line-height: 1.6; }
-.donuts-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 24px; }
-.donuts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.donut-item { display: flex; align-items: center; gap: 12px; background: var(--bg3); border-radius: var(--r); padding: 12px; }
-.donut-canvas-wrap { width: 56px; height: 56px; flex-shrink: 0; }
-.donut-canvas-wrap canvas { width: 56px !important; height: 56px !important; }
-.donut-label { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
-.donut-pct { font-family: var(--font-display); font-size: 20px; color: var(--text); }
-.notice { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; font-size: 11px; color: var(--text3); line-height: 1.6; display: flex; gap: 10px; align-items: flex-start; }
-.weight-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-.weight-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
-.weight-dot { width: 6px; height: 6px; border-radius: 50%; }
-.c-exceptional { color: #0a6e48; background: rgba(15,143,95,0.12); }
-.c-strong { color: #1a52a8; background: rgba(45,111,207,0.12); }
-.c-stable { color: #8a6700; background: rgba(196,154,0,0.12); }
-.c-moderate { color: #9e5a00; background: rgba(212,130,10,0.12); }
-.c-high { color: #a84200; background: rgba(200,90,20,0.12); }
-.c-critical { color: #9e1f1f; background: rgba(199,51,51,0.12); }
-@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-.loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px 20px; color: var(--text3); font-size: 13px; }
-@media (max-width: 1300px) { .sat-row { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 1100px) { .page { grid-template-columns: 1fr; } .sidebar { position: static; height: auto; } .charts-row, .bottom-row { grid-template-columns: 1fr; } .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .main { padding: 20px 16px; } .kpi-grid { grid-template-columns: 1fr 1fr; } .sat-row { grid-template-columns: 1fr 1fr; } }
+:root{--bg:#f4f5f9;--bg2:#fff;--bg3:#eef0f6;--surface:#f0f2f8;--surface2:#e8eaf2;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--ink:#111827;--ink2:#374151;--ink3:#9ca3af;--accent:#6c63ff;--accent2:#5046e5;--accent-lt:rgba(108,99,255,0.1);--green:#16a34a;--green-lt:rgba(22,163,74,0.12);--amber:#d97706;--amber-lt:rgba(217,119,6,0.12);--red:#dc2626;--red-lt:rgba(220,38,38,0.12);--blue:#2563eb;--blue-lt:rgba(37,99,235,0.12);--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--radius:14px;--radius-sm:8px;--shadow:0 4px 24px rgba(0,0,0,0.08);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;min-height:100vh;overflow-x:hidden;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes popIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg3)}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:99px}
+#landingScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden;}
+#landingScreen::before{content:'';position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(108,99,255,0.09) 0%,transparent 70%);top:-150px;right:-150px;pointer-events:none;}
+#landingScreen::after{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(22,163,74,0.07) 0%,transparent 70%);bottom:-100px;left:-100px;pointer-events:none;}
+.landing-wrap{width:100%;max-width:520px;padding:24px;position:relative;z-index:1;animation:fadeUp 0.5s cubic-bezier(.22,1,.36,1);}
+.landing-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:var(--accent-lt);border:1px solid rgba(108,99,255,0.25);border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:24px;}
+.landing-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
+.landing-title{font-family:var(--font-head);font-size:38px;font-weight:800;color:var(--ink);line-height:1.1;margin-bottom:8px;letter-spacing:-0.02em;}
+.landing-title span{color:var(--accent2);}
+.landing-sub{font-size:14px;color:var(--ink3);margin-bottom:32px;line-height:1.6;}
+.landing-card{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:32px;box-shadow:0 8px 40px rgba(0,0,0,0.1);}
+.landing-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
+.college-select-wrap{position:relative;margin-bottom:20px;}
+.college-select{width:100%;padding:14px 44px 14px 16px;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink);font-family:var(--font-body);font-size:14px;outline:none;cursor:pointer;appearance:none;transition:border-color 0.15s;}
+.college-select:focus{border-color:var(--accent);}
+.college-select-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:18px;pointer-events:none;}
+.landing-btn{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--font-head);font-size:14px;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.15s;}
+.landing-btn:hover{background:var(--accent2);transform:translateY(-1px);}
+.landing-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.college-count{text-align:center;font-size:12px;color:var(--ink3);margin-top:16px;}
+#loginScreen{min-height:100vh;display:none;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden;}
+#loginScreen.show{display:flex;}
+.login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:44px;width:100%;max-width:420px;animation:popIn 0.4s cubic-bezier(.22,1,.36,1);position:relative;z-index:1;box-shadow:0 8px 48px rgba(0,0,0,0.12);}
+.login-college-pill{display:flex;align-items:center;gap:8px;padding:7px 14px;background:var(--accent-lt);border:1px solid rgba(108,99,255,0.2);border-radius:99px;margin-bottom:24px;cursor:pointer;width:fit-content;transition:all 0.15s;font-size:12px;}
+.login-college-pill:hover{background:rgba(108,99,255,0.15);}
+.login-college-name{font-weight:700;color:var(--accent2);}
+.login-college-back{font-size:11px;color:var(--ink3);}
+.login-title{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.login-sub{font-size:13px;color:var(--ink3);margin-bottom:28px;}
+.login-label{font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;}
+.login-select-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.role-btn{padding:12px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--ink2);font-family:var(--font-body);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;text-align:center;}
+.role-btn:hover{border-color:var(--accent);color:var(--ink);}
+.role-btn.selected{background:var(--accent-lt);border-color:var(--accent);color:var(--accent2);font-weight:600;}
+.pin-input-wrap{position:relative;margin-bottom:20px;}
+.pin-input{width:100%;padding:14px 16px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink);font-family:var(--font-body);font-size:18px;letter-spacing:0.3em;outline:none;transition:border-color 0.15s;text-align:center;}
+.pin-input:focus{border-color:var(--accent);}
+.pin-input.error{border-color:var(--red);animation:shake 0.3s;}
+.login-btn{width:100%;padding:14px;background:var(--accent);border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--font-head);font-size:14px;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.15s;}
+.login-btn:hover{background:var(--accent2);transform:translateY(-1px);}
+.login-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.login-error{font-size:12px;color:var(--red);margin-top:10px;text-align:center;min-height:18px;}
+#appShell{display:none;min-height:100vh;}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(244,245,249,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border2);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.topbar-brand{font-family:var(--font-head);font-size:15px;font-weight:800;color:var(--ink);}
+.topbar-brand span{color:var(--accent2);}
+.topbar-college{font-size:11px;font-weight:600;color:var(--ink3);background:var(--surface);border:1px solid var(--border2);border-radius:99px;padding:4px 12px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.user-pill{display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:99px;font-size:12px;font-weight:600;color:var(--ink2);}
+.user-dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+.logout-btn{padding:7px 14px;background:transparent;border:1px solid var(--border2);border-radius:99px;color:var(--ink3);font-family:var(--font-body);font-size:12px;cursor:pointer;transition:all 0.15s;}
+.logout-btn:hover{border-color:var(--red);color:var(--red);}
+.main-wrap{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px);}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:24px 0;display:flex;flex-direction:column;gap:2px;}
+.nav-section-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);padding:12px 20px 5px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--ink3);font-size:13px;font-weight:500;cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;}
+.nav-item:hover{color:var(--ink);background:var(--surface);}
+.nav-item.active{color:var(--accent2);background:var(--accent-lt);border-left-color:var(--accent);font-weight:600;}
+.nav-icon{font-size:15px;width:20px;text-align:center;}
+.nav-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;min-width:20px;text-align:center;}
+.content{padding:28px 32px;overflow-y:auto;}
+.panel{display:none;}
+.panel.active{display:block;animation:fadeUp 0.3s ease;}
+.page-header{margin-bottom:24px;}
+.page-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent2);margin-bottom:5px;}
+.page-title{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--ink);}
+.page-sub{font-size:13px;color:var(--ink3);margin-top:4px;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);}
+.card-title{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--ink);margin-bottom:16px;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;position:relative;overflow:hidden;transition:transform 0.2s;}
+.stat-card:hover{transform:translateY(-2px);}
+.stat-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);}
+.stat-value{font-family:var(--font-head);font-size:32px;font-weight:800;color:var(--ink);line-height:1.1;margin-top:4px;}
+.stat-sub{font-size:11px;color:var(--ink3);margin-top:4px;}
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{text-align:left;padding:12px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);background:var(--bg3);border-bottom:1px solid var(--border);white-space:nowrap;}
+tbody td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--ink2);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:var(--surface);}
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;}
+.badge-green{background:var(--green-lt);color:var(--green);}
+.badge-amber{background:var(--amber-lt);color:var(--amber);}
+.badge-red{background:var(--red-lt);color:var(--red);}
+.badge-blue{background:var(--blue-lt);color:var(--blue);}
+.badge-grey{background:var(--surface2);color:var(--ink3);border:1px solid var(--border2);}
+.week-btns{display:flex;gap:5px;}
+.week-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:var(--surface);color:var(--ink3);font-size:10px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-family:var(--font-body);}
+.week-btn:hover{border-color:var(--accent);}
+.week-btn.completed{background:var(--green-lt);border-color:var(--green);color:var(--green);}
+.week-btn.in-progress{background:var(--amber-lt);border-color:var(--amber);color:var(--amber);}
+.week-btn.not-started{background:var(--surface);border-color:var(--border2);color:var(--ink3);}
+.score-display{font-family:var(--font-head);font-size:18px;font-weight:800;}
+.score-high{color:var(--green);}
+.score-mid{color:var(--amber);}
+.score-low{color:var(--red);}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;border:none;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--ink2);}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent2);}
+.btn-sm{padding:5px 12px;font-size:11px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;animation:fadeUp 0.2s ease;}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;width:100%;max-width:760px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15);animation:popIn 0.25s cubic-bezier(.22,1,.36,1);}
+.modal-header{padding:22px 26px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;}
+.modal-title{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--ink);}
+.modal-sub{font-size:12px;color:var(--ink3);margin-top:3px;}
+.modal-close{width:30px;height:30px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--ink3);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;}
+.modal-close:hover{background:var(--red-lt);color:var(--red);border-color:rgba(220,38,38,0.3);}
+.modal-body{padding:22px 26px;}
+.modal-footer{padding:16px 26px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}
+.week-cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.week-card{border:2px solid var(--border2);border-radius:12px;overflow:hidden;background:var(--bg2);transition:all 0.2s;}
+.week-card.wk-completed{border-color:var(--green);}
+.week-card.wk-in-progress{border-color:var(--amber);}
+.week-card.wk-not-started{border-color:var(--border2);}
+.week-card-head{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;border-bottom:1px solid var(--border);}
+.week-card-head.wk-completed{background:var(--green-lt);}
+.week-card-head.wk-in-progress{background:var(--amber-lt);}
+.week-card-head.wk-not-started{background:var(--surface);}
+.week-card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;color:var(--ink2);}
+.wk-cycle-btn{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;border:none;cursor:pointer;transition:all 0.15s;white-space:nowrap;font-family:var(--font-body);}
+.wk-cycle-btn.completed{background:rgba(22,163,74,0.2);color:var(--green);}
+.wk-cycle-btn.in-progress{background:rgba(217,119,6,0.2);color:var(--amber);}
+.wk-cycle-btn.not-started{background:var(--surface2);color:var(--ink3);}
+.week-card-body{padding:10px 12px;}
+.week-textarea{width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--ink);font-family:var(--font-body);font-size:12px;outline:none;resize:none;height:90px;transition:border-color 0.15s;line-height:1.5;}
+.week-textarea:focus{border-color:var(--accent);background:var(--bg2);}
+.week-textarea::placeholder{color:var(--ink3);}
+.prog-wk-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.prog-wk-note{font-size:10px;color:var(--ink3);max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:help;}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.score-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;}
+.score-item-label{font-size:11px;color:var(--ink3);margin-bottom:6px;font-weight:500;}
+.score-item-max{font-size:10px;color:var(--accent2);font-weight:700;background:var(--accent-lt);padding:1px 6px;border-radius:99px;float:right;margin-top:1px;}
+.score-item-input{width:100%;padding:8px 12px;background:var(--bg3);border:1.5px solid var(--border2);border-radius:6px;color:var(--ink);font-family:var(--font-head);font-size:20px;font-weight:700;text-align:center;outline:none;transition:border-color 0.2s;}
+.score-item-input:focus{border-color:var(--accent);}
+.score-item-input.over-limit{border-color:var(--red)!important;background:var(--red-lt);}
+.score-item-bar{height:4px;background:var(--surface2);border-radius:99px;margin-top:8px;overflow:hidden;}
+.score-item-bar-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.3s ease,background 0.3s;}
+.score-total-row{display:flex;align-items:center;justify-content:space-between;background:var(--accent-lt);border:1px solid rgba(108,99,255,0.3);border-radius:var(--radius-sm);padding:14px 18px;margin-top:14px;}
+.score-total-label{font-size:13px;font-weight:600;color:var(--accent2);}
+.score-total-val{font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--accent2);}
+.form-group{margin-bottom:18px;}
+.form-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin-bottom:7px;display:block;}
+.form-input,.form-textarea,.form-select{width:100%;padding:10px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color 0.15s;}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--accent);}
+.form-textarea{resize:vertical;min-height:80px;}
+.approval-select{padding:5px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--ink2);font-family:var(--font-body);font-size:11px;font-weight:600;cursor:pointer;outline:none;}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:12px 20px;font-size:13px;color:var(--ink);display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:99999;transform:translateY(80px);opacity:0;transition:all 0.3s cubic-bezier(.22,1,.36,1);max-width:340px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.toast-dot.success{background:var(--green);}
+.toast-dot.error{background:var(--red);}
+.spinner{width:18px;height:18px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;vertical-align:middle;}
+.search-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.search-wrap{position:relative;flex:1;min-width:200px;}
+.search-input{width:100%;padding:9px 14px 9px 36px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color 0.15s;}
+.search-input:focus{border-color:var(--accent);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:14px;pointer-events:none;}
+.filter-select{padding:9px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink2);font-family:var(--font-body);font-size:13px;cursor:pointer;outline:none;}
+.empty-state{text-align:center;padding:48px;color:var(--ink3);font-size:13px;}
+.empty-icon{font-size:36px;margin-bottom:12px;}
+.tab-row{display:flex;gap:4px;margin-bottom:20px;background:var(--bg3);border-radius:10px;padding:4px;width:fit-content;}
+.tab-btn{padding:8px 20px;border-radius:7px;border:none;background:transparent;color:var(--ink3);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.tab-btn.active{background:var(--bg2);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.export-btn{padding:8px 16px;background:var(--green-lt);border:1px solid rgba(22,163,74,0.3);border-radius:var(--radius-sm);color:var(--green);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.export-btn:hover{background:var(--green);color:#fff;}
+.prog-bar-wrap{display:flex;align-items:center;gap:8px;}
+.prog-bar{flex:1;height:6px;background:var(--surface2);border-radius:99px;overflow:hidden;}
+.prog-bar-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.5s ease;}
+.prog-pct{font-size:11px;font-weight:600;color:var(--ink3);min-width:30px;}
+.student-info-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.info-item{background:var(--surface);border-radius:8px;padding:10px 14px;}
+.info-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin-bottom:3px;font-weight:600;}
+.info-value{font-size:13px;color:var(--ink);font-weight:500;}
+#loadingOverlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+#loadingOverlay .spinner{width:36px;height:36px;border-width:3px;}
+#loadingOverlay p{font-size:13px;color:var(--ink3);}
+@media(max-width:768px){.main-wrap{grid-template-columns:1fr;}.sidebar{display:none;}.stats-row{grid-template-columns:1fr 1fr;}.content{padding:16px;}.score-grid{grid-template-columns:1fr;}.week-cards-grid{grid-template-columns:1fr 1fr;}.landing-title{font-size:28px;}}
 </style>
 </head>
 <body>
-<div class="page">
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-tag">Operations Dashboard</div>
-      <div class="brand-name">Campus<br>Dashboard</div>
-      <div class="brand-sub">FACE Prep · Campus Management</div>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Select College</div>
-      <div class="college-list" id="collegeList"></div>
-    </div>
-    <div style="flex:1"></div>
-    <div style="padding: 0 16px 8px;">
-      <div class="sidebar-divider"></div>
-      <div class="filter-group" style="margin-bottom:12px;">
-        <div class="filter-label">Filter by Month</div>
-        <select class="filter-select" id="filterMonth" onchange="applyMonthFilter()">
-          <option value="all">All Months</option>
-          <option value="May 2026" selected>May 2026</option>
-          <option value="June 2026">June 2026</option>
+
+<div id="loadingOverlay" style="display:none;"><div class="spinner"></div><p id="loadingMsg">Loading&hellip;</p></div>
+
+<!-- LANDING -->
+<div id="landingScreen">
+  <div class="landing-wrap">
+    <div class="landing-badge"><span class="landing-badge-dot"></span>Mini Project Tracker &middot; 2024&ndash;25</div>
+    <div class="landing-title">College <span>Project</span><br>Tracker Portal</div>
+    <div class="landing-sub">Select your institution to access the project tracking dashboard for mentors and students.</div>
+    <div class="landing-card">
+      <div class="landing-label">Select Institution</div>
+      <div class="college-select-wrap">
+        <select class="college-select" id="collegeSelect" onchange="onCollegeChange()">
+          <option value="">&mdash; Choose your college &mdash;</option>
+          <option value="kamaraj">Kamaraj College</option>
+          <option value="kamaraj-women">Kamaraj Women's College</option>
+          <option value="sdnb">SDNB Vaishnav College for Women</option>
+          <option value="patrician">Patrician College of Arts &amp; Science</option>
+          <option value="terf">TERF's College of Arts and Science</option>
+          <option value="sst">Sree Saraswathi Thyagaraja College</option>
+          <option value="tjs">TJS College of Arts and Science</option>
+          <option value="bharathidasan">Bharathidasan College of Arts &amp; Science</option>
+          <option value="nagarathinam">Nagarathinam Angalammal Arts &amp; Science College</option>
+          <option value="vinayaga">Vinayaga Mission's Research Foundation School of Arts &amp; Science</option>
+          <option value="amaraavathi">Sri Amaraavathi College of Arts &amp; Science</option>
+          <option value="takshashila">Takshashila University</option>
+          <option value="studyworld">Study World Group of Institution</option>
+          <option value="rathinam">Rathinam College of Arts &amp; Science</option>
+          <option value="niche">Noorul Islam Centre for Higher Education (NICHE)</option>
+          <option value="amet">AMET University</option>
+          <option value="joy">Joy University</option>
+          <option value="sasurie">Sasurie College of Arts and Science</option>
+          <option value="alliance">Alliance University</option>
+          <option value="kristu">Kristu Jayanti (Deemed to be University)</option>
+          <option value="svyasa">S-VYASA University</option>
+          <option value="asb">Asian School of Business</option>
         </select>
+        <span class="college-select-icon">&#9662;</span>
       </div>
+      <button class="landing-btn" id="goBtn" onclick="goToLogin()" disabled>Continue &rarr;</button>
+      <div class="college-count">22 institutions &middot; I BCA &mdash; A &amp; B sections</div>
     </div>
-    <button class="btn-export" id="exportBtn" onclick="exportCSV()" disabled>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Export CSV
-    </button>
-  </aside>
-
-  <main class="main">
-    <div class="main-header">
-      <div>
-        <div class="main-title">Campus <em>Dashboard</em></div>
-        <div class="main-meta">Institutional satisfaction · Partnership health · NPS analytics</div>
-      </div>
-      <div class="response-badge">Total responses: <span id="totalRespBadge">20</span></div>
-    </div>
-
-    <div class="blank-state" id="blankState">
-      <div class="blank-state-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      </div>
-      <h2>Select a <em>college</em> to begin</h2>
-      <p>Choose an institution from the sidebar to view its satisfaction metrics, NPS score, composite ranking and qualitative feedback.</p>
-      <div class="blank-state-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-        Pick a college from the left panel
-      </div>
-    </div>
-
-    <div id="dashContent">
-      <div class="college-header">
-        <div class="college-header-name" id="selectedCollegeName">—</div>
-        <div class="college-header-badge" id="selectedCollegeMonth">All Months</div>
-      </div>
-      <div class="weight-legend">
-        <span class="weight-pill"><span class="weight-dot" style="background:#2d6fcf"></span>NPS 40%</span>
-        <span class="weight-pill"><span class="weight-dot" style="background:#7eb3ff"></span>Faculty 15%</span>
-        <span class="weight-pill"><span class="weight-dot" style="background:#4ade9a"></span>Content 15%</span>
-        <span class="weight-pill"><span class="weight-dot" style="background:#ffd166"></span>Operations 10%</span>
-        <span class="weight-pill"><span class="weight-dot" style="background:#f5a623"></span>Skill Dev 10%</span>
-        <span class="weight-pill"><span class="weight-dot" style="background:#ff6b6b"></span>Placement 10%</span>
-      </div>
-      <div class="kpi-grid">
-        <div class="kpi-card green"><div class="kpi-label">NPS Average</div><div class="kpi-value" id="kNps">—</div><div class="kpi-sub">Scale 0–10</div></div>
-        <div class="kpi-card blue"><div class="kpi-label">Composite Score</div><div class="kpi-value" id="kComposite">—</div><div id="kInterpBadge"></div></div>
-        <div class="kpi-card orange"><div class="kpi-label">Campus Rank</div><div class="kpi-value" id="kRank">—</div><div class="kpi-sub" id="kRankSub">—</div></div>
-        <div class="kpi-card yellow"><div class="kpi-label">Total Responses</div><div class="kpi-value" id="kResponses">—</div><div class="kpi-sub">submissions</div></div>
-      </div>
-      <div class="sat-row">
-        <div class="sat-card"><div class="sat-name">Faculty</div><div class="sat-pct" id="sFaculty">—</div><div class="sat-bar"><div class="sat-fill" id="bFaculty" style="width:0%;background:#7eb3ff"></div></div></div>
-        <div class="sat-card"><div class="sat-name">Content</div><div class="sat-pct" id="sContent">—</div><div class="sat-bar"><div class="sat-fill" id="bContent" style="width:0%;background:#4ade9a"></div></div></div>
-        <div class="sat-card"><div class="sat-name">Operations</div><div class="sat-pct" id="sOps">—</div><div class="sat-bar"><div class="sat-fill" id="bOps" style="width:0%;background:#ffd166"></div></div></div>
-        <div class="sat-card"><div class="sat-name">Skill Dev</div><div class="sat-pct" id="sSkill">—</div><div class="sat-bar"><div class="sat-fill" id="bSkill" style="width:0%;background:#f5a623"></div></div></div>
-        <div class="sat-card"><div class="sat-name">Placement</div><div class="sat-pct" id="sPlacement">—</div><div class="sat-bar"><div class="sat-fill" id="bPlacement" style="width:0%;background:#ff6b6b"></div></div></div>
-      </div>
-      <div class="charts-row">
-        <div class="chart-card">
-          <div class="card-title">Composite score breakdown</div>
-          <div style="position:relative;height:280px;" id="barWrap"></div>
-        </div>
-        <div class="chart-card">
-          <div class="card-title" id="npsChartTitle">NPS — May 2026</div>
-          <div style="position:relative;height:280px;" id="npsWrap"></div>
-        </div>
-      </div>
-      <div class="table-card">
-        <div class="card-title">All campuses ranking</div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>College</th>
-                <th class="right">Composite</th>
-                <th class="right">NPS Avg</th>
-                <th class="right">Faculty %</th>
-                <th class="right">Content %</th>
-                <th class="right">Ops %</th>
-                <th class="right">Skill %</th>
-                <th class="right">Placement %</th>
-                <th class="right">Responses</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="rankBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="bottom-row">
-        <div class="qual-card">
-          <div class="card-title">Qualitative feedback</div>
-          <div class="qual-tabs">
-            <button class="qual-tab active" id="tabPos" onclick="switchQual('pos')">What FACE Prep did best</button>
-            <button class="qual-tab" id="tabImp" onclick="switchQual('imp')">Improvements expected</button>
-          </div>
-          <div class="qual-list" id="qualList"></div>
-        </div>
-        <div class="donuts-card">
-          <div class="card-title">Yes/No distribution</div>
-          <div class="donuts-grid" id="donutsGrid"></div>
-        </div>
-      </div>
-      <div class="notice">
-        <div style="color:#d4820a;flex-shrink:0;margin-top:1px">⚠</div>
-        <div>Composite score = <strong>NPS×10 × 40%</strong> + Faculty × 15% + Content × 15% + Operations × 10% + Skill Dev × 10% + Placement × 10%. Data: May 2026 survey. June 2026 responses will be added next cycle.</div>
-      </div>
-    </div>
-  </main>
+  </div>
 </div>
 
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-college-pill" onclick="backToLanding()">
+      <span>&#127963;</span>
+      <span class="login-college-name" id="loginCollegeName">&mdash;</span>
+      <span class="login-college-back">&larr; Change</span>
+    </div>
+    <div class="login-title">Mentor Login</div>
+    <div class="login-sub">Select section, role and enter your PIN</div>
+    <div class="login-label">Select Section</div>
+    <div class="login-select-grid" style="margin-bottom:14px;">
+      <button class="role-btn" data-section="A" onclick="selectSection(this)">I BCA &mdash; A</button>
+      <button class="role-btn" data-section="B" onclick="selectSection(this)">I BCA &mdash; B</button>
+    </div>
+    <div class="login-label">Select Role</div>
+    <div class="login-select-grid">
+      <button class="role-btn" data-role="Aparna" onclick="selectRole(this)">Aparna</button>
+      <button class="role-btn" data-role="Arun Raj" onclick="selectRole(this)">Arun Raj</button>
+      <button class="role-btn" data-role="Saral" onclick="selectRole(this)">Saral</button>
+      <button class="role-btn" data-role="Admin" onclick="selectRole(this)">&#128737; Admin</button>
+    </div>
+    <div class="login-label" style="margin-top:16px;">Enter PIN</div>
+    <div class="pin-input-wrap">
+      <input type="password" class="pin-input" id="pinInput" maxlength="4" placeholder="&bull;&bull;&bull;&bull;" oninput="onPinInput()" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()" disabled>Sign In &rarr;</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="appShell">
+  <header class="topbar">
+    <div><div class="topbar-brand">Project<span>Tracker</span></div></div>
+    <div class="topbar-college" id="topbarCollege">&mdash;</div>
+    <div class="topbar-right">
+      <div class="user-pill"><span class="user-dot"></span><span id="userLabel">&mdash;</span></div>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </header>
+  <div class="main-wrap">
+    <aside class="sidebar">
+      <div class="nav-section-label">Navigation</div>
+      <div class="nav-item active" id="nav-dashboard" onclick="showPanel('dashboard',this)"><span class="nav-icon">&#8862;</span> Dashboard</div>
+      <div class="nav-item" id="nav-students" onclick="showPanel('students',this)"><span class="nav-icon">&#9673;</span> My Students<span class="nav-badge" id="navStudentCount">0</span></div>
+      <div class="nav-item" id="nav-progress" onclick="showPanel('progress',this)"><span class="nav-icon">&#9654;</span> Weekly Progress</div>
+      <div class="nav-item" id="nav-evaluation" onclick="showPanel('evaluation',this)"><span class="nav-icon">&#9672;</span> Evaluations</div>
+      <div class="nav-item" id="nav-admin" style="display:none;" onclick="showPanel('admin',this)"><span class="nav-icon">&#128737;</span> Admin View</div>
+    </aside>
+    <main class="content">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="page-header">
+          <div class="page-eyebrow">Overview</div>
+          <div class="page-title" id="dashTitle">Dashboard</div>
+          <div class="page-sub" id="dashSub">Loading&hellip;</div>
+        </div>
+        <div class="stats-row" id="statsRow"></div>
+        <div class="card">
+          <div class="card-title">&#128203; My Students &mdash; Quick Overview</div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>Student Name</th><th>Project Title</th><th>Progress</th><th>Approval</th><th>Score</th></tr></thead>
+            <tbody id="dashTableBody"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="panel" id="panel-students">
+        <div class="page-header">
+          <div class="page-eyebrow">Student List</div>
+          <div class="page-title">My Students</div>
+        </div>
+        <div class="search-bar">
+          <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="studentSearch" placeholder="Search by name or project&hellip;" oninput="renderStudentList()"></div>
+          <select class="filter-select" id="approvalFilter" onchange="renderStudentList()">
+            <option value="">All Approvals</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="needs-revision">Needs Revision</option>
+          </select>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
+          <thead><tr><th>#</th><th>Name</th><th>Register No.</th><th>Project Title</th><th>Weeks</th><th>Approval</th><th>Actions</th></tr></thead>
+          <tbody id="studentTableBody"></tbody>
+        </table></div></div>
+      </div>
+
+      <!-- WEEKLY PROGRESS -->
+      <div class="panel" id="panel-progress">
+        <div class="page-header">
+          <div class="page-eyebrow">Track Progress</div>
+          <div class="page-title">Weekly Progress</div>
+          <div class="page-sub">Click any week button to open the full editor &mdash; each week stores its own status &amp; note separately in Supabase</div>
+        </div>
+        <div class="search-bar">
+          <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="progressSearch" placeholder="Search student&hellip;" oninput="renderProgressTable()"></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
+          <thead><tr><th>#</th><th>Name</th><th>Project Title</th><th style="text-align:center;">W1</th><th style="text-align:center;">W2</th><th style="text-align:center;">W3</th><th style="text-align:center;">W4</th><th>Summary</th></tr></thead>
+          <tbody id="progressTableBody"></tbody>
+        </table></div></div>
+        <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span style="width:14px;height:14px;border-radius:3px;background:var(--green-lt);border:1px solid var(--green);display:inline-block;"></span>Completed</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span style="width:14px;height:14px;border-radius:3px;background:var(--amber-lt);border:1px solid var(--amber);display:inline-block;"></span>In Progress</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span style="width:14px;height:14px;border-radius:3px;background:var(--surface);border:1px solid var(--border2);display:inline-block;"></span>Not Started</div>
+          <div style="font-size:12px;color:var(--ink3);">&#128172; = has note &middot; click week to edit</div>
+        </div>
+      </div>
+
+      <!-- EVALUATION -->
+      <div class="panel" id="panel-evaluation">
+        <div class="page-header">
+          <div class="page-eyebrow">Mentor Evaluation</div>
+          <div class="page-title">Score Students</div>
+          <div class="page-sub">Each criterion scored out of 20 &mdash; Total out of 100</div>
+        </div>
+        <div class="search-bar">
+          <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="evalSearch" placeholder="Search student&hellip;" oninput="renderEvalTable()"></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
+          <thead><tr><th>#</th><th>Name</th><th>Project</th><th>Tech</th><th>Fit</th><th>Effort</th><th>Presentation</th><th>Impact</th><th>Total</th><th>Action</th></tr></thead>
+          <tbody id="evalTableBody"></tbody>
+        </table></div></div>
+      </div>
+
+      <!-- ADMIN -->
+      <div class="panel" id="panel-admin">
+        <div class="page-header">
+          <div class="page-eyebrow">Admin View</div>
+          <div class="page-title">All Students</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+          <div class="tab-row">
+            <button class="tab-btn active" onclick="setAdminTab('all',this)">All Students</button>
+            <button class="tab-btn" onclick="setAdminTab('Aparna',this)">Aparna</button>
+            <button class="tab-btn" onclick="setAdminTab('Arun Raj',this)">Arun Raj</button>
+            <button class="tab-btn" onclick="setAdminTab('Saral',this)">Saral</button>
+          </div>
+          <button class="export-btn" onclick="exportCSV()">&darr; Export CSV</button>
+        </div>
+        <div class="stats-row" id="adminStatsRow" style="grid-template-columns:repeat(3,1fr);"></div>
+        <div class="card" style="padding:0;overflow:hidden;margin-top:16px;"><div class="table-wrap"><table>
+          <thead><tr><th>#</th><th>Name</th><th>Section</th><th>Mentor</th><th>Project</th><th>Weeks Done</th><th>Approval</th><th>Score /100</th></tr></thead>
+          <tbody id="adminTableBody"></tbody>
+        </table></div></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- WEEK MODAL -->
+<div class="modal-overlay" id="weekModal" onclick="if(event.target===this)closeModal('weekModal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="weekModalTitle">Weekly Progress</div>
+        <div class="modal-sub" id="weekModalSub">Each card is stored as a separate row — status &amp; note are independent per week</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('weekModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="week-cards-grid" id="weekCardsGrid"></div>
+      <div style="background:var(--blue-lt);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--blue);font-weight:500;margin-top:4px;">
+        &#128161; Click the status badge on any card to cycle: Not Started &rarr; In Progress &rarr; Completed. Add notes per week. Click <strong>Save All Weeks</strong> to persist all 4 weeks at once.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('weekModal')">Cancel</button>
+      <button class="btn btn-primary" id="saveWeekBtn" onclick="saveAllWeeks()">Save All Weeks</button>
+    </div>
+  </div>
+</div>
+
+<!-- EVAL MODAL -->
+<div class="modal-overlay" id="evalModal" onclick="if(event.target===this)closeModal('evalModal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div><div class="modal-title" id="evalModalTitle">Mentor Evaluation</div><div class="modal-sub" id="evalModalSub"></div></div>
+      <button class="modal-close" onclick="closeModal('evalModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="student-info-row" id="evalStudentInfo"></div>
+      <div style="background:var(--amber-lt);border:1px solid rgba(217,119,6,0.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--amber);font-weight:600;">
+        &#9888; Each score must be 0&ndash;20. Values above 20 are auto-capped.
+      </div>
+      <div class="score-grid">
+        <div class="score-item"><div class="score-item-label">Tech / Functional Quality <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_tech" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_tech" style="width:0%"></div></div></div>
+        <div class="score-item"><div class="score-item-label">Problem-Solution Fit <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_fit" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_fit" style="width:0%"></div></div></div>
+        <div class="score-item"><div class="score-item-label">Effort &amp; Ownership <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_effort" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_effort" style="width:0%"></div></div></div>
+        <div class="score-item"><div class="score-item-label">Presentation <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_pres" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_pres" style="width:0%"></div></div></div>
+        <div class="score-item" style="grid-column:1/-1;"><div class="score-item-label">Practical Impact <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_impact" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_impact" style="width:0%"></div></div></div>
+      </div>
+      <div class="score-total-row"><div><div class="score-total-label">Total Score</div><div style="font-size:11px;color:var(--ink3);margin-top:2px;">Sum of all 5 criteria</div></div><div class="score-total-val" id="scoreTotalDisplay">0 / 100</div></div>
+      <div class="form-group" style="margin-top:14px;margin-bottom:0;"><label class="form-label">Remarks (optional)</label><textarea class="form-textarea" id="evalRemarks" placeholder="Add evaluation remarks, strengths, areas for improvement&hellip;"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('evalModal')">Cancel</button>
+      <button class="btn btn-primary" id="saveEvalBtn" onclick="saveEvaluation()">Save Evaluation</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="toast-dot success" id="toastDot"></span><span id="toastMsg">Saved!</span></div>
+
 <script>
-/* ═══════════════════════════════════════════════
-   SURVEY DATA — May 2026
-   To add June 2026: append rows with month:"June 2026"
-   ═══════════════════════════════════════════════ */
-const RAW_DATA = [
-  { college:"Vinayaga Mission's Research Foundation School of Arts and Science", month:"May 2026", nps:6,  faculty:"No",  content:"No",  ops:"No",  skill:"Yes", placement:"No",  positive:"Students gave good stage performances. Soft skills development was evident.", improvement:"Better coordination with the institutional regulations and norms at all levels" },
-  { college:"Sri Amaraavathi College of Arts and Science",                        month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Practical and Hands on Training",                                              improvement:"Students shall be permitted to participate in co curricular and extra curricular activities" },
-  { college:"Kamaraj College",                                                    month:"May 2026", nps:10, faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Good administration, providing strong academic knowledge and proper documentation", improvement:"Can provide blazers for faculty" },
-  { college:"Asian School of Business",                                           month:"May 2026", nps:9,  faculty:"Yes", content:"No",  ops:"Yes", skill:"Yes", placement:"No",  positive:"Admissions, faculty recruitment and marketing",                               improvement:"Put together a syllabus that has weightage for academics and skill development alike" },
-  { college:"Noorul Islam Centre for Higher Education (NICHE)",                   month:"May 2026", nps:8,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Industry-oriented skill development, effective student engagement, interactive training sessions", improvement:"Recruitment of additional staff members to ensure better coordination and personalized support" },
-  { college:"Rathinam Global Deemed to be University",                            month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"No",  positive:"Students obedient, Dress code, Upskill Level",                                improvement:"Participation in events at Top Universities, Workshops / Conferences / Publications" },
-  { college:"Joy University",                                                     month:"May 2026", nps:10, faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Consistent support in student training and placement preparation through well-structured sessions", improvement:"More customized training sessions based on students skill levels and domain interests" },
-  { college:"Joy University",                                                     month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"No",  placement:"No",  positive:"Teaching is good",                                                           improvement:"More practical and skill development training needed" },
-  { college:"AMET University",                                                    month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"No",  positive:"Disciplined learning, enhancing employability skills, preparing students for placement", improvement:"Faculty Retention" },
-  { college:"S-VYASA University",                                                 month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Internship and keeping students updated about advancements",                  improvement:"Student Placements" },
-  { college:"S-VYASA University",                                                 month:"May 2026", nps:10, faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Industrial exposure",                                                        improvement:"More student involvement in technical events and skill enrichment" },
-  { college:"Nagarathinam Angalammal Arts and Science College",                   month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Face prep motivated students in coding aspects",                              improvement:"Need to give AI very strong among the students" },
-  { college:"Kamaraj College",                                                    month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Students Activities",                                                         improvement:"Strict Disciplinary Action" },
-  { college:"Asian School of Business",                                           month:"May 2026", nps:8,  faculty:"Yes", content:"Yes", ops:"No",  skill:"No",  placement:"Yes", positive:"BCOM Students got SEBI certification, 1M1B Internship opportunity",           improvement:"Number of skill development activities should be proportional to available working days" },
-  { college:"Kamaraj Women's College",                                            month:"May 2026", nps:10, faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Effective training sessions, improving student engagement, continuous placement support", improvement:"Improved teamwork and smoother communication in the next quarter" },
-  { college:"Asian School of Business",                                           month:"May 2026", nps:9,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Delivered the programme well. Handling admissions well",                      improvement:"Improve pass percentage" },
-  { college:"SDNB Vaishnav College for Women",                                    month:"May 2026", nps:8,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Projects by students",                                                       improvement:"Qualified faculty recruitment and faculty training" },
-  { college:"Takshashila University",                                              month:"May 2026", nps:7,  faculty:"No",  content:"Yes", ops:"Yes", skill:"Yes", placement:"No",  positive:"Exposure to new technologies, Training for future jobs, follow up of student performance", improvement:"Please concentrate on all levels of students" },
-  { college:"Sree Saraswathi Thyagaraja College",                                 month:"May 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"The skills of the students were enhanced",                                   improvement:"Their development level should be showcased to other students" },
-  { college:"Bharathidasan College of Arts and Science",                          month:"June 2026", nps:7,  faculty:"Yes", content:"Yes", ops:"Yes", skill:"Yes", placement:"Yes", positive:"Nil",                                                                       improvement:"Nil" }
-];
+/* ── CONFIG ── */
+const SUPABASE_URL='https://qjwbndrgzvboszfzrcuy.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2JuZHJnenZib3N6ZnpyY3V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NTA3MzIsImV4cCI6MjA5NjEyNjczMn0.x-su_5f_XQ9_ql7iw3Aa_4E4ww9SJIqRGVdTHo6zSpE';
+const PINS={'Aparna':'4827','Arun Raj':'3159','Saral':'7634','Admin':'9201'};
+const COLLEGE_NAMES={'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science','terf':"TERF's College of Arts and Science",'sst':'Sree Saraswathi Thyagaraja College','tjs':'TJS College of Arts and Science','bharathidasan':'Bharathidasan College of Arts & Science','nagarathinam':'Nagarathinam Angalammal Arts & Science College','vinayaga':"Vinayaga Mission's Research Foundation School of Arts & Science",'amaraavathi':'Sri Amaraavathi College of Arts & Science','takshashila':'Takshashila University','studyworld':'Study World Group of Institution','rathinam':'Rathinam College of Arts & Science','niche':'Noorul Islam Centre for Higher Education (NICHE)','amet':'AMET University','joy':'Joy University','sasurie':'Sasurie College of Arts and Science','alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)','svyasa':'S-VYASA University','asb':'Asian School of Business'};
 
-/* ═══════════════════════════════════════════════
-   STATE
-   ═══════════════════════════════════════════════ */
-let selectedCollege = null;
-let currentQual     = 'pos';
-let barChartInst    = null;
-let npsChartInst    = null;
-const donutInstances = {};
+/* ── STATE ── */
+let selectedCollegeKey=null,selectedCollegeName=null,selectedSection=null,selectedRole=null,currentUser=null;
+let students=[],allStudents=[];
+let progressMap={},evalMap={},approvalMap={};
+let adminProgressMap={},adminEvalMap={},adminApprovalMap={};
+let currentWeekStudent=null,currentEvalStudent=null,adminTab='all';
+let weekDraft={};
 
-/* ═══════════════════════════════════════════════
-   BOOT — build sidebar
-   ═══════════════════════════════════════════════ */
-(function init() {
-  buildCollegeList();
-  updateTotalBadge();
-})();
+/* ── SUPABASE ── */
+async function sb(path,method='GET',body=null){
+  const h={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Accept':'application/json'};
+  if(method==='POST'||method==='PATCH') h['Prefer']='return=representation';
+  const opts={method,headers:h};
+  if(body) opts.body=JSON.stringify(body);
+  const res=await fetch(SUPABASE_URL+'/rest/v1/'+path,opts);
+  const text=await res.text();
+  if(!res.ok) throw new Error(text||'Request failed: '+res.status);
+  return text?JSON.parse(text):[];
+}
+const api={
+  students:(c,s)=>sb('students?college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&order=id'),
+  myStudents:(c,s,m)=>sb('students?college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&mentor_assigned=eq.'+encodeURIComponent(m)+'&order=id'),
+  progress:(ids)=>sb('weekly_progress?student_id=in.('+ids.join(',') +')'),
+  evaluations:(ids)=>sb('mentor_evaluation?student_id=in.('+ids.join(',') +')'),
+  approvals:(ids)=>sb('project_approval?student_id=in.('+ids.join(',') +')'),
+  upsertProgress:(d)=>sb('weekly_progress','POST',d),
+  upsertEval:(d)=>sb('mentor_evaluation','POST',d),
+  upsertApproval:(d)=>sb('project_approval','POST',d),
+  updateProgress:(id,d)=>sb('weekly_progress?id=eq.'+id,'PATCH',d),
+  updateEval:(id,d)=>sb('mentor_evaluation?id=eq.'+id,'PATCH',d),
+  updateApproval:(id,d)=>sb('project_approval?id=eq.'+id,'PATCH',d),
+};
 
-function buildCollegeList() {
-  const m = getSelectedMonth();
-  const filtered = RAW_DATA.filter(r => m === 'all' || r.month === m);
-  const colleges = [...new Set(filtered.map(r => r.college))].sort();
-  const list = document.getElementById('collegeList');
-  list.innerHTML = colleges.map(c =>
-    `<div class="college-item" data-college="${esc(c)}" onclick="selectCollege(${JSON.stringify(c)})">${esc(c)}</div>`
-  ).join('');
-  // Re-highlight if a college is still valid in new filter
-  if (selectedCollege) {
-    document.querySelectorAll('.college-item').forEach(el =>
-      el.classList.toggle('active', el.dataset.college === selectedCollege));
+/* ── LANDING ── */
+function onCollegeChange(){const v=document.getElementById('collegeSelect').value;document.getElementById('goBtn').disabled=!v;selectedCollegeKey=v||null;}
+function goToLogin(){
+  if(!selectedCollegeKey)return;
+  selectedCollegeName=COLLEGE_NAMES[selectedCollegeKey];
+  document.getElementById('loginCollegeName').textContent=selectedCollegeName;
+  document.getElementById('loginScreen').classList.add('show');
+  document.getElementById('landingScreen').style.display='none';
+  selectedSection=null;selectedRole=null;
+  document.getElementById('pinInput').value='';
+  document.getElementById('loginBtn').disabled=true;
+  document.getElementById('loginError').textContent='';
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('selected'));
+}
+function backToLanding(){document.getElementById('loginScreen').classList.remove('show');document.getElementById('landingScreen').style.display='flex';}
+
+/* ── LOGIN ── */
+function selectSection(btn){document.querySelectorAll('[data-section]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedSection=btn.getAttribute('data-section');checkLoginReady();}
+function selectRole(btn){document.querySelectorAll('[data-role]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedRole=btn.getAttribute('data-role');document.getElementById('loginError').textContent='';checkLoginReady();}
+function onPinInput(){document.getElementById('loginError').textContent='';document.getElementById('pinInput').classList.remove('error');checkLoginReady();}
+function checkLoginReady(){const p=document.getElementById('pinInput').value;document.getElementById('loginBtn').disabled=!(selectedSection&&selectedRole&&p.length===4);}
+async function doLogin(){
+  const pin=document.getElementById('pinInput').value;
+  if(!selectedSection){showLoginError('Please select a section');return;}
+  if(!selectedRole){showLoginError('Please select a role');return;}
+  if(PINS[selectedRole]!==pin){showLoginError('Incorrect PIN.');document.getElementById('pinInput').classList.add('error');document.getElementById('pinInput').value='';checkLoginReady();return;}
+  currentUser=selectedRole;
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('userLabel').textContent=currentUser+' \u00b7 '+selectedCollegeName.split(' ')[0]+' '+selectedSection;
+  document.getElementById('topbarCollege').textContent=selectedCollegeName+' \u2014 I BCA '+selectedSection;
+
+  /* ── ADMIN: show Admin View, hide mentor-only nav items ── */
+  if(currentUser==='Admin'){
+    document.getElementById('nav-admin').style.display='flex';
+    document.getElementById('nav-students').style.display='none';
+    document.getElementById('nav-progress').style.display='none';
+    document.getElementById('nav-evaluation').style.display='none';
   }
+
+  await initApp();
+}
+function showLoginError(m){document.getElementById('loginError').textContent=m;}
+function doLogout(){
+  currentUser=null;students=[];allStudents=[];progressMap={};evalMap={};approvalMap={};
+  selectedRole=null;selectedSection=null;
+  document.getElementById('appShell').style.display='none';
+  document.getElementById('landingScreen').style.display='flex';
+  document.getElementById('collegeSelect').value='';
+  document.getElementById('goBtn').disabled=true;
+  /* Reset all nav items to default visibility */
+  document.getElementById('nav-admin').style.display='none';
+  document.getElementById('nav-students').style.display='flex';
+  document.getElementById('nav-progress').style.display='flex';
+  document.getElementById('nav-evaluation').style.display='flex';
+  showPanel('dashboard',document.getElementById('nav-dashboard'));
 }
 
-function updateTotalBadge() {
-  const m = getSelectedMonth();
-  const count = RAW_DATA.filter(r => m === 'all' || r.month === m).length;
-  document.getElementById('totalRespBadge').textContent = count;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ═══════════════════════════════════════════════
-   COLLEGE SELECTION
-   ═══════════════════════════════════════════════ */
-function selectCollege(name) {
-  selectedCollege = name;
-  document.querySelectorAll('.college-item').forEach(el =>
-    el.classList.toggle('active', el.dataset.college === name));
-  document.getElementById('selectedCollegeName').textContent = name;
-  document.getElementById('blankState').style.display = 'none';
-  document.getElementById('dashContent').classList.add('visible');
-  document.getElementById('exportBtn').disabled = false;
-  renderDashboard();
-}
-
-/* ═══════════════════════════════════════════════
-   FILTER
-   ═══════════════════════════════════════════════ */
-function applyMonthFilter() {
-  buildCollegeList();
-  updateTotalBadge();
-  // If selected college has no data in new month, hide dashboard
-  if (selectedCollege) {
-    const rows = getCollegeRows();
-    if (!rows.length) {
-      document.getElementById('dashContent').classList.remove('visible');
-      document.getElementById('blankState').style.display = '';
-      selectedCollege = null;
-      document.getElementById('exportBtn').disabled = true;
-    } else {
-      renderDashboard();
+/* ── INIT ── */
+async function initApp(){
+  const ol=document.getElementById('loadingOverlay');
+  document.getElementById('loadingMsg').textContent='Loading students\u2026';
+  ol.style.display='flex';
+  try{
+    const col=selectedCollegeName,sec='I BCA - '+selectedSection;
+    if(currentUser==='Admin'){
+      const[sA,sB]=await Promise.all([api.students(col,'I BCA - A'),api.students(col,'I BCA - B')]);
+      allStudents=[...sA,...sB];students=allStudents;
+    }else{
+      [students,allStudents]=await Promise.all([api.myStudents(col,sec,currentUser),api.students(col,sec)]);
     }
-  }
-}
-function getSelectedMonth() { return document.getElementById('filterMonth').value; }
-
-function getCollegeRows() {
-  const m = getSelectedMonth();
-  return RAW_DATA.filter(r => r.college === selectedCollege && (m === 'all' || r.month === m));
-}
-function getAllRows() {
-  const m = getSelectedMonth();
-  return RAW_DATA.filter(r => m === 'all' || r.month === m);
-}
-
-/* ═══════════════════════════════════════════════
-   METRICS
-   ═══════════════════════════════════════════════ */
-function calcMetrics(rows) {
-  if (!rows.length) return null;
-  const npsAvg    = rows.reduce((s, r) => s + r.nps, 0) / rows.length;
-  const pct       = key => (rows.filter(r => r[key] === 'Yes').length / rows.length) * 100;
-  const faculty   = pct('faculty');
-  const content   = pct('content');
-  const ops       = pct('ops');
-  const skill     = pct('skill');
-  const placement = pct('placement');
-  const normNps   = npsAvg * 10;
-  const composite = 0.40*normNps + 0.15*faculty + 0.15*content + 0.10*ops + 0.10*skill + 0.10*placement;
-  return { npsAvg, faculty, content, ops, skill, placement, normNps, composite, totalResp: rows.length };
-}
-
-function getInterp(s) {
-  if (s >= 90) return { label:'Exceptional',   cls:'c-exceptional', dot:'#4ade9a' };
-  if (s >= 80) return { label:'Strong',         cls:'c-strong',      dot:'#7eb3ff' };
-  if (s >= 70) return { label:'Stable',         cls:'c-stable',      dot:'#ffd166' };
-  if (s >= 60) return { label:'Moderate Risk',  cls:'c-moderate',    dot:'#f5a623' };
-  if (s >= 50) return { label:'High Attention', cls:'c-high',        dot:'#ff8c42' };
-  return             { label:'Critical Risk',   cls:'c-critical',    dot:'#ff6b6b' };
-}
-
-/* ═══════════════════════════════════════════════
-   RENDER
-   ═══════════════════════════════════════════════ */
-function renderDashboard() {
-  const rows    = getCollegeRows();
-  const metrics = calcMetrics(rows);
-  const m       = getSelectedMonth();
-  document.getElementById('selectedCollegeMonth').textContent = m === 'all' ? 'All Months' : m;
-  document.getElementById('npsChartTitle').textContent = `NPS — ${m === 'all' ? 'All Months' : m}`;
-
-  if (!metrics) {
-    ['kNps','kComposite','kRank','kResponses'].forEach(id => document.getElementById(id).textContent = '—');
-    document.getElementById('kInterpBadge').innerHTML = '';
-    ['sFaculty','sContent','sOps','sSkill','sPlacement'].forEach(id => document.getElementById(id).textContent = '—');
-    ['bFaculty','bContent','bOps','bSkill','bPlacement'].forEach(id => { document.getElementById(id).style.width='0%'; });
-    document.getElementById('rankBody').innerHTML = '<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3);font-size:12px;">No data for this selection.</td></tr>';
-    document.getElementById('barWrap').innerHTML  = '<div class="loading-state">No data.</div>';
-    document.getElementById('npsWrap').innerHTML  = '<div class="loading-state">No data.</div>';
-    renderQual(rows);
-    renderDonuts(null);
-    return;
-  }
-
-  document.getElementById('kNps').textContent        = metrics.npsAvg.toFixed(2);
-  document.getElementById('kComposite').textContent  = metrics.composite.toFixed(2);
-  document.getElementById('kResponses').textContent  = metrics.totalResp;
-  const interp = getInterp(metrics.composite);
-  document.getElementById('kInterpBadge').innerHTML  = `<span class="kpi-interp ${interp.cls}">${interp.label}</span>`;
-
-  // Ranking
-  const allRows   = getAllRows();
-  const campusMap = {};
-  allRows.forEach(r => { (campusMap[r.college] = campusMap[r.college] || []).push(r); });
-  const allMetrics = Object.entries(campusMap)
-    .map(([c, rs]) => ({ college: c, ...calcMetrics(rs) }))
-    .sort((a, b) => b.composite - a.composite || b.npsAvg - a.npsAvg);
-
-  const rankIdx = allMetrics.findIndex(c => c.college === selectedCollege);
-  document.getElementById('kRank').textContent    = rankIdx >= 0 ? `#${rankIdx + 1}` : '—';
-  document.getElementById('kRankSub').textContent = rankIdx >= 0 ? `of ${allMetrics.length} campuses` : '';
-
-  [
-    ['sFaculty','bFaculty', metrics.faculty,  '#7eb3ff'],
-    ['sContent','bContent', metrics.content,  '#4ade9a'],
-    ['sOps',    'bOps',     metrics.ops,      '#ffd166'],
-    ['sSkill',  'bSkill',   metrics.skill,    '#f5a623'],
-    ['sPlacement','bPlacement', metrics.placement, '#ff6b6b']
-  ].forEach(([vi, bi, val]) => {
-    document.getElementById(vi).textContent = val.toFixed(1) + '%';
-    setTimeout(() => { document.getElementById(bi).style.width = val.toFixed(1) + '%'; }, 80);
-  });
-
-  renderBarChart(metrics);
-  renderNpsChart(rows);
-  renderTable(allMetrics, selectedCollege);
-  renderQual(rows);
-  renderDonuts(metrics);
-}
-
-/* ─── BAR CHART ─────────────────────────────── */
-function renderBarChart(m) {
-  const wrap = document.getElementById('barWrap');
-  wrap.innerHTML = `<canvas id="barChart" style="position:absolute;inset:0"></canvas>`;
-  if (barChartInst) { barChartInst.destroy(); barChartInst = null; }
-  const labels  = ['NPS (×10)', 'Faculty', 'Content', 'Operations', 'Skill Dev', 'Placement'];
-  const rawVals = [m.normNps, m.faculty, m.content, m.ops, m.skill, m.placement];
-  const weights = [0.40, 0.15, 0.15, 0.10, 0.10, 0.10];
-  const weighted = rawVals.map((v, i) => parseFloat((v * weights[i]).toFixed(2)));
-  const colors   = ['rgba(45,111,207,0.8)','rgba(126,179,255,0.8)','rgba(74,222,154,0.8)','rgba(255,209,102,0.8)','rgba(245,166,35,0.8)','rgba(255,107,107,0.8)'];
-  barChartInst = new Chart(document.getElementById('barChart').getContext('2d'), {
-    type: 'bar',
-    data: { labels, datasets: [{ label: 'Weighted contribution', data: weighted, backgroundColor: colors, borderRadius: 4, borderSkipped: false }] },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => { const i = ctx.dataIndex; return [`Raw: ${rawVals[i].toFixed(1)}%`, `Weighted (${(weights[i]*100).toFixed(0)}%): ${ctx.raw}`]; } } } },
-      scales: { x: { grid: { display: false }, ticks: { color: '#5a5652', font: { size: 10 } } }, y: { min: 0, max: 40, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#8c8880', font: { size: 10 } } } }
+    document.getElementById('navStudentCount').textContent=students.length;
+    if(students.length>0){
+      const ids=students.map(s=>s.id);
+      const[prog,evals,apprs]=await Promise.all([api.progress(ids),api.evaluations(ids),api.approvals(ids)]);
+      buildMaps(prog,evals,apprs,false);
     }
-  });
-}
-
-/* ─── NPS DISPLAY ───────────────────────────── */
-function renderNpsChart(rows) {
-  const wrap = document.getElementById('npsWrap');
-  // Group by month
-  const byMonth = {};
-  rows.forEach(r => { (byMonth[r.month] = byMonth[r.month] || []).push(r.nps); });
-  const months = Object.keys(byMonth).sort();
-
-  if (months.length < 2) {
-    const avg = rows.length ? (rows.reduce((s, r) => s + r.nps, 0) / rows.length).toFixed(2) : '—';
-    wrap.innerHTML = `<div class="loading-state" style="flex-direction:row;gap:16px;height:100%;justify-content:center;"><div style="text-align:center"><div style="font-family:var(--font-display);font-size:64px;color:var(--text);line-height:1">${avg}</div><div style="font-size:11px;color:var(--text3);margin-top:8px">Average NPS · May 2026 · Scale 0–10</div></div></div>`;
-    if (npsChartInst) { npsChartInst.destroy(); npsChartInst = null; }
-    return;
+    if(currentUser==='Admin'&&allStudents.length>0){
+      const ids=allStudents.map(s=>s.id);
+      const[prog,evals,apprs]=await Promise.all([api.progress(ids),api.evaluations(ids),api.approvals(ids)]);
+      buildMaps(prog,evals,apprs,true);
+    }
+    ol.style.display='none';
+    document.getElementById('appShell').style.display='block';
+    renderDashboard();renderStudentList();renderProgressTable();renderEvalTable();
+    if(currentUser==='Admin'){
+      renderAdminTable();renderAdminStats();
+      /* Auto-navigate Admin to Admin View panel */
+      showPanel('admin',document.getElementById('nav-admin'));
+    }
+  }catch(e){
+    ol.style.display='none';
+    document.getElementById('appShell').style.display='block';
+    showToast('Error: '+e.message,'error');
+    console.error(e);
   }
-  wrap.innerHTML = `<canvas id="npsChart" style="position:absolute;inset:0"></canvas>`;
-  if (npsChartInst) { npsChartInst.destroy(); npsChartInst = null; }
-  const avgs = months.map(mo => {
-    const vals = byMonth[mo];
-    return parseFloat((vals.reduce((s, v) => s + v, 0) / vals.length).toFixed(2));
-  });
-  npsChartInst = new Chart(document.getElementById('npsChart').getContext('2d'), {
-    type: 'line',
-    data: { labels: months, datasets: [{ label: 'NPS Avg', data: avgs, borderColor: 'rgba(45,111,207,0.9)', backgroundColor: 'rgba(45,111,207,0.08)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: 'rgba(45,111,207,1)', tension: 0.3, fill: true }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#5a5652', font: { size: 10 } } }, y: { min: 0, max: 10, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#8c8880', font: { size: 10 } } } } }
-  });
 }
 
-/* ─── RANKING TABLE ─────────────────────────── */
-function renderTable(ranked, highlight) {
-  document.getElementById('rankBody').innerHTML = ranked.map((r, i) => {
-    const interp = getInterp(r.composite);
-    const rc  = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
-    const isHL = r.college === highlight;
-    return `<tr style="${isHL ? 'background:rgba(15,143,95,0.06);' : ''}">
-      <td><span class="rank-circle ${rc}">${i + 1}</span></td>
-      <td><span class="college-name" title="${esc(r.college)}" style="${isHL ? 'color:var(--accent);' : ''}">${esc(r.college)}${isHL ? ' ◀' : ''}</span></td>
-      <td class="right"><span class="score-chip ${interp.cls}">${r.composite.toFixed(2)}</span></td>
-      <td class="right"><div class="nps-bar"><span style="color:var(--text)">${r.npsAvg.toFixed(2)}</span><div class="nps-mini"><div class="nps-mini-fill" style="width:${(r.npsAvg/10*100).toFixed(1)}%"></div></div></div></td>
-      <td class="right">${r.faculty.toFixed(1)}%</td>
-      <td class="right">${r.content.toFixed(1)}%</td>
-      <td class="right">${r.ops.toFixed(1)}%</td>
-      <td class="right">${r.skill.toFixed(1)}%</td>
-      <td class="right">${r.placement.toFixed(1)}%</td>
-      <td class="right">${r.totalResp}</td>
-      <td><span class="status-chip ${interp.cls}"><span class="status-dot" style="background:${interp.dot}"></span>${interp.label}</span></td>
-    </tr>`;
+function buildMaps(prog,evals,apprs,isAdmin){
+  const pm={},em={},am={};
+  prog.forEach(p=>{
+    if(!pm[p.student_id]) pm[p.student_id]={};
+    pm[p.student_id][p.week_number]=p;
+  });
+  evals.forEach(e=>{em[e.student_id]=e;});
+  apprs.forEach(a=>{am[a.student_id]=a;});
+  if(isAdmin){adminProgressMap=pm;adminEvalMap=em;adminApprovalMap=am;progressMap=pm;evalMap=em;approvalMap=am;}
+  else{progressMap=pm;evalMap=em;approvalMap=am;}
+}
+
+/* ── HELPERS ── */
+function getWeeksDone(sid,ua){const m=ua?adminProgressMap:progressMap;return Object.values(m[sid]||{}).filter(w=>w.status==='completed').length;}
+function getScore(sid,ua){const m=ua?adminEvalMap:evalMap;const e=m[sid];return e?e.total_score:null;}
+function getApproval(sid,ua){const m=ua?adminApprovalMap:approvalMap;const a=m[sid];return a?a.status:'pending';}
+function scoreClass(s){if(s===null)return'';return s>=75?'score-high':s>=50?'score-mid':'score-low';}
+function approvalBadge(s){const m={'approved':'<span class="badge badge-green">Approved</span>','needs-revision':'<span class="badge badge-red">Needs Revision</span>','pending':'<span class="badge badge-grey">Pending</span>'};return m[s]||m['pending'];}
+function weeksBadge(n){if(n>=4)return'<span class="badge badge-green">4/4</span>';if(n>=2)return'<span class="badge badge-amber">'+n+'/4</span>';if(n>=1)return'<span class="badge badge-blue">'+n+'/4</span>';return'<span class="badge badge-grey">0/4</span>';}
+function esc(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;');}
+function showPanel(id,el){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el)el.classList.add('active');}
+
+/* ── DASHBOARD ── */
+function renderDashboard(){
+  document.getElementById('dashTitle').textContent=currentUser==='Admin'?'Admin Dashboard':'Welcome, '+currentUser;
+  document.getElementById('dashSub').textContent=students.length+' students \u00b7 '+selectedCollegeName+' \u2014 I BCA '+selectedSection;
+  const total=students.length,approved=students.filter(s=>getApproval(s.id)==='approved').length;
+  const scored=students.filter(s=>getScore(s.id)!==null).length;
+  const avg=scored>0?(students.filter(s=>getScore(s.id)!==null).reduce((sm,s)=>sm+getScore(s.id),0)/scored).toFixed(1):'--';
+  document.getElementById('statsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value">${total}</div><div class="stat-sub">I BCA ${selectedSection}</div></div><div class="stat-card"><div class="stat-label">Projects Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div><div class="stat-sub">of ${total}</div></div><div class="stat-card"><div class="stat-label">Evaluated</div><div class="stat-value" style="color:var(--accent2);">${scored}</div><div class="stat-sub">score submitted</div></div><div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div><div class="stat-sub">out of 100</div></div>`;
+  const tb=document.getElementById('dashTableBody');
+  if(!students.length){tb.innerHTML='<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">&#128235;</div>No students found.</div></td></tr>';return;}
+  tb.innerHTML=students.map((s,i)=>{
+    const done=getWeeksDone(s.id),score=getScore(s.id),approval=getApproval(s.id),prog=Math.round(done/4*100);
+    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:${prog}%"></div></div><span class="prog-pct">${prog}%</span></div></td><td>${approvalBadge(approval)}</td><td><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span>${score!==null?'<span style="font-size:11px;color:var(--ink3);"> /100</span>':''}</td></tr>`;
   }).join('');
 }
 
-/* ─── QUALITATIVE ───────────────────────────── */
-function renderQual(rows) {
-  const key = currentQual === 'pos' ? 'positive' : 'improvement';
-  const items = rows
-    .filter(r => r[key] && r[key].toLowerCase() !== 'nil')
-    .map(r => `<div class="qual-item"><div class="qual-text">${esc(r[key])}</div></div>`)
-    .join('');
-  document.getElementById('qualList').innerHTML = items ||
-    '<div class="qual-item"><div class="qual-text" style="color:var(--text3)">No feedback for this selection.</div></div>';
+/* ── STUDENT LIST ── */
+function renderStudentList(){
+  const q=(document.getElementById('studentSearch').value||'').toLowerCase();
+  const af=document.getElementById('approvalFilter').value;
+  const list=students.filter(s=>(!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q))&&(!af||getApproval(s.id)===af));
+  const tb=document.getElementById('studentTableBody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">&#128269;</div>No students match</div></td></tr>';return;}
+  tb.innerHTML=list.map((s,i)=>{
+    const weeks=progressMap[s.id]||{};
+    const wbtns=[1,2,3,4].map(w=>{
+      const wd=weeks[w],cls=wd?wd.status:'not-started';
+      const icon=cls==='completed'?'&#10003;':cls==='in-progress'?'&#8230;':String(w);
+      const note=wd&&wd.note&&wd.note.trim()?wd.note.substring(0,40):'';
+      return`<button class="week-btn ${cls}" title="Week ${w}: ${cls}${note?' | '+note:''}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})">${icon}</button>`;
+    }).join('');
+    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);">${s.register_number}</td><td style="font-size:12px;color:var(--ink3);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td><div class="week-btns">${wbtns}</div></td><td><select class="approval-select" onchange="saveApproval(${s.id},this.value)"><option value="pending" ${getApproval(s.id)==='pending'?'selected':''}>Pending</option><option value="approved" ${getApproval(s.id)==='approved'?'selected':''}>Approved</option><option value="needs-revision" ${getApproval(s.id)==='needs-revision'?'selected':''}>Needs Revision</option></select></td><td><button class="btn btn-outline btn-sm" onclick="openEvalModal(${s.id},'${esc(s.name)}','${esc(s.project_title)}')">&#9998; Score</button></td></tr>`;
+  }).join('');
 }
 
-function switchQual(mode) {
-  currentQual = mode;
-  document.getElementById('tabPos').className = 'qual-tab' + (mode === 'pos' ? ' active' : '');
-  document.getElementById('tabImp').className = 'qual-tab' + (mode === 'imp' ? ' active' : '');
-  if (selectedCollege) renderQual(getCollegeRows());
+/* ── PROGRESS TABLE ── */
+function renderProgressTable(){
+  const q=(document.getElementById('progressSearch').value||'').toLowerCase();
+  const list=students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
+  const tb=document.getElementById('progressTableBody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">&#128203;</div>No students found</div></td></tr>';return;}
+  tb.innerHTML=list.map((s,i)=>{
+    const weeks=progressMap[s.id]||{};
+    const wCells=[1,2,3,4].map(w=>{
+      const wd=weeks[w],cls=wd?wd.status:'not-started';
+      const note=wd&&wd.note&&wd.note.trim()?wd.note:'';
+      return`<td style="text-align:center;"><div class="prog-wk-wrap"><button class="week-btn ${cls}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})" style="margin:auto;" title="W${w}: ${cls}${note?' — '+note.substring(0,50):''}">${cls==='completed'?'&#10003;':cls==='in-progress'?'~':w}</button>${note?`<div class="prog-wk-note" title="${esc(note)}">&#128172; ${note.substring(0,14)}${note.length>14?'&hellip;':''}</div>`:'<div style="height:14px;"></div>'}</div></td>`;
+    }).join('');
+    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td>${wCells}<td>${weeksBadge(getWeeksDone(s.id))}</td></tr>`;
+  }).join('');
 }
 
-/* ─── DONUTS ────────────────────────────────── */
-function renderDonuts(m) {
-  const grid = document.getElementById('donutsGrid');
-  if (!m) { grid.innerHTML = '<div class="loading-state" style="grid-column:1/-1">Select a college.</div>'; return; }
-  const mets = [
-    { label:'Faculty',    val: m.faculty,   color:'#7eb3ff' },
-    { label:'Content',    val: m.content,   color:'#4ade9a' },
-    { label:'Operations', val: m.ops,       color:'#ffd166' },
-    { label:'Skill Dev',  val: m.skill,     color:'#f5a623' },
-  ];
-  grid.innerHTML = mets.map((mt, i) => `
-    <div class="donut-item">
-      <div class="donut-canvas-wrap"><canvas id="donut_${i}" width="56" height="56"></canvas></div>
-      <div><div class="donut-label">${mt.label}</div><div class="donut-pct">${mt.val.toFixed(1)}%</div></div>
-    </div>`).join('');
-  mets.forEach((mt, i) => {
-    if (donutInstances[i]) { donutInstances[i].destroy(); }
-    donutInstances[i] = new Chart(document.getElementById(`donut_${i}`).getContext('2d'), {
-      type: 'doughnut',
-      data: { datasets: [{ data: [mt.val, 100 - mt.val], backgroundColor: [mt.color, 'rgba(0,0,0,0.08)'], borderWidth: 0 }] },
-      options: { cutout: '72%', plugins: { legend: { display: false }, tooltip: { enabled: false } }, animation: { duration: 600 } }
-    });
+/* ── WEEK MODAL ── */
+const STATUS_CYCLE=['not-started','in-progress','completed'];
+const STATUS_LABEL={'not-started':'Not Started','in-progress':'In Progress','completed':'Completed'};
+const STATUS_ICON={'not-started':'&#9675;','in-progress':'&#9675;','completed':'&#10003;'};
+
+function openWeekModal(studentId,studentName,focusWeek){
+  currentWeekStudent={id:studentId,name:studentName};
+  document.getElementById('weekModalTitle').textContent=studentName;
+  const weeks=progressMap[studentId]||{};
+  weekDraft={};
+  [1,2,3,4].forEach(w=>{
+    const row=weeks[w];
+    weekDraft[w]={status:row?row.status:'not-started',note:row?(row.note||''):''};
   });
+  renderWeekCards(focusWeek);
+  document.getElementById('weekModal').classList.add('open');
+  setTimeout(()=>{const ta=document.getElementById('wk-ta-'+focusWeek);if(ta)ta.focus();},220);
 }
 
-/* ─── EXPORT CSV ────────────────────────────── */
-function exportCSV() {
-  if (!selectedCollege) return;
-  const rows = getCollegeRows();
-  const m    = calcMetrics(rows);
-  if (!m) return;
-  const mo     = getSelectedMonth();
-  const interp = getInterp(m.composite);
-  const header = ['College','Month','NPS Avg','Normalized NPS','Composite Score','Interpretation','Faculty %','Content %','Ops %','Skill %','Placement %','Responses'];
-  const data   = [[selectedCollege, mo, m.npsAvg.toFixed(2), m.normNps.toFixed(2), m.composite.toFixed(2), interp.label, m.faculty.toFixed(2), m.content.toFixed(2), m.ops.toFixed(2), m.skill.toFixed(2), m.placement.toFixed(2), m.totalResp]];
-  const csv = [header, ...data].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = `faceprep_${selectedCollege.replace(/\s+/g,'_')}.csv`;
-  a.click();
+function renderWeekCards(activeWeek){
+  const grid=document.getElementById('weekCardsGrid');
+  grid.innerHTML=[1,2,3,4].map(w=>{
+    const d=weekDraft[w];
+    const safeNote=d.note.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return`<div class="week-card wk-${d.status}" id="wk-card-${w}">
+      <div class="week-card-head wk-${d.status}">
+        <span class="week-card-label">Week ${w}${w===activeWeek?' &#9670;':''}</span>
+        <button class="wk-cycle-btn ${d.status}" id="wk-btn-${w}" onclick="cycleWeekStatus(${w},event)" title="Click to change status">
+          ${STATUS_ICON[d.status]} ${STATUS_LABEL[d.status]}
+        </button>
+      </div>
+      <div class="week-card-body">
+        <textarea class="week-textarea" id="wk-ta-${w}" placeholder="Week ${w} update: what was done, any blockers, next steps\u2026" oninput="weekDraft[${w}].note=this.value">${safeNote}</textarea>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function cycleWeekStatus(w,e){
+  if(e)e.stopPropagation();
+  const cur=weekDraft[w].status;
+  const next=STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur)+1)%3];
+  weekDraft[w].status=next;
+  const card=document.getElementById('wk-card-'+w);
+  const head=card.querySelector('.week-card-head');
+  const btn=document.getElementById('wk-btn-'+w);
+  card.className='week-card wk-'+next;
+  head.className='week-card-head wk-'+next;
+  btn.className='wk-cycle-btn '+next;
+  btn.innerHTML=STATUS_ICON[next]+' '+STATUS_LABEL[next];
+}
+
+async function saveAllWeeks(){
+  const btn=document.getElementById('saveWeekBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving&hellip;';
+  const sid=currentWeekStudent.id;
+  const existing=progressMap[sid]||{};
+  try{
+    for(const w of [1,2,3,4]){
+      const d=weekDraft[w];
+      const note=d.note.trim()||null;
+      const row=existing[w];
+      if(row){
+        await api.updateProgress(row.id,{status:d.status,note:note,updated_by:currentUser,updated_at:new Date().toISOString()});
+        row.status=d.status;row.note=note;
+      }else{
+        const res=await api.upsertProgress({student_id:sid,week_number:w,status:d.status,note:note,updated_by:currentUser});
+        if(!progressMap[sid])progressMap[sid]={};
+        progressMap[sid][w]=Array.isArray(res)?res[0]:res;
+      }
+    }
+    showToast('All 4 weeks saved!','success');
+    closeModal('weekModal');
+    renderStudentList();renderProgressTable();renderDashboard();
+    if(currentUser==='Admin'){adminProgressMap=progressMap;renderAdminTable();renderAdminStats();}
+  }catch(e){showToast('Error: '+e.message,'error');console.error(e);}
+  finally{btn.disabled=false;btn.innerHTML='Save All Weeks';}
+}
+
+/* ── APPROVAL ── */
+async function saveApproval(sid,status){
+  try{
+    const ex=approvalMap[sid];
+    if(ex){await api.updateApproval(ex.id,{status,approved_by:currentUser,approved_at:new Date().toISOString()});approvalMap[sid].status=status;}
+    else{const r=await api.upsertApproval({student_id:sid,status,approved_by:currentUser});approvalMap[sid]=Array.isArray(r)?r[0]:r;}
+    showToast('Approval updated!','success');renderDashboard();
+    if(currentUser==='Admin'){adminApprovalMap=approvalMap;renderAdminTable();renderAdminStats();}
+  }catch(e){showToast('Error: '+e.message,'error');}
+}
+
+/* ── EVAL TABLE ── */
+function renderEvalTable(){
+  const q=(document.getElementById('evalSearch').value||'').toLowerCase();
+  const list=students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
+  const tb=document.getElementById('evalTableBody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="10"><div class="empty-state"><div class="empty-icon">&#128202;</div>No students</div></td></tr>';return;}
+  tb.innerHTML=list.map((s,i)=>{
+    const e=evalMap[s.id];
+    const sc=(k)=>e?(e[k]!==null&&e[k]!==undefined?e[k]:'--'):'--';
+    const total=e?e.total_score:null;
+    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td style="text-align:center;">${sc('tech_quality')}</td><td style="text-align:center;">${sc('problem_fit')}</td><td style="text-align:center;">${sc('effort_ownership')}</td><td style="text-align:center;">${sc('presentation')}</td><td style="text-align:center;">${sc('practical_impact')}</td><td style="text-align:center;"><span class="score-display ${scoreClass(total)}">${total!==null?total:'--'}</span>${total!==null?'<span style="font-size:10px;color:var(--ink3);"> /100</span>':''}</td><td><button class="btn btn-primary btn-sm" onclick="openEvalModal(${s.id},'${esc(s.name)}','${esc(s.project_title)}')">&#9998; ${e?'Edit':'Score'}</button></td></tr>`;
+  }).join('');
+}
+
+/* ── EVAL MODAL ── */
+function openEvalModal(sid,sName,pTitle){
+  currentEvalStudent={id:sid,name:sName,project:pTitle};
+  document.getElementById('evalModalTitle').textContent=sName;
+  document.getElementById('evalModalSub').textContent=pTitle;
+  document.getElementById('evalStudentInfo').innerHTML=`<div class="info-item"><div class="info-label">Student Name</div><div class="info-value">${sName}</div></div><div class="info-item"><div class="info-label">Project</div><div class="info-value">${pTitle}</div></div>`;
+  const e=evalMap[sid];
+  document.getElementById('sc_tech').value=e?(e.tech_quality??''):'';
+  document.getElementById('sc_fit').value=e?(e.problem_fit??''):'';
+  document.getElementById('sc_effort').value=e?(e.effort_ownership??''):'';
+  document.getElementById('sc_pres').value=e?(e.presentation??''):'';
+  document.getElementById('sc_impact').value=e?(e.practical_impact??''):'';
+  document.getElementById('evalRemarks').value=e?(e.remarks||''):'';
+  ['sc_tech','sc_fit','sc_effort','sc_pres','sc_impact'].forEach(id=>{document.getElementById(id).classList.remove('over-limit');document.getElementById(id).style.borderColor='';});
+  calcTotal();
+  document.getElementById('evalModal').classList.add('open');
+}
+function calcTotal(){
+  const fields=[{id:'sc_tech',bar:'bar_tech'},{id:'sc_fit',bar:'bar_fit'},{id:'sc_effort',bar:'bar_effort'},{id:'sc_pres',bar:'bar_pres'},{id:'sc_impact',bar:'bar_impact'}];
+  let total=0;
+  fields.forEach(({id,bar})=>{
+    const inp=document.getElementById(id);let v=parseInt(inp.value);
+    if(isNaN(v)||v<0)v=0;
+    if(v>20){inp.classList.add('over-limit');setTimeout(()=>{inp.value=20;inp.classList.remove('over-limit');inp.style.borderColor='var(--green)';setTimeout(()=>inp.style.borderColor='',1000);calcTotal();},600);v=20;}
+    else{inp.classList.remove('over-limit');inp.style.borderColor='';}
+    total+=v;
+    const b=document.getElementById(bar);
+    if(b){b.style.width=(v/20*100)+'%';b.style.background=v>=16?'var(--green)':v>=10?'var(--accent)':v>=5?'var(--amber)':'var(--red)';}
+  });
+  const el=document.getElementById('scoreTotalDisplay');
+  el.textContent=total+' / 100';
+  el.style.color=total>=75?'var(--green)':total>=50?'var(--amber)':'var(--red)';
+}
+async function saveEvaluation(){
+  const btn=document.getElementById('saveEvalBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving&hellip;';
+  const g=(id)=>{const v=parseInt(document.getElementById(id).value);return isNaN(v)?0:Math.min(20,Math.max(0,v));};
+  const tech=g('sc_tech'),fit=g('sc_fit'),effort=g('sc_effort'),pres=g('sc_pres'),impact=g('sc_impact'),total=tech+fit+effort+pres+impact;
+  const sid=currentEvalStudent.id;
+  const data={student_id:sid,tech_quality:tech,problem_fit:fit,effort_ownership:effort,presentation:pres,practical_impact:impact,total_score:total,remarks:document.getElementById('evalRemarks').value,submitted_by:currentUser,submitted_at:new Date().toISOString()};
+  try{
+    const ex=evalMap[sid];
+    if(ex){await api.updateEval(ex.id,data);Object.assign(evalMap[sid],data);}
+    else{const r=await api.upsertEval(data);evalMap[sid]=Array.isArray(r)?r[0]:r;}
+    showToast('Evaluation saved!','success');closeModal('evalModal');
+    renderEvalTable();renderDashboard();renderStudentList();
+    if(currentUser==='Admin'){adminEvalMap=evalMap;renderAdminTable();renderAdminStats();}
+  }catch(e){showToast('Error: '+e.message,'error');}
+  finally{btn.disabled=false;btn.innerHTML='Save Evaluation';}
+}
+
+/* ── ADMIN ── */
+function setAdminTab(tab,btn){adminTab=tab;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAdminTable();renderAdminStats();}
+function renderAdminStats(){
+  const list=adminTab==='all'?allStudents:allStudents.filter(s=>s.mentor_assigned===adminTab);
+  const approved=list.filter(s=>(adminApprovalMap[s.id]?.status)==='approved').length;
+  const scored=list.filter(s=>adminEvalMap[s.id]).length;
+  const avg=scored>0?(list.reduce((sm,s)=>sm+(adminEvalMap[s.id]?.total_score||0),0)/scored).toFixed(1):'--';
+  document.getElementById('adminStatsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Students</div><div class="stat-value">${list.length}</div></div><div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div></div><div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div></div>`;
+}
+function renderAdminTable(){
+  const list=adminTab==='all'?allStudents:allStudents.filter(s=>s.mentor_assigned===adminTab);
+  const tb=document.getElementById('adminTableBody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="8"><div class="empty-state">No students</div></td></tr>';return;}
+  tb.innerHTML=list.map((s,i)=>{
+    const done=getWeeksDone(s.id,true),score=getScore(s.id,true),approval=getApproval(s.id,true);
+    const mc=s.mentor_assigned==='Aparna'?'var(--accent2)':s.mentor_assigned==='Arun Raj'?'var(--green)':'var(--amber)';
+    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td><span style="font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:99px;">${s.section||''}</span></td><td><span style="font-size:12px;font-weight:600;color:${mc};">${s.mentor_assigned}</span></td><td style="font-size:12px;color:var(--ink3);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td style="text-align:center;">${weeksBadge(done)}</td><td>${approvalBadge(approval)}</td><td style="text-align:center;"><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span></td></tr>`;
+  }).join('');
+}
+
+/* ── EXPORT CSV ── */
+function exportCSV(){
+  const list=adminTab==='all'?allStudents:allStudents.filter(s=>s.mentor_assigned===adminTab);
+  const rows=[['#','Name','Register No','Section','Course','Project Title','Mentor','Phone','Email',
+    'W1 Status','W1 Note','W2 Status','W2 Note','W3 Status','W3 Note','W4 Status','W4 Note',
+    'Tech Quality','Problem Fit','Effort','Presentation','Impact','Total Score','Approval']];
+  list.forEach((s,i)=>{
+    const wks=adminProgressMap[s.id]||{},e=adminEvalMap[s.id],a=adminApprovalMap[s.id];
+    rows.push([i+1,s.name,s.register_number,s.section||'',s.course,s.project_title,s.mentor_assigned,s.phone||'',s.email||'',
+      wks[1]?.status||'not-started',wks[1]?.note||'',
+      wks[2]?.status||'not-started',wks[2]?.note||'',
+      wks[3]?.status||'not-started',wks[3]?.note||'',
+      wks[4]?.status||'not-started',wks[4]?.note||'',
+      e?.tech_quality??'',e?.problem_fit??'',e?.effort_ownership??'',e?.presentation??'',e?.practical_impact??'',e?.total_score??'',
+      a?.status||'pending']);
+  });
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='students_'+adminTab+'_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();URL.revokeObjectURL(url);
+  showToast('CSV exported!','success');
+}
+
+/* ── UTILITIES ── */
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+let toastTimeout;
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  document.getElementById('toastDot').className='toast-dot '+type;
+  t.classList.add('show');clearTimeout(toastTimeout);
+  toastTimeout=setTimeout(()=>t.classList.remove('show'),3500);
 }
 </script>
 </body>
