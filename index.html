@@ -36,7 +36,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-siz
 .landing-btn{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--font-head);font-size:14px;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.15s;}
 .landing-btn:hover{background:var(--accent2);transform:translateY(-1px);}
 .landing-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-.college-count{text-align:center;font-size:12px;color:var(--ink3);margin-top:16px;}
 #loginScreen{min-height:100vh;display:none;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden;}
 #loginScreen.show{display:flex;}
 .login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:44px;width:100%;max-width:420px;animation:popIn 0.4s cubic-bezier(.22,1,.36,1);position:relative;z-index:1;box-shadow:0 8px 48px rgba(0,0,0,0.12);}
@@ -208,7 +207,6 @@ tbody tr:hover td{background:var(--surface);}
 <!-- LANDING -->
 <div id="landingScreen">
   <div class="landing-wrap">
-    <div class="landing-badge"><span class="landing-badge-dot"></span>Mini Project Tracker &middot; 2024&ndash;25</div>
     <div class="landing-title">College <span>Project</span><br>Tracker Portal</div>
     <div class="landing-sub">Select your institution to access the project tracking dashboard for mentors and students.</div>
     <div class="landing-card">
@@ -242,7 +240,6 @@ tbody tr:hover td{background:var(--surface);}
         <span class="college-select-icon">&#9662;</span>
       </div>
       <button class="landing-btn" id="goBtn" onclick="goToLogin()" disabled>Continue &rarr;</button>
-      <div class="college-count">22 institutions &middot; I BCA &mdash; A &amp; B sections</div>
     </div>
   </div>
 </div>
@@ -526,7 +523,6 @@ async function doLogin(){
   document.getElementById('userLabel').textContent=currentUser+' \u00b7 '+selectedCollegeName.split(' ')[0]+' '+selectedSection;
   document.getElementById('topbarCollege').textContent=selectedCollegeName+' \u2014 I BCA '+selectedSection;
 
-  /* ── ADMIN: show Admin View, hide mentor-only nav items ── */
   if(currentUser==='Admin'){
     document.getElementById('nav-admin').style.display='flex';
     document.getElementById('nav-students').style.display='none';
@@ -544,7 +540,6 @@ function doLogout(){
   document.getElementById('landingScreen').style.display='flex';
   document.getElementById('collegeSelect').value='';
   document.getElementById('goBtn').disabled=true;
-  /* Reset all nav items to default visibility */
   document.getElementById('nav-admin').style.display='none';
   document.getElementById('nav-students').style.display='flex';
   document.getElementById('nav-progress').style.display='flex';
@@ -581,7 +576,6 @@ async function initApp(){
     renderDashboard();renderStudentList();renderProgressTable();renderEvalTable();
     if(currentUser==='Admin'){
       renderAdminTable();renderAdminStats();
-      /* Auto-navigate Admin to Admin View panel */
       showPanel('admin',document.getElementById('nav-admin'));
     }
   }catch(e){
