@@ -6,7 +6,7 @@
 <title>Project Tracker Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f5f9;--bg2:#fff;--bg3:#eef0f6;--surface:#f0f2f8;--surface2:#e8eaf2;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--ink:#111827;--ink2:#374151;--ink3:#9ca3af;--accent:#6c63ff;--accent2:#5046e5;--accent-lt:rgba(108,99,255,0.1);--green:#16a34a;--green-lt:rgba(22,163,74,0.12);--amber:#d97706;--amber-lt:rgba(217,119,6,0.12);--red:#dc2626;--red-lt:rgba(220,38,38,0.12);--blue:#2563eb;--blue-lt:rgba(37,99,235,0.12);--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--radius:14px;--radius-sm:8px;--shadow:0 4px 24px rgba(0,0,0,0.08);}
+:root{--bg:#f4f5f9;--bg2:#fff;--bg3:#eef0f6;--surface:#f0f2f8;--surface2:#e8eaf2;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--ink:#111827;--ink2:#374151;--ink3:#9ca3af;--accent:#6c63ff;--accent2:#5046e5;--accent-lt:rgba(108,99,255,0.1);--green:#16a34a;--green-lt:rgba(22,163,74,0.12);--amber:#d97706;--amber-lt:rgba(217,119,6,0.12);--red:#dc2626;--red-lt:rgba(220,38,38,0.12);--blue:#2563eb;--blue-lt:rgba(37,99,235,0.12);--peer:#0891b2;--peer-lt:rgba(8,145,178,0.12);--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--radius:14px;--radius-sm:8px;--shadow:0 4px 24px rgba(0,0,0,0.08);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;min-height:100vh;overflow-x:hidden;}
@@ -22,8 +22,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-siz
 #landingScreen::before{content:'';position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(108,99,255,0.09) 0%,transparent 70%);top:-150px;right:-150px;pointer-events:none;}
 #landingScreen::after{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(22,163,74,0.07) 0%,transparent 70%);bottom:-100px;left:-100px;pointer-events:none;}
 .landing-wrap{width:100%;max-width:520px;padding:24px;position:relative;z-index:1;animation:fadeUp 0.5s cubic-bezier(.22,1,.36,1);}
-.landing-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:var(--accent-lt);border:1px solid rgba(108,99,255,0.25);border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:24px;}
-.landing-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
 .landing-title{font-family:var(--font-head);font-size:38px;font-weight:800;color:var(--ink);line-height:1.1;margin-bottom:8px;letter-spacing:-0.02em;}
 .landing-title span{color:var(--accent2);}
 .landing-sub{font-size:14px;color:var(--ink3);margin-bottom:32px;line-height:1.6;}
@@ -103,6 +101,7 @@ tbody tr:hover td{background:var(--surface);}
 .badge-red{background:var(--red-lt);color:var(--red);}
 .badge-blue{background:var(--blue-lt);color:var(--blue);}
 .badge-grey{background:var(--surface2);color:var(--ink3);border:1px solid var(--border2);}
+.badge-peer{background:var(--peer-lt);color:var(--peer);}
 .week-btns{display:flex;gap:5px;}
 .week-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:var(--surface);color:var(--ink3);font-size:10px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-family:var(--font-body);}
 .week-btn:hover{border-color:var(--accent);}
@@ -197,7 +196,33 @@ tbody tr:hover td{background:var(--surface);}
 #loadingOverlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
 #loadingOverlay .spinner{width:36px;height:36px;border-width:3px;}
 #loadingOverlay p{font-size:13px;color:var(--ink3);}
-@media(max-width:768px){.main-wrap{grid-template-columns:1fr;}.sidebar{display:none;}.stats-row{grid-template-columns:1fr 1fr;}.content{padding:16px;}.score-grid{grid-template-columns:1fr;}.week-cards-grid{grid-template-columns:1fr 1fr;}.landing-title{font-size:28px;}}
+
+/* ── PEER REVIEW STYLES ── */
+.peer-section-divider{display:flex;align-items:center;gap:10px;margin:20px 0 14px;}
+.peer-section-divider::before,.peer-section-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.peer-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--peer);white-space:nowrap;}
+.peer-review-card{background:linear-gradient(135deg,rgba(8,145,178,0.06) 0%,rgba(8,145,178,0.03) 100%);border:1.5px solid rgba(8,145,178,0.2);border-radius:12px;padding:16px 18px;margin-bottom:16px;}
+.peer-review-card .peer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.peer-review-card .peer-title{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--peer);}
+.peer-review-card .peer-count{font-size:11px;color:var(--ink3);background:var(--peer-lt);padding:2px 9px;border-radius:99px;font-weight:600;}
+.peer-criteria-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.peer-criterion{text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 6px;}
+.peer-criterion .pc-label{font-size:10px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.peer-criterion .pc-val{font-family:var(--font-head);font-size:18px;font-weight:800;}
+.peer-criterion .pc-max{font-size:10px;color:var(--ink3);}
+.peer-avg-total{display:flex;align-items:center;justify-content:space-between;background:var(--peer-lt);border:1px solid rgba(8,145,178,0.25);border-radius:8px;padding:12px 16px;margin-top:12px;}
+.peer-avg-label{font-size:12px;font-weight:600;color:var(--peer);}
+.peer-avg-val{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--peer);}
+.peer-avg-sub{font-size:10px;color:var(--ink3);}
+.peer-no-data{text-align:center;padding:20px;color:var(--ink3);font-size:12px;}
+.peer-no-data .peer-no-icon{font-size:24px;margin-bottom:6px;}
+.peer-loading{text-align:center;padding:16px;color:var(--ink3);font-size:12px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.peer-score-cell{display:flex;align-items:center;gap:5px;}
+.peer-score-num{font-family:var(--font-head);font-size:14px;font-weight:800;color:var(--peer);}
+.peer-score-sub{font-size:10px;color:var(--ink3);}
+.peer-info-banner{display:flex;align-items:center;gap:8px;background:var(--peer-lt);border:1px solid rgba(8,145,178,0.2);border-radius:8px;padding:9px 14px;margin-bottom:16px;font-size:12px;color:var(--peer);font-weight:500;}
+
+@media(max-width:768px){.main-wrap{grid-template-columns:1fr;}.sidebar{display:none;}.stats-row{grid-template-columns:1fr 1fr;}.content{padding:16px;}.score-grid{grid-template-columns:1fr;}.week-cards-grid{grid-template-columns:1fr 1fr;}.peer-criteria-grid{grid-template-columns:repeat(3,1fr);}.landing-title{font-size:28px;}}
 </style>
 </head>
 <body>
@@ -307,7 +332,7 @@ tbody tr:hover td{background:var(--surface);}
         <div class="card">
           <div class="card-title">&#128203; My Students &mdash; Quick Overview</div>
           <div class="table-wrap"><table>
-            <thead><tr><th>#</th><th>Student Name</th><th>Project Title</th><th>Progress</th><th>Approval</th><th>Score</th></tr></thead>
+            <thead><tr><th>#</th><th>Student Name</th><th>Project Title</th><th>Progress</th><th>Approval</th><th>Mentor Score</th><th>Peer Avg</th></tr></thead>
             <tbody id="dashTableBody"></tbody>
           </table></div>
         </div>
@@ -339,7 +364,7 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Track Progress</div>
           <div class="page-title">Weekly Progress</div>
-          <div class="page-sub">Click any week button to open the full editor &mdash; each week stores its own status &amp; note separately in Supabase</div>
+          <div class="page-sub">Click any week button to open the full editor</div>
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="progressSearch" placeholder="Search student&hellip;" oninput="renderProgressTable()"></div>
@@ -352,7 +377,6 @@ tbody tr:hover td{background:var(--surface);}
           <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span style="width:14px;height:14px;border-radius:3px;background:var(--green-lt);border:1px solid var(--green);display:inline-block;"></span>Completed</div>
           <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span style="width:14px;height:14px;border-radius:3px;background:var(--amber-lt);border:1px solid var(--amber);display:inline-block;"></span>In Progress</div>
           <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span style="width:14px;height:14px;border-radius:3px;background:var(--surface);border:1px solid var(--border2);display:inline-block;"></span>Not Started</div>
-          <div style="font-size:12px;color:var(--ink3);">&#128172; = has note &middot; click week to edit</div>
         </div>
       </div>
 
@@ -361,13 +385,13 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Mentor Evaluation</div>
           <div class="page-title">Score Students</div>
-          <div class="page-sub">Each criterion scored out of 20 &mdash; Total out of 100</div>
+          <div class="page-sub">Mentor scores (out of 100) &amp; Peer Review averages side by side</div>
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="evalSearch" placeholder="Search student&hellip;" oninput="renderEvalTable()"></div>
         </div>
         <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
-          <thead><tr><th>#</th><th>Name</th><th>Project</th><th>Tech</th><th>Fit</th><th>Effort</th><th>Presentation</th><th>Impact</th><th>Total</th><th>Action</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Project</th><th>Tech</th><th>Fit</th><th>Effort</th><th>Presentation</th><th>Impact</th><th>Mentor /100</th><th title="Average from Peer Review System">&#128101; Peer Avg</th><th>Action</th></tr></thead>
           <tbody id="evalTableBody"></tbody>
         </table></div></div>
       </div>
@@ -389,7 +413,7 @@ tbody tr:hover td{background:var(--surface);}
         </div>
         <div class="stats-row" id="adminStatsRow" style="grid-template-columns:repeat(3,1fr);"></div>
         <div class="card" style="padding:0;overflow:hidden;margin-top:16px;"><div class="table-wrap"><table>
-          <thead><tr><th>#</th><th>Name</th><th>Section</th><th>Mentor</th><th>Project</th><th>Weeks Done</th><th>Approval</th><th>Score /100</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Section</th><th>Mentor</th><th>Project</th><th>Weeks Done</th><th>Approval</th><th>Mentor /100</th><th>&#128101; Peer Avg</th></tr></thead>
           <tbody id="adminTableBody"></tbody>
         </table></div></div>
       </div>
@@ -404,14 +428,14 @@ tbody tr:hover td{background:var(--surface);}
     <div class="modal-header">
       <div>
         <div class="modal-title" id="weekModalTitle">Weekly Progress</div>
-        <div class="modal-sub" id="weekModalSub">Each card is stored as a separate row — status &amp; note are independent per week</div>
+        <div class="modal-sub" id="weekModalSub">Status &amp; note stored per week</div>
       </div>
       <button class="modal-close" onclick="closeModal('weekModal')">&times;</button>
     </div>
     <div class="modal-body">
       <div class="week-cards-grid" id="weekCardsGrid"></div>
       <div style="background:var(--blue-lt);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--blue);font-weight:500;margin-top:4px;">
-        &#128161; Click the status badge on any card to cycle: Not Started &rarr; In Progress &rarr; Completed. Add notes per week. Click <strong>Save All Weeks</strong> to persist all 4 weeks at once.
+        &#128161; Click the status badge to cycle: Not Started &rarr; In Progress &rarr; Completed. Click <strong>Save All Weeks</strong> to persist.
       </div>
     </div>
     <div class="modal-footer">
@@ -440,8 +464,16 @@ tbody tr:hover td{background:var(--surface);}
         <div class="score-item"><div class="score-item-label">Presentation <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_pres" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_pres" style="width:0%"></div></div></div>
         <div class="score-item" style="grid-column:1/-1;"><div class="score-item-label">Practical Impact <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_impact" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_impact" style="width:0%"></div></div></div>
       </div>
-      <div class="score-total-row"><div><div class="score-total-label">Total Score</div><div style="font-size:11px;color:var(--ink3);margin-top:2px;">Sum of all 5 criteria</div></div><div class="score-total-val" id="scoreTotalDisplay">0 / 100</div></div>
+      <div class="score-total-row"><div><div class="score-total-label">Mentor Total Score</div><div style="font-size:11px;color:var(--ink3);margin-top:2px;">Sum of all 5 criteria</div></div><div class="score-total-val" id="scoreTotalDisplay">0 / 100</div></div>
       <div class="form-group" style="margin-top:14px;margin-bottom:0;"><label class="form-label">Remarks (optional)</label><textarea class="form-textarea" id="evalRemarks" placeholder="Add evaluation remarks, strengths, areas for improvement&hellip;"></textarea></div>
+
+      <!-- PEER REVIEW SECTION -->
+      <div class="peer-section-divider">
+        <span class="peer-section-title">&#128101; Peer Review Scores</span>
+      </div>
+      <div id="peerReviewSection">
+        <div class="peer-loading"><div class="spinner" style="width:14px;height:14px;border-width:2px;"></div> Loading peer reviews&hellip;</div>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('evalModal')">Cancel</button>
@@ -453,420 +485,781 @@ tbody tr:hover td{background:var(--surface);}
 <div class="toast" id="toast"><span class="toast-dot success" id="toastDot"></span><span id="toastMsg">Saved!</span></div>
 
 <script>
-/* ── CONFIG ── */
-const SUPABASE_URL='https://qjwbndrgzvboszfzrcuy.supabase.co';
-const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2JuZHJnenZib3N6ZnpyY3V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NTA3MzIsImV4cCI6MjA5NjEyNjczMn0.x-su_5f_XQ9_ql7iw3Aa_4E4ww9SJIqRGVdTHo6zSpE';
-const PINS={'Aparna':'4827','Arun Raj':'3159','Saral':'7634','Admin':'9201'};
-const COLLEGE_NAMES={'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science','terf':"TERF's College of Arts and Science",'sst':'Sree Saraswathi Thyagaraja College','tjs':'TJS College of Arts and Science','bharathidasan':'Bharathidasan College of Arts & Science','nagarathinam':'Nagarathinam Angalammal Arts & Science College','vinayaga':"Vinayaga Mission's Research Foundation School of Arts & Science",'amaraavathi':'Sri Amaraavathi College of Arts & Science','takshashila':'Takshashila University','studyworld':'Study World Group of Institution','rathinam':'Rathinam College of Arts & Science','niche':'Noorul Islam Centre for Higher Education (NICHE)','amet':'AMET University','joy':'Joy University','sasurie':'Sasurie College of Arts and Science','alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)','svyasa':'S-VYASA University','asb':'Asian School of Business'};
+/* ══════════════════════════════════════════════
+   CONFIG — Two Supabase instances
+   ══════════════════════════════════════════════ */
+// Tracker DB (project_tracker portal)
+const TRACKER_URL = 'https://qjwbndrgzvboszfzrcuy.supabase.co';
+const TRACKER_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2JuZHJnenZib3N6ZnpyY3V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NTA3MzIsImV4cCI6MjA5NjEyNjczMn0.x-su_5f_XQ9_ql7iw3Aa_4E4ww9SJIqRGVdTHo6zSpE';
 
-/* ── STATE ── */
-let selectedCollegeKey=null,selectedCollegeName=null,selectedSection=null,selectedRole=null,currentUser=null;
-let students=[],allStudents=[];
-let progressMap={},evalMap={},approvalMap={};
-let adminProgressMap={},adminEvalMap={},adminApprovalMap={};
-let currentWeekStudent=null,currentEvalStudent=null,adminTab='all';
-let weekDraft={};
+// Peer Review DB (peer review system)
+const PEER_URL = 'https://zykmcumlzhucnvxqhpgm.supabase.co';
+const PEER_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5a21jdW1semh1Y252eHFocGdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NzE5MDYsImV4cCI6MjA5NTM0NzkwNn0.kqUgSpGFSwMXpHkWRihhVJXDtVfl0tGdU24POxmXHWc';
 
-/* ── SUPABASE ── */
-async function sb(path,method='GET',body=null){
-  const h={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Accept':'application/json'};
-  if(method==='POST'||method==='PATCH') h['Prefer']='return=representation';
-  const opts={method,headers:h};
-  if(body) opts.body=JSON.stringify(body);
-  const res=await fetch(SUPABASE_URL+'/rest/v1/'+path,opts);
-  const text=await res.text();
-  if(!res.ok) throw new Error(text||'Request failed: '+res.status);
-  return text?JSON.parse(text):[];
-}
-const api={
-  students:(c,s)=>sb('students?college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&order=id'),
-  myStudents:(c,s,m)=>sb('students?college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&mentor_assigned=eq.'+encodeURIComponent(m)+'&order=id'),
-  progress:(ids)=>sb('weekly_progress?student_id=in.('+ids.join(',') +')'),
-  evaluations:(ids)=>sb('mentor_evaluation?student_id=in.('+ids.join(',') +')'),
-  approvals:(ids)=>sb('project_approval?student_id=in.('+ids.join(',') +')'),
-  upsertProgress:(d)=>sb('weekly_progress','POST',d),
-  upsertEval:(d)=>sb('mentor_evaluation','POST',d),
-  upsertApproval:(d)=>sb('project_approval','POST',d),
-  updateProgress:(id,d)=>sb('weekly_progress?id=eq.'+id,'PATCH',d),
-  updateEval:(id,d)=>sb('mentor_evaluation?id=eq.'+id,'PATCH',d),
-  updateApproval:(id,d)=>sb('project_approval?id=eq.'+id,'PATCH',d),
+const PINS = {'Aparna':'4827','Arun Raj':'3159','Saral':'7634','Admin':'9201'};
+const COLLEGE_NAMES = {
+  'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",
+  'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science',
+  'terf':"TERF's College of Arts and Science",'sst':'Sree Saraswathi Thyagaraja College',
+  'tjs':'TJS College of Arts and Science','bharathidasan':'Bharathidasan College of Arts & Science',
+  'nagarathinam':'Nagarathinam Angalammal Arts & Science College',
+  'vinayaga':"Vinayaga Mission's Research Foundation School of Arts & Science",
+  'amaraavathi':'Sri Amaraavathi College of Arts & Science','takshashila':'Takshashila University',
+  'studyworld':'Study World Group of Institution','rathinam':'Rathinam College of Arts & Science',
+  'niche':'Noorul Islam Centre for Higher Education (NICHE)','amet':'AMET University',
+  'joy':'Joy University','sasurie':'Sasurie College of Arts and Science',
+  'alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)',
+  'svyasa':'S-VYASA University','asb':'Asian School of Business'
 };
 
-/* ── LANDING ── */
-function onCollegeChange(){const v=document.getElementById('collegeSelect').value;document.getElementById('goBtn').disabled=!v;selectedCollegeKey=v||null;}
-function goToLogin(){
-  if(!selectedCollegeKey)return;
-  selectedCollegeName=COLLEGE_NAMES[selectedCollegeKey];
-  document.getElementById('loginCollegeName').textContent=selectedCollegeName;
-  document.getElementById('loginScreen').classList.add('show');
-  document.getElementById('landingScreen').style.display='none';
-  selectedSection=null;selectedRole=null;
-  document.getElementById('pinInput').value='';
-  document.getElementById('loginBtn').disabled=true;
-  document.getElementById('loginError').textContent='';
-  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('selected'));
+/* ══════════════════════════════════════════════
+   STATE
+   ══════════════════════════════════════════════ */
+let selectedCollegeKey=null, selectedCollegeName=null, selectedSection=null, selectedRole=null, currentUser=null;
+let students=[], allStudents=[];
+let progressMap={}, evalMap={}, approvalMap={};
+let adminProgressMap={}, adminEvalMap={}, adminApprovalMap={};
+let currentWeekStudent=null, currentEvalStudent=null, adminTab='all';
+let weekDraft={};
+
+// Peer review data: { register_number -> { count, clarity, innovation, execution, usability, overall, avg } }
+let peerMap = {};
+let adminPeerMap = {};
+
+/* ══════════════════════════════════════════════
+   SUPABASE HELPERS
+   ══════════════════════════════════════════════ */
+async function sbReq(baseUrl, key, path, method='GET', body=null) {
+  const h = {
+    'apikey': key,
+    'Authorization': 'Bearer ' + key,
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  };
+  if (method === 'POST' || method === 'PATCH') h['Prefer'] = 'return=representation';
+  const opts = {method, headers: h};
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(baseUrl + '/rest/v1/' + path, opts);
+  const text = await res.text();
+  if (!res.ok) throw new Error(text || 'Request failed: ' + res.status);
+  return text ? JSON.parse(text) : [];
 }
-function backToLanding(){document.getElementById('loginScreen').classList.remove('show');document.getElementById('landingScreen').style.display='flex';}
 
-/* ── LOGIN ── */
-function selectSection(btn){document.querySelectorAll('[data-section]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedSection=btn.getAttribute('data-section');checkLoginReady();}
-function selectRole(btn){document.querySelectorAll('[data-role]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedRole=btn.getAttribute('data-role');document.getElementById('loginError').textContent='';checkLoginReady();}
-function onPinInput(){document.getElementById('loginError').textContent='';document.getElementById('pinInput').classList.remove('error');checkLoginReady();}
-function checkLoginReady(){const p=document.getElementById('pinInput').value;document.getElementById('loginBtn').disabled=!(selectedSection&&selectedRole&&p.length===4);}
-async function doLogin(){
-  const pin=document.getElementById('pinInput').value;
-  if(!selectedSection){showLoginError('Please select a section');return;}
-  if(!selectedRole){showLoginError('Please select a role');return;}
-  if(PINS[selectedRole]!==pin){showLoginError('Incorrect PIN.');document.getElementById('pinInput').classList.add('error');document.getElementById('pinInput').value='';checkLoginReady();return;}
-  currentUser=selectedRole;
-  document.getElementById('loginScreen').classList.remove('show');
-  document.getElementById('userLabel').textContent=currentUser+' \u00b7 '+selectedCollegeName.split(' ')[0]+' '+selectedSection;
-  document.getElementById('topbarCollege').textContent=selectedCollegeName+' \u2014 I BCA '+selectedSection;
+// Tracker DB shorthand
+const sb = (path, method='GET', body=null) => sbReq(TRACKER_URL, TRACKER_KEY, path, method, body);
+// Peer DB shorthand
+const sbPeer = (path, method='GET', body=null) => sbReq(PEER_URL, PEER_KEY, path, method, body);
 
-  if(currentUser==='Admin'){
-    document.getElementById('nav-admin').style.display='flex';
-    document.getElementById('nav-students').style.display='none';
-    document.getElementById('nav-progress').style.display='none';
-    document.getElementById('nav-evaluation').style.display='none';
+const api = {
+  students:    (c,s)   => sb('students?college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&order=id'),
+  myStudents:  (c,s,m) => sb('students?college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&mentor_assigned=eq.'+encodeURIComponent(m)+'&order=id'),
+  progress:    (ids)   => sb('weekly_progress?student_id=in.('+ids.join(',')+')'),
+  evaluations: (ids)   => sb('mentor_evaluation?student_id=in.('+ids.join(',')+')'),
+  approvals:   (ids)   => sb('project_approval?student_id=in.('+ids.join(',')+')'),
+  upsertProgress: (d)  => sb('weekly_progress','POST',d),
+  upsertEval:  (d)     => sb('mentor_evaluation','POST',d),
+  upsertApproval: (d)  => sb('project_approval','POST',d),
+  updateProgress: (id,d) => sb('weekly_progress?id=eq.'+id,'PATCH',d),
+  updateEval:  (id,d)  => sb('mentor_evaluation?id=eq.'+id,'PATCH',d),
+  updateApproval: (id,d) => sb('project_approval?id=eq.'+id,'PATCH',d),
+};
+
+/* ══════════════════════════════════════════════
+   PEER REVIEW DATA FETCHING
+   Matches students by register_number.
+   Pulls from peer DB: students table (for reg numbers) + reviews table.
+   ══════════════════════════════════════════════ */
+async function loadPeerReviews(studentList) {
+  if (!studentList || !studentList.length) return {};
+  try {
+    // Get peer student records for this college (to find their register_numbers)
+    const peerStudents = await sbPeer(
+      'students?college=eq.' + encodeURIComponent(selectedCollegeName) + '&select=register_number,id'
+    );
+    if (!peerStudents || !peerStudents.length) return {};
+
+    // Build set of register_numbers from tracker students for quick lookup
+    const trackerRegs = new Set(studentList.map(s => s.register_number));
+
+    // Find matching peer students
+    const matchedPeerRegs = peerStudents
+      .filter(ps => trackerRegs.has(ps.register_number))
+      .map(ps => ps.register_number);
+
+    if (!matchedPeerRegs.length) return {};
+
+    // Fetch reviews for these register_numbers
+    const reviews = await sbPeer(
+      'reviews?project_reg=in.(' + matchedPeerRegs.map(r => encodeURIComponent(r)).join(',') + ')' +
+      '&select=project_reg,clarity,innovation,execution,usability,overall'
+    );
+
+    if (!reviews || !reviews.length) return {};
+
+    // Aggregate by register_number
+    const map = {};
+    reviews.forEach(r => {
+      if (!map[r.project_reg]) {
+        map[r.project_reg] = { count:0, clarity:0, innovation:0, execution:0, usability:0, overall:0 };
+      }
+      const m = map[r.project_reg];
+      m.count++;
+      m.clarity    += r.clarity    || 0;
+      m.innovation += r.innovation || 0;
+      m.execution  += r.execution  || 0;
+      m.usability  += r.usability  || 0;
+      m.overall    += r.overall    || 0;
+    });
+
+    // Compute averages
+    Object.keys(map).forEach(reg => {
+      const m = map[reg];
+      const n = m.count;
+      m.avgClarity    = +(m.clarity    / n).toFixed(1);
+      m.avgInnovation = +(m.innovation / n).toFixed(1);
+      m.avgExecution  = +(m.execution  / n).toFixed(1);
+      m.avgUsability  = +(m.usability  / n).toFixed(1);
+      m.avgOverall    = +(m.overall    / n).toFixed(1);
+      // Grand average across 5 criteria (each /10), displayed as X/10
+      m.grandAvg = +((m.avgClarity + m.avgInnovation + m.avgExecution + m.avgUsability + m.avgOverall) / 5).toFixed(1);
+    });
+
+    return map;
+  } catch(e) {
+    console.warn('Peer review load failed:', e.message);
+    return {};
   }
+}
 
+/* ══════════════════════════════════════════════
+   LANDING
+   ══════════════════════════════════════════════ */
+function onCollegeChange() {
+  const v = document.getElementById('collegeSelect').value;
+  document.getElementById('goBtn').disabled = !v;
+  selectedCollegeKey = v || null;
+}
+function goToLogin() {
+  if (!selectedCollegeKey) return;
+  selectedCollegeName = COLLEGE_NAMES[selectedCollegeKey];
+  document.getElementById('loginCollegeName').textContent = selectedCollegeName;
+  document.getElementById('loginScreen').classList.add('show');
+  document.getElementById('landingScreen').style.display = 'none';
+  selectedSection = null; selectedRole = null;
+  document.getElementById('pinInput').value = '';
+  document.getElementById('loginBtn').disabled = true;
+  document.getElementById('loginError').textContent = '';
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+}
+function backToLanding() {
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('landingScreen').style.display = 'flex';
+}
+
+/* ══════════════════════════════════════════════
+   LOGIN
+   ══════════════════════════════════════════════ */
+function selectSection(btn) {
+  document.querySelectorAll('[data-section]').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedSection = btn.getAttribute('data-section');
+  checkLoginReady();
+}
+function selectRole(btn) {
+  document.querySelectorAll('[data-role]').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedRole = btn.getAttribute('data-role');
+  document.getElementById('loginError').textContent = '';
+  checkLoginReady();
+}
+function onPinInput() {
+  document.getElementById('loginError').textContent = '';
+  document.getElementById('pinInput').classList.remove('error');
+  checkLoginReady();
+}
+function checkLoginReady() {
+  const p = document.getElementById('pinInput').value;
+  document.getElementById('loginBtn').disabled = !(selectedSection && selectedRole && p.length === 4);
+}
+async function doLogin() {
+  const pin = document.getElementById('pinInput').value;
+  if (!selectedSection) { showLoginError('Please select a section'); return; }
+  if (!selectedRole)    { showLoginError('Please select a role');    return; }
+  if (PINS[selectedRole] !== pin) {
+    showLoginError('Incorrect PIN.');
+    document.getElementById('pinInput').classList.add('error');
+    document.getElementById('pinInput').value = '';
+    checkLoginReady();
+    return;
+  }
+  currentUser = selectedRole;
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('userLabel').textContent = currentUser + ' · ' + selectedCollegeName.split(' ')[0] + ' ' + selectedSection;
+  document.getElementById('topbarCollege').textContent = selectedCollegeName + ' — I BCA ' + selectedSection;
+
+  if (currentUser === 'Admin') {
+    document.getElementById('nav-admin').style.display = 'flex';
+    document.getElementById('nav-students').style.display = 'none';
+    document.getElementById('nav-progress').style.display = 'none';
+    document.getElementById('nav-evaluation').style.display = 'none';
+  }
   await initApp();
 }
-function showLoginError(m){document.getElementById('loginError').textContent=m;}
-function doLogout(){
-  currentUser=null;students=[];allStudents=[];progressMap={};evalMap={};approvalMap={};
-  selectedRole=null;selectedSection=null;
-  document.getElementById('appShell').style.display='none';
-  document.getElementById('landingScreen').style.display='flex';
-  document.getElementById('collegeSelect').value='';
-  document.getElementById('goBtn').disabled=true;
-  document.getElementById('nav-admin').style.display='none';
-  document.getElementById('nav-students').style.display='flex';
-  document.getElementById('nav-progress').style.display='flex';
-  document.getElementById('nav-evaluation').style.display='flex';
-  showPanel('dashboard',document.getElementById('nav-dashboard'));
+function showLoginError(m) { document.getElementById('loginError').textContent = m; }
+function doLogout() {
+  currentUser = null; students = []; allStudents = [];
+  progressMap = {}; evalMap = {}; approvalMap = {};
+  peerMap = {}; adminPeerMap = {};
+  selectedRole = null; selectedSection = null;
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('landingScreen').style.display = 'flex';
+  document.getElementById('collegeSelect').value = '';
+  document.getElementById('goBtn').disabled = true;
+  document.getElementById('nav-admin').style.display = 'none';
+  document.getElementById('nav-students').style.display = 'flex';
+  document.getElementById('nav-progress').style.display = 'flex';
+  document.getElementById('nav-evaluation').style.display = 'flex';
+  showPanel('dashboard', document.getElementById('nav-dashboard'));
 }
 
-/* ── INIT ── */
-async function initApp(){
-  const ol=document.getElementById('loadingOverlay');
-  document.getElementById('loadingMsg').textContent='Loading students\u2026';
-  ol.style.display='flex';
-  try{
-    const col=selectedCollegeName,sec='I BCA - '+selectedSection;
-    if(currentUser==='Admin'){
-      const[sA,sB]=await Promise.all([api.students(col,'I BCA - A'),api.students(col,'I BCA - B')]);
-      allStudents=[...sA,...sB];students=allStudents;
-    }else{
-      [students,allStudents]=await Promise.all([api.myStudents(col,sec,currentUser),api.students(col,sec)]);
+/* ══════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════ */
+async function initApp() {
+  const ol = document.getElementById('loadingOverlay');
+  document.getElementById('loadingMsg').textContent = 'Loading students…';
+  ol.style.display = 'flex';
+  try {
+    const col = selectedCollegeName, sec = 'I BCA - ' + selectedSection;
+    if (currentUser === 'Admin') {
+      const [sA, sB] = await Promise.all([api.students(col, 'I BCA - A'), api.students(col, 'I BCA - B')]);
+      allStudents = [...sA, ...sB];
+      students = allStudents;
+    } else {
+      [students, allStudents] = await Promise.all([
+        api.myStudents(col, sec, currentUser),
+        api.students(col, sec)
+      ]);
     }
-    document.getElementById('navStudentCount').textContent=students.length;
-    if(students.length>0){
-      const ids=students.map(s=>s.id);
-      const[prog,evals,apprs]=await Promise.all([api.progress(ids),api.evaluations(ids),api.approvals(ids)]);
-      buildMaps(prog,evals,apprs,false);
+    document.getElementById('navStudentCount').textContent = students.length;
+
+    document.getElementById('loadingMsg').textContent = 'Loading evaluations…';
+    if (students.length > 0) {
+      const ids = students.map(s => s.id);
+      const [prog, evals, apprs] = await Promise.all([
+        api.progress(ids), api.evaluations(ids), api.approvals(ids)
+      ]);
+      buildMaps(prog, evals, apprs, false);
     }
-    if(currentUser==='Admin'&&allStudents.length>0){
-      const ids=allStudents.map(s=>s.id);
-      const[prog,evals,apprs]=await Promise.all([api.progress(ids),api.evaluations(ids),api.approvals(ids)]);
-      buildMaps(prog,evals,apprs,true);
+
+    if (currentUser === 'Admin' && allStudents.length > 0) {
+      const ids = allStudents.map(s => s.id);
+      const [prog, evals, apprs] = await Promise.all([
+        api.progress(ids), api.evaluations(ids), api.approvals(ids)
+      ]);
+      buildMaps(prog, evals, apprs, true);
     }
-    ol.style.display='none';
-    document.getElementById('appShell').style.display='block';
-    renderDashboard();renderStudentList();renderProgressTable();renderEvalTable();
-    if(currentUser==='Admin'){
-      renderAdminTable();renderAdminStats();
-      showPanel('admin',document.getElementById('nav-admin'));
+
+    document.getElementById('loadingMsg').textContent = 'Loading peer reviews…';
+    // Load peer review data for all students (non-admin uses students list, admin uses allStudents)
+    const peerTarget = currentUser === 'Admin' ? allStudents : students;
+    peerMap = await loadPeerReviews(peerTarget);
+    if (currentUser === 'Admin') adminPeerMap = peerMap;
+
+    ol.style.display = 'none';
+    document.getElementById('appShell').style.display = 'block';
+    renderDashboard(); renderStudentList(); renderProgressTable(); renderEvalTable();
+
+    if (currentUser === 'Admin') {
+      adminProgressMap = progressMap; adminEvalMap = evalMap; adminApprovalMap = approvalMap;
+      renderAdminTable(); renderAdminStats();
+      showPanel('admin', document.getElementById('nav-admin'));
     }
-  }catch(e){
-    ol.style.display='none';
-    document.getElementById('appShell').style.display='block';
-    showToast('Error: '+e.message,'error');
+  } catch(e) {
+    ol.style.display = 'none';
+    document.getElementById('appShell').style.display = 'block';
+    showToast('Error: ' + e.message, 'error');
     console.error(e);
   }
 }
 
-function buildMaps(prog,evals,apprs,isAdmin){
-  const pm={},em={},am={};
-  prog.forEach(p=>{
-    if(!pm[p.student_id]) pm[p.student_id]={};
-    pm[p.student_id][p.week_number]=p;
-  });
-  evals.forEach(e=>{em[e.student_id]=e;});
-  apprs.forEach(a=>{am[a.student_id]=a;});
-  if(isAdmin){adminProgressMap=pm;adminEvalMap=em;adminApprovalMap=am;progressMap=pm;evalMap=em;approvalMap=am;}
-  else{progressMap=pm;evalMap=em;approvalMap=am;}
+function buildMaps(prog, evals, apprs, isAdmin) {
+  const pm={}, em={}, am={};
+  prog.forEach(p => { if(!pm[p.student_id]) pm[p.student_id]={}; pm[p.student_id][p.week_number]=p; });
+  evals.forEach(e => { em[e.student_id]=e; });
+  apprs.forEach(a => { am[a.student_id]=a; });
+  if (isAdmin) { adminProgressMap=pm; adminEvalMap=em; adminApprovalMap=am; progressMap=pm; evalMap=em; approvalMap=am; }
+  else { progressMap=pm; evalMap=em; approvalMap=am; }
 }
 
-/* ── HELPERS ── */
-function getWeeksDone(sid,ua){const m=ua?adminProgressMap:progressMap;return Object.values(m[sid]||{}).filter(w=>w.status==='completed').length;}
-function getScore(sid,ua){const m=ua?adminEvalMap:evalMap;const e=m[sid];return e?e.total_score:null;}
-function getApproval(sid,ua){const m=ua?adminApprovalMap:approvalMap;const a=m[sid];return a?a.status:'pending';}
-function scoreClass(s){if(s===null)return'';return s>=75?'score-high':s>=50?'score-mid':'score-low';}
-function approvalBadge(s){const m={'approved':'<span class="badge badge-green">Approved</span>','needs-revision':'<span class="badge badge-red">Needs Revision</span>','pending':'<span class="badge badge-grey">Pending</span>'};return m[s]||m['pending'];}
-function weeksBadge(n){if(n>=4)return'<span class="badge badge-green">4/4</span>';if(n>=2)return'<span class="badge badge-amber">'+n+'/4</span>';if(n>=1)return'<span class="badge badge-blue">'+n+'/4</span>';return'<span class="badge badge-grey">0/4</span>';}
-function esc(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;');}
-function showPanel(id,el){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el)el.classList.add('active');}
+/* ══════════════════════════════════════════════
+   HELPERS
+   ══════════════════════════════════════════════ */
+function getWeeksDone(sid,ua){ const m=ua?adminProgressMap:progressMap; return Object.values(m[sid]||{}).filter(w=>w.status==='completed').length; }
+function getScore(sid,ua){ const m=ua?adminEvalMap:evalMap; const e=m[sid]; return e?e.total_score:null; }
+function getApproval(sid,ua){ const m=ua?adminApprovalMap:approvalMap; const a=m[sid]; return a?a.status:'pending'; }
+function getPeerData(reg, ua){ const m=ua?adminPeerMap:peerMap; return m[reg]||null; }
+function scoreClass(s){ if(s===null)return''; return s>=75?'score-high':s>=50?'score-mid':'score-low'; }
+function peerScoreClass(s){ if(s===null)return''; return s>=7.5?'score-high':s>=5?'score-mid':'score-low'; }
+function approvalBadge(s){ const m={'approved':'<span class="badge badge-green">Approved</span>','needs-revision':'<span class="badge badge-red">Needs Revision</span>','pending':'<span class="badge badge-grey">Pending</span>'}; return m[s]||m['pending']; }
+function weeksBadge(n){ if(n>=4)return'<span class="badge badge-green">4/4</span>'; if(n>=2)return'<span class="badge badge-amber">'+n+'/4</span>'; if(n>=1)return'<span class="badge badge-blue">'+n+'/4</span>'; return'<span class="badge badge-grey">0/4</span>'; }
+function peerCellHtml(reg, ua) {
+  const p = getPeerData(reg, ua);
+  if (!p) return '<span style="color:var(--ink3);font-size:12px;">—</span>';
+  const cls = peerScoreClass(p.grandAvg);
+  return `<div class="peer-score-cell"><span class="score-display ${cls}" style="font-size:15px;">${p.grandAvg}</span><span class="peer-score-sub">/10<br><span style="color:var(--peer);font-size:10px;">${p.count} review${p.count!==1?'s':''}</span></span></div>`;
+}
+function esc(s){ return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+function showPanel(id,el){ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.getElementById('panel-'+id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); if(el)el.classList.add('active'); }
 
-/* ── DASHBOARD ── */
-function renderDashboard(){
-  document.getElementById('dashTitle').textContent=currentUser==='Admin'?'Admin Dashboard':'Welcome, '+currentUser;
-  document.getElementById('dashSub').textContent=students.length+' students \u00b7 '+selectedCollegeName+' \u2014 I BCA '+selectedSection;
-  const total=students.length,approved=students.filter(s=>getApproval(s.id)==='approved').length;
-  const scored=students.filter(s=>getScore(s.id)!==null).length;
-  const avg=scored>0?(students.filter(s=>getScore(s.id)!==null).reduce((sm,s)=>sm+getScore(s.id),0)/scored).toFixed(1):'--';
-  document.getElementById('statsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value">${total}</div><div class="stat-sub">I BCA ${selectedSection}</div></div><div class="stat-card"><div class="stat-label">Projects Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div><div class="stat-sub">of ${total}</div></div><div class="stat-card"><div class="stat-label">Evaluated</div><div class="stat-value" style="color:var(--accent2);">${scored}</div><div class="stat-sub">score submitted</div></div><div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div><div class="stat-sub">out of 100</div></div>`;
-  const tb=document.getElementById('dashTableBody');
-  if(!students.length){tb.innerHTML='<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">&#128235;</div>No students found.</div></td></tr>';return;}
-  tb.innerHTML=students.map((s,i)=>{
-    const done=getWeeksDone(s.id),score=getScore(s.id),approval=getApproval(s.id),prog=Math.round(done/4*100);
-    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:${prog}%"></div></div><span class="prog-pct">${prog}%</span></div></td><td>${approvalBadge(approval)}</td><td><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span>${score!==null?'<span style="font-size:11px;color:var(--ink3);"> /100</span>':''}</td></tr>`;
+/* ══════════════════════════════════════════════
+   DASHBOARD
+   ══════════════════════════════════════════════ */
+function renderDashboard() {
+  document.getElementById('dashTitle').textContent = currentUser==='Admin' ? 'Admin Dashboard' : 'Welcome, '+currentUser;
+  document.getElementById('dashSub').textContent = students.length+' students · '+selectedCollegeName+' — I BCA '+selectedSection;
+
+  const total = students.length;
+  const approved = students.filter(s => getApproval(s.id)==='approved').length;
+  const scored   = students.filter(s => getScore(s.id)!==null).length;
+  const avg = scored > 0 ? (students.filter(s=>getScore(s.id)!==null).reduce((sm,s)=>sm+getScore(s.id),0)/scored).toFixed(1) : '--';
+  const peerCount = students.filter(s => getPeerData(s.register_number)).length;
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value">${total}</div><div class="stat-sub">I BCA ${selectedSection}</div></div>
+    <div class="stat-card"><div class="stat-label">Projects Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div><div class="stat-sub">of ${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Evaluated</div><div class="stat-value" style="color:var(--accent2);">${scored}</div><div class="stat-sub">mentor score submitted</div></div>
+    <div class="stat-card"><div class="stat-label">Peer Reviewed</div><div class="stat-value" style="color:var(--peer);">${peerCount}</div><div class="stat-sub">have peer data</div></div>`;
+
+  const tb = document.getElementById('dashTableBody');
+  if (!students.length) { tb.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div>No students found.</div></td></tr>'; return; }
+  tb.innerHTML = students.map((s,i) => {
+    const done=getWeeksDone(s.id), score=getScore(s.id), approval=getApproval(s.id), prog=Math.round(done/4*100);
+    return `<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td style="font-weight:600;color:var(--ink);">${s.name}</td>
+      <td style="font-size:12px;color:var(--ink3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td>
+      <td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:${prog}%"></div></div><span class="prog-pct">${prog}%</span></div></td>
+      <td>${approvalBadge(approval)}</td>
+      <td><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span>${score!==null?'<span style="font-size:11px;color:var(--ink3);"> /100</span>':''}</td>
+      <td>${peerCellHtml(s.register_number)}</td>
+    </tr>`;
   }).join('');
 }
 
-/* ── STUDENT LIST ── */
-function renderStudentList(){
-  const q=(document.getElementById('studentSearch').value||'').toLowerCase();
-  const af=document.getElementById('approvalFilter').value;
-  const list=students.filter(s=>(!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q))&&(!af||getApproval(s.id)===af));
-  const tb=document.getElementById('studentTableBody');
-  if(!list.length){tb.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">&#128269;</div>No students match</div></td></tr>';return;}
-  tb.innerHTML=list.map((s,i)=>{
+/* ══════════════════════════════════════════════
+   STUDENT LIST
+   ══════════════════════════════════════════════ */
+function renderStudentList() {
+  const q = (document.getElementById('studentSearch').value||'').toLowerCase();
+  const af = document.getElementById('approvalFilter').value;
+  const list = students.filter(s => (!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q)) && (!af||getApproval(s.id)===af));
+  const tb = document.getElementById('studentTableBody');
+  if (!list.length) { tb.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">🔍</div>No students match</div></td></tr>'; return; }
+  tb.innerHTML = list.map((s,i) => {
     const weeks=progressMap[s.id]||{};
     const wbtns=[1,2,3,4].map(w=>{
-      const wd=weeks[w],cls=wd?wd.status:'not-started';
+      const wd=weeks[w], cls=wd?wd.status:'not-started';
       const icon=cls==='completed'?'&#10003;':cls==='in-progress'?'&#8230;':String(w);
       const note=wd&&wd.note&&wd.note.trim()?wd.note.substring(0,40):'';
       return`<button class="week-btn ${cls}" title="Week ${w}: ${cls}${note?' | '+note:''}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})">${icon}</button>`;
     }).join('');
-    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);">${s.register_number}</td><td style="font-size:12px;color:var(--ink3);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td><div class="week-btns">${wbtns}</div></td><td><select class="approval-select" onchange="saveApproval(${s.id},this.value)"><option value="pending" ${getApproval(s.id)==='pending'?'selected':''}>Pending</option><option value="approved" ${getApproval(s.id)==='approved'?'selected':''}>Approved</option><option value="needs-revision" ${getApproval(s.id)==='needs-revision'?'selected':''}>Needs Revision</option></select></td><td><button class="btn btn-outline btn-sm" onclick="openEvalModal(${s.id},'${esc(s.name)}','${esc(s.project_title)}')">&#9998; Score</button></td></tr>`;
+    return `<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td style="font-weight:600;color:var(--ink);">${s.name}</td>
+      <td style="font-size:12px;color:var(--ink3);">${s.register_number}</td>
+      <td style="font-size:12px;color:var(--ink3);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td>
+      <td><div class="week-btns">${wbtns}</div></td>
+      <td><select class="approval-select" onchange="saveApproval(${s.id},this.value)">
+        <option value="pending" ${getApproval(s.id)==='pending'?'selected':''}>Pending</option>
+        <option value="approved" ${getApproval(s.id)==='approved'?'selected':''}>Approved</option>
+        <option value="needs-revision" ${getApproval(s.id)==='needs-revision'?'selected':''}>Needs Revision</option>
+      </select></td>
+      <td><button class="btn btn-outline btn-sm" onclick="openEvalModal(${s.id},'${esc(s.name)}','${esc(s.project_title)}','${esc(s.register_number)}')">&#9998; Score</button></td>
+    </tr>`;
   }).join('');
 }
 
-/* ── PROGRESS TABLE ── */
-function renderProgressTable(){
-  const q=(document.getElementById('progressSearch').value||'').toLowerCase();
-  const list=students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
-  const tb=document.getElementById('progressTableBody');
-  if(!list.length){tb.innerHTML='<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">&#128203;</div>No students found</div></td></tr>';return;}
-  tb.innerHTML=list.map((s,i)=>{
-    const weeks=progressMap[s.id]||{};
-    const wCells=[1,2,3,4].map(w=>{
-      const wd=weeks[w],cls=wd?wd.status:'not-started';
+/* ══════════════════════════════════════════════
+   PROGRESS TABLE
+   ══════════════════════════════════════════════ */
+function renderProgressTable() {
+  const q = (document.getElementById('progressSearch').value||'').toLowerCase();
+  const list = students.filter(s => !q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
+  const tb = document.getElementById('progressTableBody');
+  if (!list.length) { tb.innerHTML='<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📋</div>No students found</div></td></tr>'; return; }
+  tb.innerHTML = list.map((s,i) => {
+    const weeks = progressMap[s.id]||{};
+    const wCells = [1,2,3,4].map(w => {
+      const wd=weeks[w], cls=wd?wd.status:'not-started';
       const note=wd&&wd.note&&wd.note.trim()?wd.note:'';
-      return`<td style="text-align:center;"><div class="prog-wk-wrap"><button class="week-btn ${cls}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})" style="margin:auto;" title="W${w}: ${cls}${note?' — '+note.substring(0,50):''}">${cls==='completed'?'&#10003;':cls==='in-progress'?'~':w}</button>${note?`<div class="prog-wk-note" title="${esc(note)}">&#128172; ${note.substring(0,14)}${note.length>14?'&hellip;':''}</div>`:'<div style="height:14px;"></div>'}</div></td>`;
+      return `<td style="text-align:center;"><div class="prog-wk-wrap">
+        <button class="week-btn ${cls}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})" style="margin:auto;" title="W${w}: ${cls}${note?' — '+note.substring(0,50):''}">${cls==='completed'?'&#10003;':cls==='in-progress'?'~':w}</button>
+        ${note?`<div class="prog-wk-note" title="${esc(note)}">&#128172; ${note.substring(0,14)}${note.length>14?'&hellip;':''}</div>`:'<div style="height:14px;"></div>'}
+      </div></td>`;
     }).join('');
-    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td>${wCells}<td>${weeksBadge(getWeeksDone(s.id))}</td></tr>`;
+    return `<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td style="font-weight:600;color:var(--ink);">${s.name}</td>
+      <td style="font-size:12px;color:var(--ink3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td>
+      ${wCells}
+      <td>${weeksBadge(getWeeksDone(s.id))}</td>
+    </tr>`;
   }).join('');
 }
 
-/* ── WEEK MODAL ── */
-const STATUS_CYCLE=['not-started','in-progress','completed'];
-const STATUS_LABEL={'not-started':'Not Started','in-progress':'In Progress','completed':'Completed'};
-const STATUS_ICON={'not-started':'&#9675;','in-progress':'&#9675;','completed':'&#10003;'};
+/* ══════════════════════════════════════════════
+   WEEK MODAL
+   ══════════════════════════════════════════════ */
+const STATUS_CYCLE = ['not-started','in-progress','completed'];
+const STATUS_LABEL = {'not-started':'Not Started','in-progress':'In Progress','completed':'Completed'};
+const STATUS_ICON  = {'not-started':'○','in-progress':'○','completed':'✓'};
 
-function openWeekModal(studentId,studentName,focusWeek){
-  currentWeekStudent={id:studentId,name:studentName};
-  document.getElementById('weekModalTitle').textContent=studentName;
-  const weeks=progressMap[studentId]||{};
-  weekDraft={};
-  [1,2,3,4].forEach(w=>{
-    const row=weeks[w];
-    weekDraft[w]={status:row?row.status:'not-started',note:row?(row.note||''):''};
+function openWeekModal(studentId, studentName, focusWeek) {
+  currentWeekStudent = {id:studentId, name:studentName};
+  document.getElementById('weekModalTitle').textContent = studentName;
+  const weeks = progressMap[studentId]||{};
+  weekDraft = {};
+  [1,2,3,4].forEach(w => {
+    const row = weeks[w];
+    weekDraft[w] = {status: row?row.status:'not-started', note: row?(row.note||''):''};
   });
   renderWeekCards(focusWeek);
   document.getElementById('weekModal').classList.add('open');
-  setTimeout(()=>{const ta=document.getElementById('wk-ta-'+focusWeek);if(ta)ta.focus();},220);
+  setTimeout(() => { const ta=document.getElementById('wk-ta-'+focusWeek); if(ta)ta.focus(); }, 220);
 }
 
-function renderWeekCards(activeWeek){
-  const grid=document.getElementById('weekCardsGrid');
-  grid.innerHTML=[1,2,3,4].map(w=>{
-    const d=weekDraft[w];
-    const safeNote=d.note.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return`<div class="week-card wk-${d.status}" id="wk-card-${w}">
+function renderWeekCards(activeWeek) {
+  const grid = document.getElementById('weekCardsGrid');
+  grid.innerHTML = [1,2,3,4].map(w => {
+    const d = weekDraft[w];
+    const safeNote = d.note.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `<div class="week-card wk-${d.status}" id="wk-card-${w}">
       <div class="week-card-head wk-${d.status}">
-        <span class="week-card-label">Week ${w}${w===activeWeek?' &#9670;':''}</span>
-        <button class="wk-cycle-btn ${d.status}" id="wk-btn-${w}" onclick="cycleWeekStatus(${w},event)" title="Click to change status">
+        <span class="week-card-label">Week ${w}${w===activeWeek?' ◆':''}</span>
+        <button class="wk-cycle-btn ${d.status}" id="wk-btn-${w}" onclick="cycleWeekStatus(${w},event)">
           ${STATUS_ICON[d.status]} ${STATUS_LABEL[d.status]}
         </button>
       </div>
       <div class="week-card-body">
-        <textarea class="week-textarea" id="wk-ta-${w}" placeholder="Week ${w} update: what was done in this week\u2026" oninput="weekDraft[${w}].note=this.value">${safeNote}</textarea>
+        <textarea class="week-textarea" id="wk-ta-${w}" placeholder="Week ${w} update…" oninput="weekDraft[${w}].note=this.value">${safeNote}</textarea>
       </div>
     </div>`;
   }).join('');
 }
 
-function cycleWeekStatus(w,e){
-  if(e)e.stopPropagation();
-  const cur=weekDraft[w].status;
-  const next=STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur)+1)%3];
-  weekDraft[w].status=next;
+function cycleWeekStatus(w, e) {
+  if(e) e.stopPropagation();
+  const cur = weekDraft[w].status;
+  const next = STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur)+1)%3];
+  weekDraft[w].status = next;
   const card=document.getElementById('wk-card-'+w);
   const head=card.querySelector('.week-card-head');
   const btn=document.getElementById('wk-btn-'+w);
   card.className='week-card wk-'+next;
   head.className='week-card-head wk-'+next;
   btn.className='wk-cycle-btn '+next;
-  btn.innerHTML=STATUS_ICON[next]+' '+STATUS_LABEL[next];
+  btn.innerHTML = STATUS_ICON[next]+' '+STATUS_LABEL[next];
 }
 
-async function saveAllWeeks(){
-  const btn=document.getElementById('saveWeekBtn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving&hellip;';
-  const sid=currentWeekStudent.id;
-  const existing=progressMap[sid]||{};
-  try{
-    for(const w of [1,2,3,4]){
-      const d=weekDraft[w];
-      const note=d.note.trim()||null;
-      const row=existing[w];
-      if(row){
-        await api.updateProgress(row.id,{status:d.status,note:note,updated_by:currentUser,updated_at:new Date().toISOString()});
-        row.status=d.status;row.note=note;
-      }else{
-        const res=await api.upsertProgress({student_id:sid,week_number:w,status:d.status,note:note,updated_by:currentUser});
-        if(!progressMap[sid])progressMap[sid]={};
-        progressMap[sid][w]=Array.isArray(res)?res[0]:res;
+async function saveAllWeeks() {
+  const btn = document.getElementById('saveWeekBtn');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Saving…';
+  const sid = currentWeekStudent.id;
+  const existing = progressMap[sid]||{};
+  try {
+    for (const w of [1,2,3,4]) {
+      const d = weekDraft[w];
+      const note = d.note.trim()||null;
+      const row = existing[w];
+      if (row) {
+        await api.updateProgress(row.id, {status:d.status, note, updated_by:currentUser, updated_at:new Date().toISOString()});
+        row.status=d.status; row.note=note;
+      } else {
+        const res = await api.upsertProgress({student_id:sid, week_number:w, status:d.status, note, updated_by:currentUser});
+        if (!progressMap[sid]) progressMap[sid]={};
+        progressMap[sid][w] = Array.isArray(res)?res[0]:res;
       }
     }
     showToast('All 4 weeks saved!','success');
     closeModal('weekModal');
-    renderStudentList();renderProgressTable();renderDashboard();
-    if(currentUser==='Admin'){adminProgressMap=progressMap;renderAdminTable();renderAdminStats();}
-  }catch(e){showToast('Error: '+e.message,'error');console.error(e);}
-  finally{btn.disabled=false;btn.innerHTML='Save All Weeks';}
+    renderStudentList(); renderProgressTable(); renderDashboard();
+    if (currentUser==='Admin') { adminProgressMap=progressMap; renderAdminTable(); renderAdminStats(); }
+  } catch(e) { showToast('Error: '+e.message,'error'); console.error(e); }
+  finally { btn.disabled=false; btn.innerHTML='Save All Weeks'; }
 }
 
-/* ── APPROVAL ── */
-async function saveApproval(sid,status){
-  try{
-    const ex=approvalMap[sid];
-    if(ex){await api.updateApproval(ex.id,{status,approved_by:currentUser,approved_at:new Date().toISOString()});approvalMap[sid].status=status;}
-    else{const r=await api.upsertApproval({student_id:sid,status,approved_by:currentUser});approvalMap[sid]=Array.isArray(r)?r[0]:r;}
-    showToast('Approval updated!','success');renderDashboard();
-    if(currentUser==='Admin'){adminApprovalMap=approvalMap;renderAdminTable();renderAdminStats();}
-  }catch(e){showToast('Error: '+e.message,'error');}
+/* ══════════════════════════════════════════════
+   APPROVAL
+   ══════════════════════════════════════════════ */
+async function saveApproval(sid, status) {
+  try {
+    const ex = approvalMap[sid];
+    if (ex) {
+      await api.updateApproval(ex.id, {status, approved_by:currentUser, approved_at:new Date().toISOString()});
+      approvalMap[sid].status = status;
+    } else {
+      const r = await api.upsertApproval({student_id:sid, status, approved_by:currentUser});
+      approvalMap[sid] = Array.isArray(r)?r[0]:r;
+    }
+    showToast('Approval updated!','success');
+    renderDashboard();
+    if (currentUser==='Admin') { adminApprovalMap=approvalMap; renderAdminTable(); renderAdminStats(); }
+  } catch(e) { showToast('Error: '+e.message,'error'); }
 }
 
-/* ── EVAL TABLE ── */
-function renderEvalTable(){
-  const q=(document.getElementById('evalSearch').value||'').toLowerCase();
-  const list=students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
-  const tb=document.getElementById('evalTableBody');
-  if(!list.length){tb.innerHTML='<tr><td colspan="10"><div class="empty-state"><div class="empty-icon">&#128202;</div>No students</div></td></tr>';return;}
-  tb.innerHTML=list.map((s,i)=>{
-    const e=evalMap[s.id];
-    const sc=(k)=>e?(e[k]!==null&&e[k]!==undefined?e[k]:'--'):'--';
-    const total=e?e.total_score:null;
-    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td style="text-align:center;">${sc('tech_quality')}</td><td style="text-align:center;">${sc('problem_fit')}</td><td style="text-align:center;">${sc('effort_ownership')}</td><td style="text-align:center;">${sc('presentation')}</td><td style="text-align:center;">${sc('practical_impact')}</td><td style="text-align:center;"><span class="score-display ${scoreClass(total)}">${total!==null?total:'--'}</span>${total!==null?'<span style="font-size:10px;color:var(--ink3);"> /100</span>':''}</td><td><button class="btn btn-primary btn-sm" onclick="openEvalModal(${s.id},'${esc(s.name)}','${esc(s.project_title)}')">&#9998; ${e?'Edit':'Score'}</button></td></tr>`;
+/* ══════════════════════════════════════════════
+   EVAL TABLE
+   ══════════════════════════════════════════════ */
+function renderEvalTable() {
+  const q = (document.getElementById('evalSearch').value||'').toLowerCase();
+  const list = students.filter(s => !q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
+  const tb = document.getElementById('evalTableBody');
+  if (!list.length) { tb.innerHTML='<tr><td colspan="11"><div class="empty-state"><div class="empty-icon">📊</div>No students</div></td></tr>'; return; }
+  tb.innerHTML = list.map((s,i) => {
+    const e = evalMap[s.id];
+    const sc = (k) => e?(e[k]!==null&&e[k]!==undefined?e[k]:'--'):'--';
+    const total = e ? e.total_score : null;
+    return `<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td style="font-weight:600;color:var(--ink);">${s.name}</td>
+      <td style="font-size:12px;color:var(--ink3);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td>
+      <td style="text-align:center;">${sc('tech_quality')}</td>
+      <td style="text-align:center;">${sc('problem_fit')}</td>
+      <td style="text-align:center;">${sc('effort_ownership')}</td>
+      <td style="text-align:center;">${sc('presentation')}</td>
+      <td style="text-align:center;">${sc('practical_impact')}</td>
+      <td style="text-align:center;"><span class="score-display ${scoreClass(total)}">${total!==null?total:'--'}</span>${total!==null?'<span style="font-size:10px;color:var(--ink3);"> /100</span>':''}</td>
+      <td>${peerCellHtml(s.register_number)}</td>
+      <td><button class="btn btn-primary btn-sm" onclick="openEvalModal(${s.id},'${esc(s.name)}','${esc(s.project_title)}','${esc(s.register_number)}')">&#9998; ${e?'Edit':'Score'}</button></td>
+    </tr>`;
   }).join('');
 }
 
-/* ── EVAL MODAL ── */
-function openEvalModal(sid,sName,pTitle){
-  currentEvalStudent={id:sid,name:sName,project:pTitle};
-  document.getElementById('evalModalTitle').textContent=sName;
-  document.getElementById('evalModalSub').textContent=pTitle;
-  document.getElementById('evalStudentInfo').innerHTML=`<div class="info-item"><div class="info-label">Student Name</div><div class="info-value">${sName}</div></div><div class="info-item"><div class="info-label">Project</div><div class="info-value">${pTitle}</div></div>`;
-  const e=evalMap[sid];
-  document.getElementById('sc_tech').value=e?(e.tech_quality??''):'';
-  document.getElementById('sc_fit').value=e?(e.problem_fit??''):'';
-  document.getElementById('sc_effort').value=e?(e.effort_ownership??''):'';
-  document.getElementById('sc_pres').value=e?(e.presentation??''):'';
-  document.getElementById('sc_impact').value=e?(e.practical_impact??''):'';
-  document.getElementById('evalRemarks').value=e?(e.remarks||''):'';
-  ['sc_tech','sc_fit','sc_effort','sc_pres','sc_impact'].forEach(id=>{document.getElementById(id).classList.remove('over-limit');document.getElementById(id).style.borderColor='';});
+/* ══════════════════════════════════════════════
+   EVAL MODAL — with Peer Review section
+   ══════════════════════════════════════════════ */
+function openEvalModal(sid, sName, pTitle, regNum) {
+  currentEvalStudent = {id:sid, name:sName, project:pTitle, reg:regNum};
+  document.getElementById('evalModalTitle').textContent = sName;
+  document.getElementById('evalModalSub').textContent = pTitle;
+  document.getElementById('evalStudentInfo').innerHTML = `
+    <div class="info-item"><div class="info-label">Student Name</div><div class="info-value">${sName}</div></div>
+    <div class="info-item"><div class="info-label">Project</div><div class="info-value">${pTitle}</div></div>`;
+
+  const e = evalMap[sid];
+  document.getElementById('sc_tech').value   = e?(e.tech_quality??''):'';
+  document.getElementById('sc_fit').value    = e?(e.problem_fit??''):'';
+  document.getElementById('sc_effort').value = e?(e.effort_ownership??''):'';
+  document.getElementById('sc_pres').value   = e?(e.presentation??''):'';
+  document.getElementById('sc_impact').value = e?(e.practical_impact??''):'';
+  document.getElementById('evalRemarks').value = e?(e.remarks||''):'';
+  ['sc_tech','sc_fit','sc_effort','sc_pres','sc_impact'].forEach(id => {
+    document.getElementById(id).classList.remove('over-limit');
+    document.getElementById(id).style.borderColor = '';
+  });
   calcTotal();
+
+  // Render peer review section
+  renderPeerSection(regNum);
+
   document.getElementById('evalModal').classList.add('open');
 }
-function calcTotal(){
-  const fields=[{id:'sc_tech',bar:'bar_tech'},{id:'sc_fit',bar:'bar_fit'},{id:'sc_effort',bar:'bar_effort'},{id:'sc_pres',bar:'bar_pres'},{id:'sc_impact',bar:'bar_impact'}];
-  let total=0;
-  fields.forEach(({id,bar})=>{
-    const inp=document.getElementById(id);let v=parseInt(inp.value);
-    if(isNaN(v)||v<0)v=0;
-    if(v>20){inp.classList.add('over-limit');setTimeout(()=>{inp.value=20;inp.classList.remove('over-limit');inp.style.borderColor='var(--green)';setTimeout(()=>inp.style.borderColor='',1000);calcTotal();},600);v=20;}
-    else{inp.classList.remove('over-limit');inp.style.borderColor='';}
-    total+=v;
-    const b=document.getElementById(bar);
-    if(b){b.style.width=(v/20*100)+'%';b.style.background=v>=16?'var(--green)':v>=10?'var(--accent)':v>=5?'var(--amber)':'var(--red)';}
-  });
-  const el=document.getElementById('scoreTotalDisplay');
-  el.textContent=total+' / 100';
-  el.style.color=total>=75?'var(--green)':total>=50?'var(--amber)':'var(--red)';
-}
-async function saveEvaluation(){
-  const btn=document.getElementById('saveEvalBtn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving&hellip;';
-  const g=(id)=>{const v=parseInt(document.getElementById(id).value);return isNaN(v)?0:Math.min(20,Math.max(0,v));};
-  const tech=g('sc_tech'),fit=g('sc_fit'),effort=g('sc_effort'),pres=g('sc_pres'),impact=g('sc_impact'),total=tech+fit+effort+pres+impact;
-  const sid=currentEvalStudent.id;
-  const data={student_id:sid,tech_quality:tech,problem_fit:fit,effort_ownership:effort,presentation:pres,practical_impact:impact,total_score:total,remarks:document.getElementById('evalRemarks').value,submitted_by:currentUser,submitted_at:new Date().toISOString()};
-  try{
-    const ex=evalMap[sid];
-    if(ex){await api.updateEval(ex.id,data);Object.assign(evalMap[sid],data);}
-    else{const r=await api.upsertEval(data);evalMap[sid]=Array.isArray(r)?r[0]:r;}
-    showToast('Evaluation saved!','success');closeModal('evalModal');
-    renderEvalTable();renderDashboard();renderStudentList();
-    if(currentUser==='Admin'){adminEvalMap=evalMap;renderAdminTable();renderAdminStats();}
-  }catch(e){showToast('Error: '+e.message,'error');}
-  finally{btn.disabled=false;btn.innerHTML='Save Evaluation';}
+
+function renderPeerSection(regNum) {
+  const container = document.getElementById('peerReviewSection');
+  const p = peerMap[regNum];
+
+  if (!p) {
+    container.innerHTML = `
+      <div class="peer-review-card">
+        <div class="peer-no-data">
+          <div class="peer-no-icon">📭</div>
+          <div>No peer reviews yet for this student</div>
+          <div style="font-size:11px;margin-top:4px;">Peers from <strong>${selectedCollegeName}</strong> haven't reviewed this project yet.</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const criteria = [
+    {key:'avgClarity',    label:'Clarity'},
+    {key:'avgInnovation', label:'Innovation'},
+    {key:'avgExecution',  label:'Execution'},
+    {key:'avgUsability',  label:'Usability'},
+    {key:'avgOverall',    label:'Overall'},
+  ];
+
+  const criteriaHtml = criteria.map(c => {
+    const val = p[c.key];
+    const color = val >= 7.5 ? 'var(--green)' : val >= 5 ? 'var(--amber)' : 'var(--red)';
+    return `<div class="peer-criterion">
+      <div class="pc-label">${c.label}</div>
+      <div class="pc-val" style="color:${color};">${val}</div>
+      <div class="pc-max">/10</div>
+    </div>`;
+  }).join('');
+
+  const grandColor = p.grandAvg >= 7.5 ? 'var(--green)' : p.grandAvg >= 5 ? 'var(--amber)' : 'var(--red)';
+
+  container.innerHTML = `
+    <div class="peer-info-banner">
+      &#128101; Data pulled live from Peer Review System &middot; ${selectedCollegeName}
+    </div>
+    <div class="peer-review-card">
+      <div class="peer-header">
+        <div class="peer-title">&#9733; Peer Evaluation Breakdown</div>
+        <div class="peer-count">${p.count} peer review${p.count!==1?'s':''}</div>
+      </div>
+      <div class="peer-criteria-grid">${criteriaHtml}</div>
+      <div class="peer-avg-total">
+        <div>
+          <div class="peer-avg-label">Grand Average (across 5 criteria)</div>
+          <div class="peer-avg-sub">Average of Clarity, Innovation, Execution, Usability, Overall</div>
+        </div>
+        <div>
+          <div class="peer-avg-val" style="color:${grandColor};">${p.grandAvg}<span style="font-size:14px;font-weight:500;color:var(--ink3);"> / 10</span></div>
+        </div>
+      </div>
+    </div>`;
 }
 
-/* ── ADMIN ── */
-function setAdminTab(tab,btn){adminTab=tab;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAdminTable();renderAdminStats();}
-function renderAdminStats(){
-  const list=adminTab==='all'?allStudents:allStudents.filter(s=>s.mentor_assigned===adminTab);
-  const approved=list.filter(s=>(adminApprovalMap[s.id]?.status)==='approved').length;
-  const scored=list.filter(s=>adminEvalMap[s.id]).length;
-  const avg=scored>0?(list.reduce((sm,s)=>sm+(adminEvalMap[s.id]?.total_score||0),0)/scored).toFixed(1):'--';
-  document.getElementById('adminStatsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Students</div><div class="stat-value">${list.length}</div></div><div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div></div><div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div></div>`;
+function calcTotal() {
+  const fields = [
+    {id:'sc_tech',bar:'bar_tech'},{id:'sc_fit',bar:'bar_fit'},
+    {id:'sc_effort',bar:'bar_effort'},{id:'sc_pres',bar:'bar_pres'},{id:'sc_impact',bar:'bar_impact'}
+  ];
+  let total = 0;
+  fields.forEach(({id,bar}) => {
+    const inp = document.getElementById(id);
+    let v = parseInt(inp.value);
+    if (isNaN(v)||v<0) v=0;
+    if (v>20) {
+      inp.classList.add('over-limit');
+      setTimeout(() => { inp.value=20; inp.classList.remove('over-limit'); inp.style.borderColor='var(--green)'; setTimeout(()=>inp.style.borderColor='',1000); calcTotal(); }, 600);
+      v=20;
+    } else { inp.classList.remove('over-limit'); inp.style.borderColor=''; }
+    total += v;
+    const b = document.getElementById(bar);
+    if (b) { b.style.width=(v/20*100)+'%'; b.style.background=v>=16?'var(--green)':v>=10?'var(--accent)':v>=5?'var(--amber)':'var(--red)'; }
+  });
+  const el = document.getElementById('scoreTotalDisplay');
+  el.textContent = total + ' / 100';
+  el.style.color = total>=75?'var(--green)':total>=50?'var(--amber)':'var(--red)';
 }
-function renderAdminTable(){
-  const list=adminTab==='all'?allStudents:allStudents.filter(s=>s.mentor_assigned===adminTab);
-  const tb=document.getElementById('adminTableBody');
-  if(!list.length){tb.innerHTML='<tr><td colspan="8"><div class="empty-state">No students</div></td></tr>';return;}
-  tb.innerHTML=list.map((s,i)=>{
-    const done=getWeeksDone(s.id,true),score=getScore(s.id,true),approval=getApproval(s.id,true);
-    const mc=s.mentor_assigned==='Aparna'?'var(--accent2)':s.mentor_assigned==='Arun Raj'?'var(--green)':'var(--amber)';
-    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td><span style="font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:99px;">${s.section||''}</span></td><td><span style="font-size:12px;font-weight:600;color:${mc};">${s.mentor_assigned}</span></td><td style="font-size:12px;color:var(--ink3);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td style="text-align:center;">${weeksBadge(done)}</td><td>${approvalBadge(approval)}</td><td style="text-align:center;"><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span></td></tr>`;
+
+async function saveEvaluation() {
+  const btn = document.getElementById('saveEvalBtn');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Saving…';
+  const g = (id) => { const v=parseInt(document.getElementById(id).value); return isNaN(v)?0:Math.min(20,Math.max(0,v)); };
+  const tech=g('sc_tech'), fit=g('sc_fit'), effort=g('sc_effort'), pres=g('sc_pres'), impact=g('sc_impact');
+  const total = tech+fit+effort+pres+impact;
+  const sid = currentEvalStudent.id;
+  const data = {
+    student_id:sid, tech_quality:tech, problem_fit:fit,
+    effort_ownership:effort, presentation:pres, practical_impact:impact,
+    total_score:total, remarks:document.getElementById('evalRemarks').value,
+    submitted_by:currentUser, submitted_at:new Date().toISOString()
+  };
+  try {
+    const ex = evalMap[sid];
+    if (ex) { await api.updateEval(ex.id, data); Object.assign(evalMap[sid], data); }
+    else { const r=await api.upsertEval(data); evalMap[sid]=Array.isArray(r)?r[0]:r; }
+    showToast('Evaluation saved!','success');
+    closeModal('evalModal');
+    renderEvalTable(); renderDashboard(); renderStudentList();
+    if (currentUser==='Admin') { adminEvalMap=evalMap; renderAdminTable(); renderAdminStats(); }
+  } catch(e) { showToast('Error: '+e.message,'error'); }
+  finally { btn.disabled=false; btn.innerHTML='Save Evaluation'; }
+}
+
+/* ══════════════════════════════════════════════
+   ADMIN
+   ══════════════════════════════════════════════ */
+function setAdminTab(tab, btn) {
+  adminTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdminTable(); renderAdminStats();
+}
+function renderAdminStats() {
+  const list = adminTab==='all' ? allStudents : allStudents.filter(s=>s.mentor_assigned===adminTab);
+  const approved = list.filter(s=>(adminApprovalMap[s.id]?.status)==='approved').length;
+  const scored   = list.filter(s=>adminEvalMap[s.id]).length;
+  const avg = scored>0 ? (list.reduce((sm,s)=>sm+(adminEvalMap[s.id]?.total_score||0),0)/scored).toFixed(1) : '--';
+  document.getElementById('adminStatsRow').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Students</div><div class="stat-value">${list.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div></div>
+    <div class="stat-card"><div class="stat-label">Avg Mentor Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div></div>`;
+}
+function renderAdminTable() {
+  const list = adminTab==='all' ? allStudents : allStudents.filter(s=>s.mentor_assigned===adminTab);
+  const tb = document.getElementById('adminTableBody');
+  if (!list.length) { tb.innerHTML='<tr><td colspan="9"><div class="empty-state">No students</div></td></tr>'; return; }
+  tb.innerHTML = list.map((s,i) => {
+    const done=getWeeksDone(s.id,true), score=getScore(s.id,true), approval=getApproval(s.id,true);
+    const mc = s.mentor_assigned==='Aparna'?'var(--accent2)':s.mentor_assigned==='Arun Raj'?'var(--green)':'var(--amber)';
+    return `<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td style="font-weight:600;color:var(--ink);">${s.name}</td>
+      <td><span style="font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:99px;">${s.section||''}</span></td>
+      <td><span style="font-size:12px;font-weight:600;color:${mc};">${s.mentor_assigned}</span></td>
+      <td style="font-size:12px;color:var(--ink3);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td>
+      <td style="text-align:center;">${weeksBadge(done)}</td>
+      <td>${approvalBadge(approval)}</td>
+      <td style="text-align:center;"><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span></td>
+      <td>${peerCellHtml(s.register_number, true)}</td>
+    </tr>`;
   }).join('');
 }
 
-/* ── EXPORT CSV ── */
-function exportCSV(){
-  const list=adminTab==='all'?allStudents:allStudents.filter(s=>s.mentor_assigned===adminTab);
-  const rows=[['#','Name','Register No','Section','Course','Project Title','Mentor','Phone','Email',
+/* ══════════════════════════════════════════════
+   EXPORT CSV (includes peer data)
+   ══════════════════════════════════════════════ */
+function exportCSV() {
+  const list = adminTab==='all' ? allStudents : allStudents.filter(s=>s.mentor_assigned===adminTab);
+  const rows = [['#','Name','Register No','Section','Course','Project Title','Mentor','Phone','Email',
     'W1 Status','W1 Note','W2 Status','W2 Note','W3 Status','W3 Note','W4 Status','W4 Note',
-    'Tech Quality','Problem Fit','Effort','Presentation','Impact','Total Score','Approval']];
-  list.forEach((s,i)=>{
-    const wks=adminProgressMap[s.id]||{},e=adminEvalMap[s.id],a=adminApprovalMap[s.id];
-    rows.push([i+1,s.name,s.register_number,s.section||'',s.course,s.project_title,s.mentor_assigned,s.phone||'',s.email||'',
-      wks[1]?.status||'not-started',wks[1]?.note||'',
-      wks[2]?.status||'not-started',wks[2]?.note||'',
-      wks[3]?.status||'not-started',wks[3]?.note||'',
-      wks[4]?.status||'not-started',wks[4]?.note||'',
-      e?.tech_quality??'',e?.problem_fit??'',e?.effort_ownership??'',e?.presentation??'',e?.practical_impact??'',e?.total_score??'',
-      a?.status||'pending']);
+    'Tech Quality','Problem Fit','Effort','Presentation','Impact','Mentor Total /100','Approval',
+    'Peer Reviews Count','Peer Clarity /10','Peer Innovation /10','Peer Execution /10','Peer Usability /10','Peer Overall /10','Peer Grand Avg /10']];
+
+  list.forEach((s,i) => {
+    const wks=adminProgressMap[s.id]||{}, e=adminEvalMap[s.id], a=adminApprovalMap[s.id], pr=adminPeerMap[s.register_number];
+    rows.push([
+      i+1, s.name, s.register_number, s.section||'', s.course, s.project_title,
+      s.mentor_assigned, s.phone||'', s.email||'',
+      wks[1]?.status||'not-started', wks[1]?.note||'',
+      wks[2]?.status||'not-started', wks[2]?.note||'',
+      wks[3]?.status||'not-started', wks[3]?.note||'',
+      wks[4]?.status||'not-started', wks[4]?.note||'',
+      e?.tech_quality??'', e?.problem_fit??'', e?.effort_ownership??'',
+      e?.presentation??'', e?.practical_impact??'', e?.total_score??'',
+      a?.status||'pending',
+      pr?.count??'', pr?.avgClarity??'', pr?.avgInnovation??'',
+      pr?.avgExecution??'', pr?.avgUsability??'', pr?.avgOverall??'', pr?.grandAvg??''
+    ]);
   });
-  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='students_'+adminTab+'_'+new Date().toISOString().split('T')[0]+'.csv';
-  a.click();URL.revokeObjectURL(url);
-  showToast('CSV exported!','success');
+
+  const csv = rows.map(r => r.map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download='students_'+adminTab+'_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click(); URL.revokeObjectURL(url);
+  showToast('CSV exported with peer data!','success');
 }
 
-/* ── UTILITIES ── */
-function closeModal(id){document.getElementById(id).classList.remove('open');}
+/* ══════════════════════════════════════════════
+   UTILITIES
+   ══════════════════════════════════════════════ */
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 let toastTimeout;
-function showToast(msg,type='success'){
+function showToast(msg, type='success') {
   const t=document.getElementById('toast');
   document.getElementById('toastMsg').textContent=msg;
   document.getElementById('toastDot').className='toast-dot '+type;
-  t.classList.add('show');clearTimeout(toastTimeout);
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
   toastTimeout=setTimeout(()=>t.classList.remove('show'),3500);
 }
 </script>
