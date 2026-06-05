@@ -22,8 +22,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-siz
 #landingScreen::before{content:'';position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(108,99,255,0.09) 0%,transparent 70%);top:-150px;right:-150px;pointer-events:none;}
 #landingScreen::after{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(22,163,74,0.07) 0%,transparent 70%);bottom:-100px;left:-100px;pointer-events:none;}
 .landing-wrap{width:100%;max-width:520px;padding:24px;position:relative;z-index:1;animation:fadeUp 0.5s cubic-bezier(.22,1,.36,1);}
-.landing-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:var(--accent-lt);border:1px solid rgba(108,99,255,0.25);border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:24px;}
-.landing-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
 .landing-title{font-family:var(--font-head);font-size:38px;font-weight:800;color:var(--ink);line-height:1.1;margin-bottom:8px;letter-spacing:-0.02em;}
 .landing-title span{color:var(--accent2);}
 .landing-sub{font-size:14px;color:var(--ink3);margin-bottom:32px;line-height:1.6;}
@@ -46,8 +44,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-siz
 .login-title{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--ink);margin-bottom:6px;}
 .login-sub{font-size:13px;color:var(--ink3);margin-bottom:28px;}
 .login-label{font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;}
-.login-select-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
-.login-select-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px;}
 .role-btn{padding:12px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--ink2);font-family:var(--font-body);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;text-align:center;}
 .role-btn:hover{border-color:var(--accent);color:var(--ink);}
 .role-btn.selected{background:var(--accent-lt);border-color:var(--accent);color:var(--accent2);font-weight:600;}
@@ -387,6 +383,7 @@ tbody tr:hover td{background:var(--surface);}
             <button class="tab-btn" onclick="setAdminTab('Saral',this)">Saral</button>
             <button class="tab-btn" onclick="setAdminTab('Bavani Sri',this)">Bavani Sri</button>
             <button class="tab-btn" onclick="setAdminTab('Jane Rhinu',this)">Jane Rhinu</button>
+            <button class="tab-btn" onclick="setAdminTab('BBADM',this)">BBA Digital Mktg</button>
           </div>
           <button class="export-btn" onclick="exportCSV()">&darr; Export CSV</button>
         </div>
@@ -460,32 +457,45 @@ tbody tr:hover td{background:var(--surface);}
 const SUPABASE_URL='https://qjwbndrgzvboszfzrcuy.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2JuZHJnenZib3N6ZnpyY3V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NTA3MzIsImV4cCI6MjA5NjEyNjczMn0.x-su_5f_XQ9_ql7iw3Aa_4E4ww9SJIqRGVdTHo6zSpE';
 
-/* ── PINS: original + new B.Com Honours mentors ── */
+/* ── PINS ── */
 const PINS={
   'Aparna':     '4827',
   'Arun Raj':   '3159',
   'Saral':      '7634',
   'Admin':      '9201',
-  'Bavani Sri': '5541',   /* NEW */
-  'Jane Rhinu': '6673'    /* NEW */
+  'Bavani Sri': '5541',
+  'Jane Rhinu': '6673'
 };
 
 /* ── ROLES PER SECTION ── */
 const SECTION_ROLES={
-  'A':   ['Aparna','Arun Raj','Saral','Admin'],
-  'B':   ['Aparna','Arun Raj','Saral','Admin'],
-  'II':  ['Aparna','Arun Raj','Saral','Admin'],
-  'BCH': ['Bavani Sri','Jane Rhinu','Admin'],
+  'A':     ['Aparna','Arun Raj','Saral','Admin'],
+  'B':     ['Aparna','Arun Raj','Saral','Admin'],
+  'II':    ['Aparna','Arun Raj','Saral','Admin'],
+  'BCH':   ['Bavani Sri','Jane Rhinu','Admin'],
   'BBADM': ['Bavani Sri','Jane Rhinu','Admin']
-  /* NEW */
 };
 
-const COLLEGE_NAMES={'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science','terf':"TERF's College of Arts and Science",'sst':'Sree Saraswathi Thyagaraja College','tjs':'TJS College of Arts and Science','bharathidasan':'Bharathidasan College of Arts & Science','nagarathinam':'Nagarathinam Angalammal Arts & Science College','vinayaga':"Vinayaga Mission's Research Foundation School of Arts & Science",'amaraavathi':'Sri Amaraavathi College of Arts & Science','takshashila':'Takshashila University','studyworld':'Study World Group of Institution','rathinam':'Rathinam College of Arts & Science','niche':'Noorul Islam Centre for Higher Education (NICHE)','amet':'AMET University','joy':'Joy University','sasurie':'Sasurie College of Arts and Science','alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)','svyasa':'S-VYASA University','asb':'Asian School of Business'};
+const COLLEGE_NAMES={
+  'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",
+  'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science',
+  'terf':"TERF's College of Arts and Science",'sst':'Sree Saraswathi Thyagaraja College',
+  'tjs':'TJS College of Arts and Science','bharathidasan':'Bharathidasan College of Arts & Science',
+  'nagarathinam':'Nagarathinam Angalammal Arts & Science College',
+  'vinayaga':"Vinayaga Mission's Research Foundation School of Arts & Science",
+  'amaraavathi':'Sri Amaraavathi College of Arts & Science','takshashila':'Takshashila University',
+  'studyworld':'Study World Group of Institution','rathinam':'Rathinam College of Arts & Science',
+  'niche':'Noorul Islam Centre for Higher Education (NICHE)','amet':'AMET University',
+  'joy':'Joy University','sasurie':'Sasurie College of Arts and Science',
+  'alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)',
+  'svyasa':'S-VYASA University','asb':'Asian School of Business'
+};
 
-/* ── HELPER: resolve section DB value → label ── */
+/* ── FIX 1: getSectionLabel — BBADM now correctly maps ── */
 function getSectionLabel(sec){
-  if(sec==='II')  return 'II BCA';
-  if(sec==='BCH') return 'I B.Com Honours';
+  if(sec==='II')    return 'II BCA';
+  if(sec==='BCH')   return 'I B.Com Honours';
+  if(sec==='BBADM') return 'I BBA Digital Marketing';
   return 'I BCA - '+sec;
 }
 
@@ -542,7 +552,7 @@ function backToLanding(){document.getElementById('loginScreen').classList.remove
 /* ── Render role buttons based on selected section ── */
 function renderRoleButtons(sec){
   const wrap=document.getElementById('roleButtonsWrap');
-  if(!sec){wrap.innerHTML='<div style="grid-column:1/-1;font-size:12px;color:var(--ink3);padding:8px 0;">← Select a section first</div>';return;}
+  if(!sec){wrap.innerHTML='<div style="grid-column:1/-1;font-size:12px;color:var(--ink3);padding:8px 0;">\u2190 Select a section first</div>';return;}
   const roles=SECTION_ROLES[sec]||['Aparna','Arun Raj','Saral','Admin'];
   wrap.style.gridTemplateColumns=roles.length<=3?'1fr 1fr 1fr':'1fr 1fr';
   wrap.innerHTML=roles.map(r=>`<button class="role-btn" data-role="${r}" onclick="selectRole(this)">${r==='Admin'?'&#128737; ':''} ${r}</button>`).join('');
@@ -605,15 +615,16 @@ async function initApp(){
     const col=selectedCollegeName;
     const sec=getSectionLabel(selectedSection);
     if(currentUser==='Admin'){
-      /* Fetch all sections for this college */
-      const[sA,sB,sII,sBCH]=await Promise.all([
+      /* FIX 2: Destructure all 5 variables including sBBADM */
+      const[sA,sB,sII,sBCH,sBBADM]=await Promise.all([
         api.students(col,'I BCA - A'),
         api.students(col,'I BCA - B'),
         api.students(col,'II BCA'),
         api.students(col,'I B.Com Honours'),
         api.students(col,'I BBA Digital Marketing')
       ]);
-      allStudents=[...sA,...sB,...sII,...sBCH];
+      /* FIX 2 cont: Include sBBADM in allStudents */
+      allStudents=[...sA,...sB,...sII,...sBCH,...sBBADM];
       students=allStudents;
     }else{
       [students,allStudents]=await Promise.all([
@@ -717,7 +728,7 @@ function renderProgressTable(){
     const wCells=[1,2,3,4].map(w=>{
       const wd=weeks[w],cls=wd?wd.status:'not-started';
       const note=wd&&wd.note&&wd.note.trim()?wd.note:'';
-      return`<td style="text-align:center;"><div class="prog-wk-wrap"><button class="week-btn ${cls}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})" style="margin:auto;" title="W${w}: ${cls}${note?' — '+note.substring(0,50):''}">${cls==='completed'?'&#10003;':cls==='in-progress'?'~':w}</button>${note?`<div class="prog-wk-note" title="${esc(note)}">&#128172; ${note.substring(0,14)}${note.length>14?'&hellip;':''}</div>`:'<div style="height:14px;"></div>'}</div></td>`;
+      return`<td style="text-align:center;"><div class="prog-wk-wrap"><button class="week-btn ${cls}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})" style="margin:auto;" title="W${w}: ${cls}${note?' \u2014 '+note.substring(0,50):''}">${cls==='completed'?'&#10003;':cls==='in-progress'?'~':w}</button>${note?`<div class="prog-wk-note" title="${esc(note)}">&#128172; ${note.substring(0,14)}${note.length>14?'&hellip;':''}</div>`:'<div style="height:14px;"></div>'}</div></td>`;
     }).join('');
     return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td>${wCells}<td>${weeksBadge(getWeeksDone(s.id))}</td></tr>`;
   }).join('');
@@ -878,26 +889,42 @@ async function saveEvaluation(){
 }
 
 /* ── ADMIN ── */
-function setAdminTab(tab,btn){adminTab=tab;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAdminTable();renderAdminStats();}
+function setAdminTab(tab,btn){
+  adminTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdminTable();
+  renderAdminStats();
+}
+
+/* FIX 3: Section-based filter for BBADM tab */
+function getAdminList(){
+  if(adminTab==='all') return allStudents;
+  if(adminTab==='BBADM') return allStudents.filter(s=>s.section==='I BBA Digital Marketing');
+  return allStudents.filter(s=>s.mentor_assigned===adminTab);
+}
+
 function renderAdminStats(){
-  const list=adminTab==='all'?allStudents:allStudents.filter(s=>s.mentor_assigned===adminTab);
+  const list=getAdminList();
   const approved=list.filter(s=>(adminApprovalMap[s.id]?.status)==='approved').length;
   const scored=list.filter(s=>adminEvalMap[s.id]).length;
   const avg=scored>0?(list.reduce((sm,s)=>sm+(adminEvalMap[s.id]?.total_score||0),0)/scored).toFixed(1):'--';
-  document.getElementById('adminStatsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Students</div><div class="stat-value">${list.length}</div></div><div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div></div><div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div></div>`;
+  document.getElementById('adminStatsRow').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Students</div><div class="stat-value">${list.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div></div>
+    <div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div></div>`;
 }
 
-/* ── Mentor colour map (extended for new mentors) ── */
 const MENTOR_COLORS={
   'Aparna':     'var(--accent2)',
   'Arun Raj':   'var(--green)',
   'Saral':      'var(--amber)',
-  'Bavani Sri': '#0891b2',   /* cyan */
-  'Jane Rhinu': '#9333ea'    /* purple */
+  'Bavani Sri': '#0891b2',
+  'Jane Rhinu': '#9333ea'
 };
 
 function renderAdminTable(){
-  const list=adminTab==='all'?allStudents:allStudents.filter(s=>s.mentor_assigned===adminTab);
+  const list=getAdminList();
   const tb=document.getElementById('adminTableBody');
   if(!list.length){tb.innerHTML='<tr><td colspan="8"><div class="empty-state">No students</div></td></tr>';return;}
   tb.innerHTML=list.map((s,i)=>{
@@ -909,7 +936,7 @@ function renderAdminTable(){
 
 /* ── EXPORT CSV ── */
 function exportCSV(){
-  const list=adminTab==='all'?allStudents:allStudents.filter(s=>s.mentor_assigned===adminTab);
+  const list=getAdminList();
   const rows=[['#','Name','Register No','Section','Course','Project Title','Mentor','Phone','Email',
     'W1 Status','W1 Note','W2 Status','W2 Note','W3 Status','W3 Note','W4 Status','W4 Note',
     'Tech Quality','Problem Fit','Effort','Presentation','Impact','Total Score','Approval']];
