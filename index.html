@@ -197,12 +197,34 @@ tbody tr:hover td{background:var(--surface);}
 .seed-panel{background:var(--amber-lt);border:1px solid rgba(217,119,6,0.3);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;}
 .seed-panel-title{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--amber);margin-bottom:8px;}
 .seed-panel p{font-size:12px;color:var(--ink2);margin-bottom:12px;line-height:1.6;}
+
+/* ── STUDENT NAME CLICKABLE LINK ── */
+.student-name-link{color:var(--accent2);font-weight:700;cursor:pointer;text-decoration:none;border-bottom:1px dashed rgba(80,70,229,0.4);transition:border-color 0.15s,color 0.15s;background:none;border-left:none;border-right:none;border-top:none;font-family:var(--font-body);font-size:13px;padding:0;}
+.student-name-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* ── PROJECT POPOVER ── */
+.proj-popover{position:fixed;z-index:99998;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.18);padding:18px 20px;max-width:320px;min-width:220px;animation:popIn 0.18s cubic-bezier(.22,1,.36,1);pointer-events:none;}
+.proj-popover-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin-bottom:7px;}
+.proj-popover-project{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:10px;}
+.proj-popover-meta{display:flex;flex-direction:column;gap:5px;}
+.proj-popover-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink3);}
+.proj-popover-row strong{color:var(--ink2);font-weight:600;}
+.proj-popover-hint{font-size:10px;color:var(--ink3);margin-top:10px;border-top:1px solid var(--border);padding-top:8px;}
+
 @media(max-width:768px){.main-wrap{grid-template-columns:1fr;}.sidebar{display:none;}.stats-row{grid-template-columns:1fr 1fr;}.content{padding:16px;}.score-grid{grid-template-columns:1fr;}.week-cards-grid{grid-template-columns:1fr 1fr;}.landing-title{font-size:28px;}}
 </style>
 </head>
 <body>
 
 <div id="loadingOverlay" style="display:none;"><div class="spinner"></div><p id="loadingMsg">Loading&hellip;</p></div>
+
+<!-- PROJECT POPOVER (singleton) -->
+<div class="proj-popover" id="projPopover" style="display:none;">
+  <div class="proj-popover-title">&#128196; Project Title</div>
+  <div class="proj-popover-project" id="ppProject"></div>
+  <div class="proj-popover-meta" id="ppMeta"></div>
+  <div class="proj-popover-hint">&#128279; Click <strong>Mentor Evaluation</strong> tab to score this student</div>
+</div>
 
 <!-- LANDING -->
 <div id="landingScreen">
@@ -304,7 +326,7 @@ tbody tr:hover td{background:var(--surface);}
         <div class="card">
           <div class="card-title">&#128203; My Students &mdash; Quick Overview</div>
           <div class="table-wrap"><table>
-            <thead><tr><th>#</th><th>Student Name</th><th>Project Title</th><th>Progress</th><th>Approval</th><th>Score</th></tr></thead>
+            <thead><tr><th>#</th><th>Student Name</th><th>Progress</th><th>Approval</th><th>Score</th></tr></thead>
             <tbody id="dashTableBody"></tbody>
           </table></div>
         </div>
@@ -315,6 +337,7 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Student List</div>
           <div class="page-title">My Students</div>
+          <div class="page-sub">&#128161; Click any student name to see their project title</div>
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="studentSearch" placeholder="Search by name or project&hellip;" oninput="renderStudentList()"></div>
@@ -326,7 +349,7 @@ tbody tr:hover td{background:var(--surface);}
           </select>
         </div>
         <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
-          <thead><tr><th>#</th><th>Name</th><th>Register No.</th><th>Project Title</th><th>Weeks</th><th>Approval</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Register No.</th><th>Weeks</th><th>Approval</th></tr></thead>
           <tbody id="studentTableBody"></tbody>
         </table></div></div>
       </div>
@@ -336,14 +359,14 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Track Progress</div>
           <div class="page-title">Weekly Progress</div>
-          <div class="page-sub">Click any week button to open the full editor</div>
+          <div class="page-sub">&#128161; Click any student name to see their project title &mdash; click week buttons to edit</div>
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="progressSearch" placeholder="Search student&hellip;" oninput="renderProgressTable()"></div>
           <button class="export-btn" onclick="exportProgressCSV()">&darr; Export CSV</button>
         </div>
         <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
-          <thead><tr><th>#</th><th>Name</th><th>Project Title</th><th style="text-align:center;">W1</th><th style="text-align:center;">W2</th><th style="text-align:center;">W3</th><th style="text-align:center;">W4</th><th>Summary</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th style="text-align:center;">W1</th><th style="text-align:center;">W2</th><th style="text-align:center;">W3</th><th style="text-align:center;">W4</th><th>Summary</th></tr></thead>
           <tbody id="progressTableBody"></tbody>
         </table></div></div>
         <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;">
@@ -358,14 +381,14 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Mentor Evaluation</div>
           <div class="page-title">Score Students</div>
-          <div class="page-sub">Each criterion scored out of 20 &mdash; Total out of 100</div>
+          <div class="page-sub">&#128161; Click any student name to see their project title &mdash; each criterion scored out of 20</div>
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="evalSearch" placeholder="Search student&hellip;" oninput="renderEvalTable()"></div>
           <button class="export-btn" onclick="exportEvalCSV()">&darr; Export CSV</button>
         </div>
         <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
-          <thead><tr><th>#</th><th>Name</th><th>Project</th><th>Tech</th><th>Fit</th><th>Effort</th><th>Presentation</th><th>Impact</th><th>Total</th><th>Action</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Tech</th><th>Fit</th><th>Effort</th><th>Presentation</th><th>Impact</th><th>Total</th><th>Action</th></tr></thead>
           <tbody id="evalTableBody"></tbody>
         </table></div></div>
       </div>
@@ -375,6 +398,7 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Admin View</div>
           <div class="page-title">All Students</div>
+          <div class="page-sub">&#128161; Click any student name to see their project title</div>
         </div>
 
         <div id="sstSeedPanel" style="display:none;" class="seed-panel">
@@ -390,7 +414,7 @@ tbody tr:hover td{background:var(--surface);}
         </div>
         <div class="stats-row" id="adminStatsRow" style="grid-template-columns:repeat(3,1fr);"></div>
         <div class="card" style="padding:0;overflow:hidden;margin-top:16px;"><div class="table-wrap"><table>
-          <thead><tr><th>#</th><th>Name</th><th>Section</th><th>Mentor</th><th>Project</th><th>Weeks Done</th><th>Approval</th><th>Score /100</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Section</th><th>Mentor</th><th>Weeks Done</th><th>Approval</th><th>Score /100</th></tr></thead>
           <tbody id="adminTableBody"></tbody>
         </table></div></div>
       </div>
@@ -656,6 +680,49 @@ const api={
   insertStudent:(d)=>sb('students','POST',d),
 };
 
+/* ── POPOVER ── */
+let popoverHideTimer=null;
+function showProjectPopover(el,student){
+  clearTimeout(popoverHideTimer);
+  const pop=document.getElementById('projPopover');
+  document.getElementById('ppProject').textContent=student.project_title||'—';
+  let metaHTML='';
+  if(student.register_number) metaHTML+=`<div class="proj-popover-row">&#128196; Reg No: <strong>${student.register_number}</strong></div>`;
+  if(student.course) metaHTML+=`<div class="proj-popover-row">&#127979; Course: <strong>${student.course}</strong></div>`;
+  if(student.mentor_assigned) metaHTML+=`<div class="proj-popover-row">&#128100; Mentor: <strong>${student.mentor_assigned}</strong></div>`;
+  document.getElementById('ppMeta').innerHTML=metaHTML;
+  pop.style.display='block';
+  const rect=el.getBoundingClientRect();
+  const pw=320,ph=180;
+  let left=rect.left,top=rect.bottom+8;
+  if(left+pw>window.innerWidth-12) left=window.innerWidth-pw-12;
+  if(top+ph>window.innerHeight-12) top=rect.top-ph-8;
+  pop.style.left=Math.max(8,left)+'px';
+  pop.style.top=Math.max(8,top)+'px';
+}
+function hideProjectPopover(){
+  popoverHideTimer=setTimeout(()=>{document.getElementById('projPopover').style.display='none';},200);
+}
+document.addEventListener('click',function(e){
+  if(!e.target.classList.contains('student-name-link')){
+    document.getElementById('projPopover').style.display='none';
+  }
+});
+
+/* ── STUDENT NAME BUTTON HELPER ── */
+function nameBtn(student){
+  const safeName=student.name.replace(/'/g,"\\'");
+  const safeProject=(student.project_title||'').replace(/'/g,"\\'");
+  const safeReg=(student.register_number||'').replace(/'/g,"\\'");
+  const safeCourse=(student.course||'').replace(/'/g,"\\'");
+  const safeMentor=(student.mentor_assigned||'').replace(/'/g,"\\'");
+  return `<button class="student-name-link"
+    onmouseenter="showProjectPopover(this,{project_title:'${safeProject}',register_number:'${safeReg}',course:'${safeCourse}',mentor_assigned:'${safeMentor}'})"
+    onmouseleave="hideProjectPopover()"
+    onclick="showProjectPopover(this,{project_title:'${safeProject}',register_number:'${safeReg}',course:'${safeCourse}',mentor_assigned:'${safeMentor}'})"
+  >${student.name}</button>`;
+}
+
 /* ── LANDING ── */
 function onCollegeChange(){const v=document.getElementById('collegeSelect').value;document.getElementById('goBtn').disabled=!v;selectedCollegeKey=v||null;}
 function goToLogin(){
@@ -843,7 +910,7 @@ function esc(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 function showPanel(id,el){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el)el.classList.add('active');}
 
 /* ── CSV HELPER ── */
-function downloadCSV(rows, filename){
+function downloadCSV(rows,filename){
   const csv=rows.map(r=>r.map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',')).join('\n');
   const blob=new Blob([csv],{type:'text/csv'});
   const url=URL.createObjectURL(blob);
@@ -864,12 +931,12 @@ function exportProgressCSV(){
     const done=getWeeksDone(s.id);
     const approval=getApproval(s.id);
     rows.push([
-      i+1, s.name, s.register_number, s.section||'', s.course||'', s.project_title, s.mentor_assigned||'',
-      wks[1]?.status||'not-started', wks[1]?.note||'',
-      wks[2]?.status||'not-started', wks[2]?.note||'',
-      wks[3]?.status||'not-started', wks[3]?.note||'',
-      wks[4]?.status||'not-started', wks[4]?.note||'',
-      done+'/4', approval
+      i+1,s.name,s.register_number,s.section||'',s.course||'',s.project_title,s.mentor_assigned||'',
+      wks[1]?.status||'not-started',wks[1]?.note||'',
+      wks[2]?.status||'not-started',wks[2]?.note||'',
+      wks[3]?.status||'not-started',wks[3]?.note||'',
+      wks[4]?.status||'not-started',wks[4]?.note||'',
+      done+'/4',approval
     ]);
   });
   downloadCSV(rows,'weekly_progress_'+new Date().toISOString().split('T')[0]+'.csv');
@@ -885,9 +952,9 @@ function exportEvalCSV(){
   list.forEach((s,i)=>{
     const e=evalMap[s.id];
     rows.push([
-      i+1, s.name, s.register_number, s.section||'', s.course||'', s.project_title, s.mentor_assigned||'',
-      e?.tech_quality??'', e?.problem_fit??'', e?.effort_ownership??'',
-      e?.presentation??'', e?.practical_impact??'', e?.total_score??'',
+      i+1,s.name,s.register_number,s.section||'',s.course||'',s.project_title,s.mentor_assigned||'',
+      e?.tech_quality??'',e?.problem_fit??'',e?.effort_ownership??'',
+      e?.presentation??'',e?.practical_impact??'',e?.total_score??'',
       e?.remarks||''
     ]);
   });
@@ -908,10 +975,16 @@ function renderDashboard(){
     <div class="stat-card"><div class="stat-label">Evaluated</div><div class="stat-value" style="color:var(--accent2);">${scored}</div><div class="stat-sub">score submitted</div></div>
     <div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div><div class="stat-sub">out of 100</div></div>`;
   const tb=document.getElementById('dashTableBody');
-  if(!students.length){tb.innerHTML='<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">&#128235;</div>No students found.</div></td></tr>';return;}
+  if(!students.length){tb.innerHTML='<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#128235;</div>No students found.</div></td></tr>';return;}
   tb.innerHTML=students.map((s,i)=>{
     const done=getWeeksDone(s.id),score=getScore(s.id),approval=getApproval(s.id),prog=Math.round(done/4*100);
-    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:${prog}%"></div></div><span class="prog-pct">${prog}%</span></div></td><td>${approvalBadge(approval)}</td><td><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span>${score!==null?'<span style="font-size:11px;color:var(--ink3);"> /100</span>':''}</td></tr>`;
+    return`<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td>${nameBtn(s)}</td>
+      <td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:${prog}%"></div></div><span class="prog-pct">${prog}%</span></div></td>
+      <td>${approvalBadge(approval)}</td>
+      <td><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span>${score!==null?'<span style="font-size:11px;color:var(--ink3);"> /100</span>':''}</td>
+    </tr>`;
   }).join('');
 }
 
@@ -921,7 +994,7 @@ function renderStudentList(){
   const af=document.getElementById('approvalFilter').value;
   const list=students.filter(s=>(!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q))&&(!af||getApproval(s.id)===af));
   const tb=document.getElementById('studentTableBody');
-  if(!list.length){tb.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">&#128269;</div>No students match</div></td></tr>';return;}
+  if(!list.length){tb.innerHTML='<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#128269;</div>No students match</div></td></tr>';return;}
   tb.innerHTML=list.map((s,i)=>{
     const weeks=progressMap[s.id]||{};
     const wbtns=[1,2,3,4].map(w=>{
@@ -930,7 +1003,17 @@ function renderStudentList(){
       const note=wd&&wd.note&&wd.note.trim()?wd.note.substring(0,40):'';
       return`<button class="week-btn ${cls}" title="Week ${w}: ${cls}${note?' | '+note:''}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})">${icon}</button>`;
     }).join('');
-return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);">${s.register_number}</td><td style="font-size:12px;color:var(--ink3);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td><div class="week-btns">${wbtns}</div></td><td><select class="approval-select" onchange="saveApproval(${s.id},this.value)"><option value="pending" ${getApproval(s.id)==='pending'?'selected':''}>Pending</option><option value="approved" ${getApproval(s.id)==='approved'?'selected':''}>Approved</option><option value="needs-revision" ${getApproval(s.id)==='needs-revision'?'selected':''}>Needs Revision</option></select></td></tr>`;
+    return`<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td>${nameBtn(s)}</td>
+      <td style="font-size:12px;color:var(--ink3);">${s.register_number}</td>
+      <td><div class="week-btns">${wbtns}</div></td>
+      <td><select class="approval-select" onchange="saveApproval(${s.id},this.value)">
+        <option value="pending" ${getApproval(s.id)==='pending'?'selected':''}>Pending</option>
+        <option value="approved" ${getApproval(s.id)==='approved'?'selected':''}>Approved</option>
+        <option value="needs-revision" ${getApproval(s.id)==='needs-revision'?'selected':''}>Needs Revision</option>
+      </select></td>
+    </tr>`;
   }).join('');
 }
 
@@ -939,7 +1022,7 @@ function renderProgressTable(){
   const q=(document.getElementById('progressSearch').value||'').toLowerCase();
   const list=students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
   const tb=document.getElementById('progressTableBody');
-  if(!list.length){tb.innerHTML='<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">&#128203;</div>No students found</div></td></tr>';return;}
+  if(!list.length){tb.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">&#128203;</div>No students found</div></td></tr>';return;}
   tb.innerHTML=list.map((s,i)=>{
     const weeks=progressMap[s.id]||{};
     const wCells=[1,2,3,4].map(w=>{
@@ -947,7 +1030,12 @@ function renderProgressTable(){
       const note=wd&&wd.note&&wd.note.trim()?wd.note:'';
       return`<td style="text-align:center;"><div class="prog-wk-wrap"><button class="week-btn ${cls}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})" style="margin:auto;" title="W${w}: ${cls}${note?' \u2014 '+note.substring(0,50):''}">${cls==='completed'?'&#10003;':cls==='in-progress'?'~':w}</button>${note?`<div class="prog-wk-note" title="${esc(note)}">&#128172; ${note.substring(0,14)}${note.length>14?'&hellip;':''}</div>`:'<div style="height:14px;"></div>'}</div></td>`;
     }).join('');
-    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td>${wCells}<td>${weeksBadge(getWeeksDone(s.id))}</td></tr>`;
+    return`<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td>${nameBtn(s)}</td>
+      ${wCells}
+      <td>${weeksBadge(getWeeksDone(s.id))}</td>
+    </tr>`;
   }).join('');
 }
 
@@ -1043,12 +1131,22 @@ function renderEvalTable(){
   const q=(document.getElementById('evalSearch').value||'').toLowerCase();
   const list=students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
   const tb=document.getElementById('evalTableBody');
-  if(!list.length){tb.innerHTML='<tr><td colspan="10"><div class="empty-state"><div class="empty-icon">&#128202;</div>No students</div></td></tr>';return;}
+  if(!list.length){tb.innerHTML='<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">&#128202;</div>No students</div></td></tr>';return;}
   tb.innerHTML=list.map((s,i)=>{
     const e=evalMap[s.id];
     const sc=(k)=>e?(e[k]!==null&&e[k]!==undefined?e[k]:'--'):'--';
     const total=e?e.total_score:null;
-    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td style="font-size:12px;color:var(--ink3);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td style="text-align:center;">${sc('tech_quality')}</td><td style="text-align:center;">${sc('problem_fit')}</td><td style="text-align:center;">${sc('effort_ownership')}</td><td style="text-align:center;">${sc('presentation')}</td><td style="text-align:center;">${sc('practical_impact')}</td><td style="text-align:center;"><span class="score-display ${scoreClass(total)}">${total!==null?total:'--'}</span>${total!==null?'<span style="font-size:10px;color:var(--ink3);"> /100</span>':''}</td><td><button class="btn btn-primary btn-sm" onclick="openEvalModal(${s.id},'${esc(s.name)}','${esc(s.project_title)}')">&#9998; ${e?'Edit':'Score'}</button></td></tr>`;
+    return`<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td>${nameBtn(s)}</td>
+      <td style="text-align:center;">${sc('tech_quality')}</td>
+      <td style="text-align:center;">${sc('problem_fit')}</td>
+      <td style="text-align:center;">${sc('effort_ownership')}</td>
+      <td style="text-align:center;">${sc('presentation')}</td>
+      <td style="text-align:center;">${sc('practical_impact')}</td>
+      <td style="text-align:center;"><span class="score-display ${scoreClass(total)}">${total!==null?total:'--'}</span>${total!==null?'<span style="font-size:10px;color:var(--ink3);"> /100</span>':''}</td>
+      <td><button class="btn btn-primary btn-sm" onclick="openEvalModal(${s.id},'${esc(s.name)}','${esc(s.project_title)}')">&#9998; ${e?'Edit':'Score'}</button></td>
+    </tr>`;
   }).join('');
 }
 
@@ -1105,7 +1203,7 @@ async function saveEvaluation(){
   finally{btn.disabled=false;btn.innerHTML='Save Evaluation';}
 }
 
-/* ── ADMIN TABS — DEPARTMENT-WISE ── */
+/* ── ADMIN TABS ── */
 function renderAdminTabs(){
   const tabs=COLLEGE_ADMIN_TABS[selectedCollegeKey]||COLLEGE_ADMIN_TABS['default'];
   const row=document.getElementById('adminTabRow');
@@ -1121,7 +1219,6 @@ function setAdminTab(tab,btn){
   renderAdminStats();
 }
 
-/* Filter by section (department) instead of mentor */
 function getAdminList(){
   if(adminTab==='all') return allStudents;
   return allStudents.filter(s=>s.section===adminTab);
@@ -1141,11 +1238,19 @@ function renderAdminStats(){
 function renderAdminTable(){
   const list=getAdminList();
   const tb=document.getElementById('adminTableBody');
-  if(!list.length){tb.innerHTML='<tr><td colspan="8"><div class="empty-state">No students</div></td></tr>';return;}
+  if(!list.length){tb.innerHTML='<tr><td colspan="7"><div class="empty-state">No students</div></td></tr>';return;}
   tb.innerHTML=list.map((s,i)=>{
     const done=getWeeksDone(s.id,true),score=getScore(s.id,true),approval=getApproval(s.id,true);
     const mc=MENTOR_COLORS[s.mentor_assigned]||'var(--ink2)';
-    return`<tr><td style="color:var(--ink3);">${i+1}</td><td style="font-weight:600;color:var(--ink);">${s.name}</td><td><span style="font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:99px;">${s.section||''}</span></td><td><span style="font-size:12px;font-weight:600;color:${mc};">${s.mentor_assigned}</span></td><td style="font-size:12px;color:var(--ink3);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.project_title}</td><td style="text-align:center;">${weeksBadge(done)}</td><td>${approvalBadge(approval)}</td><td style="text-align:center;"><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span></td></tr>`;
+    return`<tr>
+      <td style="color:var(--ink3);">${i+1}</td>
+      <td>${nameBtn(s)}</td>
+      <td><span style="font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:99px;">${s.section||''}</span></td>
+      <td><span style="font-size:12px;font-weight:600;color:${mc};">${s.mentor_assigned}</span></td>
+      <td style="text-align:center;">${weeksBadge(done)}</td>
+      <td>${approvalBadge(approval)}</td>
+      <td style="text-align:center;"><span class="score-display ${scoreClass(score)}">${score!==null?score:'--'}</span></td>
+    </tr>`;
   }).join('');
 }
 
