@@ -252,12 +252,16 @@ tbody tr:hover td{background:var(--surface);}
     <div class="login-title">Mentor Login</div>
     <div class="login-sub">Select section, role and enter your PIN</div>
     <div class="login-label">Select Section</div>
-    <div class="login-select-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:14px;">
-      <button class="role-btn" data-section="A" onclick="selectSection(this)">I BCA &mdash; A</button>
-      <button class="role-btn" data-section="B" onclick="selectSection(this)">I BCA &mdash; B</button>
-      <button class="role-btn" data-section="II" onclick="selectSection(this)">II BCA</button>
-      <button class="role-btn" data-section="BCH" onclick="selectSection(this)" style="grid-column:1/-1;">I B.Com Honours</button>
-      <button class="role-btn" data-section="BBADM" onclick="selectSection(this)" style="grid-column:1/-1;">I BBA Digital Marketing</button>
+    <div class="college-select-wrap" style="margin-bottom:14px;">
+      <select class="college-select" id="sectionSelect" onchange="selectSectionFromDropdown(this)">
+        <option value="">&mdash; Choose your section &mdash;</option>
+        <option value="A">I BCA &mdash; A</option>
+        <option value="B">I BCA &mdash; B</option>
+        <option value="II">II BCA</option>
+        <option value="BCH">I B.Com Honours</option>
+        <option value="BBADM">I BBA Digital Marketing</option>
+      </select>
+      <span class="college-select-icon">&#9662;</span>
     </div>
     <div class="login-label">Select Role</div>
     <div id="roleButtonsWrap" class="login-select-grid" style="grid-template-columns:1fr 1fr;">
@@ -545,6 +549,7 @@ function goToLogin(){
   document.getElementById('loginBtn').disabled=true;
   document.getElementById('loginError').textContent='';
   document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('sectionSelect').value='';
   renderRoleButtons(null);
 }
 function backToLanding(){document.getElementById('loginScreen').classList.remove('show');document.getElementById('landingScreen').style.display='flex';}
@@ -559,6 +564,12 @@ function renderRoleButtons(sec){
 }
 
 /* ── LOGIN ── */
+function selectSectionFromDropdown(sel){
+  selectedSection=sel.value||null;
+  selectedRole=null;
+  renderRoleButtons(selectedSection);
+  checkLoginReady();
+}
 function selectSection(btn){
   document.querySelectorAll('[data-section]').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
