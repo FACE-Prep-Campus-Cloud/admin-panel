@@ -738,8 +738,26 @@ async function initApp(){
 
     if(currentUser==='Admin'){
       /* Generic: load all sections defined for this college */
-      const adminSections=COLLEGE_ADMIN_SECTIONS[selectedCollegeKey]||COLLEGE_ADMIN_SECTIONS['default'];
-      const results=await Promise.all(adminSections.map(s=>api.students(col,s)));
+const COLLEGE_ADMIN_SECTIONS={
+  'default':[
+    'I BCA - A',
+    'I BCA - B',
+    'II BCA',
+    'I B.Com Honours',
+    'I BBA Digital Marketing'
+  ],
+  'sst':[
+    'I BBA',
+    'I MCA'
+  ],
+  'nagarathinam':[
+    'I B.Sc AI',
+    'II B.Sc AI',
+    'B.Com BC & FT',
+    'BBA DM',
+    'I B.Sc CC'
+  ]
+};      const results=await Promise.all(adminSections.map(s=>api.students(col,s)));
       allStudents=results.flat();
       students=allStudents;
       /* Show seed panel only if no students found at all */
