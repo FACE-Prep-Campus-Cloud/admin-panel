@@ -255,10 +255,11 @@ tbody tr:hover td{background:var(--surface);}
     <div class="login-title">Mentor Login</div>
     <div class="login-sub">Select section, role and enter your PIN</div>
     <div class="login-label">Select Section</div>
-    <div class="login-select-grid" style="margin-bottom:14px;">
-      <button class="role-btn" data-section="A" onclick="selectSection(this)">I BCA &mdash; A</button>
-      <button class="role-btn" data-section="B" onclick="selectSection(this)">I BCA &mdash; B</button>
-    </div>
+   <div class="login-select-grid" style="margin-bottom:14px;">
+  <button class="role-btn" data-section="A" onclick="selectSection(this)">I BCA &mdash; A</button>
+  <button class="role-btn" data-section="B" onclick="selectSection(this)">I BCA &mdash; B</button>
+  <button class="role-btn" data-section="II" onclick="selectSection(this)">II BCA</button>
+</div>
     <div class="login-label">Select Role</div>
     <div class="login-select-grid">
       <button class="role-btn" data-role="Aparna" onclick="selectRole(this)">Aparna</button>
@@ -520,8 +521,9 @@ async function doLogin(){
   if(PINS[selectedRole]!==pin){showLoginError('Incorrect PIN.');document.getElementById('pinInput').classList.add('error');document.getElementById('pinInput').value='';checkLoginReady();return;}
   currentUser=selectedRole;
   document.getElementById('loginScreen').classList.remove('show');
-  document.getElementById('userLabel').textContent=currentUser+' \u00b7 '+selectedCollegeName.split(' ')[0]+' '+selectedSection;
-  document.getElementById('topbarCollege').textContent=selectedCollegeName+' \u2014 I BCA '+selectedSection;
+  const sectionLabel = selectedSection==='II' ? 'II BCA' : 'I BCA - '+selectedSection;
+document.getElementById('userLabel').textContent=currentUser+' \u00b7 '+selectedCollegeName.split(' ')[0]+' '+sectionLabel;
+document.getElementById('topbarCollege').textContent=selectedCollegeName+' \u2014 '+sectionLabel;
 
   if(currentUser==='Admin'){
     document.getElementById('nav-admin').style.display='flex';
@@ -553,13 +555,18 @@ async function initApp(){
   document.getElementById('loadingMsg').textContent='Loading students\u2026';
   ol.style.display='flex';
   try{
-    const col=selectedCollegeName,sec='I BCA - '+selectedSection;
-    if(currentUser==='Admin'){
-      const[sA,sB]=await Promise.all([api.students(col,'I BCA - A'),api.students(col,'I BCA - B')]);
-      allStudents=[...sA,...sB];students=allStudents;
-    }else{
-      [students,allStudents]=await Promise.all([api.myStudents(col,sec,currentUser),api.students(col,sec)]);
-    }
+   const col=selectedCollegeName;
+const sec=selectedSection==='II'?'II BCA':'I BCA - '+selectedSection;
+if(currentUser==='Admin'){
+  const[sA,sB,sII]=await Promise.all([
+    api.students(col,'I BCA - A'),
+    api.students(col,'I BCA - B'),
+    api.students(col,'II BCA')
+  ]);
+  allStudents=[...sA,...sB,...sII];students=allStudents;
+}else{
+  [students,allStudents]=await Promise.all([api.myStudents(col,sec,currentUser),api.students(col,sec)]);
+}
     document.getElementById('navStudentCount').textContent=students.length;
     if(students.length>0){
       const ids=students.map(s=>s.id);
@@ -611,7 +618,8 @@ function showPanel(id,el){document.querySelectorAll('.panel').forEach(p=>p.class
 /* ── DASHBOARD ── */
 function renderDashboard(){
   document.getElementById('dashTitle').textContent=currentUser==='Admin'?'Admin Dashboard':'Welcome, '+currentUser;
-  document.getElementById('dashSub').textContent=students.length+' students \u00b7 '+selectedCollegeName+' \u2014 I BCA '+selectedSection;
+const secLbl=selectedSection==='II'?'II BCA':'I BCA '+selectedSection;
+document.getElementById('dashSub').textContent=students.length+' students \u00b7 '+selectedCollegeName+' \u2014 '+secLbl;
   const total=students.length,approved=students.filter(s=>getApproval(s.id)==='approved').length;
   const scored=students.filter(s=>getScore(s.id)!==null).length;
   const avg=scored>0?(students.filter(s=>getScore(s.id)!==null).reduce((sm,s)=>sm+getScore(s.id),0)/scored).toFixed(1):'--';
