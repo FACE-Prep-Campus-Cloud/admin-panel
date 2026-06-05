@@ -460,43 +460,58 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 
 /* ── PINS ── */
 const PINS={
-  'Aparna':      '1212',
-  'Arun Raj':    '1212',
-  'Saral':       '1212',
-  'Admin':       '1212',
-  'Bavani Sri':  '1212',
-  'Jane Rhinu':  '1212',
-  'Kavipriya':   '1212',
-  'Sneha':       '1212',
-  'Gokilavaani': '1212'
+  'Aparna':        '1212',
+  'Arun Raj':      '1212',
+  'Saral':         '1212',
+  'Admin':         '1212',
+  'Bavani Sri':    '1212',
+  'Jane Rhinu':    '1212',
+  'Kavipriya':     '1212',
+  'Sneha':         '1212',
+  'Gokilavaani':   '1212',
+  'Mohanasree N':  '1212',
+  'Srisaradha S':  '1212',
+  'Anish N':       '1212',
+  'Dharshan K':    '1212'
 };
 
 /* ── SECTIONS PER COLLEGE ── */
 const COLLEGE_SECTIONS={
   'default':[
-    {value:'A',     label:'I BCA \u2014 A'},
-    {value:'B',     label:'I BCA \u2014 B'},
+    {value:'A',     label:'I BCA \\u2014 A'},
+    {value:'B',     label:'I BCA \\u2014 B'},
     {value:'II',    label:'II BCA'},
     {value:'BCH',   label:'I B.Com Honours'},
     {value:'BBADM', label:'I BBA Digital Marketing'}
   ],
   'sst':[
-    {value:'IBBA', label:'I BBA'},
-    {value:'IMCA', label:'I MCA'}
+    {value:'IBBA',  label:'I BBA'},
+    {value:'IMCA',  label:'I MCA'}
+  ],
+  'nagarathinam':[
+    {value:'NAIG_IBSCAI',  label:'I B.Sc AI'},
+    {value:'NAIG_IIBSCAI', label:'II B.Sc AI'},
+    {value:'NAIG_BCFT',    label:'B.Com BC & FT'},
+    {value:'NAIG_BBADM',   label:'BBA DM'},
+    {value:'NAIG_IBSCCC',  label:'I B.Sc CC'}
   ]
 };
 
 /* ── ROLES PER SECTION ── */
 const SECTION_ROLES={
-  'A':     ['Aparna','Arun Raj','Saral','Admin'],
-  'B':     ['Aparna','Arun Raj','Saral','Admin'],
-  'II':    ['Aparna','Arun Raj','Saral','Admin'],
-  'BCH':   ['Bavani Sri','Jane Rhinu','Admin'],
-  'BBADM': ['Bavani Sri','Jane Rhinu','Admin'],
-  'IBBA':  ['Kavipriya','Admin'],
-  'IMCA':  ['Sneha','Gokilavaani','Admin']
+  'A':             ['Aparna','Arun Raj','Saral','Admin'],
+  'B':             ['Aparna','Arun Raj','Saral','Admin'],
+  'II':            ['Aparna','Arun Raj','Saral','Admin'],
+  'BCH':           ['Bavani Sri','Jane Rhinu','Admin'],
+  'BBADM':         ['Bavani Sri','Jane Rhinu','Admin'],
+  'IBBA':          ['Kavipriya','Admin'],
+  'IMCA':          ['Sneha','Gokilavaani','Admin'],
+  'NAIG_IBSCAI':   ['Mohanasree N','Srisaradha S','Admin'],
+  'NAIG_IIBSCAI':  ['Mohanasree N','Srisaradha S','Admin'],
+  'NAIG_BCFT':     ['Anish N','Admin'],
+  'NAIG_BBADM':    ['Dharshan K','Admin'],
+  'NAIG_IBSCCC':   ['Srisaradha S','Mohanasree N','Admin']
 };
-
 const COLLEGE_NAMES={
   'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",
   'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science',
@@ -544,12 +559,20 @@ const SST_IMCA_STUDENTS=[
 ];
 
 /* ── getSectionLabel ── */
+const SECTION_LABEL_MAP={
+  'II':            'II BCA',
+  'BCH':           'I B.Com Honours',
+  'BBADM':         'I BBA Digital Marketing',
+  'IBBA':          'I BBA',
+  'IMCA':          'I MCA',
+  'NAIG_IBSCAI':   'I B.Sc AI',
+  'NAIG_IIBSCAI':  'II B.Sc AI',
+  'NAIG_BCFT':     'B.Com BC & FT',
+  'NAIG_BBADM':    'BBA DM',
+  'NAIG_IBSCCC':   'I B.Sc CC'
+};
 function getSectionLabel(sec){
-  if(sec==='II')    return 'II BCA';
-  if(sec==='BCH')   return 'I B.Com Honours';
-  if(sec==='BBADM') return 'I BBA Digital Marketing';
-  if(sec==='IBBA')  return 'I BBA';
-  if(sec==='IMCA')  return 'I MCA';
+  if(SECTION_LABEL_MAP[sec]) return SECTION_LABEL_MAP[sec];
   return 'I BCA - '+sec;
 }
 
@@ -683,10 +706,17 @@ const COLLEGE_ADMIN_TABS={
     {key:'BBADM',      label:'BBA Digital Mktg'}
   ],
   'sst':[
+    {key:'all',         label:'All'},
+    {key:'Kavipriya',   label:'Kavipriya (I BBA)'},
+    {key:'Sneha',       label:'Sneha (I MCA)'},
+    {key:'Gokilavaani', label:'Gokilavaani (I MCA)'}
+  ],
+  'nagarathinam':[
     {key:'all',          label:'All'},
-    {key:'Kavipriya',    label:'Kavipriya (I BBA)'},
-    {key:'Sneha',        label:'Sneha (I MCA)'},
-    {key:'Gokilavaani',  label:'Gokilavaani (I MCA)'}
+    {key:'Mohanasree N', label:'Mohanasree N'},
+    {key:'Srisaradha S', label:'Srisaradha S'},
+    {key:'Anish N',      label:'Anish N (B.Com)'},
+    {key:'Dharshan K',   label:'Dharshan K (BBA DM)'}
   ]
 };
 
@@ -707,29 +737,13 @@ async function initApp(){
     const sec=getSectionLabel(selectedSection);
 
     if(currentUser==='Admin'){
-      if(selectedCollegeKey==='sst'){
-        // FIX: was sIBCA (typo), corrected to sIMCA; also fixed broken condition
-        const [sIBBA, sIMCA] = await Promise.all([
-          api.students(col, 'I BBA'),
-          api.students(col, 'I MCA')
-        ]);
-        allStudents=[...sIBBA,...sIMCA];
-        students=allStudents;
-        // Show seed panel if either list is empty
-        const anyEmpty = sIBBA.length === 0 || sIMCA.length === 0;
-        document.getElementById('sstSeedPanel').style.display = anyEmpty ? 'block' : 'none';
-      } else {
-        const[sA,sB,sII,sBCH,sBBADM]=await Promise.all([
-          api.students(col,'I BCA - A'),
-          api.students(col,'I BCA - B'),
-          api.students(col,'II BCA'),
-          api.students(col,'I B.Com Honours'),
-          api.students(col,'I BBA Digital Marketing')
-        ]);
-        allStudents=[...sA,...sB,...sII,...sBCH,...sBBADM];
-        students=allStudents;
-        document.getElementById('sstSeedPanel').style.display='none';
-      }
+      /* Generic: load all sections defined for this college */
+      const adminSections=COLLEGE_ADMIN_SECTIONS[selectedCollegeKey]||COLLEGE_ADMIN_SECTIONS['default'];
+      const results=await Promise.all(adminSections.map(s=>api.students(col,s)));
+      allStudents=results.flat();
+      students=allStudents;
+      /* Show seed panel only if no students found at all */
+      document.getElementById('sstSeedPanel').style.display=allStudents.length===0?'block':'none';
     } else {
       [students,allStudents]=await Promise.all([
         api.myStudents(col,sec,currentUser),
@@ -1074,14 +1088,18 @@ function renderAdminStats(){
 
 // FIX: Added missing colon after 'Gokilavaani' key
 const MENTOR_COLORS={
-  'Aparna':      'var(--accent2)',
-  'Arun Raj':    'var(--green)',
-  'Saral':       'var(--amber)',
-  'Bavani Sri':  '#0891b2',
-  'Jane Rhinu':  '#9333ea',
-  'Kavipriya':   '#db2777',
-  'Sneha':       '#0891b2',
-  'Gokilavaani': '#16a34a'
+  'Aparna':       'var(--accent2)',
+  'Arun Raj':     'var(--green)',
+  'Saral':        'var(--amber)',
+  'Bavani Sri':   '#0891b2',
+  'Jane Rhinu':   '#9333ea',
+  'Kavipriya':    '#db2777',
+  'Sneha':        '#0891b2',
+  'Gokilavaani':  '#16a34a',
+  'Mohanasree N': '#7c3aed',
+  'Srisaradha S': '#0369a1',
+  'Anish N':      '#b45309',
+  'Dharshan K':   '#047857'
 };
 
 function renderAdminTable(){
