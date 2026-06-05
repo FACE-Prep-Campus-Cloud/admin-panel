@@ -261,6 +261,7 @@ tbody tr:hover td{background:var(--surface);}
       <button class="role-btn" data-section="B" onclick="selectSection(this)">I BCA &mdash; B</button>
       <button class="role-btn" data-section="II" onclick="selectSection(this)">II BCA</button>
       <button class="role-btn" data-section="BCH" onclick="selectSection(this)" style="grid-column:1/-1;">I B.Com Honours</button>
+      <button class="role-btn" data-section="BBADM" onclick="selectSection(this)" style="grid-column:1/-1;">I BBA Digital Marketing</button>
     </div>
     <div class="login-label">Select Role</div>
     <div id="roleButtonsWrap" class="login-select-grid" style="grid-template-columns:1fr 1fr;">
@@ -474,7 +475,9 @@ const SECTION_ROLES={
   'A':   ['Aparna','Arun Raj','Saral','Admin'],
   'B':   ['Aparna','Arun Raj','Saral','Admin'],
   'II':  ['Aparna','Arun Raj','Saral','Admin'],
-  'BCH': ['Bavani Sri','Jane Rhinu','Admin']   /* NEW */
+  'BCH': ['Bavani Sri','Jane Rhinu','Admin'],
+  'BBADM': ['Bavani Sri','Jane Rhinu','Admin']
+  /* NEW */
 };
 
 const COLLEGE_NAMES={'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science','terf':"TERF's College of Arts and Science",'sst':'Sree Saraswathi Thyagaraja College','tjs':'TJS College of Arts and Science','bharathidasan':'Bharathidasan College of Arts & Science','nagarathinam':'Nagarathinam Angalammal Arts & Science College','vinayaga':"Vinayaga Mission's Research Foundation School of Arts & Science",'amaraavathi':'Sri Amaraavathi College of Arts & Science','takshashila':'Takshashila University','studyworld':'Study World Group of Institution','rathinam':'Rathinam College of Arts & Science','niche':'Noorul Islam Centre for Higher Education (NICHE)','amet':'AMET University','joy':'Joy University','sasurie':'Sasurie College of Arts and Science','alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)','svyasa':'S-VYASA University','asb':'Asian School of Business'};
@@ -607,7 +610,8 @@ async function initApp(){
         api.students(col,'I BCA - A'),
         api.students(col,'I BCA - B'),
         api.students(col,'II BCA'),
-        api.students(col,'I B.Com Honours')
+        api.students(col,'I B.Com Honours'),
+        api.students(col,'I BBA Digital Marketing')
       ]);
       allStudents=[...sA,...sB,...sII,...sBCH];
       students=allStudents;
