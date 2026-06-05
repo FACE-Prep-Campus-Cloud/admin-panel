@@ -381,7 +381,7 @@ tbody tr:hover td{background:var(--surface);}
         <!-- SST seed panel -->
         <div id="sstSeedPanel" style="display:none;" class="seed-panel">
           <div class="seed-panel-title">&#128190; First-time Setup: Seed SST I BBA Students</div>
-          <p>The 22 I BBA students for Sree Saraswathi Thyagaraja College need to be added to the database. Click the button below to insert them. This only needs to be done once.</p>
+  <p>Insert all I BBA and I BCA students into the database. Run once only.</p>   <!-- ← update text -->
           <button class="btn btn-primary" id="seedBtn" onclick="seedSSTStudents()">&#43; Insert 22 SST I BBA Students</button>
           <span id="seedStatus" style="font-size:12px;color:var(--ink3);margin-left:14px;"></span>
         </div>
@@ -470,7 +470,9 @@ const PINS={
   'Admin':      '9201',
   'Bavani Sri': '5541',
   'Jane Rhinu': '6673',
-  'Kavipriya':  '2085'   // SST I BBA mentor
+  'Kavipriya':  '2085',
+  'Sneha':  '2085',
+  'Gokilavaani': '2085'// SST I BBA mentor
 };
 
 /* ── SECTIONS PER COLLEGE ── */
@@ -483,7 +485,8 @@ const COLLEGE_SECTIONS={
     {value:'BBADM',label:'I BBA Digital Marketing'}
   ],
   'sst': [
-    {value:'IBBA', label:'I BBA'}
+    {value:'IBBA', label:'I BBA'},
+    {value:'IMCA', label:'I MCA'}
   ]
 };
 
@@ -494,7 +497,8 @@ const SECTION_ROLES={
   'II':    ['Aparna','Arun Raj','Saral','Admin'],
   'BCH':   ['Bavani Sri','Jane Rhinu','Admin'],
   'BBADM': ['Bavani Sri','Jane Rhinu','Admin'],
-  'IBBA':  ['Kavipriya','Admin']  // SST I BBA
+  'IBBA':  ['Kavipriya','Admin'],
+  'IMCA':  ['Sneha','Gokilavaani']// SST I BBA
 };
 
 const COLLEGE_NAMES={
@@ -544,6 +548,7 @@ function getSectionLabel(sec){
   if(sec==='BCH')   return 'I B.Com Honours';
   if(sec==='BBADM') return 'I BBA Digital Marketing';
   if(sec==='IBBA')  return 'I BBA';
+  if(sec==='IMCA') return 'I MCA';
   return 'I BCA - '+sec;
 }
 
@@ -681,7 +686,9 @@ const COLLEGE_ADMIN_TABS={
   ],
   'sst':[
     {key:'all',       label:'All'},
-    {key:'Kavipriya', label:'Kavipriya (I BBA)'}
+    {key:'Kavipriya', label:'Kavipriya (I BBA)'},
+    {key:'Sneha', label:'Sneha (I MCA)'},
+    {key:'Gokilavaani', label:'Gokilavaani (I MCA)'}
   ]
 };
 
@@ -705,10 +712,12 @@ async function initApp(){
       if(selectedCollegeKey==='sst'){
         // SST: only I BBA section
         const sIBBA=await api.students(col,'I BBA');
-        allStudents=[...sIBBA];
+        const sIMCA = await api.students(col, 'I MCA');
+        allStudents=[...sIBBA,...sIMCA];
         students=allStudents;
         // Show seed panel if no students yet
-        document.getElementById('sstSeedPanel').style.display=sIBBA.length===0?'block':'none';
+const anyEmpty = sIBBA.length===0 || sIBCA.length===0;
+  document.getElementById('sstSeedPanel').style.display = anyEmpty ? 'block' : 'none';
       } else {
         const[sA,sB,sII,sBCH,sBBADM]=await Promise.all([
           api.students(col,'I BCA - A'),
@@ -772,6 +781,10 @@ async function seedSSTStudents(){
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Inserting\u2026';
   const col=selectedCollegeName;
   let inserted=0,errors=0;
+  const allToInsert = [
+    ...SST_IBBA_STUDENTS.map(s => ({...s, section:'I BBA'})),   // ← existing
+    ...SST_IMCA_STUDENTS.map(s => ({...s, section:'I MCA'}))    // ← ADD new dept
+  ];
   for(const s of SST_IBBA_STUDENTS){
     try{
       await api.insertStudent({
@@ -785,6 +798,18 @@ async function seedSSTStudents(){
         phone:s.phone,
         email:s.email
       });
+      (const s of SST_IMCA_STUDENTS){
+    try{
+      await api.insertStudent({
+        college:col,
+        section:'I BBA',
+        name:s.name,
+        register_number:s.register_number,
+        course:s.course,
+        project_title:s.project_title,
+        mentor_assigned:s.mentor_assigned,
+        phone:s.phone,
+        email:s.email)];
       inserted++;
       status.textContent=inserted+' inserted\u2026';
     }catch(e){
@@ -1061,7 +1086,9 @@ const MENTOR_COLORS={
   'Saral':      'var(--amber)',
   'Bavani Sri': '#0891b2',
   'Jane Rhinu': '#9333ea',
-  'Kavipriya':  '#db2777'
+  'Kavipriya':  '#db2777',
+  'Sneha': '#0891b2',
+  'Gokilavaani' '#0891b2'
 };
 
 function renderAdminTable(){
