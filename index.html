@@ -340,6 +340,7 @@ tbody tr:hover td{background:var(--surface);}
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="progressSearch" placeholder="Search student&hellip;" oninput="renderProgressTable()"></div>
+          <button class="export-btn" onclick="exportProgressCSV()">&darr; Export CSV</button>
         </div>
         <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
           <thead><tr><th>#</th><th>Name</th><th>Project Title</th><th style="text-align:center;">W1</th><th style="text-align:center;">W2</th><th style="text-align:center;">W3</th><th style="text-align:center;">W4</th><th>Summary</th></tr></thead>
@@ -361,6 +362,7 @@ tbody tr:hover td{background:var(--surface);}
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="evalSearch" placeholder="Search student&hellip;" oninput="renderEvalTable()"></div>
+          <button class="export-btn" onclick="exportEvalCSV()">&darr; Export CSV</button>
         </div>
         <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
           <thead><tr><th>#</th><th>Name</th><th>Project</th><th>Tech</th><th>Fit</th><th>Effort</th><th>Presentation</th><th>Impact</th><th>Total</th><th>Action</th></tr></thead>
@@ -527,7 +529,6 @@ const COLLEGE_NAMES={
 };
 
 /* ── ADMIN SECTIONS PER COLLEGE ── */
-/* Values must match exactly what is stored in the `section` column in Supabase */
 const COLLEGE_ADMIN_SECTIONS={
   'default':['I BCA - A','I BCA - B','II BCA','I B.Com Honours','I BBA Digital Marketing'],
   'sst':['I BBA','I MCA'],
@@ -560,11 +561,7 @@ const SST_IBBA_STUDENTS=[
   {name:'Narmatha Sri',    register_number:'25BBA017', course:'I BBA', project_title:'Bike Workshop',                                                      mentor_assigned:'Kavipriya', phone:'8675554020', email:'narmathasri74@gmail.com'}
 ];
 
-/* ── SST I MCA STUDENT MASTER ── */
-const SST_IMCA_STUDENTS=[
-  // Add real MCA students here:
-  // {name:'Student Name', register_number:'25MCA001', course:'I MCA', project_title:'Project Title', mentor_assigned:'Sneha', phone:'9999999999', email:'student@example.com'},
-];
+const SST_IMCA_STUDENTS=[];
 
 /* ── SECTION LABEL MAP ── */
 const SECTION_LABEL_MAP={
@@ -584,29 +581,28 @@ function getSectionLabel(sec){
   return 'I BCA - '+sec;
 }
 
-/* ── ADMIN TABS PER COLLEGE ── */
+/* ── ADMIN TABS — DEPARTMENT-WISE ── */
 const COLLEGE_ADMIN_TABS={
   'default':[
-    {key:'all',        label:'All'},
-    {key:'Aparna',     label:'Aparna'},
-    {key:'Arun Raj',   label:'Arun Raj'},
-    {key:'Saral',      label:'Saral'},
-    {key:'Bavani Sri', label:'Bavani Sri'},
-    {key:'Jane Rhinu', label:'Jane Rhinu'},
-    {key:'BBADM',      label:'BBA Digital Mktg'}
+    {key:'all',                    label:'All'},
+    {key:'I BCA - A',              label:'I BCA - A'},
+    {key:'I BCA - B',              label:'I BCA - B'},
+    {key:'II BCA',                 label:'II BCA'},
+    {key:'I B.Com Honours',        label:'I B.Com Honours'},
+    {key:'I BBA Digital Marketing',label:'I BBA Digital Mktg'}
   ],
   'sst':[
-    {key:'all',         label:'All'},
-    {key:'Kavipriya',   label:'Kavipriya (I BBA)'},
-    {key:'Sneha',       label:'Sneha (I MCA)'},
-    {key:'Gokilavaani', label:'Gokilavaani (I MCA)'}
+    {key:'all',   label:'All'},
+    {key:'I BBA', label:'I BBA'},
+    {key:'I MCA', label:'I MCA'}
   ],
   'nagarathinam':[
-    {key:'all',          label:'All'},
-    {key:'Mohanasree N', label:'Mohanasree N'},
-    {key:'Srisaradha S', label:'Srisaradha S'},
-    {key:'Anish N',      label:'Anish N (B.Com)'},
-    {key:'Dharshan K',   label:'Dharshan K (BBA DM)'}
+    {key:'all',            label:'All'},
+    {key:'I B.Sc AI',      label:'I B.Sc AI'},
+    {key:'II B.Sc AI',     label:'II B.Sc AI'},
+    {key:'B.Com BC & FT',  label:'B.Com BC & FT'},
+    {key:'BBA DM',         label:'BBA DM'},
+    {key:'I B.Sc CC',      label:'I B.Sc CC'}
   ]
 };
 
@@ -754,7 +750,6 @@ async function initApp(){
     const sec=getSectionLabel(selectedSection);
 
     if(currentUser==='Admin'){
-      /* Load ALL sections for this college */
       const adminSections=COLLEGE_ADMIN_SECTIONS[selectedCollegeKey]||COLLEGE_ADMIN_SECTIONS['default'];
       const results=await Promise.all(adminSections.map(s=>api.students(col,s)));
       allStudents=results.flat();
@@ -846,6 +841,58 @@ function approvalBadge(s){const m={'approved':'<span class="badge badge-green">A
 function weeksBadge(n){if(n>=4)return'<span class="badge badge-green">4/4</span>';if(n>=2)return'<span class="badge badge-amber">'+n+'/4</span>';if(n>=1)return'<span class="badge badge-blue">'+n+'/4</span>';return'<span class="badge badge-grey">0/4</span>';}
 function esc(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 function showPanel(id,el){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el)el.classList.add('active');}
+
+/* ── CSV HELPER ── */
+function downloadCSV(rows, filename){
+  const csv=rows.map(r=>r.map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=filename;
+  a.click();URL.revokeObjectURL(url);
+  showToast('CSV exported!','success');
+}
+
+/* ── EXPORT: WEEKLY PROGRESS ── */
+function exportProgressCSV(){
+  const q=(document.getElementById('progressSearch').value||'').toLowerCase();
+  const list=students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
+  const rows=[['#','Name','Register No','Section','Course','Project Title','Mentor',
+    'W1 Status','W1 Note','W2 Status','W2 Note','W3 Status','W3 Note','W4 Status','W4 Note',
+    'Weeks Completed','Approval Status']];
+  list.forEach((s,i)=>{
+    const wks=progressMap[s.id]||{};
+    const done=getWeeksDone(s.id);
+    const approval=getApproval(s.id);
+    rows.push([
+      i+1, s.name, s.register_number, s.section||'', s.course||'', s.project_title, s.mentor_assigned||'',
+      wks[1]?.status||'not-started', wks[1]?.note||'',
+      wks[2]?.status||'not-started', wks[2]?.note||'',
+      wks[3]?.status||'not-started', wks[3]?.note||'',
+      wks[4]?.status||'not-started', wks[4]?.note||'',
+      done+'/4', approval
+    ]);
+  });
+  downloadCSV(rows,'weekly_progress_'+new Date().toISOString().split('T')[0]+'.csv');
+}
+
+/* ── EXPORT: MENTOR EVALUATION ── */
+function exportEvalCSV(){
+  const q=(document.getElementById('evalSearch').value||'').toLowerCase();
+  const list=students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
+  const rows=[['#','Name','Register No','Section','Course','Project Title','Mentor',
+    'Tech Quality (/20)','Problem-Solution Fit (/20)','Effort & Ownership (/20)',
+    'Presentation (/20)','Practical Impact (/20)','Total Score (/100)','Remarks']];
+  list.forEach((s,i)=>{
+    const e=evalMap[s.id];
+    rows.push([
+      i+1, s.name, s.register_number, s.section||'', s.course||'', s.project_title, s.mentor_assigned||'',
+      e?.tech_quality??'', e?.problem_fit??'', e?.effort_ownership??'',
+      e?.presentation??'', e?.practical_impact??'', e?.total_score??'',
+      e?.remarks||''
+    ]);
+  });
+  downloadCSV(rows,'mentor_evaluation_'+new Date().toISOString().split('T')[0]+'.csv');
+}
 
 /* ── DASHBOARD ── */
 function renderDashboard(){
@@ -1058,11 +1105,11 @@ async function saveEvaluation(){
   finally{btn.disabled=false;btn.innerHTML='Save Evaluation';}
 }
 
-/* ── ADMIN TABS ── */
+/* ── ADMIN TABS — DEPARTMENT-WISE ── */
 function renderAdminTabs(){
   const tabs=COLLEGE_ADMIN_TABS[selectedCollegeKey]||COLLEGE_ADMIN_TABS['default'];
   const row=document.getElementById('adminTabRow');
-  row.innerHTML=tabs.map((t,i)=>`<button class="tab-btn${i===0?' active':''}" onclick="setAdminTab('${t.key}',this)">${t.label}</button>`).join('');
+  row.innerHTML=tabs.map((t,i)=>`<button class="tab-btn${i===0?' active':''}" onclick="setAdminTab('${t.key.replace(/'/g,"\\'")}',this)">${t.label}</button>`).join('');
   adminTab='all';
 }
 
@@ -1074,10 +1121,10 @@ function setAdminTab(tab,btn){
   renderAdminStats();
 }
 
+/* Filter by section (department) instead of mentor */
 function getAdminList(){
   if(adminTab==='all') return allStudents;
-  if(adminTab==='BBADM') return allStudents.filter(s=>s.section==='I BBA Digital Marketing');
-  return allStudents.filter(s=>s.mentor_assigned===adminTab);
+  return allStudents.filter(s=>s.section===adminTab);
 }
 
 function renderAdminStats(){
@@ -1102,7 +1149,7 @@ function renderAdminTable(){
   }).join('');
 }
 
-/* ── EXPORT CSV ── */
+/* ── EXPORT CSV (ADMIN) ── */
 function exportCSV(){
   const list=getAdminList();
   const rows=[['#','Name','Register No','Section','Course','Project Title','Mentor','Phone','Email',
@@ -1118,12 +1165,7 @@ function exportCSV(){
       e?.tech_quality??'',e?.problem_fit??'',e?.effort_ownership??'',e?.presentation??'',e?.practical_impact??'',e?.total_score??'',
       a?.status||'pending']);
   });
-  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='students_'+adminTab+'_'+new Date().toISOString().split('T')[0]+'.csv';
-  a.click();URL.revokeObjectURL(url);
-  showToast('CSV exported!','success');
+  downloadCSV(rows,'students_'+adminTab+'_'+new Date().toISOString().split('T')[0]+'.csv');
 }
 
 /* ── UTILITIES ── */
