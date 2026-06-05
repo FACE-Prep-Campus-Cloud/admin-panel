@@ -262,8 +262,7 @@ tbody tr:hover td{background:var(--surface);}
       <span class="college-select-icon">&#9662;</span>
     </div>
     <div class="login-label">Select Role</div>
-    <div id="roleButtonsWrap" class="login-select-grid" style="grid-template-columns:1fr 1fr;display:grid;">
-    </div>
+    <div id="roleButtonsWrap" class="login-select-grid" style="grid-template-columns:1fr 1fr;display:grid;"></div>
     <div class="login-label" style="margin-top:16px;">Enter PIN</div>
     <div class="pin-input-wrap">
       <input type="password" class="pin-input" id="pinInput" maxlength="4" placeholder="&bull;&bull;&bull;&bull;" oninput="onPinInput()" onkeydown="if(event.key==='Enter')doLogin()">
@@ -337,7 +336,7 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Track Progress</div>
           <div class="page-title">Weekly Progress</div>
-          <div class="page-sub">Click any week button to open the full editor &mdash; each week stores its own status &amp; note separately in Supabase</div>
+          <div class="page-sub">Click any week button to open the full editor</div>
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="progressSearch" placeholder="Search student&hellip;" oninput="renderProgressTable()"></div>
@@ -350,7 +349,6 @@ tbody tr:hover td{background:var(--surface);}
           <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span style="width:14px;height:14px;border-radius:3px;background:var(--green-lt);border:1px solid var(--green);display:inline-block;"></span>Completed</div>
           <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span style="width:14px;height:14px;border-radius:3px;background:var(--amber-lt);border:1px solid var(--amber);display:inline-block;"></span>In Progress</div>
           <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span style="width:14px;height:14px;border-radius:3px;background:var(--surface);border:1px solid var(--border2);display:inline-block;"></span>Not Started</div>
-          <div style="font-size:12px;color:var(--ink3);">&#128172; = has note &middot; click week to edit</div>
         </div>
       </div>
 
@@ -405,14 +403,14 @@ tbody tr:hover td{background:var(--surface);}
     <div class="modal-header">
       <div>
         <div class="modal-title" id="weekModalTitle">Weekly Progress</div>
-        <div class="modal-sub" id="weekModalSub">Each card is stored as a separate row — status &amp; note are independent per week</div>
+        <div class="modal-sub" id="weekModalSub">Status &amp; note stored per week</div>
       </div>
       <button class="modal-close" onclick="closeModal('weekModal')">&times;</button>
     </div>
     <div class="modal-body">
       <div class="week-cards-grid" id="weekCardsGrid"></div>
       <div style="background:var(--blue-lt);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--blue);font-weight:500;margin-top:4px;">
-        &#128161; Click the status badge on any card to cycle: Not Started &rarr; In Progress &rarr; Completed. Add notes per week. Click <strong>Save All Weeks</strong> to persist all 4 weeks at once.
+        &#128161; Click the status badge on any card to cycle: Not Started &rarr; In Progress &rarr; Completed. Add notes per week. Click <strong>Save All Weeks</strong> to persist.
       </div>
     </div>
     <div class="modal-footer">
@@ -478,8 +476,8 @@ const PINS={
 /* ── SECTIONS PER COLLEGE ── */
 const COLLEGE_SECTIONS={
   'default':[
-    {value:'A',     label:'I BCA A'},
-    {value:'B',     label:'I BCA B'},
+    {value:'A',     label:'I BCA - A'},
+    {value:'B',     label:'I BCA - B'},
     {value:'II',    label:'II BCA'},
     {value:'BCH',   label:'I B.Com Honours'},
     {value:'BBADM', label:'I BBA Digital Marketing'}
@@ -512,6 +510,7 @@ const SECTION_ROLES={
   'NAIG_BBADM':    ['Dharshan K','Admin'],
   'NAIG_IBSCCC':   ['Srisaradha S','Mohanasree N','Admin']
 };
+
 const COLLEGE_NAMES={
   'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",
   'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science',
@@ -525,6 +524,14 @@ const COLLEGE_NAMES={
   'joy':'Joy University','sasurie':'Sasurie College of Arts and Science',
   'alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)',
   'svyasa':'S-VYASA University','asb':'Asian School of Business'
+};
+
+/* ── ADMIN SECTIONS PER COLLEGE ── */
+/* Values must match exactly what is stored in the `section` column in Supabase */
+const COLLEGE_ADMIN_SECTIONS={
+  'default':['I BCA - A','I BCA - B','II BCA','I B.Com Honours','I BBA Digital Marketing'],
+  'sst':['I BBA','I MCA'],
+  'nagarathinam':['I B.Sc AI','II B.Sc AI','B.Com BC & FT','BBA DM','I B.Sc CC']
 };
 
 /* ── SST I BBA STUDENT MASTER ── */
@@ -553,12 +560,13 @@ const SST_IBBA_STUDENTS=[
   {name:'Narmatha Sri',    register_number:'25BBA017', course:'I BBA', project_title:'Bike Workshop',                                                      mentor_assigned:'Kavipriya', phone:'8675554020', email:'narmathasri74@gmail.com'}
 ];
 
-/* ── SST I MCA STUDENT MASTER (placeholder — add real students here) ── */
+/* ── SST I MCA STUDENT MASTER ── */
 const SST_IMCA_STUDENTS=[
-  // Example: {name:'Student Name', register_number:'25MCA001', course:'I MCA', project_title:'Project Title', mentor_assigned:'Sneha', phone:'9999999999', email:'student@example.com'},
+  // Add real MCA students here:
+  // {name:'Student Name', register_number:'25MCA001', course:'I MCA', project_title:'Project Title', mentor_assigned:'Sneha', phone:'9999999999', email:'student@example.com'},
 ];
 
-/* ── getSectionLabel ── */
+/* ── SECTION LABEL MAP ── */
 const SECTION_LABEL_MAP={
   'II':            'II BCA',
   'BCH':           'I B.Com Honours',
@@ -575,6 +583,48 @@ function getSectionLabel(sec){
   if(SECTION_LABEL_MAP[sec]) return SECTION_LABEL_MAP[sec];
   return 'I BCA - '+sec;
 }
+
+/* ── ADMIN TABS PER COLLEGE ── */
+const COLLEGE_ADMIN_TABS={
+  'default':[
+    {key:'all',        label:'All'},
+    {key:'Aparna',     label:'Aparna'},
+    {key:'Arun Raj',   label:'Arun Raj'},
+    {key:'Saral',      label:'Saral'},
+    {key:'Bavani Sri', label:'Bavani Sri'},
+    {key:'Jane Rhinu', label:'Jane Rhinu'},
+    {key:'BBADM',      label:'BBA Digital Mktg'}
+  ],
+  'sst':[
+    {key:'all',         label:'All'},
+    {key:'Kavipriya',   label:'Kavipriya (I BBA)'},
+    {key:'Sneha',       label:'Sneha (I MCA)'},
+    {key:'Gokilavaani', label:'Gokilavaani (I MCA)'}
+  ],
+  'nagarathinam':[
+    {key:'all',          label:'All'},
+    {key:'Mohanasree N', label:'Mohanasree N'},
+    {key:'Srisaradha S', label:'Srisaradha S'},
+    {key:'Anish N',      label:'Anish N (B.Com)'},
+    {key:'Dharshan K',   label:'Dharshan K (BBA DM)'}
+  ]
+};
+
+/* ── MENTOR COLORS ── */
+const MENTOR_COLORS={
+  'Aparna':       'var(--accent2)',
+  'Arun Raj':     'var(--green)',
+  'Saral':        'var(--amber)',
+  'Bavani Sri':   '#0891b2',
+  'Jane Rhinu':   '#9333ea',
+  'Kavipriya':    '#db2777',
+  'Sneha':        '#0891b2',
+  'Gokilavaani':  '#16a34a',
+  'Mohanasree N': '#7c3aed',
+  'Srisaradha S': '#0369a1',
+  'Anish N':      '#b45309',
+  'Dharshan K':   '#047857'
+};
 
 /* ── STATE ── */
 let selectedCollegeKey=null,selectedCollegeName=null,selectedSection=null,selectedRole=null,currentUser=null;
@@ -694,39 +744,6 @@ function doLogout(){
   showPanel('dashboard',document.getElementById('nav-dashboard'));
 }
 
-/* ── ADMIN TABS per college ── */
-const COLLEGE_ADMIN_TABS={
-  'default':[
-    {key:'all',        label:'All'},
-    {key:'Aparna',     label:'Aparna'},
-    {key:'Arun Raj',   label:'Arun Raj'},
-    {key:'Saral',      label:'Saral'},
-    {key:'Bavani Sri', label:'Bavani Sri'},
-    {key:'Jane Rhinu', label:'Jane Rhinu'},
-    {key:'BBADM',      label:'BBA Digital Mktg'}
-  ],
-  'sst':[
-    {key:'all',         label:'All'},
-    {key:'Kavipriya',   label:'Kavipriya (I BBA)'},
-    {key:'Sneha',       label:'Sneha (I MCA)'},
-    {key:'Gokilavaani', label:'Gokilavaani (I MCA)'}
-  ],
-  'nagarathinam':[
-    {key:'all',          label:'All'},
-    {key:'Mohanasree N', label:'Mohanasree N'},
-    {key:'Srisaradha S', label:'Srisaradha S'},
-    {key:'Anish N',      label:'Anish N (B.Com)'},
-    {key:'Dharshan K',   label:'Dharshan K (BBA DM)'}
-  ]
-};
-
-function renderAdminTabs(){
-  const tabs=COLLEGE_ADMIN_TABS[selectedCollegeKey]||COLLEGE_ADMIN_TABS['default'];
-  const row=document.getElementById('adminTabRow');
-  row.innerHTML=tabs.map((t,i)=>`<button class="tab-btn${i===0?' active':''}" onclick="setAdminTab('${t.key}',this)">${t.label}</button>`).join('');
-  adminTab='all';
-}
-
 /* ── INIT ── */
 async function initApp(){
   const ol=document.getElementById('loadingOverlay');
@@ -737,30 +754,11 @@ async function initApp(){
     const sec=getSectionLabel(selectedSection);
 
     if(currentUser==='Admin'){
-      /* Generic: load all sections defined for this college */
-const COLLEGE_ADMIN_SECTIONS={
-  'default':[
-    'I BCA - A',
-    'I BCA - B',
-    'II BCA',
-    'I B.Com Honours',
-    'I BBA Digital Marketing'
-  ],
-  'sst':[
-    'I BBA',
-    'I MCA'
-  ],
-  'nagarathinam':[
-    'I B.Sc AI',
-    'II B.Sc AI',
-    'B.Com BC & FT',
-    'BBA DM',
-    'I B.Sc CC'
-  ]
-};      const results=await Promise.all(adminSections.map(s=>api.students(col,s)));
+      /* Load ALL sections for this college */
+      const adminSections=COLLEGE_ADMIN_SECTIONS[selectedCollegeKey]||COLLEGE_ADMIN_SECTIONS['default'];
+      const results=await Promise.all(adminSections.map(s=>api.students(col,s)));
       allStudents=results.flat();
       students=allStudents;
-      /* Show seed panel only if no students found at all */
       document.getElementById('sstSeedPanel').style.display=allStudents.length===0?'block':'none';
     } else {
       [students,allStudents]=await Promise.all([
@@ -771,6 +769,7 @@ const COLLEGE_ADMIN_SECTIONS={
     }
 
     document.getElementById('navStudentCount').textContent=students.length;
+
     if(students.length>0){
       const ids=students.map(s=>s.id);
       const[prog,evals,apprs]=await Promise.all([api.progress(ids),api.evaluations(ids),api.approvals(ids)]);
@@ -781,6 +780,7 @@ const COLLEGE_ADMIN_SECTIONS={
       const[prog,evals,apprs]=await Promise.all([api.progress(ids),api.evaluations(ids),api.approvals(ids)]);
       buildMaps(prog,evals,apprs,true);
     }
+
     ol.style.display='none';
     document.getElementById('appShell').style.display='block';
     renderAdminTabs();
@@ -806,51 +806,31 @@ function buildMaps(prog,evals,apprs,isAdmin){
   else{progressMap=pm;evalMap=em;approvalMap=am;}
 }
 
-/* ── SST SEED FUNCTION ── */
-// FIX: Rewrote entirely — removed broken nested for-loop syntax, illegal statement-as-expression,
-//      wrong section value for IMCA students, and references to unused allToInsert variable.
+/* ── SST SEED ── */
 async function seedSSTStudents(){
   const btn=document.getElementById('seedBtn');
   const status=document.getElementById('seedStatus');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Inserting\u2026';
   const col=selectedCollegeName;
   let inserted=0,errors=0;
-
   const allToInsert=[
     ...SST_IBBA_STUDENTS.map(s=>({...s,section:'I BBA'})),
     ...SST_IMCA_STUDENTS.map(s=>({...s,section:'I MCA'}))
   ];
-
   for(const s of allToInsert){
     try{
-      await api.insertStudent({
-        college:col,
-        section:s.section,
-        name:s.name,
-        register_number:s.register_number,
-        course:s.course,
-        project_title:s.project_title,
-        mentor_assigned:s.mentor_assigned,
-        phone:s.phone,
-        email:s.email
-      });
-      inserted++;
-      status.textContent=inserted+' inserted\u2026';
-    }catch(e){
-      errors++;
-      console.warn('Failed to insert',s.name,e.message);
-    }
+      await api.insertStudent({college:col,section:s.section,name:s.name,register_number:s.register_number,course:s.course,project_title:s.project_title,mentor_assigned:s.mentor_assigned,phone:s.phone,email:s.email});
+      inserted++;status.textContent=inserted+' inserted\u2026';
+    }catch(e){errors++;console.warn('Failed to insert',s.name,e.message);}
   }
-
-  btn.disabled=false;
-  btn.innerHTML='&#43; Insert SST Students';
+  btn.disabled=false;btn.innerHTML='&#43; Insert SST Students';
   if(errors===0){
     status.textContent='\u2713 All '+inserted+' students inserted!';
     status.style.color='var(--green)';
     document.getElementById('sstSeedPanel').style.display='none';
     showToast(inserted+' SST students added!','success');
     await initApp();
-  } else {
+  }else{
     status.textContent=inserted+' inserted, '+errors+' errors (check console)';
     status.style.color='var(--red)';
     showToast(errors+' students failed to insert','error');
@@ -948,12 +928,12 @@ function renderWeekCards(activeWeek){
     return`<div class="week-card wk-${d.status}" id="wk-card-${w}">
       <div class="week-card-head wk-${d.status}">
         <span class="week-card-label">Week ${w}${w===activeWeek?' &#9670;':''}</span>
-        <button class="wk-cycle-btn ${d.status}" id="wk-btn-${w}" onclick="cycleWeekStatus(${w},event)" title="Click to change status">
+        <button class="wk-cycle-btn ${d.status}" id="wk-btn-${w}" onclick="cycleWeekStatus(${w},event)">
           ${STATUS_ICON[d.status]} ${STATUS_LABEL[d.status]}
         </button>
       </div>
       <div class="week-card-body">
-        <textarea class="week-textarea" id="wk-ta-${w}" placeholder="Week ${w} update: what was done this week\u2026" oninput="weekDraft[${w}].note=this.value">${safeNote}</textarea>
+        <textarea class="week-textarea" id="wk-ta-${w}" placeholder="Week ${w} update&hellip;" oninput="weekDraft[${w}].note=this.value">${safeNote}</textarea>
       </div>
     </div>`;
   }).join('');
@@ -1078,7 +1058,14 @@ async function saveEvaluation(){
   finally{btn.disabled=false;btn.innerHTML='Save Evaluation';}
 }
 
-/* ── ADMIN ── */
+/* ── ADMIN TABS ── */
+function renderAdminTabs(){
+  const tabs=COLLEGE_ADMIN_TABS[selectedCollegeKey]||COLLEGE_ADMIN_TABS['default'];
+  const row=document.getElementById('adminTabRow');
+  row.innerHTML=tabs.map((t,i)=>`<button class="tab-btn${i===0?' active':''}" onclick="setAdminTab('${t.key}',this)">${t.label}</button>`).join('');
+  adminTab='all';
+}
+
 function setAdminTab(tab,btn){
   adminTab=tab;
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -1103,22 +1090,6 @@ function renderAdminStats(){
     <div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div></div>
     <div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div></div>`;
 }
-
-// FIX: Added missing colon after 'Gokilavaani' key
-const MENTOR_COLORS={
-  'Aparna':       'var(--accent2)',
-  'Arun Raj':     'var(--green)',
-  'Saral':        'var(--amber)',
-  'Bavani Sri':   '#0891b2',
-  'Jane Rhinu':   '#9333ea',
-  'Kavipriya':    '#db2777',
-  'Sneha':        '#0891b2',
-  'Gokilavaani':  '#16a34a',
-  'Mohanasree N': '#7c3aed',
-  'Srisaradha S': '#0369a1',
-  'Anish N':      '#b45309',
-  'Dharshan K':   '#047857'
-};
 
 function renderAdminTable(){
   const list=getAdminList();
