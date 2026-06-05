@@ -194,7 +194,6 @@ tbody tr:hover td{background:var(--surface);}
 #loadingOverlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
 #loadingOverlay .spinner{width:36px;height:36px;border-width:3px;}
 #loadingOverlay p{font-size:13px;color:var(--ink3);}
-/* Seed panel */
 .seed-panel{background:var(--amber-lt);border:1px solid rgba(217,119,6,0.3);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;}
 .seed-panel-title{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--amber);margin-bottom:8px;}
 .seed-panel p{font-size:12px;color:var(--ink2);margin-bottom:12px;line-height:1.6;}
@@ -263,7 +262,7 @@ tbody tr:hover td{background:var(--surface);}
       <span class="college-select-icon">&#9662;</span>
     </div>
     <div class="login-label">Select Role</div>
-    <div id="roleButtonsWrap" class="login-select-grid" style="grid-template-columns:1fr 1fr;">
+    <div id="roleButtonsWrap" class="login-select-grid" style="grid-template-columns:1fr 1fr;display:grid;">
     </div>
     <div class="login-label" style="margin-top:16px;">Enter PIN</div>
     <div class="pin-input-wrap">
@@ -378,18 +377,15 @@ tbody tr:hover td{background:var(--surface);}
           <div class="page-title">All Students</div>
         </div>
 
-        <!-- SST seed panel -->
         <div id="sstSeedPanel" style="display:none;" class="seed-panel">
-          <div class="seed-panel-title">&#128190; First-time Setup: Seed SST I BBA Students</div>
-  <p>Insert all I BBA and I BCA students into the database. Run once only.</p>   <!-- ← update text -->
-          <button class="btn btn-primary" id="seedBtn" onclick="seedSSTStudents()">&#43; Insert 22 SST I BBA Students</button>
+          <div class="seed-panel-title">&#128190; First-time Setup: Seed SST Students</div>
+          <p>Insert all I BBA and I MCA students into the database. Run once only.</p>
+          <button class="btn btn-primary" id="seedBtn" onclick="seedSSTStudents()">&#43; Insert SST Students</button>
           <span id="seedStatus" style="font-size:12px;color:var(--ink3);margin-left:14px;"></span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
-          <div class="tab-row" id="adminTabRow">
-            <!-- Tabs rendered dynamically per college -->
-          </div>
+          <div class="tab-row" id="adminTabRow"></div>
           <button class="export-btn" onclick="exportCSV()">&darr; Export CSV</button>
         </div>
         <div class="stats-row" id="adminStatsRow" style="grid-template-columns:repeat(3,1fr);"></div>
@@ -464,27 +460,27 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 
 /* ── PINS ── */
 const PINS={
-  'Aparna':     '4827',
-  'Arun Raj':   '3159',
-  'Saral':      '7634',
-  'Admin':      '9201',
-  'Bavani Sri': '5541',
-  'Jane Rhinu': '6673',
-  'Kavipriya':  '2085',
-  'Sneha':  '2085',
-  'Gokilavaani': '2085'// SST I BBA mentor
+  'Aparna':      '4827',
+  'Arun Raj':    '3159',
+  'Saral':       '7634',
+  'Admin':       '9201',
+  'Bavani Sri':  '5541',
+  'Jane Rhinu':  '6673',
+  'Kavipriya':   '2085',
+  'Sneha':       '2085',
+  'Gokilavaani': '2085'
 };
 
 /* ── SECTIONS PER COLLEGE ── */
 const COLLEGE_SECTIONS={
-  'default': [
-    {value:'A',   label:'I BCA \u2014 A'},
-    {value:'B',   label:'I BCA \u2014 B'},
-    {value:'II',  label:'II BCA'},
-    {value:'BCH', label:'I B.Com Honours'},
-    {value:'BBADM',label:'I BBA Digital Marketing'}
+  'default':[
+    {value:'A',     label:'I BCA \u2014 A'},
+    {value:'B',     label:'I BCA \u2014 B'},
+    {value:'II',    label:'II BCA'},
+    {value:'BCH',   label:'I B.Com Honours'},
+    {value:'BBADM', label:'I BBA Digital Marketing'}
   ],
-  'sst': [
+  'sst':[
     {value:'IBBA', label:'I BBA'},
     {value:'IMCA', label:'I MCA'}
   ]
@@ -498,7 +494,7 @@ const SECTION_ROLES={
   'BCH':   ['Bavani Sri','Jane Rhinu','Admin'],
   'BBADM': ['Bavani Sri','Jane Rhinu','Admin'],
   'IBBA':  ['Kavipriya','Admin'],
-  'IMCA':  ['Sneha','Gokilavaani']// SST I BBA
+  'IMCA':  ['Sneha','Gokilavaani','Admin']
 };
 
 const COLLEGE_NAMES={
@@ -518,28 +514,33 @@ const COLLEGE_NAMES={
 
 /* ── SST I BBA STUDENT MASTER ── */
 const SST_IBBA_STUDENTS=[
-  {name:'Irfan R',        register_number:'25BBA010', course:'I BBA', project_title:'Green Flowers Smart Order & Delivery System',                        mentor_assigned:'Kavipriya', phone:'8838224191', email:'irfan208.802@gmail.com'},
-  {name:'Yatin',          register_number:'25BBA029', course:'I BBA', project_title:'Study on Consumer Satisfaction towards Sports Gear Quality',         mentor_assigned:'Kavipriya', phone:'8189846535', email:'yatinggyatin@gmail.com'},
-  {name:'Pradeepa S',     register_number:'25BBA019', course:'I BBA', project_title:'Stationery Shop',                                                     mentor_assigned:'Kavipriya', phone:'9566266074', email:'pradeepa1682003@gmail.com'},
-  {name:'Sandhiya D',     register_number:'25BBA020', course:'I BBA', project_title:'Customer Experience Study',                                           mentor_assigned:'Kavipriya', phone:'6385576245', email:'sandhiyadhandapani560@gmail.com'},
-  {name:'Swetha T',       register_number:'25BBA026', course:'I BBA', project_title:'Customer Experience Study',                                           mentor_assigned:'Kavipriya', phone:'8248048926', email:'swethat1202@gmail.com'},
-  {name:'Harish B',       register_number:'25BBA009', course:'I BBA', project_title:'Speces Shop',                                                         mentor_assigned:'Kavipriya', phone:'7200877184', email:'harish7200.27@gmail.com'},
-  {name:'Kanagavelu J',   register_number:'25BBA013', course:'I BBA', project_title:'Business Process Improvement \u2013 Aaha Restaurant',                mentor_assigned:'Kavipriya', phone:'7904945196', email:'kanagavel2708@gmail.com'},
-  {name:'Asfak Arafath A',register_number:'25BBA005', course:'I BBA', project_title:'Customer Experience',                                                 mentor_assigned:'Kavipriya', phone:'9842141831', email:'asfakarafath@gmail.com'},
-  {name:'Hari Prasanth',  register_number:'25BBA008', course:'I BBA', project_title:'Super Market',                                                        mentor_assigned:'Kavipriya', phone:'8667493139', email:'hariprasanth55115@gmail.com'},
-  {name:'Aswanth',        register_number:'25BBA007', course:'I BBA', project_title:'Customer Experience',                                                 mentor_assigned:'Kavipriya', phone:'7305502744', email:'aswanthbaswanthb3@gmail.com'},
-  {name:'Mahalakshmi R',  register_number:'25BBA015', course:'I BBA', project_title:'Business Process Improvement',                                        mentor_assigned:'Kavipriya', phone:'6381679011', email:'mahalakshmi041107@gmail.com'},
-  {name:'Jeevitha K',     register_number:'25BBA011', course:'I BBA', project_title:'Business Process Improvement',                                        mentor_assigned:'Kavipriya', phone:'9626127479', email:'jeevitk82@gmail.com'},
-  {name:'P Abinesh',      register_number:'25BBA001', course:'I BBA', project_title:'Customer Experience Study',                                           mentor_assigned:'Kavipriya', phone:'9003604122', email:'pabinesh20@gmail.com'},
-  {name:'Thiyagu K',      register_number:'25BBA027', course:'I BBA', project_title:'Business Process Improvement',                                        mentor_assigned:'Kavipriya', phone:'9025917739', email:'kthiyagu.tvm@gmail.com'},
-  {name:'Ashik Babu A',   register_number:'25BBA006', course:'I BBA', project_title:'Customer Experience Study towards The Shake Haven Milkshake Shop',    mentor_assigned:'Kavipriya', phone:'6379352248', email:'ashikajmal18@gmail.com'},
-  {name:'M Sowmithra',    register_number:'25BBA023', course:'I BBA', project_title:'Interiors',                                                           mentor_assigned:'Kavipriya', phone:'6380013916', email:'sowmithra284@gmail.com'},
-  {name:'Anusree KP',     register_number:'25BBA003', course:'I BBA', project_title:'Electronics & Home Appliances',                                       mentor_assigned:'Kavipriya', phone:'8129907239', email:'anusreeprasanth4@gmail.com'},
-  {name:'Asad Irfan AM',  register_number:'25BBA004', course:'I BBA', project_title:'Pets Shop (Marketing Strategy)',                                      mentor_assigned:'Kavipriya', phone:'6282132070', email:'asadirfanam23@gmail.com'},
-  {name:'Ajay',           register_number:'25BBA002', course:'I BBA', project_title:'Smart Retail & Inventory Management System for Small Businesses',      mentor_assigned:'Kavipriya', phone:'9962773188', email:'ajayjoyson91@gmail.com'},
-  {name:'Kishore M',      register_number:'25BBA014', course:'I BBA', project_title:'Suganya Ladies Designer',                                             mentor_assigned:'Kavipriya', phone:'9025322949', email:'mkishore132008@gmail.com'},
-  {name:'Sreesanth',      register_number:'25BBA025', course:'I BBA', project_title:'Grocery Store',                                                       mentor_assigned:'Kavipriya', phone:'8925581003', email:'sreesanth1213@gmail.com'},
-  {name:'Narmatha Sri',   register_number:'25BBA017', course:'I BBA', project_title:'Bike Workshop',                                                       mentor_assigned:'Kavipriya', phone:'8675554020', email:'narmathasri74@gmail.com'}
+  {name:'Irfan R',         register_number:'25BBA010', course:'I BBA', project_title:'Green Flowers Smart Order & Delivery System',                        mentor_assigned:'Kavipriya', phone:'8838224191', email:'irfan208.802@gmail.com'},
+  {name:'Yatin',           register_number:'25BBA029', course:'I BBA', project_title:'Study on Consumer Satisfaction towards Sports Gear Quality',         mentor_assigned:'Kavipriya', phone:'8189846535', email:'yatinggyatin@gmail.com'},
+  {name:'Pradeepa S',      register_number:'25BBA019', course:'I BBA', project_title:'Stationery Shop',                                                    mentor_assigned:'Kavipriya', phone:'9566266074', email:'pradeepa1682003@gmail.com'},
+  {name:'Sandhiya D',      register_number:'25BBA020', course:'I BBA', project_title:'Customer Experience Study',                                          mentor_assigned:'Kavipriya', phone:'6385576245', email:'sandhiyadhandapani560@gmail.com'},
+  {name:'Swetha T',        register_number:'25BBA026', course:'I BBA', project_title:'Customer Experience Study',                                          mentor_assigned:'Kavipriya', phone:'8248048926', email:'swethat1202@gmail.com'},
+  {name:'Harish B',        register_number:'25BBA009', course:'I BBA', project_title:'Speces Shop',                                                        mentor_assigned:'Kavipriya', phone:'7200877184', email:'harish7200.27@gmail.com'},
+  {name:'Kanagavelu J',    register_number:'25BBA013', course:'I BBA', project_title:'Business Process Improvement \u2013 Aaha Restaurant',               mentor_assigned:'Kavipriya', phone:'7904945196', email:'kanagavel2708@gmail.com'},
+  {name:'Asfak Arafath A', register_number:'25BBA005', course:'I BBA', project_title:'Customer Experience',                                                mentor_assigned:'Kavipriya', phone:'9842141831', email:'asfakarafath@gmail.com'},
+  {name:'Hari Prasanth',   register_number:'25BBA008', course:'I BBA', project_title:'Super Market',                                                       mentor_assigned:'Kavipriya', phone:'8667493139', email:'hariprasanth55115@gmail.com'},
+  {name:'Aswanth',         register_number:'25BBA007', course:'I BBA', project_title:'Customer Experience',                                                mentor_assigned:'Kavipriya', phone:'7305502744', email:'aswanthbaswanthb3@gmail.com'},
+  {name:'Mahalakshmi R',   register_number:'25BBA015', course:'I BBA', project_title:'Business Process Improvement',                                       mentor_assigned:'Kavipriya', phone:'6381679011', email:'mahalakshmi041107@gmail.com'},
+  {name:'Jeevitha K',      register_number:'25BBA011', course:'I BBA', project_title:'Business Process Improvement',                                       mentor_assigned:'Kavipriya', phone:'9626127479', email:'jeevitk82@gmail.com'},
+  {name:'P Abinesh',       register_number:'25BBA001', course:'I BBA', project_title:'Customer Experience Study',                                          mentor_assigned:'Kavipriya', phone:'9003604122', email:'pabinesh20@gmail.com'},
+  {name:'Thiyagu K',       register_number:'25BBA027', course:'I BBA', project_title:'Business Process Improvement',                                       mentor_assigned:'Kavipriya', phone:'9025917739', email:'kthiyagu.tvm@gmail.com'},
+  {name:'Ashik Babu A',    register_number:'25BBA006', course:'I BBA', project_title:'Customer Experience Study towards The Shake Haven Milkshake Shop',   mentor_assigned:'Kavipriya', phone:'6379352248', email:'ashikajmal18@gmail.com'},
+  {name:'M Sowmithra',     register_number:'25BBA023', course:'I BBA', project_title:'Interiors',                                                          mentor_assigned:'Kavipriya', phone:'6380013916', email:'sowmithra284@gmail.com'},
+  {name:'Anusree KP',      register_number:'25BBA003', course:'I BBA', project_title:'Electronics & Home Appliances',                                      mentor_assigned:'Kavipriya', phone:'8129907239', email:'anusreeprasanth4@gmail.com'},
+  {name:'Asad Irfan AM',   register_number:'25BBA004', course:'I BBA', project_title:'Pets Shop (Marketing Strategy)',                                     mentor_assigned:'Kavipriya', phone:'6282132070', email:'asadirfanam23@gmail.com'},
+  {name:'Ajay',            register_number:'25BBA002', course:'I BBA', project_title:'Smart Retail & Inventory Management System for Small Businesses',     mentor_assigned:'Kavipriya', phone:'9962773188', email:'ajayjoyson91@gmail.com'},
+  {name:'Kishore M',       register_number:'25BBA014', course:'I BBA', project_title:'Suganya Ladies Designer',                                            mentor_assigned:'Kavipriya', phone:'9025322949', email:'mkishore132008@gmail.com'},
+  {name:'Sreesanth',       register_number:'25BBA025', course:'I BBA', project_title:'Grocery Store',                                                      mentor_assigned:'Kavipriya', phone:'8925581003', email:'sreesanth1213@gmail.com'},
+  {name:'Narmatha Sri',    register_number:'25BBA017', course:'I BBA', project_title:'Bike Workshop',                                                      mentor_assigned:'Kavipriya', phone:'8675554020', email:'narmathasri74@gmail.com'}
+];
+
+/* ── SST I MCA STUDENT MASTER (placeholder — add real students here) ── */
+const SST_IMCA_STUDENTS=[
+  // Example: {name:'Student Name', register_number:'25MCA001', course:'I MCA', project_title:'Project Title', mentor_assigned:'Sneha', phone:'9999999999', email:'student@example.com'},
 ];
 
 /* ── getSectionLabel ── */
@@ -548,7 +549,7 @@ function getSectionLabel(sec){
   if(sec==='BCH')   return 'I B.Com Honours';
   if(sec==='BBADM') return 'I BBA Digital Marketing';
   if(sec==='IBBA')  return 'I BBA';
-  if(sec==='IMCA') return 'I MCA';
+  if(sec==='IMCA')  return 'I MCA';
   return 'I BCA - '+sec;
 }
 
@@ -599,12 +600,10 @@ function goToLogin(){
   document.getElementById('loginBtn').disabled=true;
   document.getElementById('loginError').textContent='';
   document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('selected'));
-  // Populate section dropdown based on college
   populateSectionDropdown(selectedCollegeKey);
 }
 function backToLanding(){document.getElementById('loginScreen').classList.remove('show');document.getElementById('landingScreen').style.display='flex';}
 
-/* ── Populate section dropdown per college ── */
 function populateSectionDropdown(collegeKey){
   const sel=document.getElementById('sectionSelect');
   const sections=COLLEGE_SECTIONS[collegeKey]||COLLEGE_SECTIONS['default'];
@@ -618,7 +617,6 @@ function populateSectionDropdown(collegeKey){
   renderRoleButtons(null);
 }
 
-/* ── Render role buttons based on selected section ── */
 function renderRoleButtons(sec){
   const wrap=document.getElementById('roleButtonsWrap');
   if(!sec){wrap.innerHTML='<div style="grid-column:1/-1;font-size:12px;color:var(--ink3);padding:8px 0;">\u2190 Select a section first</div>';return;}
@@ -676,19 +674,19 @@ function doLogout(){
 /* ── ADMIN TABS per college ── */
 const COLLEGE_ADMIN_TABS={
   'default':[
-    {key:'all',     label:'All'},
-    {key:'Aparna',  label:'Aparna'},
-    {key:'Arun Raj',label:'Arun Raj'},
-    {key:'Saral',   label:'Saral'},
-    {key:'Bavani Sri',label:'Bavani Sri'},
-    {key:'Jane Rhinu',label:'Jane Rhinu'},
-    {key:'BBADM',   label:'BBA Digital Mktg'}
+    {key:'all',        label:'All'},
+    {key:'Aparna',     label:'Aparna'},
+    {key:'Arun Raj',   label:'Arun Raj'},
+    {key:'Saral',      label:'Saral'},
+    {key:'Bavani Sri', label:'Bavani Sri'},
+    {key:'Jane Rhinu', label:'Jane Rhinu'},
+    {key:'BBADM',      label:'BBA Digital Mktg'}
   ],
   'sst':[
-    {key:'all',       label:'All'},
-    {key:'Kavipriya', label:'Kavipriya (I BBA)'},
-    {key:'Sneha', label:'Sneha (I MCA)'},
-    {key:'Gokilavaani', label:'Gokilavaani (I MCA)'}
+    {key:'all',          label:'All'},
+    {key:'Kavipriya',    label:'Kavipriya (I BBA)'},
+    {key:'Sneha',        label:'Sneha (I MCA)'},
+    {key:'Gokilavaani',  label:'Gokilavaani (I MCA)'}
   ]
 };
 
@@ -710,14 +708,16 @@ async function initApp(){
 
     if(currentUser==='Admin'){
       if(selectedCollegeKey==='sst'){
-        // SST: only I BBA section
-        const sIBBA=await api.students(col,'I BBA');
-        const sIMCA = await api.students(col, 'I MCA');
+        // FIX: was sIBCA (typo), corrected to sIMCA; also fixed broken condition
+        const [sIBBA, sIMCA] = await Promise.all([
+          api.students(col, 'I BBA'),
+          api.students(col, 'I MCA')
+        ]);
         allStudents=[...sIBBA,...sIMCA];
         students=allStudents;
-        // Show seed panel if no students yet
-const anyEmpty = sIBBA.length===0 || sIBCA.length===0;
-  document.getElementById('sstSeedPanel').style.display = anyEmpty ? 'block' : 'none';
+        // Show seed panel if either list is empty
+        const anyEmpty = sIBBA.length === 0 || sIMCA.length === 0;
+        document.getElementById('sstSeedPanel').style.display = anyEmpty ? 'block' : 'none';
       } else {
         const[sA,sB,sII,sBCH,sBBADM]=await Promise.all([
           api.students(col,'I BCA - A'),
@@ -775,21 +775,25 @@ function buildMaps(prog,evals,apprs,isAdmin){
 }
 
 /* ── SST SEED FUNCTION ── */
+// FIX: Rewrote entirely — removed broken nested for-loop syntax, illegal statement-as-expression,
+//      wrong section value for IMCA students, and references to unused allToInsert variable.
 async function seedSSTStudents(){
   const btn=document.getElementById('seedBtn');
   const status=document.getElementById('seedStatus');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Inserting\u2026';
   const col=selectedCollegeName;
   let inserted=0,errors=0;
-  const allToInsert = [
-    ...SST_IBBA_STUDENTS.map(s => ({...s, section:'I BBA'})),   // ← existing
-    ...SST_IMCA_STUDENTS.map(s => ({...s, section:'I MCA'}))    // ← ADD new dept
+
+  const allToInsert=[
+    ...SST_IBBA_STUDENTS.map(s=>({...s,section:'I BBA'})),
+    ...SST_IMCA_STUDENTS.map(s=>({...s,section:'I MCA'}))
   ];
-  for(const s of SST_IBBA_STUDENTS){
+
+  for(const s of allToInsert){
     try{
       await api.insertStudent({
         college:col,
-        section:'I BBA',
+        section:s.section,
         name:s.name,
         register_number:s.register_number,
         course:s.course,
@@ -798,18 +802,6 @@ async function seedSSTStudents(){
         phone:s.phone,
         email:s.email
       });
-      (const s of SST_IMCA_STUDENTS){
-    try{
-      await api.insertStudent({
-        college:col,
-        section:'I BBA',
-        name:s.name,
-        register_number:s.register_number,
-        course:s.course,
-        project_title:s.project_title,
-        mentor_assigned:s.mentor_assigned,
-        phone:s.phone,
-        email:s.email)];
       inserted++;
       status.textContent=inserted+' inserted\u2026';
     }catch(e){
@@ -817,13 +809,14 @@ async function seedSSTStudents(){
       console.warn('Failed to insert',s.name,e.message);
     }
   }
-  btn.disabled=false;btn.innerHTML='&#43; Insert 22 SST I BBA Students';
+
+  btn.disabled=false;
+  btn.innerHTML='&#43; Insert SST Students';
   if(errors===0){
     status.textContent='\u2713 All '+inserted+' students inserted!';
     status.style.color='var(--green)';
     document.getElementById('sstSeedPanel').style.display='none';
-    showToast('22 SST I BBA students added!','success');
-    // Reload
+    showToast(inserted+' SST students added!','success');
     await initApp();
   } else {
     status.textContent=inserted+' inserted, '+errors+' errors (check console)';
@@ -1065,7 +1058,6 @@ function setAdminTab(tab,btn){
 function getAdminList(){
   if(adminTab==='all') return allStudents;
   if(adminTab==='BBADM') return allStudents.filter(s=>s.section==='I BBA Digital Marketing');
-  // For SST Kavipriya tab or any mentor name tab
   return allStudents.filter(s=>s.mentor_assigned===adminTab);
 }
 
@@ -1080,15 +1072,16 @@ function renderAdminStats(){
     <div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div></div>`;
 }
 
+// FIX: Added missing colon after 'Gokilavaani' key
 const MENTOR_COLORS={
-  'Aparna':     'var(--accent2)',
-  'Arun Raj':   'var(--green)',
-  'Saral':      'var(--amber)',
-  'Bavani Sri': '#0891b2',
-  'Jane Rhinu': '#9333ea',
-  'Kavipriya':  '#db2777',
-  'Sneha': '#0891b2',
-  'Gokilavaani' '#0891b2'
+  'Aparna':      'var(--accent2)',
+  'Arun Raj':    'var(--green)',
+  'Saral':       'var(--amber)',
+  'Bavani Sri':  '#0891b2',
+  'Jane Rhinu':  '#9333ea',
+  'Kavipriya':   '#db2777',
+  'Sneha':       '#0891b2',
+  'Gokilavaani': '#16a34a'
 };
 
 function renderAdminTable(){
