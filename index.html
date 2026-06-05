@@ -255,11 +255,11 @@ tbody tr:hover td{background:var(--surface);}
     <div class="login-title">Mentor Login</div>
     <div class="login-sub">Select section, role and enter your PIN</div>
     <div class="login-label">Select Section</div>
-   <div class="login-select-grid" style="margin-bottom:14px;">
-  <button class="role-btn" data-section="A" onclick="selectSection(this)">I BCA &mdash; A</button>
-  <button class="role-btn" data-section="B" onclick="selectSection(this)">I BCA &mdash; B</button>
-  <button class="role-btn" data-section="II" onclick="selectSection(this)">II BCA</button>
-</div>
+    <div class="login-select-grid" style="margin-bottom:14px;">
+      <button class="role-btn" data-section="A" onclick="selectSection(this)">I BCA &mdash; A</button>
+      <button class="role-btn" data-section="B" onclick="selectSection(this)">I BCA &mdash; B</button>
+      <button class="role-btn" data-section="II" onclick="selectSection(this)">II BCA</button>
+    </div>
     <div class="login-label">Select Role</div>
     <div class="login-select-grid">
       <button class="role-btn" data-role="Aparna" onclick="selectRole(this)">Aparna</button>
@@ -460,6 +460,9 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 const PINS={'Aparna':'4827','Arun Raj':'3159','Saral':'7634','Admin':'9201'};
 const COLLEGE_NAMES={'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science','terf':"TERF's College of Arts and Science",'sst':'Sree Saraswathi Thyagaraja College','tjs':'TJS College of Arts and Science','bharathidasan':'Bharathidasan College of Arts & Science','nagarathinam':'Nagarathinam Angalammal Arts & Science College','vinayaga':"Vinayaga Mission's Research Foundation School of Arts & Science",'amaraavathi':'Sri Amaraavathi College of Arts & Science','takshashila':'Takshashila University','studyworld':'Study World Group of Institution','rathinam':'Rathinam College of Arts & Science','niche':'Noorul Islam Centre for Higher Education (NICHE)','amet':'AMET University','joy':'Joy University','sasurie':'Sasurie College of Arts and Science','alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)','svyasa':'S-VYASA University','asb':'Asian School of Business'};
 
+/* ── HELPER: resolve section label & DB value ── */
+function getSectionLabel(sec){return sec==='II'?'II BCA':'I BCA - '+sec;}
+
 /* ── STATE ── */
 let selectedCollegeKey=null,selectedCollegeName=null,selectedSection=null,selectedRole=null,currentUser=null;
 let students=[],allStudents=[];
@@ -514,6 +517,7 @@ function selectSection(btn){document.querySelectorAll('[data-section]').forEach(
 function selectRole(btn){document.querySelectorAll('[data-role]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedRole=btn.getAttribute('data-role');document.getElementById('loginError').textContent='';checkLoginReady();}
 function onPinInput(){document.getElementById('loginError').textContent='';document.getElementById('pinInput').classList.remove('error');checkLoginReady();}
 function checkLoginReady(){const p=document.getElementById('pinInput').value;document.getElementById('loginBtn').disabled=!(selectedSection&&selectedRole&&p.length===4);}
+
 async function doLogin(){
   const pin=document.getElementById('pinInput').value;
   if(!selectedSection){showLoginError('Please select a section');return;}
@@ -521,20 +525,20 @@ async function doLogin(){
   if(PINS[selectedRole]!==pin){showLoginError('Incorrect PIN.');document.getElementById('pinInput').classList.add('error');document.getElementById('pinInput').value='';checkLoginReady();return;}
   currentUser=selectedRole;
   document.getElementById('loginScreen').classList.remove('show');
-  const sectionLabel = selectedSection==='II' ? 'II BCA' : 'I BCA - '+selectedSection;
-document.getElementById('userLabel').textContent=currentUser+' \u00b7 '+selectedCollegeName.split(' ')[0]+' '+sectionLabel;
-document.getElementById('topbarCollege').textContent=selectedCollegeName+' \u2014 '+sectionLabel;
-
+  const sectionLabel=getSectionLabel(selectedSection);
+  document.getElementById('userLabel').textContent=currentUser+' \u00b7 '+selectedCollegeName.split(' ')[0]+' '+sectionLabel;
+  document.getElementById('topbarCollege').textContent=selectedCollegeName+' \u2014 '+sectionLabel;
   if(currentUser==='Admin'){
     document.getElementById('nav-admin').style.display='flex';
     document.getElementById('nav-students').style.display='none';
     document.getElementById('nav-progress').style.display='none';
     document.getElementById('nav-evaluation').style.display='none';
   }
-
   await initApp();
 }
+
 function showLoginError(m){document.getElementById('loginError').textContent=m;}
+
 function doLogout(){
   currentUser=null;students=[];allStudents=[];progressMap={};evalMap={};approvalMap={};
   selectedRole=null;selectedSection=null;
@@ -555,18 +559,22 @@ async function initApp(){
   document.getElementById('loadingMsg').textContent='Loading students\u2026';
   ol.style.display='flex';
   try{
-   const col=selectedCollegeName;
-const sec=selectedSection==='II'?'II BCA':'I BCA - '+selectedSection;
-if(currentUser==='Admin'){
-  const[sA,sB,sII]=await Promise.all([
-    api.students(col,'I BCA - A'),
-    api.students(col,'I BCA - B'),
-    api.students(col,'II BCA')
-  ]);
-  allStudents=[...sA,...sB,...sII];students=allStudents;
-}else{
-  [students,allStudents]=await Promise.all([api.myStudents(col,sec,currentUser),api.students(col,sec)]);
-}
+    const col=selectedCollegeName;
+    const sec=getSectionLabel(selectedSection);
+    if(currentUser==='Admin'){
+      const[sA,sB,sII]=await Promise.all([
+        api.students(col,'I BCA - A'),
+        api.students(col,'I BCA - B'),
+        api.students(col,'II BCA')
+      ]);
+      allStudents=[...sA,...sB,...sII];
+      students=allStudents;
+    }else{
+      [students,allStudents]=await Promise.all([
+        api.myStudents(col,sec,currentUser),
+        api.students(col,sec)
+      ]);
+    }
     document.getElementById('navStudentCount').textContent=students.length;
     if(students.length>0){
       const ids=students.map(s=>s.id);
@@ -595,10 +603,7 @@ if(currentUser==='Admin'){
 
 function buildMaps(prog,evals,apprs,isAdmin){
   const pm={},em={},am={};
-  prog.forEach(p=>{
-    if(!pm[p.student_id]) pm[p.student_id]={};
-    pm[p.student_id][p.week_number]=p;
-  });
+  prog.forEach(p=>{if(!pm[p.student_id])pm[p.student_id]={};pm[p.student_id][p.week_number]=p;});
   evals.forEach(e=>{em[e.student_id]=e;});
   apprs.forEach(a=>{am[a.student_id]=a;});
   if(isAdmin){adminProgressMap=pm;adminEvalMap=em;adminApprovalMap=am;progressMap=pm;evalMap=em;approvalMap=am;}
@@ -617,13 +622,17 @@ function showPanel(id,el){document.querySelectorAll('.panel').forEach(p=>p.class
 
 /* ── DASHBOARD ── */
 function renderDashboard(){
+  const secLbl=getSectionLabel(selectedSection);
   document.getElementById('dashTitle').textContent=currentUser==='Admin'?'Admin Dashboard':'Welcome, '+currentUser;
-const secLbl=selectedSection==='II'?'II BCA':'I BCA '+selectedSection;
-document.getElementById('dashSub').textContent=students.length+' students \u00b7 '+selectedCollegeName+' \u2014 '+secLbl;
+  document.getElementById('dashSub').textContent=students.length+' students \u00b7 '+selectedCollegeName+' \u2014 '+secLbl;
   const total=students.length,approved=students.filter(s=>getApproval(s.id)==='approved').length;
   const scored=students.filter(s=>getScore(s.id)!==null).length;
   const avg=scored>0?(students.filter(s=>getScore(s.id)!==null).reduce((sm,s)=>sm+getScore(s.id),0)/scored).toFixed(1):'--';
-  document.getElementById('statsRow').innerHTML=`<div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value">${total}</div><div class="stat-sub">I BCA ${selectedSection}</div></div><div class="stat-card"><div class="stat-label">Projects Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div><div class="stat-sub">of ${total}</div></div><div class="stat-card"><div class="stat-label">Evaluated</div><div class="stat-value" style="color:var(--accent2);">${scored}</div><div class="stat-sub">score submitted</div></div><div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div><div class="stat-sub">out of 100</div></div>`;
+  document.getElementById('statsRow').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value">${total}</div><div class="stat-sub">${secLbl}</div></div>
+    <div class="stat-card"><div class="stat-label">Projects Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div><div class="stat-sub">of ${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Evaluated</div><div class="stat-value" style="color:var(--accent2);">${scored}</div><div class="stat-sub">score submitted</div></div>
+    <div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div><div class="stat-sub">out of 100</div></div>`;
   const tb=document.getElementById('dashTableBody');
   if(!students.length){tb.innerHTML='<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">&#128235;</div>No students found.</div></td></tr>';return;}
   tb.innerHTML=students.map((s,i)=>{
@@ -678,10 +687,7 @@ function openWeekModal(studentId,studentName,focusWeek){
   document.getElementById('weekModalTitle').textContent=studentName;
   const weeks=progressMap[studentId]||{};
   weekDraft={};
-  [1,2,3,4].forEach(w=>{
-    const row=weeks[w];
-    weekDraft[w]={status:row?row.status:'not-started',note:row?(row.note||''):''};
-  });
+  [1,2,3,4].forEach(w=>{const row=weeks[w];weekDraft[w]={status:row?row.status:'not-started',note:row?(row.note||''):''};});
   renderWeekCards(focusWeek);
   document.getElementById('weekModal').classList.add('open');
   setTimeout(()=>{const ta=document.getElementById('wk-ta-'+focusWeek);if(ta)ta.focus();},220);
@@ -789,6 +795,7 @@ function openEvalModal(sid,sName,pTitle){
   calcTotal();
   document.getElementById('evalModal').classList.add('open');
 }
+
 function calcTotal(){
   const fields=[{id:'sc_tech',bar:'bar_tech'},{id:'sc_fit',bar:'bar_fit'},{id:'sc_effort',bar:'bar_effort'},{id:'sc_pres',bar:'bar_pres'},{id:'sc_impact',bar:'bar_impact'}];
   let total=0;
@@ -805,6 +812,7 @@ function calcTotal(){
   el.textContent=total+' / 100';
   el.style.color=total>=75?'var(--green)':total>=50?'var(--amber)':'var(--red)';
 }
+
 async function saveEvaluation(){
   const btn=document.getElementById('saveEvalBtn');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving&hellip;';
