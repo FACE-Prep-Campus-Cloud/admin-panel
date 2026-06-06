@@ -161,8 +161,10 @@ tbody tr:hover td{background:var(--surface);}
 .form-input,.form-textarea,.form-select{width:100%;padding:10px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color 0.15s;}
 .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--accent);}
 .form-textarea{resize:vertical;min-height:80px;}
-.approval-select{padding:5px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--ink2);font-family:var(--font-body);font-size:11px;font-weight:600;cursor:pointer;outline:none;}
-.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:12px 20px;font-size:13px;color:var(--ink);display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:99999;transform:translateY(80px);opacity:0;transition:all 0.3s cubic-bezier(.22,1,.36,1);max-width:340px;}
+.approval-select{padding:5px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--ink2);font-family:var(--font-body);font-size:11px;font-weight:600;cursor:pointer;outline:none;transition:all 0.2s;}
+.approval-select.status-approved{background:var(--green-lt);border-color:var(--green);color:var(--green);}
+.approval-select.status-needs-revision{background:var(--red-lt);border-color:var(--red);color:var(--red);}
+.approval-select.status-pending{background:var(--surface);border-color:var(--border2);color:var(--ink2);}.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:12px 20px;font-size:13px;color:var(--ink);display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:99999;transform:translateY(80px);opacity:0;transition:all 0.3s cubic-bezier(.22,1,.36,1);max-width:340px;}
 .toast.show{transform:translateY(0);opacity:1;}
 .toast-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .toast-dot.success{background:var(--green);}
@@ -273,10 +275,10 @@ tbody tr:hover td{background:var(--surface);}
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
-    <div class="login-college-pill" onclick="backToLanding()">
-      <span class="login-college-name" id="loginCollegeName">&mdash;</span>
-      <span class="login-college-back">&larr; Change</span>
-    </div>
+    <div style="margin-bottom:24px;">
+  <div style="font-size:13px;font-weight:600;color:var(--ink3);">Signing in to</div>
+  <div style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--ink);margin-top:2px;" id="loginCollegeName">&mdash;</div>
+</div>
     <div class="login-title">Mentor Login</div>
     <div class="login-sub">Select section, role and enter your PIN</div>
     <div class="login-label">Select Section</div>
@@ -293,7 +295,8 @@ tbody tr:hover td{background:var(--surface);}
       <input type="password" class="pin-input" id="pinInput" maxlength="4" placeholder="&bull;&bull;&bull;&bull;" oninput="onPinInput()" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
     <button class="login-btn" id="loginBtn" onclick="doLogin()" disabled>Sign In &rarr;</button>
-    <div class="login-error" id="loginError"></div>
+<div class="login-error" id="loginError"></div>
+<button onclick="backToLanding()" style="width:100%;margin-top:12px;padding:11px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink3);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--ink3)'">&larr; Back to College Selection</button>
   </div>
 </div>
 
@@ -1056,7 +1059,7 @@ function renderStudentList(){
       <td>${nameBtn(s)}</td>
       <td style="font-size:12px;color:var(--ink3);">${escHTML(s.register_number||'')}</td>
       <td><div class="week-btns">${wbtns}</div></td>
-      <td><select class="approval-select" onchange="saveApproval(${s.id},this.value)">
+      <td><select class="approval-select status-${getApproval(s.id)}" onchange="saveApproval(${s.id},this.value,this)">
         <option value="pending" ${getApproval(s.id)==='pending'?'selected':''}>Pending</option>
         <option value="approved" ${getApproval(s.id)==='approved'?'selected':''}>Approved</option>
         <option value="needs-revision" ${getApproval(s.id)==='needs-revision'?'selected':''}>Needs Revision</option>
@@ -1184,7 +1187,11 @@ showToast(savedCount===1?'Week saved!':savedCount+' weeks saved!','success');
   finally{btn.disabled=false;btn.innerHTML='Save';}
 }
 /* ── APPROVAL ── */
-async function saveApproval(sid,status){
+async function saveApproval(sid,status,selectEl){
+  // Color the dropdown immediately
+  if(selectEl){
+    selectEl.className='approval-select status-'+status;
+  }
   try{
     const ex=approvalMap[sid];
     if(ex){await api.updateApproval(ex.id,{status,approved_by:currentUser,approved_at:new Date().toISOString()});approvalMap[sid].status=status;}
@@ -1193,7 +1200,6 @@ async function saveApproval(sid,status){
     if(currentUser==='Admin'){adminApprovalMap=approvalMap;renderAdminTable();renderAdminStats();}
   }catch(e){showToast('Error: '+e.message,'error');}
 }
-
 /* ── EVAL TABLE ── */
 function renderEvalTable(){
   const q=(document.getElementById('evalSearch').value||'').toLowerCase();
