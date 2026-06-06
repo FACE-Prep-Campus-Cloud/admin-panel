@@ -1111,28 +1111,9 @@ function cycleWeekStatus(w,e){
 
 async function saveAllWeeks(){
   const btn=document.getElementById('saveWeekBtn');
-
-  // Check all 4 weeks — block if any box is empty
-  for(const w of [1,2,3,4]){
-    if(!weekDraft[w].note.trim()){
-      showToast('Week '+w+' note cannot be empty!','error');
-      const ta=document.getElementById('wk-ta-'+w);
-      if(ta){ta.style.borderColor='var(--red)';setTimeout(()=>ta.style.borderColor='',2000);}
-      return;
-    }
-  }
-
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving…';
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving&hellip;';
   const sid=currentWeekStudent.id;
   const existing=progressMap[sid]||{};
-
-  // Auto-complete weeks that have a note but status is still not-started
-  [1,2,3,4].forEach(w=>{
-    if(weekDraft[w].note.trim()&&weekDraft[w].status==='not-started'){
-      weekDraft[w].status='completed';
-    }
-  });
-
   try{
     for(const w of [1,2,3,4]){
       const d=weekDraft[w];
@@ -1141,24 +1122,18 @@ async function saveAllWeeks(){
       if(row){
         await api.updateProgress(row.id,{status:d.status,note:note,updated_by:currentUser,updated_at:new Date().toISOString()});
         row.status=d.status;row.note=note;
-        showToast('Week '+w+' saved!','success');
       }else{
         const res=await api.upsertProgress({student_id:sid,week_number:w,status:d.status,note:note,updated_by:currentUser});
         if(!progressMap[sid])progressMap[sid]={};
         progressMap[sid][w]=Array.isArray(res)?res[0]:res;
-        showToast('Week '+w+' saved!','success');
       }
     }
-    btn.innerHTML='✓ Saved';
-    btn.style.background='var(--green)';
-    setTimeout(()=>{
-      closeModal('weekModal');
-      btn.disabled=false;btn.innerHTML='Save';btn.style.background='';
-    },900);
+    showToast('All 4 weeks saved!','success');
+    closeModal('weekModal');
     renderStudentList();renderProgressTable();renderDashboard();
     if(currentUser==='Admin'){adminProgressMap=progressMap;renderAdminTable();renderAdminStats();}
-  }catch(e){showToast('Error: '+e.message,'error');}
-  finally{btn.disabled=false;}
+  }catch(e){showToast('Error: '+e.message,'error');console.error(e);}
+  finally{btn.disabled=false;btn.innerHTML='Save All Weeks';}
 }/* ── APPROVAL ── */
 async function saveApproval(sid,status){
   try{
