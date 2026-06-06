@@ -448,13 +448,12 @@ tbody tr:hover td{background:var(--surface);}
     <div class="modal-body">
       <div class="week-cards-grid" id="weekCardsGrid"></div>
       <div style="background:var(--blue-lt);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--blue);font-weight:500;margin-top:4px;">
-        Click the status badge on any card to cycle: Not Started &rarr; In Progress &rarr; Completed. Add notes per week. Click <strong>Save All Weeks</strong> to persist.
+        Click the status badge on any card to cycle: Not Started &rarr; In Progress &rarr; Completed. Add notes per week. Click <strong>Save</strong> to persist.
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('weekModal')">Cancel</button>
-      <button class="btn btn-primary" id="saveWeekBtn" onclick="saveAllWeeks()">Save All Weeks</button>
-    </div>
+<button class="btn btn-primary" id="saveWeekBtn" onclick="saveAllWeeks()">Save</button>    </div>
   </div>
 </div>
 
@@ -1144,7 +1143,7 @@ async function saveAllWeeks(){
     btn.style.background='var(--green)';
     setTimeout(()=>{
       closeModal('weekModal');
-      btn.disabled=false;btn.innerHTML='Save All Weeks';btn.style.background='';
+      btn.disabled=false;btn.innerHTML='Save';btn.style.background='';
     },900);
     renderStudentList();renderProgressTable();renderDashboard();
     if(currentUser==='Admin'){adminProgressMap=progressMap;renderAdminTable();renderAdminStats();}
