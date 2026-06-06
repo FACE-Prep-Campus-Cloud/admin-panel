@@ -1159,6 +1159,12 @@ async function saveAllWeeks(){
     for(const w of [1,2,3,4]){
       const d=weekDraft[w];
       const note=d.note.trim()||null;
+
+      // Auto-set to completed if note is filled, keep manual status otherwise
+      if(note && d.status==='not-started'){
+        d.status='completed';
+      }
+
       const row=existing[w];
       if(row){
         await api.updateProgress(row.id,{status:d.status,note:note,updated_by:currentUser,updated_at:new Date().toISOString()});
@@ -1169,14 +1175,14 @@ async function saveAllWeeks(){
         progressMap[sid][w]=Array.isArray(res)?res[0]:res;
       }
     }
-    showToast('All 4 weeks saved!','success');
+const savedCount=[1,2,3,4].filter(w=>weekDraft[w].note&&weekDraft[w].note.trim()).length;
+showToast(savedCount===1?'Week saved!':savedCount+' weeks saved!','success');
     closeModal('weekModal');
     renderStudentList();renderProgressTable();renderDashboard();
     if(currentUser==='Admin'){adminProgressMap=progressMap;renderAdminTable();renderAdminStats();}
   }catch(e){showToast('Error: '+e.message,'error');console.error(e);}
   finally{btn.disabled=false;btn.innerHTML='Save';}
 }
-
 /* ── APPROVAL ── */
 async function saveApproval(sid,status){
   try{
