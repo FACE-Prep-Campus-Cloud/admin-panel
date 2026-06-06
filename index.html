@@ -8,7 +8,7 @@
 <style>
 :root{--bg:#f4f5f9;--bg2:#fff;--bg3:#eef0f6;--surface:#f0f2f8;--surface2:#e8eaf2;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--ink:#111827;--ink2:#374151;--ink3:#9ca3af;--accent:#6c63ff;--accent2:#5046e5;--accent-lt:rgba(108,99,255,0.1);--green:#16a34a;--green-lt:rgba(22,163,74,0.12);--amber:#d97706;--amber-lt:rgba(217,119,6,0.12);--red:#dc2626;--red-lt:rgba(220,38,38,0.12);--blue:#2563eb;--blue-lt:rgba(37,99,235,0.12);--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--radius:14px;--radius-sm:8px;--shadow:0 4px 24px rgba(0,0,0,0.08);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;}a
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;min-height:100vh;overflow-x:hidden;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -127,8 +127,8 @@ tbody tr:hover td{background:var(--surface);}
 .modal-close:hover{background:var(--red-lt);color:var(--red);border-color:rgba(220,38,38,0.3);}
 .modal-body{padding:22px 26px;}
 .modal-footer{padding:16px 26px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}
-.week-cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
-.week-card{border:2px solid var(--border2);border-radius:12px;overflow:hidden;background:var(--bg2);transition:all 0.2s;}
+.week-cards-grid{display:flex;flex-direction:row;gap:12px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;}
+.week-card{flex:0 0 220px;}.week-card{border:2px solid var(--border2);border-radius:12px;overflow:hidden;background:var(--bg2);transition:all 0.2s;}
 .week-card.wk-completed{border-color:var(--green);}
 .week-card.wk-in-progress{border-color:var(--amber);}
 .week-card.wk-not-started{border-color:var(--border2);}
@@ -1112,9 +1112,17 @@ function cycleWeekStatus(w,e){
 
 async function saveAllWeeks(){
   const btn=document.getElementById('saveWeekBtn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving&hellip;';
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving…';
   const sid=currentWeekStudent.id;
   const existing=progressMap[sid]||{};
+
+  // Auto-complete weeks that have a note typed but status is still not-started
+  [1,2,3,4].forEach(w=>{
+    if(weekDraft[w].note.trim()&&weekDraft[w].status==='not-started'){
+      weekDraft[w].status='completed';
+    }
+  });
+
   try{
     for(const w of [1,2,3,4]){
       const d=weekDraft[w];
@@ -1130,13 +1138,18 @@ async function saveAllWeeks(){
       }
     }
     showToast('All 4 weeks saved!','success');
-    closeModal('weekModal');
+    // Rename button to "Saved ✓" briefly, then close
+    btn.innerHTML='✓ Saved';
+    btn.style.background='var(--green)';
+    setTimeout(()=>{
+      closeModal('weekModal');
+      btn.disabled=false;btn.innerHTML='Save All Weeks';btn.style.background='';
+    },900);
     renderStudentList();renderProgressTable();renderDashboard();
     if(currentUser==='Admin'){adminProgressMap=progressMap;renderAdminTable();renderAdminStats();}
-  }catch(e){showToast('Error: '+e.message,'error');console.error(e);}
-  finally{btn.disabled=false;btn.innerHTML='Save All Weeks';}
+  }catch(e){showToast('Error: '+e.message,'error');}
+  finally{btn.disabled=false;}
 }
-
 /* ── APPROVAL ── */
 async function saveApproval(sid,status){
   try{
