@@ -142,7 +142,7 @@ tbody tr:hover td{background:var(--surface);}
 .wk-cycle-btn.in-progress{background:rgba(217,119,6,0.2);color:var(--amber);}
 .wk-cycle-btn.not-started{background:var(--surface2);color:var(--ink3);}
 .week-card-body{padding:10px 12px;}
-.week-textarea{width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--ink);font-family:var(--font-body);font-size:12px;outline:none;resize:none;height:90px;transition:border-color 0.15s;line-height:1.5;}
+.week-textarea{width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--ink);font-family:var(--font-body);font-size:12px;outline:none;resize:none;height:auto;min-height:90px;overflow:hidden;transition:border-color 0.15s;line-height:1.5;}
 .week-textarea:focus{border-color:var(--accent);background:var(--bg2);}
 .week-textarea::placeholder{color:var(--ink3);}
 .score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -715,9 +715,10 @@ function showProjectPopover(el,student){
 function hideProjectPopover(){
   popoverHideTimer=setTimeout(()=>{document.getElementById('projPopover').style.display='none';},200);
 }
-document.addEventListener('click',function(e){
-  if(!e.target.classList.contains('student-name-link')){
-    document.getElementById('projPopover').style.display='none';
+document.addEventListener('input',function(e){
+  if(e.target.classList.contains('week-textarea')){
+    e.target.style.height='auto';
+    e.target.style.height=e.target.scrollHeight+'px';
   }
 });
 
