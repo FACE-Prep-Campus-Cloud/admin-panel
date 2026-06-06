@@ -44,6 +44,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-siz
 .login-title{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--ink);margin-bottom:6px;}
 .login-sub{font-size:13px;color:var(--ink3);margin-bottom:28px;}
 .login-label{font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;}
+/* ROLE BUTTONS — with gap */
 .role-btn{padding:12px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--ink2);font-family:var(--font-body);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;text-align:center;}
 .role-btn:hover{border-color:var(--accent);color:var(--ink);}
 .role-btn.selected{background:var(--accent-lt);border-color:var(--accent);color:var(--accent2);font-weight:600;}
@@ -144,8 +145,6 @@ tbody tr:hover td{background:var(--surface);}
 .week-textarea{width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--ink);font-family:var(--font-body);font-size:12px;outline:none;resize:none;height:90px;transition:border-color 0.15s;line-height:1.5;}
 .week-textarea:focus{border-color:var(--accent);background:var(--bg2);}
 .week-textarea::placeholder{color:var(--ink3);}
-.prog-wk-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;}
-.prog-wk-note{font-size:10px;color:var(--ink3);max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:help;}
 .score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .score-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;}
 .score-item-label{font-size:11px;color:var(--ink3);margin-bottom:6px;font-weight:500;}
@@ -198,6 +197,19 @@ tbody tr:hover td{background:var(--surface);}
 .seed-panel-title{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--amber);margin-bottom:8px;}
 .seed-panel p{font-size:12px;color:var(--ink2);margin-bottom:12px;line-height:1.6;}
 
+/* ── PROGRESS TABLE WEEK CARDS ── */
+.prog-week-cell{display:flex;flex-direction:column;align-items:stretch;min-width:130px;}
+.prog-week-card{border-radius:9px;padding:9px 11px;cursor:pointer;transition:all 0.15s;border:1.5px solid var(--border2);background:var(--surface);text-align:left;width:100%;font-family:var(--font-body);min-height:60px;display:flex;flex-direction:column;gap:4px;}
+.prog-week-card:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,0.09);}
+.prog-week-card.completed{background:var(--green-lt);border-color:var(--green);}
+.prog-week-card.in-progress{background:var(--amber-lt);border-color:var(--amber);}
+.prog-week-card.not-started{background:var(--surface);border-color:var(--border2);}
+.prog-wk-status{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;}
+.prog-wk-status.completed{color:var(--green);}
+.prog-wk-status.in-progress{color:var(--amber);}
+.prog-wk-status.not-started{color:var(--ink3);}
+.prog-wk-note-text{font-size:10px;color:var(--ink2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.4;font-style:italic;}
+
 /* ── STUDENT NAME CLICKABLE LINK ── */
 .student-name-link{color:var(--accent2);font-weight:700;cursor:pointer;text-decoration:none;border-bottom:1px dashed rgba(80,70,229,0.4);transition:border-color 0.15s,color 0.15s;background:none;border-left:none;border-right:none;border-top:none;font-family:var(--font-body);font-size:13px;padding:0;}
 .student-name-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
@@ -220,10 +232,10 @@ tbody tr:hover td{background:var(--surface);}
 
 <!-- PROJECT POPOVER (singleton) -->
 <div class="proj-popover" id="projPopover" style="display:none;">
-  <div class="proj-popover-title">&#128196; Project Title</div>
+  <div class="proj-popover-title">Project Title</div>
   <div class="proj-popover-project" id="ppProject"></div>
   <div class="proj-popover-meta" id="ppMeta"></div>
-  <div class="proj-popover-hint">&#128279; Click <strong>Mentor Evaluation</strong> tab to score this student</div>
+  <div class="proj-popover-hint">Click <strong>Mentor Evaluation</strong> tab to score this student</div>
 </div>
 
 <!-- LANDING -->
@@ -270,7 +282,6 @@ tbody tr:hover td{background:var(--surface);}
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-college-pill" onclick="backToLanding()">
-      <span>&#127963;</span>
       <span class="login-college-name" id="loginCollegeName">&mdash;</span>
       <span class="login-college-back">&larr; Change</span>
     </div>
@@ -284,8 +295,9 @@ tbody tr:hover td{background:var(--surface);}
       <span class="college-select-icon">&#9662;</span>
     </div>
     <div class="login-label">Select Role</div>
-    <div id="roleButtonsWrap" class="login-select-grid" style="grid-template-columns:1fr 1fr;display:grid;"></div>
-    <div class="login-label" style="margin-top:16px;">Enter PIN</div>
+    <!-- gap:12px added between role buttons -->
+    <div id="roleButtonsWrap" class="login-select-grid" style="grid-template-columns:1fr 1fr;display:grid;gap:12px;margin-bottom:16px;"></div>
+    <div class="login-label" style="margin-top:4px;">Enter PIN</div>
     <div class="pin-input-wrap">
       <input type="password" class="pin-input" id="pinInput" maxlength="4" placeholder="&bull;&bull;&bull;&bull;" oninput="onPinInput()" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
@@ -308,10 +320,10 @@ tbody tr:hover td{background:var(--surface);}
     <aside class="sidebar">
       <div class="nav-section-label">Navigation</div>
       <div class="nav-item active" id="nav-dashboard" onclick="showPanel('dashboard',this)"><span class="nav-icon">&#8862;</span> Dashboard</div>
-      <div class="nav-item" id="nav-students" onclick="showPanel('students',this)"><span class="nav-icon">&#9673;</span> My Students<span class="nav-badge" id="navStudentCount">0</span></div>
+      <div class="nav-item" id="nav-students" onclick="showPanel('students',this)"><span class="nav-icon">&#9675;</span> My Students<span class="nav-badge" id="navStudentCount">0</span></div>
       <div class="nav-item" id="nav-progress" onclick="showPanel('progress',this)"><span class="nav-icon">&#9654;</span> Weekly Progress</div>
       <div class="nav-item" id="nav-evaluation" onclick="showPanel('evaluation',this)"><span class="nav-icon">&#9672;</span> Mentor Evaluation</div>
-      <div class="nav-item" id="nav-admin" style="display:none;" onclick="showPanel('admin',this)"><span class="nav-icon">&#128737;</span> Admin View</div>
+      <div class="nav-item" id="nav-admin" style="display:none;" onclick="showPanel('admin',this)"><span class="nav-icon">&#9632;</span> Admin View</div>
     </aside>
     <main class="content">
 
@@ -324,7 +336,7 @@ tbody tr:hover td{background:var(--surface);}
         </div>
         <div class="stats-row" id="statsRow"></div>
         <div class="card">
-          <div class="card-title">&#128203; My Students &mdash; Quick Overview</div>
+          <div class="card-title">My Students &mdash; Quick Overview</div>
           <div class="table-wrap"><table>
             <thead><tr><th>#</th><th>Student Name</th><th>Progress</th><th>Approval</th><th>Score</th></tr></thead>
             <tbody id="dashTableBody"></tbody>
@@ -337,7 +349,7 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Student List</div>
           <div class="page-title">My Students</div>
-          <div class="page-sub">&#128161; Click any student name to see their project title</div>
+          <div class="page-sub">Click any student name to see their project title</div>
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="studentSearch" placeholder="Search by name or project&hellip;" oninput="renderStudentList()"></div>
@@ -359,14 +371,14 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Track Progress</div>
           <div class="page-title">Weekly Progress</div>
-          <div class="page-sub">&#128161; Click any student name to see their project title &mdash; click week buttons to edit</div>
+          <div class="page-sub">Click any student name to see their project title &mdash; click week cards to edit</div>
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="progressSearch" placeholder="Search student&hellip;" oninput="renderProgressTable()"></div>
           <button class="export-btn" onclick="exportProgressCSV()">&darr; Export CSV</button>
         </div>
         <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
-          <thead><tr><th>#</th><th>Name</th><th style="text-align:center;">W1</th><th style="text-align:center;">W2</th><th style="text-align:center;">W3</th><th style="text-align:center;">W4</th><th>Summary</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th style="text-align:center;">Week 1</th><th style="text-align:center;">Week 2</th><th style="text-align:center;">Week 3</th><th style="text-align:center;">Week 4</th><th>Summary</th></tr></thead>
           <tbody id="progressTableBody"></tbody>
         </table></div></div>
         <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;">
@@ -381,7 +393,7 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Mentor Evaluation</div>
           <div class="page-title">Score Students</div>
-          <div class="page-sub">&#128161; Click any student name to see their project title &mdash; each criterion scored out of 20</div>
+          <div class="page-sub">Click any student name to see their project title &mdash; each criterion scored out of 20</div>
         </div>
         <div class="search-bar">
           <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input" id="evalSearch" placeholder="Search student&hellip;" oninput="renderEvalTable()"></div>
@@ -398,11 +410,11 @@ tbody tr:hover td{background:var(--surface);}
         <div class="page-header">
           <div class="page-eyebrow">Admin View</div>
           <div class="page-title">All Students</div>
-          <div class="page-sub">&#128161; Click any student name to see their project title</div>
+          <div class="page-sub">Click any student name to see their project title</div>
         </div>
 
         <div id="sstSeedPanel" style="display:none;" class="seed-panel">
-          <div class="seed-panel-title">&#128190; First-time Setup: Seed SST Students</div>
+          <div class="seed-panel-title">First-time Setup: Seed SST Students</div>
           <p>Insert all I BBA and I MCA students into the database. Run once only.</p>
           <button class="btn btn-primary" id="seedBtn" onclick="seedSSTStudents()">&#43; Insert SST Students</button>
           <span id="seedStatus" style="font-size:12px;color:var(--ink3);margin-left:14px;"></span>
@@ -436,7 +448,7 @@ tbody tr:hover td{background:var(--surface);}
     <div class="modal-body">
       <div class="week-cards-grid" id="weekCardsGrid"></div>
       <div style="background:var(--blue-lt);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--blue);font-weight:500;margin-top:4px;">
-        &#128161; Click the status badge on any card to cycle: Not Started &rarr; In Progress &rarr; Completed. Add notes per week. Click <strong>Save All Weeks</strong> to persist.
+        Click the status badge on any card to cycle: Not Started &rarr; In Progress &rarr; Completed. Add notes per week. Click <strong>Save All Weeks</strong> to persist.
       </div>
     </div>
     <div class="modal-footer">
@@ -456,7 +468,7 @@ tbody tr:hover td{background:var(--surface);}
     <div class="modal-body">
       <div class="student-info-row" id="evalStudentInfo"></div>
       <div style="background:var(--amber-lt);border:1px solid rgba(217,119,6,0.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--amber);font-weight:600;">
-        &#9888; Each score must be 0&ndash;20. Values above 20 are auto-capped.
+        Each score must be 0&ndash;20. Values above 20 are auto-capped.
       </div>
       <div class="score-grid">
         <div class="score-item"><div class="score-item-label">Tech / Functional Quality <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_tech" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_tech" style="width:0%"></div></div></div>
@@ -687,9 +699,9 @@ function showProjectPopover(el,student){
   const pop=document.getElementById('projPopover');
   document.getElementById('ppProject').textContent=student.project_title||'—';
   let metaHTML='';
-  if(student.register_number) metaHTML+=`<div class="proj-popover-row">&#128196; Reg No: <strong>${student.register_number}</strong></div>`;
-  if(student.course) metaHTML+=`<div class="proj-popover-row">&#127979; Course: <strong>${student.course}</strong></div>`;
-  if(student.mentor_assigned) metaHTML+=`<div class="proj-popover-row">&#128100; Mentor: <strong>${student.mentor_assigned}</strong></div>`;
+  if(student.register_number) metaHTML+=`<div class="proj-popover-row">Reg No: <strong>${student.register_number}</strong></div>`;
+  if(student.course) metaHTML+=`<div class="proj-popover-row">Course: <strong>${student.course}</strong></div>`;
+  if(student.mentor_assigned) metaHTML+=`<div class="proj-popover-row">Mentor: <strong>${student.mentor_assigned}</strong></div>`;
   document.getElementById('ppMeta').innerHTML=metaHTML;
   pop.style.display='block';
   const rect=el.getBoundingClientRect();
@@ -758,7 +770,9 @@ function renderRoleButtons(sec){
   if(!sec){wrap.innerHTML='<div style="grid-column:1/-1;font-size:12px;color:var(--ink3);padding:8px 0;">\u2190 Select a section first</div>';return;}
   const roles=SECTION_ROLES[sec]||['Admin'];
   wrap.style.gridTemplateColumns=roles.length<=3?'repeat('+roles.length+',1fr)':'1fr 1fr';
-  wrap.innerHTML=roles.map(r=>`<button class="role-btn" data-role="${r}" onclick="selectRole(this)">${r==='Admin'?'&#128737; ':''} ${r}</button>`).join('');
+  wrap.style.gap='12px';
+  wrap.style.marginBottom='16px';
+  wrap.innerHTML=roles.map(r=>`<button class="role-btn" data-role="${r}" onclick="selectRole(this)">${r}</button>`).join('');
 }
 
 /* ── LOGIN ── */
@@ -1017,7 +1031,7 @@ function renderStudentList(){
   }).join('');
 }
 
-/* ── PROGRESS TABLE ── */
+/* ── PROGRESS TABLE — bigger week content cards ── */
 function renderProgressTable(){
   const q=(document.getElementById('progressSearch').value||'').toLowerCase();
   const list=students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.project_title.toLowerCase().includes(q));
@@ -1028,7 +1042,15 @@ function renderProgressTable(){
     const wCells=[1,2,3,4].map(w=>{
       const wd=weeks[w],cls=wd?wd.status:'not-started';
       const note=wd&&wd.note&&wd.note.trim()?wd.note:'';
-      return`<td style="text-align:center;"><div class="prog-wk-wrap"><button class="week-btn ${cls}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})" style="margin:auto;" title="W${w}: ${cls}${note?' \u2014 '+note.substring(0,50):''}">${cls==='completed'?'&#10003;':cls==='in-progress'?'~':w}</button>${note?`<div class="prog-wk-note" title="${esc(note)}">&#128172; ${note.substring(0,14)}${note.length>14?'&hellip;':''}</div>`:'<div style="height:14px;"></div>'}</div></td>`;
+      const statusLabel=cls==='completed'?'Completed':cls==='in-progress'?'In Progress':'Not Started';
+      return`<td style="padding:8px 10px;vertical-align:top;">
+        <div class="prog-week-cell">
+          <button class="prog-week-card ${cls}" onclick="openWeekModal(${s.id},'${esc(s.name)}',${w})">
+            <span class="prog-wk-status ${cls}">${statusLabel}</span>
+            <span class="prog-wk-note-text">${note||'&mdash;'}</span>
+          </button>
+        </div>
+      </td>`;
     }).join('');
     return`<tr>
       <td style="color:var(--ink3);">${i+1}</td>
@@ -1062,7 +1084,7 @@ function renderWeekCards(activeWeek){
     const safeNote=d.note.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     return`<div class="week-card wk-${d.status}" id="wk-card-${w}">
       <div class="week-card-head wk-${d.status}">
-        <span class="week-card-label">Week ${w}${w===activeWeek?' &#9670;':''}</span>
+        <span class="week-card-label">Week ${w}${w===activeWeek?' &diams;':''}</span>
         <button class="wk-cycle-btn ${d.status}" id="wk-btn-${w}" onclick="cycleWeekStatus(${w},event)">
           ${STATUS_ICON[d.status]} ${STATUS_LABEL[d.status]}
         </button>
