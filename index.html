@@ -118,7 +118,7 @@ tbody tr:hover td{background:var(--surface);}
 .btn-sm{padding:5px 12px;font-size:11px;}
 .modal-overlay{position:fixed;inset:0;background:rgba(13,33,55,0.45);backdrop-filter:blur(4px);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;}
 .modal-overlay.open{display:flex;animation:fadeUp 0.2s ease;}
-.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;width:100%;max-width:760px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15);animation:popIn 0.25s cubic-bezier(.22,1,.36,1);}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15);animation:popIn 0.25s cubic-bezier(.22,1,.36,1);}
 .modal-header{padding:22px 26px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;}
 .modal-title{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--ink);}
 .modal-sub{font-size:12px;color:var(--ink3);margin-top:3px;}
@@ -144,14 +144,20 @@ tbody tr:hover td{background:var(--surface);}
 .week-textarea{width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--ink);font-family:var(--font-body);font-size:12px;outline:none;resize:none;height:auto;min-height:90px;overflow:hidden;transition:border-color 0.15s;line-height:1.5;}
 .week-textarea:focus{border-color:var(--accent);background:var(--bg2);}
 .week-textarea::placeholder{color:var(--ink3);}
-.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.score-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;}
-.score-item-label{font-size:11px;color:var(--ink3);margin-bottom:6px;font-weight:500;}
-.score-item-max{font-size:10px;color:var(--accent2);font-weight:700;background:var(--accent-lt);padding:1px 6px;border-radius:99px;float:right;margin-top:1px;}
-.score-item-input{width:100%;padding:8px 12px;background:var(--bg3);border:1.5px solid var(--border2);border-radius:6px;color:var(--ink);font-family:var(--font-head);font-size:20px;font-weight:700;text-align:center;outline:none;transition:border-color 0.2s;}
+
+/* ── SCORE GRID: single column, stacked ── */
+.score-grid{display:grid;grid-template-columns:1fr;gap:14px;}
+
+.score-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;}
+
+/* ── SCORE ITEM LABEL: bold and larger ── */
+.score-item-label{font-size:13px;color:var(--ink);margin-bottom:8px;font-weight:700;display:flex;align-items:center;justify-content:space-between;}
+
+.score-item-max{font-size:10px;color:var(--accent2);font-weight:700;background:var(--accent-lt);padding:1px 6px;border-radius:99px;}
+.score-item-input{width:100%;padding:10px 14px;background:var(--bg3);border:1.5px solid var(--border2);border-radius:6px;color:var(--ink);font-family:var(--font-head);font-size:22px;font-weight:700;text-align:center;outline:none;transition:border-color 0.2s;}
 .score-item-input:focus{border-color:var(--accent);}
 .score-item-input.over-limit{border-color:var(--red)!important;background:var(--red-lt);}
-.score-item-bar{height:4px;background:var(--surface2);border-radius:99px;margin-top:8px;overflow:hidden;}
+.score-item-bar{height:5px;background:var(--surface2);border-radius:99px;margin-top:10px;overflow:hidden;}
 .score-item-bar-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.3s ease,background 0.3s;}
 .score-total-row{display:flex;align-items:center;justify-content:space-between;background:rgba(9,209,199,0.12);border:1px solid rgba(9,209,199,0.3);border-radius:var(--radius-sm);padding:14px 18px;margin-top:14px;}
 .score-total-label{font-size:13px;font-weight:600;color:var(--accent2);}
@@ -217,7 +223,20 @@ tbody tr:hover td{background:var(--surface);}
 .proj-popover-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink3);}
 .proj-popover-row strong{color:var(--ink2);font-weight:600;}
 .proj-popover-hint{font-size:10px;color:var(--ink3);margin-top:10px;border-top:1px solid var(--border);padding-top:8px;}
-@media(max-width:768px){.main-wrap{grid-template-columns:1fr;}.sidebar{display:none;}.stats-row{grid-template-columns:1fr 1fr;}.content{padding:16px;}.score-grid{grid-template-columns:1fr;}.week-cards-grid{grid-template-columns:1fr 1fr;}.landing-title{font-size:28px;}}
+@media(max-width:768px){
+  .main-wrap{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .content{padding:16px;}
+  .modal-overlay{padding:12px;}
+  .modal-box{border-radius:14px;max-height:95vh;}
+  .modal-body{padding:16px 18px;}
+  .modal-header{padding:16px 18px 14px;}
+  .modal-footer{padding:12px 18px;}
+  .student-info-row{grid-template-columns:1fr;}
+  .score-item-input{font-size:20px;}
+  .landing-title{font-size:28px;}
+}
 </style>
 </head>
 <body>
@@ -464,12 +483,33 @@ tbody tr:hover td{background:var(--surface);}
       <div style="background:var(--amber-lt);border:1px solid rgba(217,119,6,0.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--amber);font-weight:600;">
         Each score must be 0&ndash;20. Values above 20 are auto-capped.
       </div>
+      <!-- Single-column stacked criteria -->
       <div class="score-grid">
-        <div class="score-item"><div class="score-item-label">Tech / Functional Quality <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_tech" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_tech" style="width:0%"></div></div></div>
-        <div class="score-item"><div class="score-item-label">Problem-Solution Fit <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_fit" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_fit" style="width:0%"></div></div></div>
-        <div class="score-item"><div class="score-item-label">Effort &amp; Ownership <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_effort" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_effort" style="width:0%"></div></div></div>
-        <div class="score-item"><div class="score-item-label">Presentation <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_pres" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_pres" style="width:0%"></div></div></div>
-        <div class="score-item" style="grid-column:1/-1;"><div class="score-item-label">Practical Impact <span class="score-item-max">max 20</span></div><input type="number" class="score-item-input" id="sc_impact" min="0" max="20" placeholder="0" oninput="calcTotal()"><div class="score-item-bar"><div class="score-item-bar-fill" id="bar_impact" style="width:0%"></div></div></div>
+        <div class="score-item">
+          <div class="score-item-label">Tech / Functional Quality <span class="score-item-max">max 20</span></div>
+          <input type="number" class="score-item-input" id="sc_tech" min="0" max="20" placeholder="0" oninput="calcTotal()">
+          <div class="score-item-bar"><div class="score-item-bar-fill" id="bar_tech" style="width:0%"></div></div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-label">Problem-Solution Fit <span class="score-item-max">max 20</span></div>
+          <input type="number" class="score-item-input" id="sc_fit" min="0" max="20" placeholder="0" oninput="calcTotal()">
+          <div class="score-item-bar"><div class="score-item-bar-fill" id="bar_fit" style="width:0%"></div></div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-label">Effort &amp; Ownership <span class="score-item-max">max 20</span></div>
+          <input type="number" class="score-item-input" id="sc_effort" min="0" max="20" placeholder="0" oninput="calcTotal()">
+          <div class="score-item-bar"><div class="score-item-bar-fill" id="bar_effort" style="width:0%"></div></div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-label">Presentation <span class="score-item-max">max 20</span></div>
+          <input type="number" class="score-item-input" id="sc_pres" min="0" max="20" placeholder="0" oninput="calcTotal()">
+          <div class="score-item-bar"><div class="score-item-bar-fill" id="bar_pres" style="width:0%"></div></div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-label">Practical Impact <span class="score-item-max">max 20</span></div>
+          <input type="number" class="score-item-input" id="sc_impact" min="0" max="20" placeholder="0" oninput="calcTotal()">
+          <div class="score-item-bar"><div class="score-item-bar-fill" id="bar_impact" style="width:0%"></div></div>
+        </div>
       </div>
       <div class="score-total-row"><div><div class="score-total-label">Total Score</div><div style="font-size:11px;color:var(--ink3);margin-top:2px;">Sum of all 5 criteria</div></div><div class="score-total-val" id="scoreTotalDisplay">0 / 100</div></div>
       <div class="form-group" style="margin-top:14px;margin-bottom:0;"><label class="form-label">Remarks (optional)</label><textarea class="form-textarea" id="evalRemarks" placeholder="Add evaluation remarks, strengths, areas for improvement&hellip;"></textarea></div>
@@ -591,7 +631,6 @@ const SST_IBBA_STUDENTS=[
   {name:'Narmatha Sri',    register_number:'25BBA017', course:'I BBA', project_title:'Bike Workshop',                                                      mentor_assigned:'Kavipriya', phone:'8675554020', email:'narmathasri74@gmail.com'}
 ];
 
-/* ── SST I MCA STUDENTS (placeholder — add when available) ── */
 const SST_IMCA_STUDENTS=[];
 
 /* ── SECTION LABEL MAP ── */
@@ -612,7 +651,7 @@ function getSectionLabel(sec){
   return 'I BCA - '+sec;
 }
 
-/* ── ADMIN TABS — DEPARTMENT-WISE ── */
+/* ── ADMIN TABS ── */
 const COLLEGE_ADMIN_TABS={
   'default':[
     {key:'all',                    label:'All'},
@@ -637,7 +676,6 @@ const COLLEGE_ADMIN_TABS={
   ]
 };
 
-/* ── MENTOR COLORS ── */
 const MENTOR_COLORS={
   'Aparna':       'var(--accent2)',
   'Arun Raj':     'var(--green)',
@@ -687,7 +725,6 @@ const api={
   insertStudent:(d)=>sb('students','POST',d),
 };
 
-/* ── AUTO-RESIZE TEXTAREAS ── */
 document.addEventListener('input',function(e){
   if(e.target.classList.contains('week-textarea')){
     e.target.style.height='auto';
@@ -697,8 +734,6 @@ document.addEventListener('input',function(e){
 
 /* ── POPOVER ── */
 let popoverHideTimer=null;
-
-/* FIX: safe popover data via dataset instead of inline JS string escaping */
 function showProjectPopover(el){
   clearTimeout(popoverHideTimer);
   const pop=document.getElementById('projPopover');
@@ -725,7 +760,6 @@ function hideProjectPopover(){
   popoverHideTimer=setTimeout(()=>{document.getElementById('projPopover').style.display='none';},200);
 }
 
-/* ── HTML ESCAPE HELPER ── */
 function escHTML(s){
   return String(s==null?'':s)
     .replace(/&/g,'&amp;')
@@ -735,7 +769,6 @@ function escHTML(s){
     .replace(/'/g,'&#39;');
 }
 
-/* ── STUDENT NAME BUTTON — uses data-* attributes (safe for all characters) ── */
 function nameBtn(student){
   return `<button class="student-name-link"
     data-project="${escHTML(student.project_title||'')}"
@@ -789,7 +822,6 @@ function renderRoleButtons(sec){
   wrap.innerHTML=roles.map(r=>`<button class="role-btn" data-role="${escHTML(r)}" onclick="selectRole(this)">${escHTML(r)}</button>`).join('');
 }
 
-/* ── LOGIN ── */
 function selectSectionFromDropdown(sel){
   selectedSection=sel.value||null;
   selectedRole=null;
@@ -822,10 +854,9 @@ async function doLogin(){
   document.getElementById('loginScreen').classList.remove('show');
   const sectionLabel=getSectionLabel(selectedSection);
   document.getElementById('userLabel').textContent=currentUser+' \u00b7 '+selectedCollegeName.split(' ')[0]+' '+sectionLabel;
-  /* FIX: show topbar college label for all users including Admin */
   const topbarCol=document.getElementById('topbarCollege');
   topbarCol.textContent=selectedCollegeName+' \u2014 '+sectionLabel;
-  topbarCol.style.display='';
+  topbarCol.style.display='none';
   if(currentUser==='Admin'){
     document.getElementById('nav-admin').style.display='flex';
     document.getElementById('nav-students').style.display='none';
@@ -851,7 +882,6 @@ function doLogout(){
   showPanel('dashboard',document.getElementById('nav-dashboard'));
 }
 
-/* ── INIT ── */
 async function initApp(){
   const ol=document.getElementById('loadingOverlay');
   document.getElementById('loadingMsg').textContent='Loading students\u2026';
@@ -859,7 +889,6 @@ async function initApp(){
   try{
     const col=selectedCollegeName;
     const sec=getSectionLabel(selectedSection);
-
     if(currentUser==='Admin'){
       const adminSections=COLLEGE_ADMIN_SECTIONS[selectedCollegeKey]||COLLEGE_ADMIN_SECTIONS['default'];
       const results=await Promise.all(adminSections.map(s=>api.students(col,s)));
@@ -873,9 +902,7 @@ async function initApp(){
       ]);
       document.getElementById('sstSeedPanel').style.display='none';
     }
-
     document.getElementById('navStudentCount').textContent=students.length;
-
     if(students.length>0){
       const ids=students.map(s=>s.id);
       const[prog,evals,apprs]=await Promise.all([api.progress(ids),api.evaluations(ids),api.approvals(ids)]);
@@ -886,7 +913,6 @@ async function initApp(){
       const[prog,evals,apprs]=await Promise.all([api.progress(ids),api.evaluations(ids),api.approvals(ids)]);
       buildMaps(prog,evals,apprs,true);
     }
-
     ol.style.display='none';
     document.getElementById('appShell').style.display='block';
     renderAdminTabs();
@@ -912,7 +938,6 @@ function buildMaps(prog,evals,apprs,isAdmin){
   else{progressMap=pm;evalMap=em;approvalMap=am;}
 }
 
-/* ── SST SEED ── */
 async function seedSSTStudents(){
   const btn=document.getElementById('seedBtn');
   const status=document.getElementById('seedStatus');
@@ -943,7 +968,6 @@ async function seedSSTStudents(){
   }
 }
 
-/* ── HELPERS ── */
 function getWeeksDone(sid,ua){const m=ua?adminProgressMap:progressMap;return Object.values(m[sid]||{}).filter(w=>w.status==='completed').length;}
 function getScore(sid,ua){const m=ua?adminEvalMap:evalMap;const e=m[sid];return e?e.total_score:null;}
 function getApproval(sid,ua){const m=ua?adminApprovalMap:approvalMap;const a=m[sid];return a?a.status:'pending';}
@@ -952,7 +976,6 @@ function approvalBadge(s){const m={'approved':'<span class="badge badge-green">A
 function weeksBadge(n){if(n>=4)return'<span class="badge badge-green">4/4</span>';if(n>=2)return'<span class="badge badge-amber">'+n+'/4</span>';if(n>=1)return'<span class="badge badge-blue">'+n+'/4</span>';return'<span class="badge badge-grey">0/4</span>';}
 function showPanel(id,el){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el)el.classList.add('active');}
 
-/* ── CSV HELPER ── */
 function downloadCSV(rows,filename){
   const csv=rows.map(r=>r.map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',')).join('\n');
   const blob=new Blob([csv],{type:'text/csv'});
@@ -962,7 +985,6 @@ function downloadCSV(rows,filename){
   showToast('CSV exported!','success');
 }
 
-/* ── SAFE SEARCH FILTER (handles missing project_title) ── */
 function studentMatchesQuery(s,q){
   if(!q) return true;
   const name=(s.name||'').toLowerCase();
@@ -970,7 +992,6 @@ function studentMatchesQuery(s,q){
   return name.includes(q)||proj.includes(q);
 }
 
-/* ── EXPORT: WEEKLY PROGRESS ── */
 function exportProgressCSV(){
   const q=(document.getElementById('progressSearch').value||'').toLowerCase();
   const list=students.filter(s=>studentMatchesQuery(s,q));
@@ -981,19 +1002,14 @@ function exportProgressCSV(){
     const wks=progressMap[s.id]||{};
     const done=getWeeksDone(s.id);
     const approval=getApproval(s.id);
-    rows.push([
-      i+1,s.name,s.register_number,s.section||'',s.course||'',s.project_title||'',s.mentor_assigned||'',
-      wks[1]?.status||'not-started',wks[1]?.note||'',
-      wks[2]?.status||'not-started',wks[2]?.note||'',
-      wks[3]?.status||'not-started',wks[3]?.note||'',
-      wks[4]?.status||'not-started',wks[4]?.note||'',
-      done+'/4',approval
-    ]);
+    rows.push([i+1,s.name,s.register_number,s.section||'',s.course||'',s.project_title||'',s.mentor_assigned||'',
+      wks[1]?.status||'not-started',wks[1]?.note||'',wks[2]?.status||'not-started',wks[2]?.note||'',
+      wks[3]?.status||'not-started',wks[3]?.note||'',wks[4]?.status||'not-started',wks[4]?.note||'',
+      done+'/4',approval]);
   });
   downloadCSV(rows,'weekly_progress_'+new Date().toISOString().split('T')[0]+'.csv');
 }
 
-/* ── EXPORT: MENTOR EVALUATION ── */
 function exportEvalCSV(){
   const q=(document.getElementById('evalSearch').value||'').toLowerCase();
   const list=students.filter(s=>studentMatchesQuery(s,q));
@@ -1002,17 +1018,12 @@ function exportEvalCSV(){
     'Presentation (/20)','Practical Impact (/20)','Total Score (/100)','Remarks']];
   list.forEach((s,i)=>{
     const e=evalMap[s.id];
-    rows.push([
-      i+1,s.name,s.register_number,s.section||'',s.course||'',s.project_title||'',s.mentor_assigned||'',
-      e?.tech_quality??'',e?.problem_fit??'',e?.effort_ownership??'',
-      e?.presentation??'',e?.practical_impact??'',e?.total_score??'',
-      e?.remarks||''
-    ]);
+    rows.push([i+1,s.name,s.register_number,s.section||'',s.course||'',s.project_title||'',s.mentor_assigned||'',
+      e?.tech_quality??'',e?.problem_fit??'',e?.effort_ownership??'',e?.presentation??'',e?.practical_impact??'',e?.total_score??'',e?.remarks||'']);
   });
   downloadCSV(rows,'mentor_evaluation_'+new Date().toISOString().split('T')[0]+'.csv');
 }
 
-/* ── DASHBOARD ── */
 function renderDashboard(){
   const secLbl=getSectionLabel(selectedSection);
   document.getElementById('dashTitle').textContent=currentUser==='Admin'?'Admin Dashboard':'Welcome, '+currentUser;
@@ -1039,7 +1050,6 @@ function renderDashboard(){
   }).join('');
 }
 
-/* ── STUDENT LIST ── */
 function renderStudentList(){
   const q=(document.getElementById('studentSearch').value||'').toLowerCase();
   const af=document.getElementById('approvalFilter').value;
@@ -1068,7 +1078,6 @@ function renderStudentList(){
   }).join('');
 }
 
-/* ── PROGRESS TABLE ── */
 function renderProgressTable(){
   const q=(document.getElementById('progressSearch').value||'').toLowerCase();
   const list=students.filter(s=>studentMatchesQuery(s,q));
@@ -1099,7 +1108,6 @@ function renderProgressTable(){
   }).join('');
 }
 
-/* ── WEEK MODAL ── */
 const STATUS_CYCLE=['not-started','in-progress','completed'];
 const STATUS_LABEL={'not-started':'Not Started','in-progress':'In Progress','completed':'Completed'};
 const STATUS_ICON={'not-started':'&#9675;','in-progress':'&#9675;','completed':'&#10003;'};
@@ -1151,8 +1159,6 @@ function cycleWeekStatus(w,e){
   btn.innerHTML=STATUS_ICON[next]+' '+STATUS_LABEL[next];
 }
 
-/* FIX: removed auto-override that forced "completed" when a note was present,
-   so manual status selections are now respected. */
 async function saveAllWeeks(){
   const btn=document.getElementById('saveWeekBtn');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving&hellip;';
@@ -1162,12 +1168,7 @@ async function saveAllWeeks(){
     for(const w of [1,2,3,4]){
       const d=weekDraft[w];
       const note=d.note.trim()||null;
-
-      // Auto-set to completed if note is filled, keep manual status otherwise
-      if(note && d.status==='not-started'){
-        d.status='completed';
-      }
-
+      if(note && d.status==='not-started'){d.status='completed';}
       const row=existing[w];
       if(row){
         await api.updateProgress(row.id,{status:d.status,note:note,updated_by:currentUser,updated_at:new Date().toISOString()});
@@ -1178,20 +1179,17 @@ async function saveAllWeeks(){
         progressMap[sid][w]=Array.isArray(res)?res[0]:res;
       }
     }
-const savedCount=[1,2,3,4].filter(w=>weekDraft[w].note&&weekDraft[w].note.trim()).length;
-showToast(savedCount===1?'Week saved!':savedCount+' weeks saved!','success');
+    const savedCount=[1,2,3,4].filter(w=>weekDraft[w].note&&weekDraft[w].note.trim()).length;
+    showToast(savedCount===1?'Week saved!':savedCount+' weeks saved!','success');
     closeModal('weekModal');
     renderStudentList();renderProgressTable();renderDashboard();
     if(currentUser==='Admin'){adminProgressMap=progressMap;renderAdminTable();renderAdminStats();}
   }catch(e){showToast('Error: '+e.message,'error');console.error(e);}
   finally{btn.disabled=false;btn.innerHTML='Save';}
 }
-/* ── APPROVAL ── */
+
 async function saveApproval(sid,status,selectEl){
-  // Color the dropdown immediately
-  if(selectEl){
-    selectEl.className='approval-select status-'+status;
-  }
+  if(selectEl){selectEl.className='approval-select status-'+status;}
   try{
     const ex=approvalMap[sid];
     if(ex){await api.updateApproval(ex.id,{status,approved_by:currentUser,approved_at:new Date().toISOString()});approvalMap[sid].status=status;}
@@ -1200,7 +1198,7 @@ async function saveApproval(sid,status,selectEl){
     if(currentUser==='Admin'){adminApprovalMap=approvalMap;renderAdminTable();renderAdminStats();}
   }catch(e){showToast('Error: '+e.message,'error');}
 }
-/* ── EVAL TABLE ── */
+
 function renderEvalTable(){
   const q=(document.getElementById('evalSearch').value||'').toLowerCase();
   const list=students.filter(s=>studentMatchesQuery(s,q));
@@ -1226,7 +1224,6 @@ function renderEvalTable(){
   }).join('');
 }
 
-/* ── EVAL MODAL ── */
 function openEvalModal(sid,sName,pTitle){
   currentEvalStudent={id:sid,name:sName,project:pTitle};
   document.getElementById('evalModalTitle').textContent=sName;
@@ -1285,7 +1282,6 @@ async function saveEvaluation(){
   finally{btn.disabled=false;btn.innerHTML='Save Evaluation';}
 }
 
-/* ── ADMIN TABS ── */
 function renderAdminTabs(){
   const tabs=COLLEGE_ADMIN_TABS[selectedCollegeKey]||COLLEGE_ADMIN_TABS['default'];
   const row=document.getElementById('adminTabRow');
@@ -1297,8 +1293,7 @@ function setAdminTab(tab,btn){
   adminTab=tab;
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  renderAdminTable();
-  renderAdminStats();
+  renderAdminTable();renderAdminStats();
 }
 
 function getAdminList(){
@@ -1336,7 +1331,6 @@ function renderAdminTable(){
   }).join('');
 }
 
-/* ── EXPORT CSV (ADMIN) ── */
 function exportCSV(){
   const list=getAdminList();
   const rows=[['#','Name','Register No','Section','Course','Project Title','Mentor','Phone','Email',
@@ -1345,17 +1339,14 @@ function exportCSV(){
   list.forEach((s,i)=>{
     const wks=adminProgressMap[s.id]||{},e=adminEvalMap[s.id],a=adminApprovalMap[s.id];
     rows.push([i+1,s.name,s.register_number,s.section||'',s.course||'',s.project_title||'',s.mentor_assigned||'',s.phone||'',s.email||'',
-      wks[1]?.status||'not-started',wks[1]?.note||'',
-      wks[2]?.status||'not-started',wks[2]?.note||'',
-      wks[3]?.status||'not-started',wks[3]?.note||'',
-      wks[4]?.status||'not-started',wks[4]?.note||'',
+      wks[1]?.status||'not-started',wks[1]?.note||'',wks[2]?.status||'not-started',wks[2]?.note||'',
+      wks[3]?.status||'not-started',wks[3]?.note||'',wks[4]?.status||'not-started',wks[4]?.note||'',
       e?.tech_quality??'',e?.problem_fit??'',e?.effort_ownership??'',e?.presentation??'',e?.practical_impact??'',e?.total_score??'',
       a?.status||'pending']);
   });
   downloadCSV(rows,'students_'+adminTab+'_'+new Date().toISOString().split('T')[0]+'.csv');
 }
 
-/* ── UTILITIES ── */
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 let toastTimeout;
 function showToast(msg,type='success'){
