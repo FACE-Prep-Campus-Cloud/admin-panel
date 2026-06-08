@@ -1550,8 +1550,8 @@ function renderPeerSummary() {
       ).join('');
       return `<div class="peer-project-card">
         <div class="peer-project-title">${escHTML(p.title||'—')}</div>
-        <div class="peer-project-owner">${escHTML(p.owner||'—')}${p.type?' &middot; <em>'+escHTML(p.type)+'</em>':''}</div>
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;">
+<div class="peer-project-owner">${escHTML(p.owner||'—')}</div>
+<div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;">
           <div>
             <div class="peer-avg-large ${cls}">${totalOut50}<span style="font-size:13px;font-weight:400;color:var(--ink3);"> /50</span></div>
             <div class="peer-review-count">${n} review${n!==1?'s':''}</div>
