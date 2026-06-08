@@ -238,7 +238,7 @@ tbody tr:hover td{background:var(--surface);}
 .student-name-link:hover{color:var(--accent);border-bottom-color:var(--accent);}
 
 /* ── POPOVER ── */
-.proj-popover{position:fixed;z-index:99998;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.18);padding:18px 20px;max-width:320px;min-width:220px;animation:popIn 0.18s cubic-bezier(.22,1,.36,1);pointer-events:none;}
+.proj-popover{position:fixed;z-index:99998;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.18);padding:18px 20px;max-width:380px;min-width:220px;animation:popIn 0.18s cubic-bezier(.22,1,.36,1);pointer-events:none;}
 .proj-popover-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin-bottom:7px;}
 .proj-popover-project{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:10px;}
 .proj-popover-meta{display:flex;flex-direction:column;gap:5px;}
@@ -852,6 +852,12 @@ function nameBtn(student) {
     data-reg="${escHTML(student.register_number||'')}"
     data-course="${escHTML(student.course||'')}"
     data-mentor="${escHTML(student.mentor_assigned||'')}"
+    data-problem="${escHTML(student.problem_statement||'')}"
+    data-impact="${escHTML(student.impact_of_problem||'')}"
+    data-brand="${escHTML(student.brand_name||'')}"
+    data-type="${escHTML(student.project_type||'')}"
+    data-users="${escHTML(student.target_users||'')}"
+    data-outcome="${escHTML(student.key_outcome||'')}"
     onmouseenter="showProjectPopover(this)" onmouseleave="hideProjectPopover()" onclick="showProjectPopover(this)"
   >${escHTML(student.name)}</button>`;
 }
@@ -862,15 +868,21 @@ function showProjectPopover(el) {
   const pop = document.getElementById('projPopover');
   document.getElementById('ppProject').textContent = el.dataset.project || '—';
   let metaHTML = '';
-  if (el.dataset.reg)    metaHTML += `<div class="proj-popover-row">Reg No: <strong>${escHTML(el.dataset.reg)}</strong></div>`;
-  if (el.dataset.course) metaHTML += `<div class="proj-popover-row">Course: <strong>${escHTML(el.dataset.course)}</strong></div>`;
-  if (el.dataset.mentor) metaHTML += `<div class="proj-popover-row">Mentor: <strong>${escHTML(el.dataset.mentor)}</strong></div>`;
+  if (el.dataset.reg)     metaHTML += `<div class="proj-popover-row">Reg No: <strong>${escHTML(el.dataset.reg)}</strong></div>`;
+  if (el.dataset.course)  metaHTML += `<div class="proj-popover-row">Course: <strong>${escHTML(el.dataset.course)}</strong></div>`;
+  if (el.dataset.mentor)  metaHTML += `<div class="proj-popover-row">Mentor: <strong>${escHTML(el.dataset.mentor)}</strong></div>`;
+  if (el.dataset.brand)   metaHTML += `<div class="proj-popover-row">Brand: <strong>${escHTML(el.dataset.brand)}</strong></div>`;
+  if (el.dataset.type)    metaHTML += `<div class="proj-popover-row">Type: <strong>${escHTML(el.dataset.type)}</strong></div>`;
+  if (el.dataset.users)   metaHTML += `<div class="proj-popover-row">Target Users: <strong>${escHTML(el.dataset.users)}</strong></div>`;
+  if (el.dataset.problem) metaHTML += `<div class="proj-popover-row" style="flex-direction:column;align-items:flex-start;gap:2px;"><span>Problem:</span><strong style="color:var(--ink2);font-weight:500;font-size:11px;line-height:1.4;">${escHTML(el.dataset.problem)}</strong></div>`;
+  if (el.dataset.impact)  metaHTML += `<div class="proj-popover-row" style="flex-direction:column;align-items:flex-start;gap:2px;"><span>Impact:</span><strong style="color:var(--ink2);font-weight:500;font-size:11px;line-height:1.4;">${escHTML(el.dataset.impact)}</strong></div>`;
+  if (el.dataset.outcome) metaHTML += `<div class="proj-popover-row" style="flex-direction:column;align-items:flex-start;gap:2px;"><span>Key Outcome:</span><strong style="color:var(--ink2);font-weight:500;font-size:11px;line-height:1.4;">${escHTML(el.dataset.outcome)}</strong></div>`;
   document.getElementById('ppMeta').innerHTML = metaHTML;
   pop.style.display = 'block';
   const rect = el.getBoundingClientRect();
   let left = rect.left, top = rect.bottom + 8;
   if (left + 320 > window.innerWidth - 12) left = window.innerWidth - 332;
-  if (top + 180 > window.innerHeight - 12) top = rect.top - 188;
+  if (top + 300 > window.innerHeight - 12) top = rect.top - 308;
   pop.style.left = Math.max(8,left) + 'px';
   pop.style.top  = Math.max(8,top) + 'px';
 }
