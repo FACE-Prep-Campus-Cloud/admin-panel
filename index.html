@@ -975,7 +975,7 @@ async function doLogin() {
   currentUser = selectedRole;
   document.getElementById('loginScreen').classList.remove('show');
   const sectionLabel = getSectionLabel(selectedSection);
-  document.getElementById('userLabel').textContent = currentUser + ' \u00b7 ' + selectedCollegeName.split(' ')[0] + ' ' + sectionLabel;
+document.getElementById('userLabel').textContent = currentUser + ' \u00b7 ' + selectedCollegeName + ' \u2014 ' + sectionLabel;
   const topbarCol = document.getElementById('topbarCollege');
   topbarCol.textContent = selectedCollegeName + ' \u2014 ' + sectionLabel;
   topbarCol.style.display = 'none';
