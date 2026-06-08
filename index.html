@@ -1188,7 +1188,7 @@ async function loadPeerReviews(){
 
 function renderPeerTabs(){
   const colleges=[...new Set(peerReviews.map(r=>r.reviewer_college_name||r.reviewer_college||'').filter(Boolean))].sort();
-  const tabs=[{key:'all',label:'All ('+peerReviews.length+')')'},...colleges.map(c=>({key:c,label:c.split(' ').slice(0,2).join(' ')}))];
+  const tabs=[{key:'all',label:'All ('+peerReviews.length+')'},...colleges.map(c=>({key:c,label:c.split(' ').slice(0,2).join(' ')}))];
   const row=document.getElementById('peerTabRow');
   row.innerHTML=tabs.map((t,i)=>`<button class="tab-btn${i===0?' active':''}" onclick="setPeerTab('${escHTML(t.key).replace(/'/g,'&#39;')}',this)">${escHTML(t.label)}</button>`).join('');
   peerTab='all';
