@@ -238,11 +238,11 @@ tbody tr:hover td{background:var(--surface);}
 .student-name-link.pop-active{color:var(--accent);border-bottom-color:var(--accent);border-bottom-style:solid;}
 
 /* ── POPOVER ── */
-.proj-popover{position:fixed;z-index:99998;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.18);padding:18px 20px;max-width:380px;min-width:220px;animation:popIn 0.18s cubic-bezier(.22,1,.36,1);}
+.proj-popover{position:fixed;z-index:99998;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.18);padding:18px 20px;max-width:420px;min-width:260px;animation:popIn 0.18s cubic-bezier(.22,1,.36,1);max-height:80vh;overflow-y:auto;}
 .proj-popover-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);}
 .proj-popover-project{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:10px;margin-top:4px;}
 .proj-popover-meta{display:flex;flex-direction:column;gap:5px;}
-.proj-popover-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink3);}
+.proj-popover-row{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--ink3);}
 .proj-popover-row strong{color:var(--ink2);font-weight:600;}
 
 /* ── PEER EVALUATION SPECIFIC ── */
@@ -290,7 +290,7 @@ tbody tr:hover td{background:var(--surface);}
 <!-- PROJECT POPOVER (click-based) -->
 <div class="proj-popover" id="projPopover" style="display:none;">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">
-    <div class="proj-popover-title">Project Title</div>
+    <div class="proj-popover-title">Project Details</div>
     <button onclick="hideProjectPopover()" style="width:22px;height:22px;border-radius:6px;border:1px solid var(--border2);background:var(--surface);color:var(--ink3);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;">&times;</button>
   </div>
   <div class="proj-popover-project" id="ppProject"></div>
@@ -551,9 +551,9 @@ tbody tr:hover td{background:var(--surface);}
           <div class="page-sub">Click any student name to see their project details</div>
         </div>
         <div id="sstSeedPanel" style="display:none;" class="seed-panel">
-          <div class="seed-panel-title">First-time Setup: Seed SST Students</div>
-          <p>Insert all I BBA and I MCA students into the database. Run once only.</p>
-          <button class="btn btn-primary" id="seedBtn" onclick="seedSSTStudents()">&#43; Insert SST Students</button>
+          <div class="seed-panel-title">First-time Setup: Seed Students</div>
+          <p>Insert all students into the database. Run once only.</p>
+          <button class="btn btn-primary" id="seedBtn" onclick="seedSSTStudents()">&#43; Insert Students</button>
           <span id="seedStatus" style="font-size:12px;color:var(--ink3);margin-left:14px;"></span>
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
@@ -663,41 +663,43 @@ const PINS={
   'Bavani Sri':'1212','Jane Rhinu':'1212','Kavipriya':'1212','Sneha':'1212',
   'Gokilavaani':'1212','Mohanasree N':'1212','Srisaradha S':'1212',
   'Anish N':'1212','Dharshan K':'1212','Sowmiya':'1212','Arun':'1212',
-  'Shahul':'1212',
-  /* ── Rathinam ── */
-  'Anto Jegan':'1212',
-  'Buvaneshwari':'1212'
+  'Shahul':'1212','Anto Jegan':'1212','Buvaneshwari':'1212','Ajeetha':'1212',
+  'Senthil Nathan S':'1212','Dharmaprakash L':'1212','Bhargavi':'1212',
+  'Abhishek':'1212','Mary Agnes':'1212','Tanisha Das':'1212',
+  'Aman Kumar':'1212','Raghav Reddy':'1212','Gomathy V':'1212',
+  'Nagashri':'1212','Sanjivini':'1212',
+  'Mr Lakshaya':'1212','Ms Nagashree':'1212','Mr. Neeraj':'1212','Ms. Rakshitha':'1212',
+  'Ishika Bhattacharjee':'1212'
 };
 
 const COLLEGE_SECTIONS={
   'default':[
-    {value:'A',label:'I BCA - A'},
-    {value:'B',label:'I BCA - B'},
-    {value:'II',label:'II BCA'},
-    {value:'BCH',label:'I B.Com Honours'},
+    {value:'A',label:'I BCA - A'},{value:'B',label:'I BCA - B'},
+    {value:'II',label:'II BCA'},{value:'BCH',label:'I B.Com Honours'},
     {value:'BBADM',label:'I BBA Digital Marketing'}
   ],
-  'kamaraj-women':[
-    {value:'KW_A',label:'I BCA - A'}
-  ],
-  'sst':[
-    {value:'IBBA',label:'I BBA'},
-    {value:'IMCA',label:'I MCA'}
-  ],
+  'kamaraj-women':[{value:'KW_A',label:'I BCA - A'}],
+  'sst':[{value:'IBBA',label:'I BBA'},{value:'IMCA',label:'I MCA'}],
   'nagarathinam':[
-    {value:'NAIG_IBSCAI',label:'I B.Sc AI'},
-    {value:'NAIG_IIBSCAI',label:'II B.Sc AI'},
-    {value:'NAIG_BCFT',label:'B.Com BC & FT'},
-    {value:'NAIG_BBADM',label:'BBA DM'},
+    {value:'NAIG_IBSCAI',label:'I B.Sc AI'},{value:'NAIG_IIBSCAI',label:'II B.Sc AI'},
+    {value:'NAIG_BCFT',label:'B.Com BC & FT'},{value:'NAIG_BBADM',label:'BBA DM'},
     {value:'NAIG_IBSCCC',label:'I B.Sc CC'}
   ],
-  'studyworld':[
-    {value:'BCA',label:'BCA'}
+  'studyworld':[{value:'BCA',label:'BCA'}],
+  'terf':[{value:'TERF_IIBSCIT',label:'II B.Sc IT'}],
+  'rathinam':[{value:'RCAS_BSCT',label:'B.Sc CT (GenAI)'},{value:'RCAS_BCA',label:'BCA (AI)'}],
+  'bharathidasan':[
+    {value:'BCAS_IIBSCCT',label:'II B.Sc CT'},
+    {value:'BCAS_IBSCCT',label:'I B.Sc CT'}
   ],
-  /* ── Rathinam ── */
-  'rathinam':[
-    {value:'RCAS_BSCT',label:'B.Sc CT (GenAI)'},
-    {value:'RCAS_BCA', label:'BCA (AI)'}
+  'alliance':[
+    {value:'ALU_IMCA_A',label:'I MCA - A'},
+    {value:'ALU_IMCA_B',label:'I MCA - B'},
+    {value:'ALU_IIBCA_AIML',label:'II BCA AI & ML (A+B)'}
+  ],
+  'kristu':[
+    {value:'KJ_BBAAIDS',label:'BBA - AI & DS'},
+    {value:'KJ_BBAFN',label:'BBA - FinTech'}
   ]
 };
 
@@ -716,126 +718,101 @@ const SECTION_ROLES={
   'NAIG_IBSCCC':['Srisaradha S','Mohanasree N','Admin'],
   'KW_A':['Sowmiya','Arun','Aparna','Saral','Admin'],
   'BCA':['Shahul','Admin'],
-  /* ── Rathinam ── */
+  'TERF_IIBSCIT':['Ajeetha','Admin'],
   'RCAS_BSCT':['Anto Jegan','Admin'],
-  'RCAS_BCA': ['Buvaneshwari','Admin']
+  'RCAS_BCA':['Buvaneshwari','Admin'],
+  'BCAS_IIBSCCT':['Senthil Nathan S','Dharmaprakash L','Admin'],
+  'BCAS_IBSCCT':['Senthil Nathan S','Dharmaprakash L','Admin'],
+  'ALU_IMCA_A':['Abhishek','Admin'],
+  'ALU_IMCA_B':['Mary Agnes','Tanisha Das','Admin'],
+  'ALU_IIBCA_AIML':['Aman Kumar','Raghav Reddy','Gomathy V','Nagashri','Sanjivini','Admin'],
+  'KJ_BBAAIDS':['Ishika Bhattacharjee','Admin'],
+  'KJ_BBAFN':['Ishika Bhattacharjee','Admin']
 };
 
 const COLLEGE_NAMES={
-  'kamaraj':'Kamaraj College',
-  'kamaraj-women':"Kamaraj Women's College",
-  'sdnb':'SDNB Vaishnav College for Women',
-  'patrician':'Patrician College of Arts & Science',
-  'terf':"TERF's College of Arts and Science",
-  'sst':'Sree Saraswathi Thyagaraja College',
-  'tjs':'TJS College of Arts and Science',
-  'bharathidasan':'Bharathidasan College of Arts & Science',
+  'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",
+  'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science',
+  'terf':"TERF's College of Arts and Science",'sst':'Sree Saraswathi Thyagaraja College',
+  'tjs':'TJS College of Arts and Science','bharathidasan':'Bharathidasan College of Arts and Science',
   'nagarathinam':'Nagarathinam Angalammal Arts & Science College',
   'vinayaga':"Vinayaga Mission's Research Foundation School of Arts & Science",
-  'amaraavathi':'Sri Amaraavathi College of Arts & Science',
-  'takshashila':'Takshashila University',
-  'studyworld':'Study World Group of Institution',
-  'rathinam':'Rathinam College of Arts & Science',
-  'niche':'Noorul Islam Centre for Higher Education (NICHE)',
-  'amet':'AMET University',
-  'joy':'Joy University',
-  'sasurie':'Sasurie College of Arts and Science',
-  'alliance':'Alliance University',
-  'kristu':'Kristu Jayanti (Deemed to be University)',
-  'svyasa':'S-VYASA University',
-  'asb':'Asian School of Business'
+  'amaraavathi':'Sri Amaraavathi College of Arts & Science','takshashila':'Takshashila University',
+  'studyworld':'Study World Group of Institution','rathinam':'Rathinam College of Arts & Science',
+  'niche':'Noorul Islam Centre for Higher Education (NICHE)','amet':'AMET University',
+  'joy':'Joy University','sasurie':'Sasurie College of Arts and Science',
+  'alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)',
+  'svyasa':'S-VYASA University','asb':'Asian School of Business'
 };
 
 const COLLEGE_ADMIN_SECTIONS={
   'default':['I BCA - A','I BCA - B','II BCA','I B.Com Honours','I BBA Digital Marketing'],
-  'kamaraj-women':['I BCA - A'],
-  'sst':['I BBA','I MCA'],
+  'kamaraj-women':['I BCA - A'],'sst':['I BBA','I MCA'],
   'nagarathinam':['I B.Sc AI','II B.Sc AI','B.Com BC & FT','BBA DM','I B.Sc CC'],
-  'studyworld':['BCA'],
-  /* ── Rathinam ── */
-  'rathinam':['B.Sc CT (GenAI)','BCA (AI)']
+  'studyworld':['BCA'],'terf':['II B.Sc IT'],
+  'rathinam':['B.Sc CT (GenAI)','BCA (AI)'],
+  'bharathidasan':['II B.Sc CT','I B.Sc CT'],
+  'alliance':['I MCA - A','I MCA - B','II BCA AI & ML (A+B)'],
+  'kristu':['BBA - AI & DS','BBA - FinTech']
 };
 
 const SECTION_LABEL_MAP={
-  'II':'II BCA',
-  'BCH':'I B.Com Honours',
-  'BBADM':'I BBA Digital Marketing',
-  'IBBA':'I BBA',
-  'IMCA':'I MCA',
-  'NAIG_IBSCAI':'I B.Sc AI',
-  'NAIG_IIBSCAI':'II B.Sc AI',
-  'NAIG_BCFT':'B.Com BC & FT',
-  'NAIG_BBADM':'BBA DM',
-  'NAIG_IBSCCC':'I B.Sc CC',
-  'KW_A':'I BCA - A',
-  'BCA':'BCA',
-  /* ── Rathinam ── */
-  'RCAS_BSCT':'B.Sc CT (GenAI)',
-  'RCAS_BCA': 'BCA (AI)'
+  'II':'II BCA','BCH':'I B.Com Honours','BBADM':'I BBA Digital Marketing',
+  'IBBA':'I BBA','IMCA':'I MCA','NAIG_IBSCAI':'I B.Sc AI','NAIG_IIBSCAI':'II B.Sc AI',
+  'NAIG_BCFT':'B.Com BC & FT','NAIG_BBADM':'BBA DM','NAIG_IBSCCC':'I B.Sc CC',
+  'KW_A':'I BCA - A','BCA':'BCA','TERF_IIBSCIT':'II B.Sc IT',
+  'RCAS_BSCT':'B.Sc CT (GenAI)','RCAS_BCA':'BCA (AI)',
+  'BCAS_IIBSCCT':'II B.Sc CT','BCAS_IBSCCT':'I B.Sc CT',
+  'ALU_IMCA_A':'I MCA - A','ALU_IMCA_B':'I MCA - B','ALU_IIBCA_AIML':'II BCA AI & ML (A+B)',
+  'KJ_BBAAIDS':'BBA - AI & DS',
+  'KJ_BBAFN':'BBA - FinTech'
 };
 
 const COLLEGE_ADMIN_TABS={
   'default':[
-    {key:'all',label:'All'},
-    {key:'I BCA - A',label:'I BCA - A'},
-    {key:'I BCA - B',label:'I BCA - B'},
-    {key:'II BCA',label:'II BCA'},
-    {key:'I B.Com Honours',label:'I B.Com Honours'},
+    {key:'all',label:'All'},{key:'I BCA - A',label:'I BCA - A'},{key:'I BCA - B',label:'I BCA - B'},
+    {key:'II BCA',label:'II BCA'},{key:'I B.Com Honours',label:'I B.Com Honours'},
     {key:'I BBA Digital Marketing',label:'I BBA Digital Mktg'}
   ],
-  'kamaraj-women':[
-    {key:'all',label:'All'},
-    {key:'I BCA - A',label:'I BCA - A'}
-  ],
-  'sst':[
-    {key:'all',label:'All'},
-    {key:'I BBA',label:'I BBA'},
-    {key:'I MCA',label:'I MCA'}
-  ],
+  'kamaraj-women':[{key:'all',label:'All'},{key:'I BCA - A',label:'I BCA - A'}],
+  'sst':[{key:'all',label:'All'},{key:'I BBA',label:'I BBA'},{key:'I MCA',label:'I MCA'}],
   'nagarathinam':[
-    {key:'all',label:'All'},
-    {key:'I B.Sc AI',label:'I B.Sc AI'},
-    {key:'II B.Sc AI',label:'II B.Sc AI'},
-    {key:'B.Com BC & FT',label:'B.Com BC & FT'},
-    {key:'BBA DM',label:'BBA DM'},
-    {key:'I B.Sc CC',label:'I B.Sc CC'}
+    {key:'all',label:'All'},{key:'I B.Sc AI',label:'I B.Sc AI'},{key:'II B.Sc AI',label:'II B.Sc AI'},
+    {key:'B.Com BC & FT',label:'B.Com BC & FT'},{key:'BBA DM',label:'BBA DM'},{key:'I B.Sc CC',label:'I B.Sc CC'}
   ],
-  'studyworld':[
+  'studyworld':[{key:'all',label:'All'},{key:'BCA',label:'BCA'}],
+  'terf':[{key:'all',label:'All'},{key:'II B.Sc IT',label:'II B.Sc IT'}],
+  'rathinam':[{key:'all',label:'All'},{key:'B.Sc CT (GenAI)',label:'B.Sc CT (GenAI)'},{key:'BCA (AI)',label:'BCA (AI)'}],
+  'bharathidasan':[{key:'all',label:'All'},{key:'II B.Sc CT',label:'II B.Sc CT'},{key:'I B.Sc CT',label:'I B.Sc CT'}],
+  'alliance':[
     {key:'all',label:'All'},
-    {key:'BCA',label:'BCA'}
+    {key:'I MCA - A',label:'I MCA - A'},
+    {key:'I MCA - B',label:'I MCA - B'},
+    {key:'II BCA AI & ML (A+B)',label:'II BCA AI & ML'}
   ],
-  /* ── Rathinam ── */
-  'rathinam':[
-    {key:'all',            label:'All'},
-    {key:'B.Sc CT (GenAI)',label:'B.Sc CT (GenAI)'},
-    {key:'BCA (AI)',       label:'BCA (AI)'}
+  'kristu':[
+    {key:'all',label:'All'},
+    {key:'BBA - AI & DS',label:'BBA - AI & DS'},
+    {key:'BBA - FinTech',label:'BBA - FinTech'}
   ]
 };
 
 const MENTOR_COLORS={
-  'Aparna':'var(--accent2)',
-  'Arun Raj':'var(--green)',
-  'Saral':'var(--amber)',
-  'Bavani Sri':'#0891b2',
-  'Jane Rhinu':'#9333ea',
-  'Kavipriya':'#db2777',
-  'Sneha':'#0891b2',
-  'Gokilavaani':'#16a34a',
-  'Mohanasree N':'#7c3aed',
-  'Srisaradha S':'#0369a1',
-  'Anish N':'#b45309',
-  'Dharshan K':'#047857',
-  'Sowmiya':'#e11d48',
-  'Arun':'#0d9488',
-  'Shahul':'#7c3aed',
-  /* ── Rathinam ── */
-  'Anto Jegan':  '#0891b2',
-  'Buvaneshwari':'#9333ea'
+  'Aparna':'var(--accent2)','Arun Raj':'var(--green)','Saral':'var(--amber)',
+  'Bavani Sri':'#0891b2','Jane Rhinu':'#9333ea','Kavipriya':'#db2777',
+  'Sneha':'#0891b2','Gokilavaani':'#16a34a','Mohanasree N':'#7c3aed',
+  'Srisaradha S':'#0369a1','Anish N':'#b45309','Dharshan K':'#047857',
+  'Sowmiya':'#e11d48','Arun':'#0d9488','Shahul':'#7c3aed','Ajeetha':'#0ea5e9',
+  'Anto Jegan':'#0891b2','Buvaneshwari':'#9333ea',
+  'Senthil Nathan S':'#0d9488','Dharmaprakash L':'#7c3aed','Bhargavi':'#db2777',
+  'Abhishek':'#0d9488','Mary Agnes':'#9333ea','Tanisha Das':'#db2777',
+  'Aman Kumar':'#0891b2','Raghav Reddy':'#b45309','Gomathy V':'#16a34a',
+  'Nagashri':'#e11d48','Sanjivini':'#7c3aed',
+  'Mr Lakshaya':'#0d9488','Ms Nagashree':'#9333ea','Mr. Neeraj':'#0891b2','Ms. Rakshitha':'#db2777',
+  'Ishika Bhattacharjee':'#0891b2'
 };
 
-/* ════════════════════════════════════════════
-   SEED DATA
-   ════════════════════════════════════════════ */
+// ════════ SEED DATA ════════
 const SST_IBBA_STUDENTS=[
   {name:'Irfan R',register_number:'25BBA010',course:'I BBA',project_title:'Green Flowers Smart Order & Delivery System',mentor_assigned:'Kavipriya',phone:'8838224191',email:'irfan208.802@gmail.com'},
   {name:'Yatin',register_number:'25BBA029',course:'I BBA',project_title:'Study on Consumer Satisfaction towards Sports Gear Quality',mentor_assigned:'Kavipriya',phone:'8189846535',email:'yatinggyatin@gmail.com'},
@@ -862,108 +839,223 @@ const SST_IBBA_STUDENTS=[
 ];
 const SST_IMCA_STUDENTS=[];
 
-/* ── Rathinam B.Sc CT (GenAI) ── */
 const RATHINAM_BSCT_STUDENTS=[
-  {name:'Ganesh Manoj A',       register_number:'RCAS2025BCT014',course:'B.Sc CT (GenAI)',project_title:'Smart Power Failure and Internet Monitoring System',                       mentor_assigned:'Anto Jegan',phone:'9025807153',email:'ganeshmanoj.a7@gmail.com'},
-  {name:'Nancy Annammal A',     register_number:'RCAS2025BCT031',course:'B.Sc CT (GenAI)',project_title:'College Event Management and Notification App',                            mentor_assigned:'Anto Jegan',phone:'9443909290',email:'nancy14072008@gmail.com'},
-  {name:'Diya S Menon',         register_number:'RCAS2025BCT035',course:'B.Sc CT (GenAI)',project_title:'Real-Time Fake Content & Deepfake Detector',                              mentor_assigned:'Anto Jegan',phone:'7306104846',email:'diyasanjeevmenon@gmail.com'},
-  {name:'Sadhana VV',           register_number:'RCAS2026BCT061',course:'B.Sc CT (GenAI)',project_title:'Student Helpdesk for Lost Items',                                         mentor_assigned:'Anto Jegan',phone:'6374688029',email:'sadhanavairavan26@gmail.com'},
-  {name:'Sakthi Sowmiya M',     register_number:'25BCT024',      course:'B.Sc CT (GenAI)',project_title:'Student Assignment Tracker App',                                          mentor_assigned:'Anto Jegan',phone:'9791778996',email:'sakthisowmiya306@gmail.com'},
-  {name:'Muthulakshmi Murugavel',register_number:'RCAS2025BCT058',course:'B.Sc CT (GenAI)',project_title:'Property Recommendation Dashboard',                                       mentor_assigned:'Anto Jegan',phone:'7397037961',email:'muthulakshmivmuthu@gmail.com'},
-  {name:'Prasanna T',           register_number:'RCAS2025BCT053',course:'B.Sc CT (GenAI)',project_title:'Smart College Bus Tracking & Attendance App',                             mentor_assigned:'Anto Jegan',phone:'6381250569',email:'prasannamanoj2162008@gmail.com'},
-  {name:'Merlin Divya MA',      register_number:'RCAS2025BCT017',course:'B.Sc CT (GenAI)',project_title:'AI FoodLens',                                                             mentor_assigned:'Anto Jegan',phone:'9994429445',email:'nightshade97676@gmail.com'},
-  {name:'Swathika',             register_number:'RCAS2025BCT056',course:'B.Sc CT (GenAI)',project_title:'Wifi Modules',                                                            mentor_assigned:'Anto Jegan',phone:'9842221997',email:'swathikaswathi983@gmail.com'},
-  {name:'Yadhini',              register_number:'RCAS2025BCT042',course:'B.Sc CT (GenAI)',project_title:'Early Disease Detection System',                                          mentor_assigned:'Anto Jegan',phone:'9384518694',email:'yadhumadhu1605@gmail.com'},
-  {name:'Vikranth M',           register_number:'RCAS2025BCT029',course:'B.Sc CT (GenAI)',project_title:'Digital Material Oversight System',                                       mentor_assigned:'Anto Jegan',phone:'9597017813',email:'vvickymehul@gmail.com'},
-  {name:'Kabilashini V',        register_number:'RCAS2025BCT006',course:'B.Sc CT (GenAI)',project_title:'Smart Expiry & Food Inventory Management System (Web App)',               mentor_assigned:'Anto Jegan',phone:'7550362164',email:'kabivijay64@gmail.com'},
-  {name:'Tejasri P',            register_number:'RCAS2025BCT008',course:'B.Sc CT (GenAI)',project_title:'Eduvault',                                                                mentor_assigned:'Anto Jegan',phone:'9940048482',email:'tejasri1692007@gmail.com'},
-  {name:'Roshan',               register_number:'RCAS2025BCT054',course:'B.Sc CT (GenAI)',project_title:'AI-Based Fake News Detection System',                                     mentor_assigned:'Anto Jegan',phone:'9360479022',email:'aktharroshan173@gmail.com'},
-  {name:'Rohith',               register_number:'25BCT030',      course:'B.Sc CT (GenAI)',project_title:'Smart Electricity Consumption Monitoring System',                         mentor_assigned:'Anto Jegan',phone:'9042853927',email:'rohithelakkiya31@gmail.com'},
-  {name:'Kavishree S',          register_number:'RCAS2025BCT022',course:'B.Sc CT (GenAI)',project_title:'SecureHome – Smart Door Lock & Intrusion Alert App',                     mentor_assigned:'Anto Jegan',phone:'8438725308',email:'selvaraj25308@gmail.com'},
-  {name:'Dinesh M',             register_number:'RCAS2025BCT059',course:'B.Sc CT (GenAI)',project_title:'Loveloop',                                                                mentor_assigned:'Anto Jegan',phone:'9597319650',email:'dineshmanikandan9650@gmail.com'},
-  {name:'Thesheeka',            register_number:'RCAS2025BCT003',course:'B.Sc CT (GenAI)',project_title:'Smart Grocery Trolley',                                                   mentor_assigned:'Anto Jegan',phone:'8610205866',email:'thesheekaa5@gmail.com'},
-  {name:'Mukunthpranav Elavarasu',register_number:'RCAS2025BCT010',course:'B.Sc CT (GenAI)',project_title:'AI in Accounting',                                                      mentor_assigned:'Anto Jegan',phone:'9043496088',email:'mukunthpranav.india@gmail.com'},
-  {name:'Jenin Chrish J',       register_number:'RCAS2025BCT033',course:'B.Sc CT (GenAI)',project_title:'AI Study Assistant App',                                                  mentor_assigned:'Anto Jegan',phone:'8056560189',email:'chrishjenin5@gmail.com'},
-  {name:'Chozhan',              register_number:'RCAS2025BCT057',course:'B.Sc CT (GenAI)',project_title:'Travelers Data',                                                          mentor_assigned:'Anto Jegan',phone:'8870281713',email:'chozhan029@gmail.com'},
-  {name:'Moniga Shree S',       register_number:'RCAS2025BCT005',course:'B.Sc CT (GenAI)',project_title:'Event Management Dashboard',                                              mentor_assigned:'Anto Jegan',phone:'7550359044',email:'moniga1006@gmail.com'},
-  {name:'Sri Sakthi',           register_number:'RCAS2025BCT055',course:'B.Sc CT (GenAI)',project_title:'Smart Women Safety Band',                                                 mentor_assigned:'Anto Jegan',phone:'',           email:'srisakthi492007@gmail.com'},
-  {name:'Danya',                register_number:'RCAS2025BCT037',course:'B.Sc CT (GenAI)',project_title:'Smart Shopping',                                                          mentor_assigned:'Anto Jegan',phone:'8807780703',email:'danyav.bct25@rathinam.in'},
-  {name:'Kapish',               register_number:'RCAS2025047',   course:'B.Sc CT (GenAI)',project_title:'Safe Track Parcel Service',                                               mentor_assigned:'Anto Jegan',phone:'8667298880',email:'kapishdas10@gmail.com'},
-  {name:'Divya K',              register_number:'RCAS2025BCT045',course:'B.Sc CT (GenAI)',project_title:'Smart Traffic Density Optimization System',                               mentor_assigned:'Anto Jegan',phone:'9360679710',email:'divya123kathir@gmail.com'},
-  {name:'Moniga I',             register_number:'RCAS2025BCT020',course:'B.Sc CT (GenAI)',project_title:'Library Book Tracker',                                                    mentor_assigned:'Anto Jegan',phone:'9842006926',email:'monigai.bct25@rathinam.in'},
-  {name:'Sabary S',             register_number:'RCAS2025BCT025',course:'B.Sc CT (GenAI)',project_title:'Hotel Booking',                                                           mentor_assigned:'Anto Jegan',phone:'8438640940',email:'sabary367@gmail.com'},
-  {name:'Raymand Claret R',     register_number:'RCAS2025BCT009',course:'B.Sc CT (GenAI)',project_title:'Study Planner',                                                           mentor_assigned:'Anto Jegan',phone:'9489517653',email:'raymandclaret@gmail.com'},
-  {name:'Ranjith K',            register_number:'RCAS2025BCT032',course:'B.Sc CT (GenAI)',project_title:'Smart Health Monitoring',                                                 mentor_assigned:'Anto Jegan',phone:'9345170954',email:'ranjith00kr10@gmail.com'},
-  {name:'Praveen',              register_number:'RCAS2025BCT028',course:'B.Sc CT (GenAI)',project_title:'Smart Canteen Food Waste Management System',                              mentor_assigned:'Anto Jegan',phone:'9944905207',email:'dpraveen32741@gmail.com'},
-  {name:'Sujan M',              register_number:'RCAS2025BCT002',course:'B.Sc CT (GenAI)',project_title:'Helping Farmer in Cultivation',                                           mentor_assigned:'Anto Jegan',phone:'8248443245',email:'sujanmahesh07@gmail.com'},
-  {name:'Tejeswar MI',          register_number:'RCAS2025BCT023',course:'B.Sc CT (GenAI)',project_title:'Smart Student Attendance Tracking System',                                mentor_assigned:'Anto Jegan',phone:'',           email:'santhanuteja8@gmail.com'},
-  {name:'M Mohammed Iman',      register_number:'RCAS2025BCT027',course:'B.Sc CT (GenAI)',project_title:'Smart Home Automation System',                                            mentor_assigned:'Anto Jegan',phone:'7540012982',email:'imanrakshu@gmail.com'},
-  {name:'Balasubramanian',      register_number:'RCAS2025BCT026',course:'B.Sc CT (GenAI)',project_title:'Dress Shopping',                                                          mentor_assigned:'Anto Jegan',phone:'8220046793',email:'balasubramaniavadivel3@gmail.com'},
-  {name:'Pranav A',             register_number:'RCAS2025BCT004',course:'B.Sc CT (GenAI)',project_title:'AI Based Project',                                                        mentor_assigned:'Anto Jegan',phone:'9361623758',email:'pranav936162@gmail.com'},
-  {name:'Sanjay Ram R',         register_number:'25BCT018',      course:'B.Sc CT (GenAI)',project_title:'Smart Waste Management System',                                           mentor_assigned:'Anto Jegan',phone:'7603923305',email:'sanjayramrsanjayramr3@gmail.com'},
-  {name:'Bhalaji Vengatesh',    register_number:'RCAS2025BCT016',course:'B.Sc CT (GenAI)',project_title:'Smart Renewable Energy Monitoring System',                                mentor_assigned:'Anto Jegan',phone:'9342371549',email:'bhalajivengadesh@gmail.com'},
-  {name:'Atheesh A',            register_number:'25BCT051',      course:'B.Sc CT (GenAI)',project_title:'Study Material',                                                          mentor_assigned:'Anto Jegan',phone:'9025801445',email:'atheesh450@gmail.com'},
-  {name:'Hari Krishnan R',      register_number:'RCAS2025BCT007',course:'B.Sc CT (GenAI)',project_title:'Expense Splitter',                                                        mentor_assigned:'Anto Jegan',phone:'9384345369',email:'hariyt865@gmail.com'},
-  {name:'Iniyavan G',           register_number:'RCAS2025BCT050',course:'B.Sc CT (GenAI)',project_title:'Study Methods',                                                           mentor_assigned:'Anto Jegan',phone:'9361804753',email:'iniyavang534@gmail.com'},
-  {name:'Yuvabala V',           register_number:'RCAS2025BCT048',course:'B.Sc CT (GenAI)',project_title:'Safety and Security',                                                     mentor_assigned:'Anto Jegan',phone:'6385715250',email:'yuvabala63@gmail.com'},
-  {name:'Vengadesh S',          register_number:'25BCT044',      course:'B.Sc CT (GenAI)',project_title:'Tamilnadu Election Vote by Using Mobile Phone',                          mentor_assigned:'Anto Jegan',phone:'8438807263',email:'svengadesh2406@gmail.com'},
-  {name:'Abejayasree KP',       register_number:'RCAS2025BCT040',course:'B.Sc CT (GenAI)',project_title:'Smart Memory Lane System for Elderly (Context-Aware Reminder & Identity Assistant)',mentor_assigned:'Anto Jegan',phone:'6383628991',email:'abejayasreekp.bct25@rathinam.in'}
+  {name:'Ganesh Manoj A',register_number:'RCAS2025BCT014',course:'B.Sc CT (GenAI)',project_title:'Smart Power Failure and Internet Monitoring System',mentor_assigned:'Anto Jegan',phone:'9025807153',email:'ganeshmanoj.a7@gmail.com'},
+  {name:'Nancy Annammal A',register_number:'RCAS2025BCT031',course:'B.Sc CT (GenAI)',project_title:'College Event Management and Notification App',mentor_assigned:'Anto Jegan',phone:'9443909290',email:'nancy14072008@gmail.com'},
+  {name:'Diya S Menon',register_number:'RCAS2025BCT035',course:'B.Sc CT (GenAI)',project_title:'Real-Time Fake Content & Deepfake Detector',mentor_assigned:'Anto Jegan',phone:'7306104846',email:'diyasanjeevmenon@gmail.com'},
+  {name:'Sadhana VV',register_number:'RCAS2026BCT061',course:'B.Sc CT (GenAI)',project_title:'Student Helpdesk for Lost Items',mentor_assigned:'Anto Jegan',phone:'6374688029',email:'sadhanavairavan26@gmail.com'},
+  {name:'Sakthi Sowmiya M',register_number:'25BCT024',course:'B.Sc CT (GenAI)',project_title:'Student Assignment Tracker App',mentor_assigned:'Anto Jegan',phone:'9791778996',email:'sakthisowmiya306@gmail.com'},
+  {name:'Muthulakshmi Murugavel',register_number:'RCAS2025BCT058',course:'B.Sc CT (GenAI)',project_title:'Property Recommendation Dashboard',mentor_assigned:'Anto Jegan',phone:'7397037961',email:'muthulakshmivmuthu@gmail.com'},
+  {name:'Prasanna T',register_number:'RCAS2025BCT053',course:'B.Sc CT (GenAI)',project_title:'Smart College Bus Tracking & Attendance App',mentor_assigned:'Anto Jegan',phone:'6381250569',email:'prasannamanoj2162008@gmail.com'},
+  {name:'Merlin Divya MA',register_number:'RCAS2025BCT017',course:'B.Sc CT (GenAI)',project_title:'AI FoodLens',mentor_assigned:'Anto Jegan',phone:'9994429445',email:'nightshade97676@gmail.com'},
+  {name:'Swathika',register_number:'RCAS2025BCT056',course:'B.Sc CT (GenAI)',project_title:'Wifi Modules',mentor_assigned:'Anto Jegan',phone:'9842221997',email:'swathikaswathi983@gmail.com'},
+  {name:'Yadhini',register_number:'RCAS2025BCT042',course:'B.Sc CT (GenAI)',project_title:'Early Disease Detection System',mentor_assigned:'Anto Jegan',phone:'9384518694',email:'yadhumadhu1605@gmail.com'},
+  {name:'Vikranth M',register_number:'RCAS2025BCT029',course:'B.Sc CT (GenAI)',project_title:'Digital Material Oversight System',mentor_assigned:'Anto Jegan',phone:'9597017813',email:'vvickymehul@gmail.com'},
+  {name:'Kabilashini V',register_number:'RCAS2025BCT006',course:'B.Sc CT (GenAI)',project_title:'Smart Expiry & Food Inventory Management System (Web App)',mentor_assigned:'Anto Jegan',phone:'7550362164',email:'kabivijay64@gmail.com'},
+  {name:'Tejasri P',register_number:'RCAS2025BCT008',course:'B.Sc CT (GenAI)',project_title:'Eduvault',mentor_assigned:'Anto Jegan',phone:'9940048482',email:'tejasri1692007@gmail.com'},
+  {name:'Roshan',register_number:'RCAS2025BCT054',course:'B.Sc CT (GenAI)',project_title:'AI-Based Fake News Detection System',mentor_assigned:'Anto Jegan',phone:'9360479022',email:'aktharroshan173@gmail.com'},
+  {name:'Rohith',register_number:'25BCT030',course:'B.Sc CT (GenAI)',project_title:'Smart Electricity Consumption Monitoring System',mentor_assigned:'Anto Jegan',phone:'9042853927',email:'rohithelakkiya31@gmail.com'},
+  {name:'Kavishree S',register_number:'RCAS2025BCT022',course:'B.Sc CT (GenAI)',project_title:'SecureHome – Smart Door Lock & Intrusion Alert App',mentor_assigned:'Anto Jegan',phone:'8438725308',email:'selvaraj25308@gmail.com'},
+  {name:'Dinesh M',register_number:'RCAS2025BCT059',course:'B.Sc CT (GenAI)',project_title:'Loveloop',mentor_assigned:'Anto Jegan',phone:'9597319650',email:'dineshmanikandan9650@gmail.com'},
+  {name:'Thesheeka',register_number:'RCAS2025BCT003',course:'B.Sc CT (GenAI)',project_title:'Smart Grocery Trolley',mentor_assigned:'Anto Jegan',phone:'8610205866',email:'thesheekaa5@gmail.com'},
+  {name:'Mukunthpranav Elavarasu',register_number:'RCAS2025BCT010',course:'B.Sc CT (GenAI)',project_title:'AI in Accounting',mentor_assigned:'Anto Jegan',phone:'9043496088',email:'mukunthpranav.india@gmail.com'},
+  {name:'Jenin Chrish J',register_number:'RCAS2025BCT033',course:'B.Sc CT (GenAI)',project_title:'AI Study Assistant App',mentor_assigned:'Anto Jegan',phone:'8056560189',email:'chrishjenin5@gmail.com'},
+  {name:'Chozhan',register_number:'RCAS2025BCT057',course:'B.Sc CT (GenAI)',project_title:'Travelers Data',mentor_assigned:'Anto Jegan',phone:'8870281713',email:'chozhan029@gmail.com'},
+  {name:'Moniga Shree S',register_number:'RCAS2025BCT005',course:'B.Sc CT (GenAI)',project_title:'Event Management Dashboard',mentor_assigned:'Anto Jegan',phone:'7550359044',email:'moniga1006@gmail.com'},
+  {name:'Sri Sakthi',register_number:'RCAS2025BCT055',course:'B.Sc CT (GenAI)',project_title:'Smart Women Safety Band',mentor_assigned:'Anto Jegan',phone:'',email:'srisakthi492007@gmail.com'},
+  {name:'Danya',register_number:'RCAS2025BCT037',course:'B.Sc CT (GenAI)',project_title:'Smart Shopping',mentor_assigned:'Anto Jegan',phone:'8807780703',email:'danyav.bct25@rathinam.in'},
+  {name:'Kapish',register_number:'RCAS2025047',course:'B.Sc CT (GenAI)',project_title:'Safe Track Parcel Service',mentor_assigned:'Anto Jegan',phone:'8667298880',email:'kapishdas10@gmail.com'},
+  {name:'Divya K',register_number:'RCAS2025BCT045',course:'B.Sc CT (GenAI)',project_title:'Smart Traffic Density Optimization System',mentor_assigned:'Anto Jegan',phone:'9360679710',email:'divya123kathir@gmail.com'},
+  {name:'Moniga I',register_number:'RCAS2025BCT020',course:'B.Sc CT (GenAI)',project_title:'Library Book Tracker',mentor_assigned:'Anto Jegan',phone:'9842006926',email:'monigai.bct25@rathinam.in'},
+  {name:'Sabary S',register_number:'RCAS2025BCT025',course:'B.Sc CT (GenAI)',project_title:'Hotel Booking',mentor_assigned:'Anto Jegan',phone:'8438640940',email:'sabary367@gmail.com'},
+  {name:'Raymand Claret R',register_number:'RCAS2025BCT009',course:'B.Sc CT (GenAI)',project_title:'Study Planner',mentor_assigned:'Anto Jegan',phone:'9489517653',email:'raymandclaret@gmail.com'},
+  {name:'Ranjith K',register_number:'RCAS2025BCT032',course:'B.Sc CT (GenAI)',project_title:'Smart Health Monitoring',mentor_assigned:'Anto Jegan',phone:'9345170954',email:'ranjith00kr10@gmail.com'},
+  {name:'Praveen',register_number:'RCAS2025BCT028',course:'B.Sc CT (GenAI)',project_title:'Smart Canteen Food Waste Management System',mentor_assigned:'Anto Jegan',phone:'9944905207',email:'dpraveen32741@gmail.com'},
+  {name:'Sujan M',register_number:'RCAS2025BCT002',course:'B.Sc CT (GenAI)',project_title:'Helping Farmer in Cultivation',mentor_assigned:'Anto Jegan',phone:'8248443245',email:'sujanmahesh07@gmail.com'},
+  {name:'Tejeswar MI',register_number:'RCAS2025BCT023',course:'B.Sc CT (GenAI)',project_title:'Smart Student Attendance Tracking System',mentor_assigned:'Anto Jegan',phone:'',email:'santhanuteja8@gmail.com'},
+  {name:'M Mohammed Iman',register_number:'RCAS2025BCT027',course:'B.Sc CT (GenAI)',project_title:'Smart Home Automation System',mentor_assigned:'Anto Jegan',phone:'7540012982',email:'imanrakshu@gmail.com'},
+  {name:'Balasubramanian',register_number:'RCAS2025BCT026',course:'B.Sc CT (GenAI)',project_title:'Dress Shopping',mentor_assigned:'Anto Jegan',phone:'8220046793',email:'balasubramaniavadivel3@gmail.com'},
+  {name:'Pranav A',register_number:'RCAS2025BCT004',course:'B.Sc CT (GenAI)',project_title:'AI Based Project',mentor_assigned:'Anto Jegan',phone:'9361623758',email:'pranav936162@gmail.com'},
+  {name:'Sanjay Ram R',register_number:'25BCT018',course:'B.Sc CT (GenAI)',project_title:'Smart Waste Management System',mentor_assigned:'Anto Jegan',phone:'7603923305',email:'sanjayramrsanjayramr3@gmail.com'},
+  {name:'Bhalaji Vengatesh',register_number:'RCAS2025BCT016',course:'B.Sc CT (GenAI)',project_title:'Smart Renewable Energy Monitoring System',mentor_assigned:'Anto Jegan',phone:'9342371549',email:'bhalajivengadesh@gmail.com'},
+  {name:'Atheesh A',register_number:'25BCT051',course:'B.Sc CT (GenAI)',project_title:'Study Material',mentor_assigned:'Anto Jegan',phone:'9025801445',email:'atheesh450@gmail.com'},
+  {name:'Hari Krishnan R',register_number:'RCAS2025BCT007',course:'B.Sc CT (GenAI)',project_title:'Expense Splitter',mentor_assigned:'Anto Jegan',phone:'9384345369',email:'hariyt865@gmail.com'},
+  {name:'Iniyavan G',register_number:'RCAS2025BCT050',course:'B.Sc CT (GenAI)',project_title:'Study Methods',mentor_assigned:'Anto Jegan',phone:'9361804753',email:'iniyavang534@gmail.com'},
+  {name:'Yuvabala V',register_number:'RCAS2025BCT048',course:'B.Sc CT (GenAI)',project_title:'Safety and Security',mentor_assigned:'Anto Jegan',phone:'6385715250',email:'yuvabala63@gmail.com'},
+  {name:'Vengadesh S',register_number:'25BCT044',course:'B.Sc CT (GenAI)',project_title:'Tamilnadu Election Vote by Using Mobile Phone',mentor_assigned:'Anto Jegan',phone:'8438807263',email:'svengadesh2406@gmail.com'},
+  {name:'Abejayasree KP',register_number:'RCAS2025BCT040',course:'B.Sc CT (GenAI)',project_title:'Smart Memory Lane System for Elderly',mentor_assigned:'Anto Jegan',phone:'6383628991',email:'abejayasreekp.bct25@rathinam.in'}
 ];
 
-/* ── Rathinam BCA (AI) ── */
 const RATHINAM_BCA_STUDENTS=[
-  {name:'Arun A',              register_number:'RCAS2025BCA236',course:'BCA (AI)',project_title:'Software & Data Science Projects',                                           mentor_assigned:'Buvaneshwari',phone:'9498820753',email:'arun2025.007@gmail.com'},
-  {name:'Pranesh',             register_number:'RCAS2025BCA235',course:'BCA (AI)',project_title:'Mobile App Project',                                                        mentor_assigned:'Buvaneshwari',phone:'9843843208',email:'g.pranesh08@gmail.com'},
-  {name:'V Vivekanandhan',     register_number:'RCAS2025BCA261',course:'BCA (AI)',project_title:'Mobile App Project',                                                        mentor_assigned:'Buvaneshwari',phone:'8838019736',email:'vivek98435@gmail.com'},
-  {name:'Srinithi A',          register_number:'RCAS2025BCA210',course:'BCA (AI)',project_title:'Stock Market Analysis and Trend Prediction Dashboard',                      mentor_assigned:'Buvaneshwari',phone:'9003528918',email:'srinithianand2008@gmail.com'},
-  {name:'Akshaya N',           register_number:'22BCA253',      course:'BCA (AI)',project_title:'Hospital Data Analysis Dashboard',                                         mentor_assigned:'Buvaneshwari',phone:'8122327330',email:'akshayaneelamani@gmail.com'},
-  {name:'Nirnitha T',          register_number:'25BCA214',      course:'BCA (AI)',project_title:'Online Assignment Plagiarism Checker Using Machine Learning',              mentor_assigned:'Buvaneshwari',phone:'7200300379',email:'nirnithat.bca25@rathinam.in'},
-  {name:'Baskar C',            register_number:'RCAS2025BCA266',course:'BCA (AI)',project_title:'Bike Sales Dashboard',                                                     mentor_assigned:'Buvaneshwari',phone:'',           email:'baskar8685@gmail.com'},
-  {name:'Sharmila M',          register_number:'25BCA227',      course:'BCA (AI)',project_title:'Career Clarity Dashboard – Data-Driven Analysis for Student Domain & College Selection',mentor_assigned:'Buvaneshwari',phone:'6369685930',email:'sharmilam.bca25@rathinam.in'},
-  {name:'Sri Datchayini M',    register_number:'25BCA271',      course:'BCA (AI)',project_title:'Hospital Patient Flow & Resource Utilization Dashboard',                   mentor_assigned:'Buvaneshwari',phone:'6385556178',email:'dakshayanidakshu55@gmail.com'},
-  {name:'Mokshitha N',         register_number:'RCAS2025BCA246',course:'BCA (AI)',project_title:'Data Learning',                                                            mentor_assigned:'Buvaneshwari',phone:'8220067385',email:'mokshitha2107@gmail.com'},
-  {name:'Logeshwaran SP',      register_number:'RCAS2025BCA221',course:'BCA (AI)',project_title:'Electricity Usage Manager',                                                mentor_assigned:'Buvaneshwari',phone:'7667305677',email:'logeshsp19@gmail.com'},
-  {name:'Shakthi S',           register_number:'25BCA265',      course:'BCA (AI)',project_title:'Movie Analytics',                                                          mentor_assigned:'Buvaneshwari',phone:'6385625785',email:'shakthi7780@gmail.com'},
-  {name:'Jothika C',           register_number:'RCAS2025BCA259',course:'BCA (AI)',project_title:'Sales Analysis Dashboard using Power BI',                                  mentor_assigned:'Buvaneshwari',phone:'7200414234',email:'jothika0209208@gmail.com'},
-  {name:'Suriya Deepa C',      register_number:'RCAS2025BCA217',course:'BCA (AI)',project_title:'Plate2Purpose',                                                            mentor_assigned:'Buvaneshwari',phone:'9363510511',email:'arzxxdeepa@gmail.com'},
-  {name:'Janani Sri S',        register_number:'25BCA257',      course:'BCA (AI)',project_title:'Power BI Dashboard',                                                       mentor_assigned:'Buvaneshwari',phone:'7705595004',email:'jananiboxer7@gmail.com'},
-  {name:'Bharath M',           register_number:'RCAS2025BCA213',course:'BCA (AI)',project_title:'Retail Shop Inventory Management System',                                  mentor_assigned:'Buvaneshwari',phone:'8907256441',email:'bharathmk70@gmail.com'},
-  {name:'Boopathiraja M',      register_number:'RCAS2025BCA247',course:'BCA (AI)',project_title:'College Times',                                                            mentor_assigned:'Buvaneshwari',phone:'9344307883',email:'boopathiraajam.bca25@rathinam.in'},
-  {name:'Dharshana J',         register_number:'RCAS2025BCA207',course:'BCA (AI)',project_title:'SafeShadow',                                                               mentor_assigned:'Buvaneshwari',phone:'8072795437',email:'dharshanaj93@gmail.com'},
-  {name:'Vishnupriya S',       register_number:'25BCA244',      course:'BCA (AI)',project_title:'Smart Field Service Management Mobile Application',                        mentor_assigned:'Buvaneshwari',phone:'7810055756',email:'vishnupriya25678@gmail.com'},
-  {name:'Mohamed Sameer M',    register_number:'RCAS2025BCA219',course:'BCA (AI)',project_title:'Student Assignment Tracker',                                               mentor_assigned:'Buvaneshwari',phone:'9080422321',email:'mohamedsameer01549@gmail.com'},
-  {name:'Guru Prasath S',      register_number:'25BCA273',      course:'BCA (AI)',project_title:'Expense Tracker',                                                         mentor_assigned:'Buvaneshwari',phone:'820131463', email:'guru200708@gmail.com'},
-  {name:'Alwin Joseph',        register_number:'RCAS2025BCA209',course:'BCA (AI)',project_title:'SmartSalon',                                                              mentor_assigned:'Buvaneshwari',phone:'9360986716',email:'alwinjoseph1803@gmail.com'},
-  {name:'S Mohinbala',         register_number:'RCAS2025BCA212',course:'BCA (AI)',project_title:'Agriculture',                                                             mentor_assigned:'Buvaneshwari',phone:'9159187390',email:'mohinbala312@gmail.com'},
-  {name:'Nivethitha N',        register_number:'RCAS2025BCA222',course:'BCA (AI)',project_title:"Women's Safety",                                                          mentor_assigned:'Buvaneshwari',phone:'9600901929',email:'nivethithan527@gmail.com'},
-  {name:'Praveen Kumar P',     register_number:'RCAS2025BCA256',course:'BCA (AI)',project_title:'Food Manager',                                                            mentor_assigned:'Buvaneshwari',phone:'',           email:'praveenkumarrr411@gmail.com'},
-  {name:'Sanjay P',            register_number:'RCAS2025BCA218',course:'BCA (AI)',project_title:'Automatic Street Light Controller',                                       mentor_assigned:'Buvaneshwari',phone:'8825430103',email:'sanju88254@gmail.com'},
-  {name:'Aswin G',             register_number:'RCAS2025BCA269',course:'BCA (AI)',project_title:'Automated Data Management System',                                        mentor_assigned:'Buvaneshwari',phone:'9361380048',email:'gaswin256@gmail.com'},
-  {name:'Varun Krishna T',     register_number:'RCAS2025BCA260',course:'BCA (AI)',project_title:'Data Entry Automation Using AI',                                          mentor_assigned:'Buvaneshwari',phone:'9629910753',email:'varunkrishnat.bca25@rathinam.in'},
-  {name:'Harshavarthini',      register_number:'RCAS2025BCA211',course:'BCA (AI)',project_title:'Sales and Inventory Dashboard for Local Grocery Store',                   mentor_assigned:'Buvaneshwari',phone:'6380117068',email:'hharsha9021@gmail.com'},
-  {name:'Nivesh G',            register_number:'26BCA240',      course:'BCA (AI)',project_title:'Basic Machine Learning (Optional Advanced Track)',                        mentor_assigned:'Buvaneshwari',phone:'8015345575',email:'niveshgopal1405@gmail.com'},
-  {name:'Swathi',              register_number:'RCAS2025BCA216',course:'BCA (AI)',project_title:'LearnEasy',                                                               mentor_assigned:'Buvaneshwari',phone:'8015365059',email:'swathi2082007@gmail.com'},
-  {name:'Gagan',               register_number:'25BCA268',      course:'BCA (AI)',project_title:'Grocery Store Management App',                                            mentor_assigned:'Buvaneshwari',phone:'7483412636',email:'gagan081618@gmail.com'},
-  {name:'L Navaneethakrishnan',register_number:'RCAS2025BCA234',course:'BCA (AI)',project_title:'Market Prices & Selling',                                                 mentor_assigned:'Buvaneshwari',phone:'9087491722',email:'mukeshlakshmanan5@gmail.com'},
-  {name:'Yuvadharshan',        register_number:'RCAS2025BCA241',course:'BCA (AI)',project_title:'AI-Based Smart Traffic Management System for Urban Cities',               mentor_assigned:'Buvaneshwari',phone:'9361052226',email:'yuvadharshan43@gmail.com'},
-  {name:'Jeeva Ruba',          register_number:'RCAS2025BCA264',course:'BCA (AI)',project_title:'Weather App',                                                             mentor_assigned:'Buvaneshwari',phone:'9342294156',email:'jeevaruba52@gmail.com'},
-  {name:'Akash B',             register_number:'25BCA254',      course:'BCA (AI)',project_title:'Lumicity',                                                                mentor_assigned:'Buvaneshwari',phone:'9074798420',email:'akashbose409@gmail.com'},
-  {name:'Dharshan RK',         register_number:'RCAS2025BCA202',course:'BCA (AI)',project_title:'Smart Grocery Store Management App',                                      mentor_assigned:'Buvaneshwari',phone:'8248134878',email:'dharshanrk97@gmail.com'},
-  {name:'S Aswin Sidharth',    register_number:'RCAS2025BCA224',course:'BCA (AI)',project_title:'Agriculture and Technology',                                              mentor_assigned:'Buvaneshwari',phone:'9790144639',email:'sidharthaswin647@gmail.com'},
-  {name:'Govarthana Giri R',   register_number:'RCAS2025BCA223',course:'BCA (AI)',project_title:'Local Milk Delivery Management App',                                      mentor_assigned:'Buvaneshwari',phone:'9363462838',email:'girigova25@gmail.com'},
-  {name:'Vishnu K',            register_number:'25BCA208',      course:'BCA (AI)',project_title:'APT Attack Response System using AM-HIDS',                                mentor_assigned:'Buvaneshwari',phone:'6374147850',email:'vishnufootballer.77@gamil.com'},
-  {name:'K Dhanush',           register_number:'25BCA267',      course:'BCA (AI)',project_title:'Smart Weather Report',                                                    mentor_assigned:'Buvaneshwari',phone:'7200868270',email:'kasidhanush4@gmail.com'},
-  {name:'Princy Suresh',       register_number:'RCAS2025BCA258',course:'BCA (AI)',project_title:'Contact Management System',                                               mentor_assigned:'Buvaneshwari',phone:'8778287064',email:'princysuresh.bca25@rathinam.in'},
-  {name:'Thamarai Selvi N',    register_number:'RCAS2025BCA203',course:'BCA (AI)',project_title:'Mobile Web Application Project',                                          mentor_assigned:'Buvaneshwari',phone:'9025591628',email:'thamaraiselvin.bca25@rathinam.in'},
-  {name:'Ishar P',             register_number:'RCAS2025BCA239',course:'BCA (AI)',project_title:'Inner Light Companion',                                                   mentor_assigned:'Buvaneshwari',phone:'9344895022',email:'isharp.bca25@rathinam.in'},
-  {name:'Paramasivam R',       register_number:'RCAS2025BCA274',course:'BCA (AI)',project_title:'Online Ticket Booking System',                                            mentor_assigned:'Buvaneshwari',phone:'9047940936',email:'paramasivam.bca25@rathinam.in'},
-  {name:'Sivanithin T',        register_number:'RCAS2025BCA270',course:'BCA (AI)',project_title:'Smart Nutrition & Supplements Store',                                     mentor_assigned:'Buvaneshwari',phone:'9600271322',email:'sivanithint.bca25@rathinam.in'},
-  {name:'Selva D',             register_number:'RCAS2025BCA255',course:'BCA (AI)',project_title:'Smart Water Level Indicator',                                             mentor_assigned:'Buvaneshwari',phone:'9363609941',email:'mmselva420@gmail.com'}
+  {name:'Arun A',register_number:'RCAS2025BCA236',course:'BCA (AI)',project_title:'Software & Data Science Projects',mentor_assigned:'Buvaneshwari',phone:'9498820753',email:'arun2025.007@gmail.com'},
+  {name:'Pranesh',register_number:'RCAS2025BCA235',course:'BCA (AI)',project_title:'Mobile App Project',mentor_assigned:'Buvaneshwari',phone:'9843843208',email:'g.pranesh08@gmail.com'},
+  {name:'V Vivekanandhan',register_number:'RCAS2025BCA261',course:'BCA (AI)',project_title:'Mobile App Project',mentor_assigned:'Buvaneshwari',phone:'8838019736',email:'vivek98435@gmail.com'},
+  {name:'Srinithi A',register_number:'RCAS2025BCA210',course:'BCA (AI)',project_title:'Stock Market Analysis and Trend Prediction Dashboard',mentor_assigned:'Buvaneshwari',phone:'9003528918',email:'srinithianand2008@gmail.com'},
+  {name:'Akshaya N',register_number:'22BCA253',course:'BCA (AI)',project_title:'Hospital Data Analysis Dashboard',mentor_assigned:'Buvaneshwari',phone:'8122327330',email:'akshayaneelamani@gmail.com'},
+  {name:'Nirnitha T',register_number:'25BCA214',course:'BCA (AI)',project_title:'Online Assignment Plagiarism Checker Using Machine Learning',mentor_assigned:'Buvaneshwari',phone:'7200300379',email:'nirnithat.bca25@rathinam.in'},
+  {name:'Baskar C',register_number:'RCAS2025BCA266',course:'BCA (AI)',project_title:'Bike Sales Dashboard',mentor_assigned:'Buvaneshwari',phone:'',email:'baskar8685@gmail.com'},
+  {name:'Sharmila M',register_number:'25BCA227',course:'BCA (AI)',project_title:'Career Clarity Dashboard',mentor_assigned:'Buvaneshwari',phone:'6369685930',email:'sharmilam.bca25@rathinam.in'},
+  {name:'Sri Datchayini M',register_number:'25BCA271',course:'BCA (AI)',project_title:'Hospital Patient Flow & Resource Utilization Dashboard',mentor_assigned:'Buvaneshwari',phone:'6385556178',email:'dakshayanidakshu55@gmail.com'},
+  {name:'Mokshitha N',register_number:'RCAS2025BCA246',course:'BCA (AI)',project_title:'Data Learning',mentor_assigned:'Buvaneshwari',phone:'8220067385',email:'mokshitha2107@gmail.com'},
+  {name:'Logeshwaran SP',register_number:'RCAS2025BCA221',course:'BCA (AI)',project_title:'Electricity Usage Manager',mentor_assigned:'Buvaneshwari',phone:'7667305677',email:'logeshsp19@gmail.com'},
+  {name:'Shakthi S',register_number:'25BCA265',course:'BCA (AI)',project_title:'Movie Analytics',mentor_assigned:'Buvaneshwari',phone:'6385625785',email:'shakthi7780@gmail.com'},
+  {name:'Jothika C',register_number:'RCAS2025BCA259',course:'BCA (AI)',project_title:'Sales Analysis Dashboard using Power BI',mentor_assigned:'Buvaneshwari',phone:'7200414234',email:'jothika0209208@gmail.com'},
+  {name:'Suriya Deepa C',register_number:'RCAS2025BCA217',course:'BCA (AI)',project_title:'Plate2Purpose',mentor_assigned:'Buvaneshwari',phone:'9363510511',email:'arzxxdeepa@gmail.com'},
+  {name:'Janani Sri S',register_number:'25BCA257',course:'BCA (AI)',project_title:'Power BI Dashboard',mentor_assigned:'Buvaneshwari',phone:'7705595004',email:'jananiboxer7@gmail.com'},
+  {name:'Bharath M',register_number:'RCAS2025BCA213',course:'BCA (AI)',project_title:'Retail Shop Inventory Management System',mentor_assigned:'Buvaneshwari',phone:'8907256441',email:'bharathmk70@gmail.com'},
+  {name:'Boopathiraja M',register_number:'RCAS2025BCA247',course:'BCA (AI)',project_title:'College Times',mentor_assigned:'Buvaneshwari',phone:'9344307883',email:'boopathiraajam.bca25@rathinam.in'},
+  {name:'Dharshana J',register_number:'RCAS2025BCA207',course:'BCA (AI)',project_title:'SafeShadow',mentor_assigned:'Buvaneshwari',phone:'8072795437',email:'dharshanaj93@gmail.com'},
+  {name:'Vishnupriya S',register_number:'25BCA244',course:'BCA (AI)',project_title:'Smart Field Service Management Mobile Application',mentor_assigned:'Buvaneshwari',phone:'7810055756',email:'vishnupriya25678@gmail.com'},
+  {name:'Mohamed Sameer M',register_number:'RCAS2025BCA219',course:'BCA (AI)',project_title:'Student Assignment Tracker',mentor_assigned:'Buvaneshwari',phone:'9080422321',email:'mohamedsameer01549@gmail.com'},
+  {name:'Guru Prasath S',register_number:'25BCA273',course:'BCA (AI)',project_title:'Expense Tracker',mentor_assigned:'Buvaneshwari',phone:'820131463',email:'guru200708@gmail.com'},
+  {name:'Alwin Joseph',register_number:'RCAS2025BCA209',course:'BCA (AI)',project_title:'SmartSalon',mentor_assigned:'Buvaneshwari',phone:'9360986716',email:'alwinjoseph1803@gmail.com'},
+  {name:'S Mohinbala',register_number:'RCAS2025BCA212',course:'BCA (AI)',project_title:'Agriculture',mentor_assigned:'Buvaneshwari',phone:'9159187390',email:'mohinbala312@gmail.com'},
+  {name:'Nivethitha N',register_number:'RCAS2025BCA222',course:'BCA (AI)',project_title:"Women's Safety",mentor_assigned:'Buvaneshwari',phone:'9600901929',email:'nivethithan527@gmail.com'},
+  {name:'Praveen Kumar P',register_number:'RCAS2025BCA256',course:'BCA (AI)',project_title:'Food Manager',mentor_assigned:'Buvaneshwari',phone:'',email:'praveenkumarrr411@gmail.com'},
+  {name:'Sanjay P',register_number:'RCAS2025BCA218',course:'BCA (AI)',project_title:'Automatic Street Light Controller',mentor_assigned:'Buvaneshwari',phone:'8825430103',email:'sanju88254@gmail.com'},
+  {name:'Aswin G',register_number:'RCAS2025BCA269',course:'BCA (AI)',project_title:'Automated Data Management System',mentor_assigned:'Buvaneshwari',phone:'9361380048',email:'gaswin256@gmail.com'},
+  {name:'Varun Krishna T',register_number:'RCAS2025BCA260',course:'BCA (AI)',project_title:'Data Entry Automation Using AI',mentor_assigned:'Buvaneshwari',phone:'9629910753',email:'varunkrishnat.bca25@rathinam.in'},
+  {name:'Harshavarthini',register_number:'RCAS2025BCA211',course:'BCA (AI)',project_title:'Sales and Inventory Dashboard for Local Grocery Store',mentor_assigned:'Buvaneshwari',phone:'6380117068',email:'hharsha9021@gmail.com'},
+  {name:'Nivesh G',register_number:'26BCA240',course:'BCA (AI)',project_title:'Basic Machine Learning (Optional Advanced Track)',mentor_assigned:'Buvaneshwari',phone:'8015345575',email:'niveshgopal1405@gmail.com'},
+  {name:'Swathi',register_number:'RCAS2025BCA216',course:'BCA (AI)',project_title:'LearnEasy',mentor_assigned:'Buvaneshwari',phone:'8015365059',email:'swathi2082007@gmail.com'},
+  {name:'Gagan',register_number:'25BCA268',course:'BCA (AI)',project_title:'Grocery Store Management App',mentor_assigned:'Buvaneshwari',phone:'7483412636',email:'gagan081618@gmail.com'},
+  {name:'L Navaneethakrishnan',register_number:'RCAS2025BCA234',course:'BCA (AI)',project_title:'Market Prices & Selling',mentor_assigned:'Buvaneshwari',phone:'9087491722',email:'mukeshlakshmanan5@gmail.com'},
+  {name:'Yuvadharshan',register_number:'RCAS2025BCA241',course:'BCA (AI)',project_title:'AI-Based Smart Traffic Management System for Urban Cities',mentor_assigned:'Buvaneshwari',phone:'9361052226',email:'yuvadharshan43@gmail.com'},
+  {name:'Jeeva Ruba',register_number:'RCAS2025BCA264',course:'BCA (AI)',project_title:'Weather App',mentor_assigned:'Buvaneshwari',phone:'9342294156',email:'jeevaruba52@gmail.com'},
+  {name:'Akash B',register_number:'25BCA254',course:'BCA (AI)',project_title:'Lumicity',mentor_assigned:'Buvaneshwari',phone:'9074798420',email:'akashbose409@gmail.com'},
+  {name:'Dharshan RK',register_number:'RCAS2025BCA202',course:'BCA (AI)',project_title:'Smart Grocery Store Management App',mentor_assigned:'Buvaneshwari',phone:'8248134878',email:'dharshanrk97@gmail.com'},
+  {name:'S Aswin Sidharth',register_number:'RCAS2025BCA224',course:'BCA (AI)',project_title:'Agriculture and Technology',mentor_assigned:'Buvaneshwari',phone:'9790144639',email:'sidharthaswin647@gmail.com'},
+  {name:'Govarthana Giri R',register_number:'RCAS2025BCA223',course:'BCA (AI)',project_title:'Local Milk Delivery Management App',mentor_assigned:'Buvaneshwari',phone:'9363462838',email:'girigova25@gmail.com'},
+  {name:'Vishnu K',register_number:'25BCA208',course:'BCA (AI)',project_title:'APT Attack Response System using AM-HIDS',mentor_assigned:'Buvaneshwari',phone:'6374147850',email:'vishnufootballer.77@gamil.com'},
+  {name:'K Dhanush',register_number:'25BCA267',course:'BCA (AI)',project_title:'Smart Weather Report',mentor_assigned:'Buvaneshwari',phone:'7200868270',email:'kasidhanush4@gmail.com'},
+  {name:'Princy Suresh',register_number:'RCAS2025BCA258',course:'BCA (AI)',project_title:'Contact Management System',mentor_assigned:'Buvaneshwari',phone:'8778287064',email:'princysuresh.bca25@rathinam.in'},
+  {name:'Thamarai Selvi N',register_number:'RCAS2025BCA203',course:'BCA (AI)',project_title:'Mobile Web Application Project',mentor_assigned:'Buvaneshwari',phone:'9025591628',email:'thamaraiselvin.bca25@rathinam.in'},
+  {name:'Ishar P',register_number:'RCAS2025BCA239',course:'BCA (AI)',project_title:'Inner Light Companion',mentor_assigned:'Buvaneshwari',phone:'9344895022',email:'isharp.bca25@rathinam.in'},
+  {name:'Paramasivam R',register_number:'RCAS2025BCA274',course:'BCA (AI)',project_title:'Online Ticket Booking System',mentor_assigned:'Buvaneshwari',phone:'9047940936',email:'paramasivam.bca25@rathinam.in'},
+  {name:'Sivanithin T',register_number:'RCAS2025BCA270',course:'BCA (AI)',project_title:'Smart Nutrition & Supplements Store',mentor_assigned:'Buvaneshwari',phone:'9600271322',email:'sivanithint.bca25@rathinam.in'},
+  {name:'Selva D',register_number:'RCAS2025BCA255',course:'BCA (AI)',project_title:'Smart Water Level Indicator',mentor_assigned:'Buvaneshwari',phone:'9363609941',email:'mmselva420@gmail.com'}
 ];
 
-/* ════════════════════════════════════════════
-   STATE
-   ════════════════════════════════════════════ */
+const TERF_IIBSCIT_STUDENTS=[
+  {name:'Sree Rudhra',register_number:'2426J0646',course:'II B.Sc IT',project_title:'Rooms Booking',mentor_assigned:'Ajeetha',phone:'9895986701',email:'sreerudhrabalamurukan@gmail.com'},
+  {name:'Parkavi P',register_number:'2426J0638',course:'II B.Sc IT',project_title:'Simple movie app',mentor_assigned:'Ajeetha',phone:'7449059211',email:'parkavi2857@gmail.com'},
+  {name:'Kathiravan V',register_number:'2426J0631',course:'II B.Sc IT',project_title:'Smart Prescription Digitization and Telemedicine Medicine Ordering Platform',mentor_assigned:'Ajeetha',phone:'9952762495',email:'kathirkat25@gmail.com'},
+  {name:'P Pandiyaraj',register_number:'2426J0637',course:'II B.Sc IT',project_title:'VoiceMentor AI: Intelligent Communication and Interview Training System',mentor_assigned:'Ajeetha',phone:'6369986824',email:'rajpandiya195@gmail.com'},
+  {name:'Prem Kumar V',register_number:'2426j0640',course:'II B.Sc IT',project_title:'SalonIQ app',mentor_assigned:'Ajeetha',phone:'6380731288',email:'pp6036002@gmail.com'},
+  {name:'Sridhar VL',register_number:'2426J0649',course:'II B.Sc IT',project_title:'Daily Progress Tracker',mentor_assigned:'Ajeetha',phone:'9942356592',email:'vsridhar849@gmail.com'},
+  {name:'Sivaraj P',register_number:'2426j0644',course:'II B.Sc IT',project_title:'GreenAssist – Smart Agriculture Support System',mentor_assigned:'Ajeetha',phone:'9363900725',email:'sivarajp612@gmail.com'},
+  {name:'Sanjay R',register_number:'2426j0643',course:'II B.Sc IT',project_title:'3D Craft Viewer: Local Woodcraft Customization',mentor_assigned:'Ajeetha',phone:'9363006630',email:'nr.sanjay848@gmail.com'},
+  {name:'Sri Ashwinth',register_number:'2426j0647',course:'II B.Sc IT',project_title:'CS – Mobile App',mentor_assigned:'Ajeetha',phone:'8012650640',email:'ashwinth112plus@gmail.com'},
+  {name:'Hari Prasath R',register_number:'2426J0630',course:'II B.Sc IT',project_title:'Fitness Point App',mentor_assigned:'Ajeetha',phone:'9025484437',email:'hariprasathraju321@gmail.com'},
+  {name:'Lingeswaran S',register_number:'2426J033',course:'II B.Sc IT',project_title:'JanConnect AI – Smart Government Support System',mentor_assigned:'Ajeetha',phone:'8248794379',email:'slingeswaran2007@gmail.com'},
+  {name:'Varshini',register_number:'2426j0651',course:'II B.Sc IT',project_title:'Marketing & Sales',mentor_assigned:'Ajeetha',phone:'8778583314',email:'varshini6136@gmail.com'},
+  {name:'Akash',register_number:'2426j0625',course:'II B.Sc IT',project_title:'Smart student management system',mentor_assigned:'Ajeetha',phone:'8300609387',email:'akashraghu051@gmail.com'},
+  {name:'Abdul Kalam Azad J',register_number:'2426J0623',course:'II B.Sc IT',project_title:'Farm Care',mentor_assigned:'Ajeetha',phone:'7904299008',email:'azaddpm2007@gmail.com'}
+];
+
+const BCAS_IIBSCCT_STUDENTS=[
+  {name:'sneha G.A.',register_number:'2426K0132',course:'II B.Sc CT',project_title:'Smart Grocery Price Tracker System',mentor_assigned:'Senthil Nathan S',phone:'9500697080',email:'gasneha2024@gmail.com',problem_statement:'Small grocery shops face difficulties managing daily operations efficiently due to manual record-keeping methods.',impact_of_problem:'The Smart Grocery Price Tracker System helps digitize and automate daily operations of small grocery shops, reducing errors and improving billing accuracy.',brand_name:'Cartify',project_type:'Smart Retail & Inventory Management System',target_users:'Students; Families; General Public; Small shop owners',key_outcome:'Develop a smart Grocery Price Tracker system that simplifies and automates daily operations of small grocery shops.'},
+  {name:'M. Rebekkha Thavamani',register_number:'2426K0124',course:'II B.Sc CT',project_title:'GlowNest - Facial Products',mentor_assigned:'Dharmaprakash L',phone:'9345003531',email:'rebekkhathavamani@gmail.com',problem_statement:'Many skincare consumers struggle to identify their specific skin type, leading to purchase of ineffective or irritating products.',impact_of_problem:'GlowNest integrates an interactive Skin Guide into the shopping experience, empowering users to self-diagnose accurately and find the right products.',brand_name:'GlowNest',project_type:'E-commerce / Assistive Healthcare Technology',target_users:'Students; Elderly People; General Public',key_outcome:'Democratize expert skincare advice through technology so professional-grade skin analysis is accessible to everyone.'},
+  {name:'Hari S',register_number:'2426K0111',course:'II B.Sc CT',project_title:'Local Shop Connect – Online Grocery Platform for Small Businesses',mentor_assigned:'Dharmaprakash L',phone:'9865471935',email:'harism0220@gmail.com',problem_statement:'Small local shop owners face a decline in customers due to lack of digital presence and inability to compete with large retail stores.',impact_of_problem:'Creates an online platform where small shop owners can register and sell products digitally, increasing visibility and customer reach.',brand_name:'ShopEase',project_type:'E-commerce',target_users:'Families; Farmers; Elderly People; General Public',key_outcome:'Empower small shop owners by giving them a digital platform to grow their business and increase sales.'},
+  {name:'Sheeba A',register_number:'2426k0129',course:'II B.Sc CT',project_title:'LocalBoost',mentor_assigned:'Senthil Nathan S',phone:'8270907159',email:'sheebaa512@gmail.com',problem_statement:'Many local small businesses struggle to reach customers due to lack of digital presence.',impact_of_problem:'Provides a simple user-friendly platform where small businesses can create their online presence and showcase products or services.',brand_name:'LocalBoost',project_type:'Smart City',target_users:'General Public; Small business owners',key_outcome:'Empower local small businesses by providing an easy-to-use digital platform to increase visibility and customer reach.'},
+  {name:'Akash V',register_number:'2426k0102',course:'II B.Sc CT',project_title:'Expense Manager Lite',mentor_assigned:'Dharmaprakash L',phone:'9629346096',email:'akasha09960@gmail.com',problem_statement:'Small businesses find it difficult to track their daily expenses and money flow.',impact_of_problem:'Helps small business owners manage finances effectively by providing a simple way to track daily income and expenses.',brand_name:'EasyExpense',project_type:'Financial Management',target_users:'General Public; Small business owners',key_outcome:'Help small business owners and individuals easily track income and expenses, improving financial awareness.'},
+  {name:'Sabareesh G',register_number:'2426K0126',course:'II B.Sc CT',project_title:'Rankly – Smart Product Comparison & Ranking Platform',mentor_assigned:'Dharmaprakash L',phone:'7845840747',email:'sabareeshgm47@gmail.com',problem_statement:'Online shoppers spend a lot of time browsing multiple websites to compare products based on price, ratings, and features.',impact_of_problem:'Rankly simplifies product discovery by aggregating product data and providing side-by-side comparison with a smart ranking system.',brand_name:'Rankly',project_type:'Web-based Product Comparison & Recommendation Platform',target_users:'Students; Families; General Public',key_outcome:'Help users make faster and smarter purchasing decisions through clear comparisons and intelligent rankings.'},
+  {name:'A.Sarmini',register_number:'2426k0128',course:'II B.Sc CT',project_title:'Mini Offline Campus Network App',mentor_assigned:'Senthil Nathan S',phone:'9342843715',email:'sarmisarmi8430@gmail.com',problem_statement:'In many college campuses, stable internet access is not always available, making communication slow or impossible.',impact_of_problem:'Provides offline communication using local network. Students can share notes and messages without internet.',brand_name:'EduMesh',project_type:'Smart City',target_users:'Students',key_outcome:'Enable seamless communication and resource sharing within a campus without relying on the internet.'},
+  {name:'T. Siva Pratheepa',register_number:'2426k0131',course:'II B.Sc CT',project_title:'SmartPort Dock Scheduler with Live Tracking & Booking System',mentor_assigned:'Dharmaprakash L',phone:'9150718535',email:'pratheepasiva2007@gmail.com',problem_statement:'Ports often face delays and confusion in allocating docking space to ships due to manual scheduling.',impact_of_problem:'Provides digital solution where users can book docking slots in advance and view ship schedules.',brand_name:'SmartPort Tech',project_type:'Smart City',target_users:'Students; Industries; General Public',key_outcome:'Create a simple and effective port management system that simulates real-world dock scheduling and ship tracking.'},
+  {name:'Kavin E S',register_number:'2CT24001',course:'II B.Sc CT',project_title:'Anti procrastination solution',mentor_assigned:'Dharmaprakash L',phone:'9566389394',email:'imkavin74@gmail.com',problem_statement:'Procrastination causes people to delay tasks and engage in endless scrolling.',impact_of_problem:'Helps people avoid procrastination and endless scrolling, improving daily productivity.',brand_name:'Ghost Mode',project_type:'Assistive Technology',target_users:'Students; Families; General Public',key_outcome:'Help people overcome procrastination and endless scrolling.'},
+  {name:'karthik',register_number:'2426k0116',course:'II B.Sc CT',project_title:'Healthcare Access & Management',mentor_assigned:'Senthil Nathan S',phone:'7695982755',email:'karthik16062007k@gmail.com',problem_statement:'Long waits for doctor appointments, forgotten medicines, fake drugs, no medical history portability.',impact_of_problem:'Appointment + EHR + medicine reminder + generic drug finder app combined in one solution.',brand_name:'Drug finder',project_type:'Healthcare',target_users:'Students',key_outcome:'Make healthcare more accessible, affordable, and efficient for everyone.'},
+  {name:'Yogalakshmi Rajamanickam',register_number:'2426K0135',course:'II B.Sc CT',project_title:'Universal Voice-Guided Destination Alert System for Visually Impaired & Elderly Travelers',mentor_assigned:'Dharmaprakash L',phone:'6374880326',email:'yogalakshmirajamanickam@gmail.com',problem_statement:'Visually impaired and elderly individuals face significant challenges while traveling in public or private transport.',impact_of_problem:'Loss of independence, daily frustration and safety risks for millions of visually impaired and elderly people.',brand_name:'VozReach',project_type:'Assistive Technology',target_users:'Visually impaired people',key_outcome:'Build a simple, affordable, voice-first, offline-capable mobile application for independent travel.'},
+  {name:'Karpagavalli P',register_number:'2426K0115',course:'II B.Sc CT',project_title:"Women's Safety During Solo Travel and Emergencies",mentor_assigned:'Dharmaprakash L',phone:'8189950226',email:'pkarpagavalli2006@gmail.com',problem_statement:'Many women feel unsafe while traveling alone, especially at night. Emergency help is often difficult to access quickly.',impact_of_problem:'Provides quick emergency support and live location tracking, allowing users to contact trusted people instantly.',brand_name:'SafeRoute',project_type:'Safety & Security',target_users:'Students; Elderly People; General Public',key_outcome:'Improve personal safety by providing SOS alerts, live location tracking, and quick emergency support.'},
+  {name:'PRASANNA V',register_number:'2426K0121',course:'II B.Sc CT',project_title:'AI-Powered Crop Disease Detection System',mentor_assigned:'Senthil Nathan S',phone:'9344167326',email:'madaraxuchihax14@gmail.com',problem_statement:'Farmers in rural India often fail to identify crop diseases at an early stage due to lack of agricultural expertise.',impact_of_problem:'The system allows farmers to photograph a diseased leaf using their mobile phone and get instant AI diagnosis.',brand_name:'CropCare AI',project_type:'Agriculture',target_users:'Farmers; General Public',key_outcome:'Enable farmers to detect crop diseases within seconds using a phone camera and reduce crop loss.'},
+  {name:'Srivathsan',register_number:'2426k0133',course:'II B.Sc CT',project_title:'Smart Online Attendance System',mentor_assigned:'Dharmaprakash L',phone:'9894371065',email:'srivathsandharun@gmail.com',problem_statement:'Manual attendance tracking is time-consuming and prone to errors.',impact_of_problem:'Automates attendance with real-time tracking and easy access.',brand_name:'AttendEase',project_type:'Student attendance list',target_users:'Students',key_outcome:'Simplify and digitize attendance management efficiently.'},
+  {name:'Joyal V',register_number:'2426k0114',course:'II B.Sc CT',project_title:'Student Expenses',mentor_assigned:'Senthil Nathan S',phone:'8778497072',email:'joyalv1008@gmail.com',problem_statement:'Students overspend and do not track expenses.',impact_of_problem:'Helps students save money and plan budgets.',brand_name:'college',project_type:'Safety & Security',target_users:'Students',key_outcome:'App tracks daily spending and shows dashboard with charts.'},
+  {name:'Nehaa murugesan',register_number:'2426K0119',course:'II B.Sc CT',project_title:'Daily Habit Tracker with Reminders',mentor_assigned:'Dharmaprakash L',phone:'9345521970',email:'nehaamr970@gmail.com',problem_statement:'People often start new habits but fail to continue them due to lack of tracking and reminders.',impact_of_problem:'Affects personal development and daily efficiency, making it harder to achieve goals.',brand_name:'Streakify',project_type:'Healthcare',target_users:'Students',key_outcome:'Create an application that helps users track habits and improve daily productivity.'},
+  {name:'Iswarya M.E',register_number:'2426k0112',course:'II B.Sc CT',project_title:'Local Event Radar',mentor_assigned:'Senthil Nathan S',phone:'6369595651',email:'iswaryaemmanuvel@gmail.com',problem_statement:'People often miss nearby events because information is scattered across different platforms.',impact_of_problem:'People miss useful local events, low participation, time wasted searching, less community engagement.',brand_name:'Local Event Radar',project_type:'Education',target_users:'Students',key_outcome:'Create a simple website that helps users easily find nearby events in one place.'},
+  {name:'Boomes N',register_number:'2426k0105',course:'II B.Sc CT',project_title:'Smart Attendance System using Face Recognition',mentor_assigned:'Senthil Nathan S',phone:'8524044264',email:'boomesnallasivam06@gmail.com',problem_statement:'Manual attendance tracking is time-consuming and prone to proxy attendance.',impact_of_problem:'Automates attendance, eliminates proxy, saves class time, and improves accuracy.',brand_name:'Smart Attendance',project_type:'Assistive Technology',target_users:'Students',key_outcome:'Provide fast, accurate, and reliable attendance management combining automation with modern technology.'},
+  {name:'Buvanesh.M',register_number:'2426K0104',course:'II B.Sc CT',project_title:'Smart Travel Guide',mentor_assigned:'Senthil Nathan S',phone:'9080570836',email:'buvanesh2309@gmail.com',problem_statement:'Many travelers struggle to find reliable information about destinations, hotels, local food, and transport in one place.',impact_of_problem:'Provides destination details, hotel suggestions, travel costs, food recommendations, maps in a single platform.',brand_name:'Smart Travel Guide',project_type:'Smart City',target_users:'General Public',key_outcome:'Make travel planning simple, fast, and user-friendly.'},
+  {name:'Sivakumar.D',register_number:'2426k0130',course:'II B.Sc CT',project_title:'Smart Agriculture System',mentor_assigned:'Senthil Nathan S',phone:'7200883700',email:'sivaerd293@gmail.com',problem_statement:'New generation needs to learn agricultural farming techniques.',impact_of_problem:'Helps teach upcoming new generation people about agricultural farming.',brand_name:'Agri eco system',project_type:'Agriculture',target_users:'Students',key_outcome:'Teach upcoming agriculture system in India to new generation people.'},
+  {name:'Priya G',register_number:'2436K0123',course:'II B.Sc CT',project_title:'Smart Flood Rescue System using Heartbeat Detection',mentor_assigned:'Senthil Nathan S',phone:'6383682929',email:'ppriyagovindasamy@gmail.com',problem_statement:'During floods, many people get trapped under debris, making it difficult for rescue teams to locate them quickly.',impact_of_problem:'Traditional rescue methods are slow and may lead to loss of lives.',brand_name:'Faceprep',project_type:'Safety & Security',target_users:'Students; Families; General Public; Rescue team',key_outcome:'Save lives by enabling faster and more accurate detection of trapped individuals during disasters.'},
+  {name:'S Gowtham',register_number:'2426k0110',course:'II B.Sc CT',project_title:'Crowd-Based Bus Tracking & Seat Availability App',mentor_assigned:'Senthil Nathan S',phone:'6379323168',email:'virat.gowtham.637403@gmail.com',problem_statement:'Passengers do not know when the bus will arrive, whether it is crowded, or if they should wait.',impact_of_problem:'Saves time for students and workers, reduces overcrowding, improves public transport experience.',brand_name:'Track now',project_type:'Smart City',target_users:'Students; Families; Elderly People; General Public',key_outcome:'Save time, reduce overcrowding, and improve public transport experience.'},
+  {name:'priscilla',register_number:'2426k0122',course:'II B.Sc CT',project_title:'Code War',mentor_assigned:'Senthil Nathan S',phone:'8610386752',email:'priscilla.mailbox0105@gmail.com',problem_statement:'Two participants are given the same coding problem and must solve it within a limited time.',impact_of_problem:'Enhances problem-solving speed and accuracy through real-time competitive coding.',brand_name:'ClashOfCoders',project_type:'EdTech / Real-Time Competitive Coding Platform',target_users:'Students; Developers; Coding enthusiasts',key_outcome:'Turn coding into a real-time battle where speed meets skill.'},
+  {name:'R. Sanjai Kumar',register_number:'2426K0127',course:'II B.Sc CT',project_title:'Ease-AttendEase – Smart Attendance System',mentor_assigned:'Dharmaprakash L',phone:'8903394628',email:'sanjaikumar62297@gmail.com',problem_statement:'Many colleges still use manual attendance methods, which are time-consuming and prone to errors.',impact_of_problem:'AttendEase provides a smart digital attendance system with real-time records.',brand_name:'AttendEase',project_type:'Smart City',target_users:'Students; Teachers / Educational Institutions',key_outcome:'Make attendance management simple, fast, and reliable for educational institutions.'},
+  {name:'Charu HASINI.J',register_number:'2426k0106',course:'II B.Sc CT',project_title:'Audio Calculator App',mentor_assigned:'Senthil Nathan S',phone:'9344909966',email:'charuhasinijothikumar@gmail.com',problem_statement:'Many people, especially visually impaired and elderly, face difficulty using normal calculators.',impact_of_problem:'Provides an audio-based calculator that accepts voice input and gives voice output.',brand_name:'Rabbit AudioCalc',project_type:'Assistive Technology',target_users:'Students; Families; Industries; General Public',key_outcome:'Make calculations simple and accessible for everyone using voice technology.'}
+];
+
+const BCAS_IBSCCT_STUDENTS=[
+  {name:'Franklin Paul',register_number:'2CT25031',course:'I B.Sc CT',project_title:'Smart Waste Management System using IoT',mentor_assigned:'Dharmaprakash L',phone:'9843859596',email:'franklinpaul19092007@gmail.com',problem_statement:'In many cities, garbage bins overflow due to fixed collection schedules, leading to unhygienic conditions.',impact_of_problem:'Uses IoT sensors to monitor garbage level in bins in real-time and notify authorities.',brand_name:'bcas',project_type:'Smart City',target_users:'Industries; General Public',key_outcome:'Create a cleaner and healthier environment by improving waste management efficiency using smart IoT sensors.'},
+  {name:'Dinesh D',register_number:'25UCT0106',course:'I B.Sc CT',project_title:'LaunchPad',mentor_assigned:'Dharmaprakash L',phone:'9842793137',email:'lsodinesh2@gmail.com',problem_statement:'Students often face stress, confusion, and fear of failing when they cannot complete or understand their projects.',impact_of_problem:'Students face poor marks, lack of confidence in viva, and weak practical skills.',brand_name:'Launchpad',project_type:'Industrial IoT',target_users:'Students; General Public',key_outcome:'Students successfully complete their projects on time with clear understanding.'},
+  {name:'Famitha.K',register_number:'2CT250107',course:'I B.Sc CT',project_title:'Smart Exam Preparation Analyzer',mentor_assigned:'Dharmaprakash L',phone:'8838738887',email:'famitha5407@gmail.com',problem_statement:'Many students face difficulty in identifying their weak areas during exam preparation.',impact_of_problem:'Students study without a clear strategy, leading to inefficient use of time and poor performance.',brand_name:'Bharathidasan college of arts and science',project_type:'AI-based educational tool',target_users:'Students',key_outcome:'Enhance exam preparation by providing data-driven insights and personalized study recommendations.'},
+  {name:'Suresh Kumar',register_number:'2ct25010',course:'I B.Sc CT',project_title:'Online voting system',mentor_assigned:'Dharmaprakash L',phone:'8056621247',email:'sk287928656@gmail.com',problem_statement:'Everyone should be able to vote from home.',impact_of_problem:'Vote problem solved through digital platform.',brand_name:'OVS',project_type:'Safety & Security',target_users:'General Public',key_outcome:'Online voting system project.'},
+  {name:'Sathya moorthi',register_number:'2CT25003',course:'I B.Sc CT',project_title:'Machine learning machine problem',mentor_assigned:'Dharmaprakash L',phone:'9384336012',email:'sathyamoorthi184@gmail.com',problem_statement:'Solving the machine problem using machine learning.',impact_of_problem:'Solving the machine problem.',brand_name:'Sathya',project_type:'Smart City',target_users:'Students',key_outcome:'Nothing.'},
+  {name:'Ganga S',register_number:'25UCT0109',course:'I B.Sc CT',project_title:'StudyBuddy AI: Personalized AI Learning Assistant',mentor_assigned:'Dharmaprakash L',phone:'9080421295',email:'ganga17022008@gmail.com',problem_statement:'Most students struggle with massive amounts of study material and technical jargon during exams.',impact_of_problem:'Manually summarizing long PDFs and creating practice questions is time-consuming.',brand_name:'StudyFlow',project_type:'Assistive Technology',target_users:'Students',key_outcome:'Save time, improve retention, and help students become job-ready by mastering technical concepts faster.'},
+  {name:'Santhosh Kumar',register_number:'25UCT0123',course:'I B.Sc CT',project_title:'Health-eye',mentor_assigned:'Dharmaprakash L',phone:'9344951755',email:'sandy507053@gmail.com',problem_statement:'Health issues in body need to be monitored daily.',impact_of_problem:'Solving problems in the way of health care.',brand_name:'Heal you',project_type:'Healthcare',target_users:'General Public',key_outcome:'No people affected in the diseases.'},
+  {name:'MAYANDI RAJA V',register_number:'2CT25016',course:'I B.Sc CT',project_title:'AI-Based Resume Analyzer and Skill Recommendation System',mentor_assigned:'Dharmaprakash L',phone:'6381576526',email:'rajaviswa17jan2008@gmail.com',problem_statement:'Many job seekers struggle to create resumes that effectively highlight their skills and meet industry expectations.',impact_of_problem:'Candidates face repeated rejections due to missing skills, poor keyword usage, or improper resume structure.',brand_name:'bharathidasan college of arts and science',project_type:'AI Analyzer',target_users:'Students; Industries; General Public',key_outcome:'Build an automated system that analyzes resumes, suggests improvements, and helps candidates match industry requirements.'},
+  {name:'Sanjay K',register_number:'25UCT0120',course:'I B.Sc CT',project_title:'SecureFace AI – Intelligent Face Recognition Login System',mentor_assigned:'Dharmaprakash L',phone:'7708697536',email:'sanjaykannan2225@gmail.com',problem_statement:'Traditional username and password authentication is not secure enough, as passwords can be stolen or hacked.',impact_of_problem:'Leads to unauthorized access in offices, applications, and digital platforms.',brand_name:'Sanz SecureFace AI',project_type:'Safety & Security',target_users:'Students',key_outcome:'Build a secure web-based login system using face detection technology that improves authentication.'},
+  {name:'Shanmitha S',register_number:'25UCT0126',course:'I B.Sc CT',project_title:'Customized invitation & Poster design system',mentor_assigned:'Dharmaprakash L',phone:'6369653838',email:'shanmirithik@gmail.com',problem_statement:'Many people find it difficult to create attractive and personalized invitations and posters for their events.',impact_of_problem:'Customers waste time and may not get designs they like, especially without design skills.',brand_name:'Bharathidasan college of arts and science',project_type:'Invitation & Poster Customization Platform',target_users:'General Public',key_outcome:'Provide an easy and user-friendly platform for creating customized invitations and posters.'},
+  {name:'Balachandru M',register_number:'2CT25007',course:'I B.Sc CT',project_title:'Public Transport Bus Timing Schedule App',mentor_assigned:'Senthil Nathan S',phone:'9342913776',email:'balachandru182@gmail.com',problem_statement:'Passengers often face difficulty in knowing accurate bus timings at bus stands.',impact_of_problem:'Confusion, long waiting times, and missed buses due to manual inquiry or outdated schedules.',brand_name:'bharathidasan',project_type:'Smart City',target_users:'General Public',key_outcome:'Make reliable transportation for all citizens.'},
+  {name:'Nandhika',register_number:'25UCT0115',course:'I B.Sc CT',project_title:'AI-Based Outfit Suggestion System',mentor_assigned:'Senthil Nathan S',phone:'8754345465',email:'nandhikanandhu55@gmail.com',problem_statement:'People often face difficulty in choosing appropriate outfits for different occasions and weather conditions.',impact_of_problem:'Confusion, time wastage, and poor dressing choices.',brand_name:'Bharathi Dasan college',project_type:'Artificial Intelligence & Software Application',target_users:'Students; General Public',key_outcome:'Develop an intelligent system that provides personalized outfit suggestions.'},
+  {name:'Nathiya .s',register_number:'25UCT0116',course:'I B.Sc CT',project_title:'Smart Event Decoration Planner',mentor_assigned:'Senthil Nathan S',phone:'9043703744',email:'zaranathiya@gmail.com',problem_statement:'Many people find it difficult to choose decorations for events like weddings, birthdays, and festivals.',impact_of_problem:'This causes delay, confusion, and stress while planning events.',brand_name:'event decoration',project_type:'Smart Event Decoration Planner',target_users:'General Public',key_outcome:'Develop a user-friendly mobile application that simplifies event decoration planning.'},
+  {name:'Devika Sundaram',register_number:'2CT25023',course:'I B.Sc CT',project_title:'Students Skills Exchange and Learning Platform',mentor_assigned:'Dharmaprakash L',phone:'6382349074',email:'devsundardevika@gmail.com',problem_statement:'Students need a way to learn different things from each other.',impact_of_problem:'A website called student skills exchange platform to make the current situation better.',brand_name:'bharathidasan college of arts and science',project_type:'Education',target_users:'Students',key_outcome:'Improve peer learning and skill sharing.'},
+  {name:'SATHYA SUNDARAM',register_number:'2CT-25_022',course:'I B.Sc CT',project_title:'Modeling Application',mentor_assigned:'Senthil Nathan S',phone:'6369987493',email:'SATHYASUNDARAM1624@GMAIL.COM',problem_statement:'Develop a Python-based modeling application that analyzes input data and predicts outcomes using machine learning.',impact_of_problem:'Without a proper modeling application, data analysis becomes time-consuming and prone to errors.',brand_name:'Bharathidhasan college of arts and science',project_type:'Fashion',target_users:'All women',key_outcome:'Develop a Python-based modeling application for data analysis and machine learning.'},
+  {name:'BHAVAN SHRI S',register_number:'2ct-25-028',course:'I B.Sc CT',project_title:'Online Learning Platform [Course, Videos, Quiz]',mentor_assigned:'Senthil Nathan S',phone:'7305799734',email:'bhavanbhavan2205@gmail.com',problem_statement:'Many students face difficulties in accessing structured and interactive learning resources.',impact_of_problem:'Poor understanding, no system to test knowledge, low student engagement, difficulty tracking progress.',brand_name:'Learnx',project_type:'Online learning platform',target_users:'Students',key_outcome:'Develop a simple, user-friendly online learning platform that enables students to access courses, watch videos, and take quizzes.'}
+];
+
+// ════════ ALLIANCE UNIVERSITY SEED DATA ════════
+const ALLIANCE_IMCA_A_STUDENTS=[
+  {name:'Nandhu S',register_number:'2411022250023',course:'I MCA - A',project_title:'Integrated Paddy Farm Payroll and Profit Optimization System',mentor_assigned:'Abhishek',phone:'6238621371',email:'nandhus5270kvk@gmail.com'}
+];
+
+const ALLIANCE_IMCA_B_STUDENTS=[
+  {name:'Anu A',register_number:'2511022250085',course:'I MCA - B',project_title:'Community Resource Sharing System',mentor_assigned:'Mary Agnes',phone:'7259109591',email:'aanuMCA25@stu.alliance.edu.in'},
+  {name:'Karthikeyan R',register_number:'2511022250092',course:'I MCA - B',project_title:'AI DevOps Intelligence Agent (RAG + CI/CD Automation Platform)',mentor_assigned:'Tanisha Das',phone:'9108354667',email:'karthikeyan9108354@gmail.com'}
+];
+
+const ALLIANCE_IIBCA_AIML_STUDENTS=[
+  {name:'Preksha V',register_number:'2511021240063',course:'II BCA AI & ML (A+B)',project_title:'Smart Retail: Customer Behavior & Churn Analytics Dashboard',mentor_assigned:'Aman Kumar',phone:'9353016818',email:'prekshav205@gmail.com'},
+  {name:'R Monisha Bangera',register_number:'2511021240053',course:'II BCA AI & ML (A+B)',project_title:'Zennia',mentor_assigned:'Raghav Reddy',phone:'7975463207',email:'monishabangera2007@gmail.com'},
+  {name:'Keerthi N',register_number:'2411021240024',course:'II BCA AI & ML (A+B)',project_title:'AgriBridge – Smart Farming and Crop Waste Marketplace',mentor_assigned:'Gomathy V',phone:'8951471903',email:'nkeerthireddy19@gmail.com'},
+  {name:'Prakruthi BR',register_number:'2411021240038',course:'II BCA AI & ML (A+B)',project_title:'AgriBridge – Smart Farming and Crop Waste Marketplace',mentor_assigned:'Gomathy V',phone:'8431624705',email:'prakruthibr2006@gmail.com'},
+  {name:'Pragathi BR',register_number:'2411021240037',course:'II BCA AI & ML (A+B)',project_title:'Smart Women Safety and Emergency Response System',mentor_assigned:'Nagashri',phone:'8431897695',email:'pragathidevanga11@gmail.com'},
+  {name:'Bhumika R',register_number:'2411021240026',course:'II BCA AI & ML (A+B)',project_title:'Smart Women Safety and Emergency Response System',mentor_assigned:'Nagashri',phone:'9980850740',email:'bhumikaravi2006@gmail.com'},
+  {name:'Kailash Kumar B',register_number:'2411021240071',course:'II BCA AI & ML (A+B)',project_title:'FestNest - Centralized platform for college events, hackathons, workshops, and competitions',mentor_assigned:'Sanjivini',phone:'8088309340',email:'kkailashBCA24@ced.alliance.edu.in'},
+  {name:'Adarsh Kumar Gupta Kasaudhan',register_number:'2411021240076',course:'II BCA AI & ML (A+B)',project_title:'FestNest - Centralized platform for college events, hackathons, workshops, and competitions',mentor_assigned:'Sanjivini',phone:'7054054583',email:'gadarsh960@gmail.com'}
+];
+
+// ════════ KRISTU JAYANTI SEED DATA ════════
+const KJ_BBAAIDS_STUDENTS=[
+  {name:'Ananya K',register_number:'25BBAI09',course:'BBA - AI & DS',project_title:'Customer experience study',mentor_assigned:'Ishika Bhattacharjee',phone:'9036190085',email:'ananya3913@gmail.com'},
+  {name:'Rishika Patel',register_number:'25BBAI44',course:'BBA - AI & DS',project_title:'SkillDrift',mentor_assigned:'Ishika Bhattacharjee',phone:'8105829562',email:'rishikapatel753@gmail.com'},
+  {name:'Sharan Venkatesh',register_number:'25BBAI48',course:'BBA - AI & DS',project_title:'Mise-en-scène: A Mobile Application for Practical Cinema Skill Development and Portfolio Building',mentor_assigned:'Ishika Bhattacharjee',phone:'8660848554',email:'sharan.venkatesh2007@gmail.com'},
+  {name:'Ashutosh Khalkho',register_number:'25BBAI18',course:'BBA - AI & DS',project_title:'Clinic appointment process improvement',mentor_assigned:'Ishika Bhattacharjee',phone:'9243790171',email:'khalkhoashutosh1@gmail.com'},
+  {name:'Pooja Roy',register_number:'25BBAI37',course:'BBA - AI & DS',project_title:'AI Customer Profit Optimization Engine',mentor_assigned:'Ishika Bhattacharjee',phone:'8871663078',email:'roypooja2006@gmail.com'},
+  {name:'Esther Dreama Pinto',register_number:'25BBAI36',course:'BBA - AI & DS',project_title:'AI Trend Hunter: Predictive Market Trend Analysis for Business Growth',mentor_assigned:'Ishika Bhattacharjee',phone:'9834364147',email:'estherdreama@gmail.com'},
+  {name:'Adarsh Suresh',register_number:'25BBAI03',course:'BBA - AI & DS',project_title:'Personal Finance Tracker with Spending Insights',mentor_assigned:'Ishika Bhattacharjee',phone:'9937561812',email:'adarshsuresh2210@gmail.com'},
+  {name:'Nripan Ravi',register_number:'25BBAI34',course:'BBA - AI & DS',project_title:'Restaurant Demand Prediction and Food Waste Management System',mentor_assigned:'Ishika Bhattacharjee',phone:'9961312046',email:'nripanravi111@gmail.com'},
+  {name:'Ajay Monson',register_number:'25BBAI06',course:'BBA - AI & DS',project_title:'Improve the Order Management Process of a Small Catering Business',mentor_assigned:'Ishika Bhattacharjee',phone:'7907578962',email:'ajaymonson@gmail.com'},
+  {name:'Nandana Prakashan Nambiar',register_number:'25BBAI32',course:'BBA - AI & DS',project_title:'SafeHer: Smart Women Safety and Emergency Alert System',mentor_assigned:'Ishika Bhattacharjee',phone:'9325021204',email:'25bbai32@kristujayanti.com'},
+  {name:'Shreya Chopra',register_number:'25BBAI49',course:'BBA - AI & DS',project_title:'Internship Recruitment Tracking System for Startups',mentor_assigned:'Ishika Bhattacharjee',phone:'9243731575',email:'shreya54chopra@gmail.com'},
+  {name:'Shriya Prathap',register_number:'25BBAI52',course:'BBA - AI & DS',project_title:'RefundShield',mentor_assigned:'Ishika Bhattacharjee',phone:'9591328723',email:'shriyaprathapshriyaprathap@gmail.com'},
+  {name:'Anuraj Mishra',register_number:'25BBAI14',course:'BBA - AI & DS',project_title:'Digital Marketing Strategy for a Local Coaching Institute',mentor_assigned:'Ishika Bhattacharjee',phone:'7004630321',email:'25bbai14@kristujayanti.com'},
+  {name:'Besii Kaikho',register_number:'25BBAI20',course:'BBA - AI & DS',project_title:'Smart Blind Assistance Glasses using AI and Sensors',mentor_assigned:'Ishika Bhattacharjee',phone:'8413029373',email:'25bbai20@kristujayanti.com'},
+  {name:'Rishav Singh',register_number:'25BBAI43',course:'BBA - AI & DS',project_title:'Prediction system',mentor_assigned:'Ishika Bhattacharjee',phone:'8178904768',email:'25bbai43@kristujayanti.com'},
+  {name:'Pavan K',register_number:'25BBAI35',course:'BBA - AI & DS',project_title:'Created a bot using AI',mentor_assigned:'Ishika Bhattacharjee',phone:'9980827703',email:'pavankcr7@gmail.com'},
+  {name:'Niharika Vohra',register_number:'25BBAI33',course:'BBA - AI & DS',project_title:'Optimizing Event Equipment Rental Operations Through Digital Reservation and Inventory Tracking (Velmora)',mentor_assigned:'Ishika Bhattacharjee',phone:'7051921239',email:'vohraniharika10@gmail.com'},
+  {name:'Revant Sandilya',register_number:'25BBAI41',course:'BBA - AI & DS',project_title:'AI-Based Smart Safety & Emergency Response System',mentor_assigned:'Ishika Bhattacharjee',phone:'9956335566',email:'revantshandilya@gmail.com'},
+  {name:'Suryansh Kumar',register_number:'25BBAI57',course:'BBA - AI & DS',project_title:'Customer Experience Analysis and Feedback Improvement System',mentor_assigned:'Ishika Bhattacharjee',phone:'7493947948',email:'sanu15051612@gmail.com'},
+  {name:'Ayush Kumar Singh',register_number:'25BBAI19',course:'BBA - AI & DS',project_title:'Business Process Improvement',mentor_assigned:'Ishika Bhattacharjee',phone:'7207203107',email:'ayushsingh70554@gmail.com'},
+  {name:'Adiba Mariyam',register_number:'25BBAI04',course:'BBA - AI & DS',project_title:'AI and Machine Learning',mentor_assigned:'Ishika Bhattacharjee',phone:'9844700897',email:'25bbai04@kristujayanti.com'},
+  {name:'Anshika Singh',register_number:'25BBAI12',course:'BBA - AI & DS',project_title:'Voice Assistant for disabled people',mentor_assigned:'Ishika Bhattacharjee',phone:'7975964530',email:'anshika0713singh@gmail.com'}
+];
+
+const KJ_BBAFN_STUDENTS=[
+  {name:'R. Darshan',register_number:'25BBFN39',course:'BBA - FinTech',project_title:'Improving PG/Hostel Management Through a Digital Rent and Complaint Tracking System',mentor_assigned:'Ishika Bhattacharjee',phone:'8073939901',email:'25bbfn39@gmail.com'},
+  {name:'Sneha Majumdar',register_number:'25BBFN49',course:'BBA - FinTech',project_title:'Fingerprint-Only Offline POS Payment System',mentor_assigned:'Ishika Bhattacharjee',phone:'8902373792',email:'25bbfn49@kristujayanti.com'},
+  {name:'Aditi Dhanraj',register_number:'25BBFN03',course:'BBA - FinTech',project_title:'Customer Experience Study of Students in the College Placement Process',mentor_assigned:'Ishika Bhattacharjee',phone:'8340389869',email:'aditidhanraj391@gmail.com'},
+  {name:'Theodosia',register_number:'25BBFN54',course:'BBA - FinTech',project_title:'Digital Credit and Collection Management System for Small Retail Businesses',mentor_assigned:'Ishika Bhattacharjee',phone:'6362477220',email:'25bbfn54@kristujayanti.com'},
+  {name:'Lokeshwari S',register_number:'25BBFN25',course:'BBA - FinTech',project_title:'Finzo AI Powered Personal Finance & Expense Management System',mentor_assigned:'Ishika Bhattacharjee',phone:'8660901407',email:'25bbfn25@kristujayanti.com'}
+];
+
+// ════════ STATE ════════
 let selectedCollegeKey=null,selectedCollegeName=null,selectedSection=null,selectedRole=null,currentUser=null;
 let students=[],allStudents=[];
 let progressMap={},evalMap={},approvalMap={};
@@ -971,8 +1063,6 @@ let adminProgressMap={},adminEvalMap={},adminApprovalMap={};
 let currentWeekStudent=null,currentEvalStudent=null,adminTab='all';
 let weekDraft={};
 let peerReviews=[],peerTab='all',peerLoaded=false;
-
-/* ── POPOVER (click-based) ── */
 let activePopoverBtn=null;
 
 function nameBtn(student){
@@ -994,58 +1084,65 @@ function nameBtn(student){
 function toggleProjectPopover(el,e){
   e.stopPropagation();
   if(activePopoverBtn===el){hideProjectPopover();return;}
-  if(activePopoverBtn) activePopoverBtn.classList.remove('pop-active');
+  if(activePopoverBtn)activePopoverBtn.classList.remove('pop-active');
   activePopoverBtn=el;
   el.classList.add('pop-active');
   const pop=document.getElementById('projPopover');
   document.getElementById('ppProject').textContent=el.dataset.project||'—';
   let metaHTML='';
-  if(el.dataset.reg)     metaHTML+=`<div class="proj-popover-row">Reg No: <strong>${escHTML(el.dataset.reg)}</strong></div>`;
-  if(el.dataset.course)  metaHTML+=`<div class="proj-popover-row">Course: <strong>${escHTML(el.dataset.course)}</strong></div>`;
-  if(el.dataset.mentor)  metaHTML+=`<div class="proj-popover-row">Mentor: <strong>${escHTML(el.dataset.mentor)}</strong></div>`;
-  if(el.dataset.brand)   metaHTML+=`<div class="proj-popover-row">Brand: <strong>${escHTML(el.dataset.brand)}</strong></div>`;
-  if(el.dataset.type)    metaHTML+=`<div class="proj-popover-row">Type: <strong>${escHTML(el.dataset.type)}</strong></div>`;
-  if(el.dataset.users)   metaHTML+=`<div class="proj-popover-row">Target Users: <strong>${escHTML(el.dataset.users)}</strong></div>`;
-  if(el.dataset.problem) metaHTML+=`<div class="proj-popover-row" style="flex-direction:column;align-items:flex-start;gap:2px;"><span>Problem:</span><strong style="color:var(--ink2);font-weight:500;font-size:11px;line-height:1.4;">${escHTML(el.dataset.problem)}</strong></div>`;
-  if(el.dataset.impact)  metaHTML+=`<div class="proj-popover-row" style="flex-direction:column;align-items:flex-start;gap:2px;"><span>Impact:</span><strong style="color:var(--ink2);font-weight:500;font-size:11px;line-height:1.4;">${escHTML(el.dataset.impact)}</strong></div>`;
-  if(el.dataset.outcome) metaHTML+=`<div class="proj-popover-row" style="flex-direction:column;align-items:flex-start;gap:2px;"><span>Key Outcome:</span><strong style="color:var(--ink2);font-weight:500;font-size:11px;line-height:1.4;">${escHTML(el.dataset.outcome)}</strong></div>`;
+  const row=(label,val,multiline)=>{
+    if(!val)return'';
+    if(multiline)return`<div class="proj-popover-row" style="flex-direction:column;align-items:flex-start;gap:2px;"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">${label}</span><strong style="color:var(--ink2);font-weight:500;font-size:12px;line-height:1.5;">${escHTML(val)}</strong></div>`;
+    return`<div class="proj-popover-row"><span style="min-width:80px;">${label}:</span><strong>${escHTML(val)}</strong></div>`;
+  };
+  metaHTML+=row('Reg No',el.dataset.reg);
+  metaHTML+=row('Course',el.dataset.course);
+  metaHTML+=row('Mentor',el.dataset.mentor);
+  metaHTML+=row('Brand',el.dataset.brand);
+  metaHTML+=row('Type',el.dataset.type);
+  metaHTML+=row('Target Users',el.dataset.users);
+  if(el.dataset.problem||el.dataset.impact||el.dataset.outcome){
+    metaHTML+=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">`;
+    metaHTML+=row('Problem Statement',el.dataset.problem,true);
+    metaHTML+=row('Impact of Problem',el.dataset.impact,true);
+    metaHTML+=row('Key Outcome',el.dataset.outcome,true);
+    metaHTML+=`</div>`;
+  }
   document.getElementById('ppMeta').innerHTML=metaHTML;
   pop.style.display='block';
   const rect=el.getBoundingClientRect();
   let left=rect.left,top=rect.bottom+8;
-  if(left+320>window.innerWidth-12) left=window.innerWidth-332;
-  if(top+300>window.innerHeight-12) top=rect.top-308;
+  if(left+440>window.innerWidth-12)left=window.innerWidth-452;
+  if(top+400>window.innerHeight-12)top=rect.top-408;
   pop.style.left=Math.max(8,left)+'px';
   pop.style.top=Math.max(8,top)+'px';
 }
 
 function hideProjectPopover(){
   document.getElementById('projPopover').style.display='none';
-  if(activePopoverBtn) activePopoverBtn.classList.remove('pop-active');
+  if(activePopoverBtn)activePopoverBtn.classList.remove('pop-active');
   activePopoverBtn=null;
 }
 
 document.addEventListener('click',function(e){
   const pop=document.getElementById('projPopover');
-  if(pop.style.display==='block'&&!pop.contains(e.target)){
-    hideProjectPopover();
-  }
+  if(pop.style.display==='block'&&!pop.contains(e.target))hideProjectPopover();
 });
 
 async function sb(path,method='GET',body=null){
   const h={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Accept':'application/json'};
-  if(method==='POST'||method==='PATCH') h['Prefer']='return=representation';
+  if(method==='POST'||method==='PATCH')h['Prefer']='return=representation';
   const opts={method,headers:h};
-  if(body) opts.body=JSON.stringify(body);
+  if(body)opts.body=JSON.stringify(body);
   const res=await fetch(SUPABASE_URL+'/rest/v1/'+path,opts);
   const text=await res.text();
-  if(!res.ok) throw new Error(text||'Request failed: '+res.status);
+  if(!res.ok)throw new Error(text||'Request failed: '+res.status);
   return text?JSON.parse(text):[];
 }
 
 const api={
-  students:(c,s)=>sb('students?college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&order=id'),
-  myStudents:(c,s,m)=>sb('students?college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&mentor_assigned=eq.'+encodeURIComponent(m)+'&order=id'),
+  students:(c,s)=>sb('students?select=*&college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&order=id'),
+  myStudents:(c,s,m)=>sb('students?select=*&college=eq.'+encodeURIComponent(c)+'&section=eq.'+encodeURIComponent(s)+'&mentor_assigned=eq.'+encodeURIComponent(m)+'&order=id'),
   progress:(ids)=>sb('weekly_progress?student_id=in.('+ids.join(',')+')'),
   evaluations:(ids)=>sb('mentor_evaluation?student_id=in.('+ids.join(',')+')'),
   approvals:(ids)=>sb('project_approval?student_id=in.('+ids.join(',')+')'),
@@ -1065,11 +1162,10 @@ document.addEventListener('input',function(e){
 
 function escHTML(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function getSectionLabel(sec){return SECTION_LABEL_MAP[sec]||('I BCA - '+sec);}
-
 function onCollegeChange(){const v=document.getElementById('collegeSelect').value;document.getElementById('goBtn').disabled=!v;selectedCollegeKey=v||null;}
 
 function goToLogin(){
-  if(!selectedCollegeKey) return;
+  if(!selectedCollegeKey)return;
   selectedCollegeName=COLLEGE_NAMES[selectedCollegeKey];
   document.getElementById('loginCollegeName').textContent=selectedCollegeName;
   document.getElementById('loginScreen').classList.add('show');
@@ -1164,16 +1260,21 @@ async function initApp(){
       allStudents=results.flat();students=allStudents;
       if(allStudents.length===0){
         document.getElementById('sstSeedPanel').style.display='block';
-        /* dynamically target correct seed function */
+        const isAlliance=selectedCollegeKey==='alliance';
+        const isBharathidasan=selectedCollegeKey==='bharathidasan';
         const isRathinam=selectedCollegeKey==='rathinam';
-        document.getElementById('seedBtn').setAttribute('onclick',isRathinam?'seedRathinamStudents()':'seedSSTStudents()');
-        document.getElementById('seedBtn').textContent='+ Insert '+(isRathinam?'Rathinam':'SST')+' Students';
-        document.querySelector('.seed-panel-title').textContent=
-          'First-time Setup: Seed '+(isRathinam?'Rathinam':'SST')+' Students';
-        document.querySelector('#sstSeedPanel p').textContent=
-          isRathinam
-            ? 'Insert all B.Sc CT (GenAI) and BCA (AI) students into the database. Run once only.'
-            : 'Insert all I BBA and I MCA students into the database. Run once only.';
+        const isTerf=selectedCollegeKey==='terf';
+        const isKristu=selectedCollegeKey==='kristu';
+        let seedFn='seedSSTStudents()';let seedLabel='SST';let seedDesc='Insert all I BBA and I MCA students into the database. Run once only.';
+        if(isAlliance){seedFn='seedAllianceStudents()';seedLabel='Alliance';seedDesc='Insert all Alliance University students into the database. Run once only.';}
+        else if(isBharathidasan){seedFn='seedBharathidasanStudents()';seedLabel='Bharathidasan';seedDesc='Insert all II B.Sc CT and I B.Sc CT students into the database. Run once only.';}
+        else if(isRathinam){seedFn='seedRathinamStudents()';seedLabel='Rathinam';seedDesc='Insert all B.Sc CT (GenAI) and BCA (AI) students into the database. Run once only.';}
+        else if(isTerf){seedFn='seedTerfStudents()';seedLabel='TERF';seedDesc='Insert all II B.Sc IT students into the database. Run once only.';}
+        else if(isKristu){seedFn='seedKristuStudents()';seedLabel='Kristu';seedDesc='Insert all BBA - AI & DS and BBA - FinTech students into the database. Run once only.';}
+        document.getElementById('seedBtn').setAttribute('onclick',seedFn);
+        document.getElementById('seedBtn').textContent='+ Insert '+seedLabel+' Students';
+        document.querySelector('.seed-panel-title').textContent='First-time Setup: Seed '+seedLabel+' Students';
+        document.querySelector('#sstSeedPanel p').textContent=seedDesc;
       }else{
         document.getElementById('sstSeedPanel').style.display='none';
       }
@@ -1210,18 +1311,17 @@ function showPanel(id,el){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  if(el) el.classList.add('active');
-  if(id==='peer'&&!peerLoaded) loadPeerReviews();
-  if(id==='finalscore') renderFinalTable();
+  if(el)el.classList.add('active');
+  if(id==='peer'&&!peerLoaded)loadPeerReviews();
+  if(id==='finalscore')renderFinalTable();
 }
 
 function getWeeksDone(sid,ua){const m=ua?adminProgressMap:progressMap;return Object.values(m[sid]||{}).filter(w=>w.status==='completed').length;}
 function getScore(sid,ua){const m=ua?adminEvalMap:evalMap;const e=m[sid];return e?e.total_score:null;}
 function getApproval(sid,ua){const m=ua?adminApprovalMap:approvalMap;const a=m[sid];return a?a.status:'pending';}
-function scoreClass(s){if(s===null)return '';return s>=75?'score-high':s>=50?'score-mid':'score-low';}
+function scoreClass(s){if(s===null)return'';return s>=75?'score-high':s>=50?'score-mid':'score-low';}
 function approvalBadge(s){const m={'approved':'<span class="badge badge-green">Approved</span>','needs-revision':'<span class="badge badge-red">Needs Revision</span>','pending':'<span class="badge badge-grey">Pending</span>'};return m[s]||m['pending'];}
-function weeksBadge(n){if(n>=4)return '<span class="badge badge-green">4/4</span>';if(n>=2)return '<span class="badge badge-amber">'+n+'/4</span>';if(n>=1)return '<span class="badge badge-blue">'+n+'/4</span>';return '<span class="badge badge-grey">0/4</span>';}
-
+function weeksBadge(n){if(n>=4)return'<span class="badge badge-green">4/4</span>';if(n>=2)return'<span class="badge badge-amber">'+n+'/4</span>';if(n>=1)return'<span class="badge badge-blue">'+n+'/4</span>';return'<span class="badge badge-grey">0/4</span>';}
 function downloadCSV(rows,filename){const csv=rows.map(r=>r.map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);showToast('CSV exported!','success');}
 function studentMatchesQuery(s,q){if(!q)return true;return(s.name||'').toLowerCase().includes(q)||(s.project_title||'').toLowerCase().includes(q);}
 
@@ -1335,9 +1435,7 @@ async function saveEvaluation(){
   try{const ex=evalMap[sid];if(ex){await api.updateEval(ex.id,data);Object.assign(evalMap[sid],data);}else{const r=await api.upsertEval(data);evalMap[sid]=Array.isArray(r)?r[0]:r;}showToast('Evaluation saved!','success');closeModal('evalModal');renderEvalTable();renderDashboard();renderStudentList();if(currentUser==='Admin'){adminEvalMap=evalMap;renderAdminTable();renderAdminStats();}}catch(e){showToast('Error: '+e.message,'error');}finally{btn.disabled=false;btn.innerHTML='Save Evaluation';}
 }
 
-/* ════════════════════════════════════════════
-   PEER EVALUATION
-   ════════════════════════════════════════════ */
+// ════════ PEER EVALUATION ════════
 async function loadPeerReviews(){
   peerLoaded=true;
   document.getElementById('peerTableBody').innerHTML='<tr><td colspan="12"><div class="loading-peer"><span class="spinner"></span> Loading peer reviews&hellip;</div></td></tr>';
@@ -1365,7 +1463,7 @@ function getFilteredPeerReviews(){
   return peerReviews.filter(r=>{const matchTab=peerTab==='all'||(r.reviewer_college_name||r.reviewer_college||'')===peerTab;const matchSearch=!q||(r.project_title||'').toLowerCase().includes(q)||(r.reviewer_name||'').toLowerCase().includes(q)||(r.project_owner_name||'').toLowerCase().includes(q);return matchTab&&matchSearch;});
 }
 
-function peerScoreChip(v){if(v===null||v===undefined)return '<span class="peer-score-chip peer-score-na">—</span>';const cls=v>=8?'peer-score-high':v>=5?'peer-score-mid':'peer-score-low';return`<span class="peer-score-chip ${cls}">${v}</span>`;}
+function peerScoreChip(v){if(v===null||v===undefined)return'<span class="peer-score-chip peer-score-na">—</span>';const cls=v>=8?'peer-score-high':v>=5?'peer-score-mid':'peer-score-low';return`<span class="peer-score-chip ${cls}">${v}</span>`;}
 function peerTotalClass(t){return t>=35?'score-high':t>=25?'score-mid':'score-low';}
 
 function renderPeerTable(){
@@ -1389,9 +1487,7 @@ function renderPeerSummary(){
 
 function exportPeerCSV(){const list=getFilteredPeerReviews();const rows=[['#','Project Title','Owner','Owner Reg','Reviewer','Reviewer Reg','Reviewer College','Clarity','Innovation','Execution','Usability','Overall','Total /50','Comments','Submitted At']];list.forEach((r,i)=>{const total50=(r.clarity||0)+(r.innovation||0)+(r.execution||0)+(r.usability||0)+(r.overall||0);rows.push([i+1,r.project_title||'',r.project_owner_name||'',r.project_reg||'',r.reviewer_name||'',r.reviewer_reg||'',r.reviewer_college_name||r.reviewer_college||'',r.clarity,r.innovation,r.execution,r.usability,r.overall,total50,r.comments||'',r.created_at?new Date(r.created_at).toLocaleString():'']);});downloadCSV(rows,'peer_reviews_'+new Date().toISOString().split('T')[0]+'.csv');}
 
-/* ════════════════════════════════════════════
-   FINAL SCORE
-   ════════════════════════════════════════════ */
+// ════════ FINAL SCORE ════════
 function getFinalGrade(score,notStarted){if(notStarted)return{label:'Not Started',cls:'badge-grey'};if(score>=85)return{label:'Excellent',cls:'badge-green'};if(score>=70)return{label:'Very Good',cls:'badge-blue'};if(score>=55)return{label:'Good',cls:'badge-amber'};if(score>=40)return{label:'Pass',cls:'badge-grey'};return{label:'Fail',cls:'badge-red'};}
 function getPeerRawForStudent(reg){const reviews=peerReviews.filter(r=>r.project_reg===reg);if(!reviews.length)return 0;const avg=reviews.reduce((sum,r)=>sum+(r.clarity||0)+(r.innovation||0)+(r.execution||0)+(r.usability||0)+(r.overall||0),0)/reviews.length;return parseFloat(avg.toFixed(1));}
 
@@ -1412,9 +1508,7 @@ function renderFinalStats(list){
 
 function exportFinalCSV(){const rows=[['#','Name','Register No','Course','Mentor','Peer Raw (/50)','Peer Score (/30)','Mentor Raw (/100)','Mentor Score (/70)','Final Score (/100)','Grade']];students.forEach((s,i)=>{const peerRaw=getPeerRawForStudent(s.register_number);const mentorRaw=getScore(s.id);const peerScore=parseFloat((peerRaw/50*30).toFixed(1));const mentorScore=mentorRaw!==null?parseFloat((mentorRaw/100*70).toFixed(1)):'';const notStarted=peerRaw===0&&mentorRaw===null;const finalScore=notStarted?0:parseFloat((peerScore+(mentorScore||0)).toFixed(1));const grade=getFinalGrade(finalScore,notStarted);rows.push([i+1,s.name,s.register_number,s.course||'',s.mentor_assigned||'',peerRaw,peerScore,mentorRaw??'',mentorScore,finalScore,grade.label]);});downloadCSV(rows,'final_scores_'+new Date().toISOString().split('T')[0]+'.csv');}
 
-/* ════════════════════════════════════════════
-   ADMIN / SEED
-   ════════════════════════════════════════════ */
+// ════════ ADMIN / SEED ════════
 async function seedSSTStudents(){
   const btn=document.getElementById('seedBtn');const status=document.getElementById('seedStatus');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Inserting\u2026';
@@ -1430,26 +1524,168 @@ async function seedRathinamStudents(){
   const btn=document.getElementById('seedBtn');const status=document.getElementById('seedStatus');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Inserting\u2026';
   const col=selectedCollegeName;
+  const allToInsert=[...RATHINAM_BSCT_STUDENTS.map(s=>({...s,section:'B.Sc CT (GenAI)'})),...RATHINAM_BCA_STUDENTS.map(s=>({...s,section:'BCA (AI)'}))];
+  let inserted=0,errors=0;
+  for(const s of allToInsert){try{await api.insertStudent({college:col,section:s.section,name:s.name,register_number:s.register_number,course:s.course,project_title:s.project_title,mentor_assigned:s.mentor_assigned,phone:s.phone,email:s.email});inserted++;status.textContent=inserted+' inserted\u2026';}catch(e){errors++;console.warn('Failed:',s.name,e.message);}}
+  btn.disabled=false;btn.innerHTML='&#43; Insert Rathinam Students';
+  if(errors===0){status.textContent='\u2713 All '+inserted+' students inserted!';status.style.color='var(--green)';document.getElementById('sstSeedPanel').style.display='none';showToast(inserted+' Rathinam students added!','success');await initApp();}
+  else{status.textContent=inserted+' inserted, '+errors+' errors';status.style.color='var(--red)';showToast(errors+' students failed','error');}
+}
+
+async function seedTerfStudents(){
+  const btn=document.getElementById('seedBtn');const status=document.getElementById('seedStatus');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Inserting\u2026';
+  const col=selectedCollegeName;
+  const allToInsert=TERF_IIBSCIT_STUDENTS.map(s=>({...s,section:'II B.Sc IT'}));
+  let inserted=0,errors=0;
+  for(const s of allToInsert){try{await api.insertStudent({college:col,section:s.section,name:s.name,register_number:s.register_number,course:s.course,project_title:s.project_title,mentor_assigned:s.mentor_assigned,phone:s.phone,email:s.email});inserted++;status.textContent=inserted+' inserted\u2026';}catch(e){errors++;console.warn('Failed:',s.name,e.message);}}
+  btn.disabled=false;btn.innerHTML='&#43; Insert TERF Students';
+  if(errors===0){status.textContent='\u2713 All '+inserted+' students inserted!';status.style.color='var(--green)';document.getElementById('sstSeedPanel').style.display='none';showToast(inserted+' TERF students added!','success');await initApp();}
+  else{status.textContent=inserted+' inserted, '+errors+' errors';status.style.color='var(--red)';showToast(errors+' students failed','error');}
+}
+
+async function seedBharathidasanStudents(){
+  const btn=document.getElementById('seedBtn');
+  const status=document.getElementById('seedStatus');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span> Inserting\u2026';
+  const col=selectedCollegeName;
   const allToInsert=[
-    ...RATHINAM_BSCT_STUDENTS.map(s=>({...s,section:'B.Sc CT (GenAI)'})),
-    ...RATHINAM_BCA_STUDENTS.map(s=>({...s,section:'BCA (AI)'}))
+    ...BCAS_IIBSCCT_STUDENTS.map(s=>({...s,section:'II B.Sc CT'})),
+    ...BCAS_IBSCCT_STUDENTS.map(s=>({...s,section:'I B.Sc CT'}))
   ];
   let inserted=0,errors=0;
   for(const s of allToInsert){
     try{
-      await api.insertStudent({college:col,section:s.section,name:s.name,register_number:s.register_number,course:s.course,project_title:s.project_title,mentor_assigned:s.mentor_assigned,phone:s.phone,email:s.email});
-      inserted++;status.textContent=inserted+' inserted\u2026';
-    }catch(e){errors++;console.warn('Failed:',s.name,e.message);}
+      await api.insertStudent({
+        college:           col,
+        section:           s.section,
+        name:              s.name,
+        register_number:   s.register_number,
+        course:            s.course,
+        project_title:     s.project_title,
+        mentor_assigned:   s.mentor_assigned,
+        phone:             s.phone  || null,
+        email:             s.email,
+        problem_statement: s.problem_statement || null,
+        impact_of_problem: s.impact_of_problem || null,
+        brand_name:        s.brand_name        || null,
+        project_type:      s.project_type      || null,
+        target_users:      s.target_users      || null,
+        key_outcome:       s.key_outcome       || null
+      });
+      inserted++;
+      status.textContent=inserted+' inserted\u2026';
+    }catch(e){
+      errors++;
+      console.warn('Failed:',s.name,e.message);
+    }
   }
-  btn.disabled=false;btn.innerHTML='&#43; Insert Rathinam Students';
+  btn.disabled=false;
+  btn.innerHTML='&#43; Insert Bharathidasan Students';
   if(errors===0){
-    status.textContent='\u2713 All '+inserted+' students inserted!';status.style.color='var(--green)';
+    status.textContent='\u2713 All '+inserted+' students inserted!';
+    status.style.color='var(--green)';
     document.getElementById('sstSeedPanel').style.display='none';
-    showToast(inserted+' Rathinam students added!','success');
+    showToast(inserted+' Bharathidasan students added!','success');
     await initApp();
   }else{
-    status.textContent=inserted+' inserted, '+errors+' errors';status.style.color='var(--red)';
-    showToast(errors+' students failed','error');
+    status.textContent=inserted+' inserted, '+errors+' errors';
+    status.style.color='var(--red)';
+    showToast(errors+' students failed — check console','error');
+  }
+}
+
+async function seedAllianceStudents(){
+  const btn=document.getElementById('seedBtn');
+  const status=document.getElementById('seedStatus');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span> Inserting\u2026';
+  const col=selectedCollegeName;
+  const allToInsert=[
+    ...ALLIANCE_IMCA_A_STUDENTS.map(s=>({...s,section:'I MCA - A'})),
+    ...ALLIANCE_IMCA_B_STUDENTS.map(s=>({...s,section:'I MCA - B'})),
+    ...ALLIANCE_IIBCA_AIML_STUDENTS.map(s=>({...s,section:'II BCA AI & ML (A+B)'}))
+  ];
+  let inserted=0,errors=0;
+  for(const s of allToInsert){
+    try{
+      await api.insertStudent({
+        college:         col,
+        section:         s.section,
+        name:            s.name,
+        register_number: s.register_number,
+        course:          s.course,
+        project_title:   s.project_title,
+        mentor_assigned: s.mentor_assigned,
+        phone:           s.phone || null,
+        email:           s.email
+      });
+      inserted++;
+      status.textContent=inserted+' inserted\u2026';
+    }catch(e){
+      errors++;
+      console.warn('Failed:',s.name,e.message);
+    }
+  }
+  btn.disabled=false;
+  btn.innerHTML='&#43; Insert Alliance Students';
+  if(errors===0){
+    status.textContent='\u2713 All '+inserted+' students inserted!';
+    status.style.color='var(--green)';
+    document.getElementById('sstSeedPanel').style.display='none';
+    showToast(inserted+' Alliance students added!','success');
+    await initApp();
+  }else{
+    status.textContent=inserted+' inserted, '+errors+' errors';
+    status.style.color='var(--red)';
+    showToast(errors+' students failed — check console','error');
+  }
+}
+
+async function seedKristuStudents(){
+  const btn=document.getElementById('seedBtn');
+  const status=document.getElementById('seedStatus');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span> Inserting\u2026';
+  const col=selectedCollegeName;
+  const allToInsert=[
+    ...KJ_BBAAIDS_STUDENTS.map(s=>({...s,section:'BBA - AI & DS'})),
+    ...KJ_BBAFN_STUDENTS.map(s=>({...s,section:'BBA - FinTech'}))
+  ];
+  let inserted=0,errors=0;
+  for(const s of allToInsert){
+    try{
+      await api.insertStudent({
+        college:         col,
+        section:         s.section,
+        name:            s.name,
+        register_number: s.register_number,
+        course:          s.course,
+        project_title:   s.project_title,
+        mentor_assigned: s.mentor_assigned,
+        phone:           s.phone || null,
+        email:           s.email
+      });
+      inserted++;
+      status.textContent=inserted+' inserted\u2026';
+    }catch(e){
+      errors++;
+      console.warn('Failed:',s.name,e.message);
+    }
+  }
+  btn.disabled=false;
+  btn.innerHTML='&#43; Insert Kristu Students';
+  if(errors===0){
+    status.textContent='\u2713 All '+inserted+' students inserted!';
+    status.style.color='var(--green)';
+    document.getElementById('sstSeedPanel').style.display='none';
+    showToast(inserted+' Kristu Jayanti students added!','success');
+    await initApp();
+  }else{
+    status.textContent=inserted+' inserted, '+errors+' errors';
+    status.style.color='var(--red)';
+    showToast(errors+' students failed — check console','error');
   }
 }
 
@@ -1464,7 +1700,6 @@ function renderAdminTable(){const list=getAdminList();const tb=document.getEleme
 function exportCSV(){const list=getAdminList();const rows=[['#','Name','Register No','Section','Course','Project Title','Mentor','Phone','Email','W1 Status','W1 Note','W2 Status','W2 Note','W3 Status','W3 Note','W4 Status','W4 Note','Tech Quality','Problem Fit','Effort','Presentation','Impact','Total Score','Approval']];list.forEach((s,i)=>{const wks=adminProgressMap[s.id]||{},e=adminEvalMap[s.id],a=adminApprovalMap[s.id];rows.push([i+1,s.name,s.register_number,s.section||'',s.course||'',s.project_title||'',s.mentor_assigned||'',s.phone||'',s.email||'',wks[1]?.status||'not-started',wks[1]?.note||'',wks[2]?.status||'not-started',wks[2]?.note||'',wks[3]?.status||'not-started',wks[3]?.note||'',wks[4]?.status||'not-started',wks[4]?.note||'',e?.tech_quality??'',e?.problem_fit??'',e?.effort_ownership??'',e?.presentation??'',e?.practical_impact??'',e?.total_score??'',a?.status||'pending']);});downloadCSV(rows,'students_'+adminTab+'_'+new Date().toISOString().split('T')[0]+'.csv');}
 
 function closeModal(id){document.getElementById(id).classList.remove('open');}
-
 let toastTimeout;
 function showToast(msg,type='success'){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;document.getElementById('toastDot').className='toast-dot '+type;t.classList.add('show');clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>t.classList.remove('show'),3500);}</script>
 </body>
