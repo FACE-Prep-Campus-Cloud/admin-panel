@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/dist/tabler-icons.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -285,11 +286,11 @@ body { font-family: var(--font); background: var(--bg); color: var(--text-primar
               <span class="leg"><span class="leg-sq" style="background:#dc2626"></span>Deduction</span>
             </div>
           </div>
-          <div style="position:relative;height:220px"><canvas id="wf"></canvas></div>
+          <div style="position:relative;height:240px"><canvas id="wf"></canvas></div>
         </div>
         <div class="card">
           <div class="card-header"><div class="card-title">Vendor Spend — Category Share</div></div>
-          <div style="position:relative;height:240px"><canvas id="donut"></canvas></div>
+          <div style="position:relative;height:260px"><canvas id="donut"></canvas></div>
         </div>
       </div>
 
@@ -327,11 +328,11 @@ body { font-family: var(--font); background: var(--bg); color: var(--text-primar
               <span class="leg"><span class="leg-dot" style="background:#16a34a"></span>Profit</span>
             </div>
           </div>
-          <div style="position:relative;height:210px"><canvas id="cf-bar"></canvas></div>
+          <div style="position:relative;height:230px"><canvas id="cf-bar"></canvas></div>
         </div>
         <div class="card">
           <div class="card-header"><div class="card-title">Receivable Distribution</div></div>
-          <div style="position:relative;height:230px"><canvas id="cf-pie"></canvas></div>
+          <div style="position:relative;height:250px"><canvas id="cf-pie"></canvas></div>
         </div>
       </div>
       <div class="card">
@@ -362,7 +363,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text-primar
               <span class="leg"><span class="leg-sq" style="background:#22c55e"></span>Paid</span>
             </div>
           </div>
-          <div style="position:relative;height:260px"><canvas id="vnd-bar"></canvas></div>
+          <div style="position:relative;height:280px"><canvas id="vnd-bar"></canvas></div>
         </div>
         <div class="card">
           <div class="card-header"><div class="card-title">Payment Efficiency by Category</div></div>
@@ -397,14 +398,14 @@ body { font-family: var(--font); background: var(--bg); color: var(--text-primar
       <div class="row2">
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Monthly Salary Trend (₹ Lakhs)</div>
+            <div class="card-title">Monthly Salary Trend (₹ Crores)</div>
             <div class="legend" style="margin:0">
               <span class="leg"><span class="leg-sq" style="background:#2563eb"></span>On roll</span>
               <span class="leg"><span class="leg-sq" style="background:#22c55e"></span>Off roll</span>
               <span class="leg"><span class="leg-sq" style="background:#d97706"></span>Stipend</span>
             </div>
           </div>
-          <div style="position:relative;height:215px"><canvas id="sal-bar"></canvas></div>
+          <div style="position:relative;height:235px"><canvas id="sal-bar"></canvas></div>
         </div>
         <div class="card">
           <div class="card-header">
@@ -414,7 +415,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text-primar
               <span class="leg"><span class="leg-dot" style="background:#22c55e"></span>Off roll</span>
             </div>
           </div>
-          <div style="position:relative;height:215px"><canvas id="hc-line"></canvas></div>
+          <div style="position:relative;height:235px"><canvas id="hc-line"></canvas></div>
         </div>
       </div>
       <div class="card">
@@ -455,11 +456,11 @@ body { font-family: var(--font); background: var(--bg); color: var(--text-primar
             <span class="leg"><span class="leg-dot" style="background:#16a34a"></span>Achievement cumulative</span>
           </div>
         </div>
-        <div style="position:relative;height:290px"><canvas id="scurve"></canvas></div>
+        <div style="position:relative;height:310px"><canvas id="scurve"></canvas></div>
       </div>
       <div class="row2">
-        <div class="card"><div class="card-header"><div class="card-title">Monthly Achievement (₹ Crores)</div></div><div style="position:relative;height:190px"><canvas id="achieve-bar"></canvas></div></div>
-        <div class="card"><div class="card-header"><div class="card-title">Monthly % Achievement vs Target</div></div><div style="position:relative;height:190px"><canvas id="achieve-pct"></canvas></div></div>
+        <div class="card"><div class="card-header"><div class="card-title">Monthly Achievement (₹ Crores)</div></div><div style="position:relative;height:210px"><canvas id="achieve-bar"></canvas></div></div>
+        <div class="card"><div class="card-header"><div class="card-title">Monthly % Achievement vs Target</div></div><div style="position:relative;height:210px"><canvas id="achieve-pct"></canvas></div></div>
       </div>
       <div class="card">
         <div class="card-header"><div class="card-title">Target vs Achievement — Month by Month</div></div>
@@ -477,6 +478,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text-primar
 </div><!-- /app -->
 
 <script>
+// Register the datalabels plugin globally
+Chart.register(ChartDataLabels);
+
 // ── SUPABASE CONFIG ──────────────────────────────────────────
 const SUPABASE_URL  = 'https://pqjkngkgxjxqnfkvnmut.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxamtuZ2tneGp4cW5ma3ZubXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NDkxNjYsImV4cCI6MjA5NzUyNTE2Nn0.nwdeLOT2lMYPjfLzu3-dOzP_zTI1ALMgRFOKRQrtTcU';
@@ -490,12 +494,47 @@ Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
 Chart.defaults.font.size = 11;
 Chart.defaults.color = '#6b7280';
 const G = 'rgba(0,0,0,0.05)';
-const fmtCr = v => '₹' + Number(v).toFixed(2) + ' Cr';
-const fmtL  = v => v > 0 ? '₹' + (v/100000).toFixed(1) + 'L' : '—';
+const fmtCr  = v => '₹' + Number(v).toFixed(2) + ' Cr';
+// Convert raw rupee amount to Crores for display
+const fmtCrRaw = v => v > 0 ? '₹' + (v / 1e7).toFixed(2) + ' Cr' : '—';
 const fmtINR = v => '₹' + Number(v).toLocaleString('en-IN');
 
 const views = { overview:'Overview', cashflow:'Cash Flow', vendors:'Vendors', staff:'Staff Salaries', progress:'S-Curve Progress' };
 const inited = {};
+
+// ── SHARED DATALABEL CONFIGS ─────────────────────────────────
+const dlBar = {
+  anchor: 'end',
+  align: 'end',
+  offset: 2,
+  font: { size: 9.5, weight: '600' },
+  color: '#374151',
+  clamp: true,
+};
+const dlBarInside = {
+  anchor: 'end',
+  align: 'start',
+  offset: 4,
+  font: { size: 9, weight: '600' },
+  color: '#ffffff',
+  clamp: true,
+};
+const dlLine = {
+  anchor: 'center',
+  align: 'top',
+  offset: 4,
+  font: { size: 9, weight: '600' },
+  color: '#374151',
+  clamp: true,
+  display: (ctx) => ctx.dataIndex % 2 === 0, // show every other label to avoid crowding
+};
+const dlDonut = {
+  anchor: 'center',
+  align: 'center',
+  font: { size: 9.5, weight: '700' },
+  color: '#ffffff',
+  formatter: (val) => val > 2 ? val + '%' : '',
+};
 
 // ── NAV ──────────────────────────────────────────────────────
 function nav(el, id) {
@@ -617,33 +656,78 @@ function initOverview() {
   setText('ov-sub', project.name + ' · ' + Number(project.total_mt).toLocaleString('en-IN') + ' MT Infrastructure Project · ' + (project.fy || ''));
 
   // Waterfall
-  const gross = Number(cf.gross_receivable_cr);
-  const bal   = -Number(cf.balance_receivable_cr);
-  const netR  = Number(cf.amount_received_cr);
+  const gross  = Number(cf.gross_receivable_cr);
+  const bal    = -Number(cf.balance_receivable_cr);
+  const netR   = Number(cf.amount_received_cr);
   const retPbg = Number(cf.retention_cr) + Number(cf.pbg_cr);
   const wData  = [gross, bal, netR, retPbg, inflow, -outflow, profit];
   const wLabels = ['Gross recv.','Balance','Net recv.','+ Ret+PBG','Net inflow','− Outflow','Profit'];
+
   new Chart(document.getElementById('wf'), {
     type: 'bar',
-    data: { labels: wLabels, datasets: [{ data: wData.map(v => Math.abs(v)), backgroundColor: wData.map(v => v >= 0 ? 'rgba(34,197,94,0.45)' : 'rgba(220,38,38,0.45)'), borderColor: wData.map(v => v >= 0 ? '#16a34a' : '#dc2626'), borderWidth: 1.5, borderRadius: 5 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '₹' + wData[c.dataIndex].toFixed(2) + ' Cr' } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 20 } }, y: { grid: { color: G }, ticks: { callback: v => '₹' + v }, border: { display: false } } } }
+    data: {
+      labels: wLabels,
+      datasets: [{
+        data: wData.map(v => Math.abs(v)),
+        backgroundColor: wData.map(v => v >= 0 ? 'rgba(34,197,94,0.45)' : 'rgba(220,38,38,0.45)'),
+        borderColor: wData.map(v => v >= 0 ? '#16a34a' : '#dc2626'),
+        borderWidth: 1.5,
+        borderRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 22 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => '₹' + wData[c.dataIndex].toFixed(2) + ' Cr' } },
+        datalabels: {
+          ...dlBar,
+          formatter: (val, ctx) => '₹' + Math.abs(wData[ctx.dataIndex]).toFixed(1) + 'Cr',
+          color: (ctx) => wData[ctx.dataIndex] >= 0 ? '#15803d' : '#dc2626',
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 20 } },
+        y: { grid: { color: G }, ticks: { callback: v => '₹' + v }, border: { display: false } }
+      }
+    }
   });
 
   // Donut
   const sd = vendors.filter(v => v.pct > 0);
   new Chart(document.getElementById('donut'), {
     type: 'doughnut',
-    data: { labels: sd.map(v => v.name.split(' ').slice(0,2).join(' ')), datasets: [{ data: sd.map(v => v.pct), backgroundColor: sd.map(v => v.color), borderColor: '#ffffff', borderWidth: 2, hoverOffset: 6 }] },
-    options: { cutout: '60%', responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 8, padding: 6, font: { size: 9.5 }, usePointStyle: true, pointStyle: 'circle' } }, tooltip: { callbacks: { label: c => ' ' + c.label + ': ' + c.raw + '%' } } } }
+    data: {
+      labels: sd.map(v => v.name.split(' ').slice(0,2).join(' ')),
+      datasets: [{
+        data: sd.map(v => v.pct),
+        backgroundColor: sd.map(v => v.color),
+        borderColor: '#ffffff',
+        borderWidth: 2,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      cutout: '55%',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'right', labels: { boxWidth: 8, padding: 6, font: { size: 9.5 }, usePointStyle: true, pointStyle: 'circle' } },
+        tooltip: { callbacks: { label: c => ' ' + c.label + ': ' + c.raw + '%' } },
+        datalabels: { ...dlDonut }
+      }
+    }
   });
 
-  // Pending dues
+  // Pending dues — now in Crores
   const pend = vendors.filter(v => v.balance > 0);
   setText('ov-pending-count', pend.length + ' open balances');
   const pl = document.getElementById('ov-pending');
   pl.innerHTML = '';
   pend.forEach(v => {
-    pl.innerHTML += '<div class="alert-row"><div><div class="alert-name">' + v.name + '</div><div class="alert-sub">' + v.pct + '% of total spend · ₹' + v.rate + '/MT</div></div><span class="pill pill-red">' + fmtL(v.balance) + '</span></div>';
+    pl.innerHTML += '<div class="alert-row"><div><div class="alert-name">' + v.name + '</div><div class="alert-sub">' + v.pct + '% of total spend · ₹' + v.rate + '/MT</div></div><span class="pill pill-red">' + fmtCrRaw(v.balance) + '</span></div>';
   });
 }
 
@@ -669,14 +753,65 @@ function initCashflow() {
 
   new Chart(document.getElementById('cf-bar'), {
     type: 'bar',
-    data: { labels: ['Net inflow', 'Net outflow', 'Profit'], datasets: [{ data: [inflow, outflow, profit], backgroundColor: ['rgba(37,99,235,0.45)', 'rgba(220,38,38,0.45)', 'rgba(34,197,94,0.45)'], borderColor: ['#2563eb', '#dc2626', '#16a34a'], borderWidth: 1.5, borderRadius: 5 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '₹' + c.raw + ' Cr' } } }, scales: { x: { grid: { display: false } }, y: { grid: { color: G }, ticks: { callback: v => '₹' + v + 'Cr' }, border: { display: false } } } }
+    data: {
+      labels: ['Net inflow', 'Net outflow', 'Profit'],
+      datasets: [{
+        data: [inflow, outflow, profit],
+        backgroundColor: ['rgba(37,99,235,0.45)', 'rgba(220,38,38,0.45)', 'rgba(34,197,94,0.45)'],
+        borderColor: ['#2563eb', '#dc2626', '#16a34a'],
+        borderWidth: 1.5,
+        borderRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 28 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => '₹' + c.raw + ' Cr' } },
+        datalabels: {
+          ...dlBar,
+          formatter: (val) => '₹' + Number(val).toFixed(2) + ' Cr',
+          font: { size: 10, weight: '700' },
+          color: (ctx) => ['#1d4ed8','#b91c1c','#15803d'][ctx.dataIndex],
+        }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: G }, ticks: { callback: v => '₹' + v + 'Cr' }, border: { display: false } }
+      }
+    }
   });
 
   new Chart(document.getElementById('cf-pie'), {
     type: 'doughnut',
-    data: { labels: ['Amount received', 'Retention 5%', 'PBG 2.5%', 'Balance due'], datasets: [{ data: [Number(cf.amount_received_cr), Number(cf.retention_cr), Number(cf.pbg_cr), Number(cf.balance_receivable_cr)], backgroundColor: ['rgba(34,197,94,0.55)', 'rgba(37,99,235,0.55)', 'rgba(124,58,237,0.55)', 'rgba(220,38,38,0.55)'], borderColor: ['#16a34a', '#2563eb', '#7c3aed', '#dc2626'], borderWidth: 1.5, hoverOffset: 5 }] },
-    options: { cutout: '55%', responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 9, padding: 10, font: { size: 10 }, usePointStyle: true, pointStyle: 'circle' } }, tooltip: { callbacks: { label: c => ' ' + c.label + ': ₹' + c.raw + ' Cr' } } } }
+    data: {
+      labels: ['Amount received', 'Retention 5%', 'PBG 2.5%', 'Balance due'],
+      datasets: [{
+        data: [Number(cf.amount_received_cr), Number(cf.retention_cr), Number(cf.pbg_cr), Number(cf.balance_receivable_cr)],
+        backgroundColor: ['rgba(34,197,94,0.55)', 'rgba(37,99,235,0.55)', 'rgba(124,58,237,0.55)', 'rgba(220,38,38,0.55)'],
+        borderColor: ['#16a34a', '#2563eb', '#7c3aed', '#dc2626'],
+        borderWidth: 1.5,
+        hoverOffset: 5
+      }]
+    },
+    options: {
+      cutout: '50%',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 9, padding: 10, font: { size: 10 }, usePointStyle: true, pointStyle: 'circle' } },
+        tooltip: { callbacks: { label: c => ' ' + c.label + ': ₹' + c.raw + ' Cr' } },
+        datalabels: {
+          anchor: 'center',
+          align: 'center',
+          font: { size: 9.5, weight: '700' },
+          color: '#ffffff',
+          formatter: (val) => val > 0.5 ? '₹' + Number(val).toFixed(1) + 'Cr' : '',
+        }
+      }
+    }
   });
 
   // Statement table
@@ -712,22 +847,62 @@ function initVendors() {
   const pendCount = vendors.filter(v => v.balance > 0).length;
   const eff       = totalOut > 0 ? (totalPaid / totalOut * 100).toFixed(1) : 0;
 
-  setText('vnd-outstanding', fmtL(totalOut));
-  setText('vnd-paid',        fmtL(totalPaid));
-  setText('vnd-balance',     fmtL(totalBal));
+  // KPI cards in Crores
+  setText('vnd-outstanding', fmtCrRaw(totalOut));
+  setText('vnd-paid',        fmtCrRaw(totalPaid));
+  setText('vnd-balance',     fmtCrRaw(totalBal));
   setText('vnd-count-note',  'Across ' + vendors.filter(v => v.outstanding > 0).length + ' billed categories');
   setText('vnd-eff-note',    eff + '% payment efficiency');
   setText('vnd-balance-note', pendCount + ' vendors with open dues');
   setText('vnd-total-count', vendors.length + ' categories');
 
   const top = vendors.filter(v => v.outstanding > 0).slice(0, 7);
+  // Convert to Crores for vendor bar chart
   new Chart(document.getElementById('vnd-bar'), {
     type: 'bar',
-    data: { labels: top.map(v => v.name.split(' ').slice(0,2).join(' ')), datasets: [
-      { label: 'Outstanding', data: top.map(v => +(v.outstanding/1e6).toFixed(1)), backgroundColor: 'rgba(37,99,235,0.4)', borderColor: '#2563eb', borderWidth: 1.5, borderRadius: 4 },
-      { label: 'Paid', data: top.map(v => +(v.paid/1e6).toFixed(1)), backgroundColor: 'rgba(34,197,94,0.4)', borderColor: '#22c55e', borderWidth: 1.5, borderRadius: 4 },
-    ] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ₹' + c.raw + 'M' } } }, scales: { x: { grid: { display: false }, ticks: { maxRotation: 35, font: { size: 9.5 } } }, y: { grid: { color: G }, ticks: { callback: v => '₹' + v + 'M' }, border: { display: false } } } }
+    data: {
+      labels: top.map(v => v.name.split(' ').slice(0,2).join(' ')),
+      datasets: [
+        {
+          label: 'Outstanding',
+          data: top.map(v => +(v.outstanding/1e7).toFixed(2)),
+          backgroundColor: 'rgba(37,99,235,0.4)',
+          borderColor: '#2563eb',
+          borderWidth: 1.5,
+          borderRadius: 4
+        },
+        {
+          label: 'Paid',
+          data: top.map(v => +(v.paid/1e7).toFixed(2)),
+          backgroundColor: 'rgba(34,197,94,0.4)',
+          borderColor: '#22c55e',
+          borderWidth: 1.5,
+          borderRadius: 4
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 22 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => ' ₹' + c.raw + ' Cr' } },
+        datalabels: {
+          anchor: 'end',
+          align: 'end',
+          offset: 2,
+          font: { size: 8.5, weight: '600' },
+          color: (ctx) => ctx.datasetIndex === 0 ? '#1d4ed8' : '#15803d',
+          clamp: true,
+          formatter: (val) => val > 0 ? '₹' + val + 'Cr' : '',
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 35, font: { size: 9.5 } } },
+        y: { grid: { color: G }, ticks: { callback: v => '₹' + v + 'Cr' }, border: { display: false } }
+      }
+    }
   });
 
   const barsEl = document.getElementById('eff-bars');
@@ -741,8 +916,8 @@ function initVendors() {
   const tb = document.getElementById('vnd-table');
   tb.innerHTML = '';
   vendors.forEach(v => {
-    const st = v.balance === 0 ? '<span class="pill pill-green">Cleared</span>' : '<span class="pill pill-red">' + fmtL(v.balance) + '</span>';
-    tb.innerHTML += '<tr><td class="tm">' + v.id + '</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis">' + v.name + '</td><td class="tr tm">' + (v.outstanding > 0 ? fmtL(v.outstanding) : '—') + '</td><td class="tr" style="color:#15803d">' + fmtL(v.paid) + '</td><td class="tr">' + (v.balance > 0 ? fmtL(v.balance) : '—') + '</td><td class="tr tm">' + (v.rate > 0 ? '₹' + v.rate : '—') + '</td><td class="tr"><span class="pill pill-blue">' + v.pct + '%</span></td><td>' + st + '</td></tr>';
+    const st = v.balance === 0 ? '<span class="pill pill-green">Cleared</span>' : '<span class="pill pill-red">' + fmtCrRaw(v.balance) + '</span>';
+    tb.innerHTML += '<tr><td class="tm">' + v.id + '</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis">' + v.name + '</td><td class="tr tm">' + (v.outstanding > 0 ? fmtCrRaw(v.outstanding) : '—') + '</td><td class="tr" style="color:#15803d">' + fmtCrRaw(v.paid) + '</td><td class="tr">' + (v.balance > 0 ? fmtCrRaw(v.balance) : '—') + '</td><td class="tr tm">' + (v.rate > 0 ? '₹' + v.rate : '—') + '</td><td class="tr"><span class="pill pill-blue">' + v.pct + '%</span></td><td>' + st + '</td></tr>';
   });
 }
 
@@ -755,30 +930,85 @@ function initStaff() {
   const firstM      = salData.length > 0 ? salData[0].m : '';
   const lastM       = salData.length > 0 ? salData[salData.length - 1].m : '';
 
-  setText('sal-total',   fmtL(totalSal));
+  // KPI cards in Crores
+  setText('sal-total',   fmtCrRaw(totalSal));
   setText('sal-period',  firstM + ' – ' + lastM);
-  setText('sal-onroll',  fmtL(totalOn));
-  setText('sal-offroll', fmtL(totalOff));
+  setText('sal-onroll',  fmtCrRaw(totalOn));
+  setText('sal-offroll', fmtCrRaw(totalOff));
   setText('sal-avg',     fmtINR(avgSalary));
 
   const labs = salData.map(d => d.m);
+
+  // Convert to Crores for salary bar chart
   new Chart(document.getElementById('sal-bar'), {
     type: 'bar',
-    data: { labels: labs, datasets: [
-      { label: 'On roll', data: salData.map(d => +(d.on/100000).toFixed(1)), backgroundColor: 'rgba(37,99,235,0.5)', borderColor: '#2563eb', borderWidth: 0, stack: 's' },
-      { label: 'Off roll', data: salData.map(d => +(d.off/100000).toFixed(1)), backgroundColor: 'rgba(34,197,94,0.5)', borderColor: '#22c55e', borderWidth: 0, stack: 's' },
-      { label: 'Stipend', data: salData.map(d => +(d.st/100000).toFixed(1)), backgroundColor: 'rgba(217,119,6,0.6)', borderColor: '#d97706', borderWidth: 0, stack: 's' },
-    ] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false, callbacks: { label: c => ' ' + c.dataset.label + ': ₹' + c.raw + 'L' } } }, scales: { x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 45, font: { size: 8.5 }, autoSkip: true, maxTicksLimit: 13 } }, y: { stacked: true, grid: { color: G }, ticks: { callback: v => '₹' + v + 'L' }, border: { display: false } } } }
+    data: {
+      labels: labs,
+      datasets: [
+        { label: 'On roll',  data: salData.map(d => +(d.on/1e7).toFixed(3)),  backgroundColor: 'rgba(37,99,235,0.5)',  borderColor: '#2563eb', borderWidth: 0, stack: 's' },
+        { label: 'Off roll', data: salData.map(d => +(d.off/1e7).toFixed(3)), backgroundColor: 'rgba(34,197,94,0.5)',  borderColor: '#22c55e', borderWidth: 0, stack: 's' },
+        { label: 'Stipend',  data: salData.map(d => +(d.st/1e7).toFixed(3)),  backgroundColor: 'rgba(217,119,6,0.6)',  borderColor: '#d97706', borderWidth: 0, stack: 's' },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 22 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { mode: 'index', intersect: false, callbacks: { label: c => ' ' + c.dataset.label + ': ₹' + c.raw + ' Cr' } },
+        datalabels: {
+          display: (ctx) => ctx.datasetIndex === 2, // only show label on top (Stipend = last stack)
+          anchor: 'end',
+          align: 'end',
+          offset: 2,
+          font: { size: 8.5, weight: '600' },
+          color: '#374151',
+          clamp: true,
+          formatter: (val, ctx) => {
+            // Sum all stacks for this bar
+            const datasets = ctx.chart.data.datasets;
+            const total = datasets.reduce((s, ds) => s + (ds.data[ctx.dataIndex] || 0), 0);
+            return total > 0 ? '₹' + total.toFixed(2) + 'Cr' : '';
+          }
+        }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 45, font: { size: 8.5 }, autoSkip: true, maxTicksLimit: 13 } },
+        y: { stacked: true, grid: { color: G }, ticks: { callback: v => '₹' + v + 'Cr' }, border: { display: false } }
+      }
+    }
   });
 
   new Chart(document.getElementById('hc-line'), {
     type: 'line',
-    data: { labels: labs, datasets: [
-      { label: 'On roll', data: salData.map(d => d.hc - (d.off > 0 ? Math.round(d.off/d.on*d.hc) : 0) - (d.st > 0 ? 1 : 0)), borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.06)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
-      { label: 'Off roll', data: salData.map(d => d.off > 0 ? Math.round(d.off/100000*2.5) : 0), borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.06)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 },
-    ] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } }, scales: { x: { grid: { display: false }, ticks: { maxRotation: 45, font: { size: 8.5 }, autoSkip: true, maxTicksLimit: 13 } }, y: { grid: { color: G }, border: { display: false }, title: { display: true, text: 'Headcount', font: { size: 9 } } } } }
+    data: {
+      labels: labs,
+      datasets: [
+        { label: 'On roll',  data: salData.map(d => d.hc - (d.off > 0 ? Math.round(d.off/d.on*d.hc) : 0) - (d.st > 0 ? 1 : 0)), borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.06)', fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2 },
+        { label: 'Off roll', data: salData.map(d => d.off > 0 ? Math.round(d.off/100000*2.5) : 0), borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.06)', fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2 },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 18 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { mode: 'index', intersect: false },
+        datalabels: {
+          ...dlLine,
+          display: (ctx) => ctx.datasetIndex === 0 && ctx.dataIndex % 2 === 0,
+          formatter: (val) => val > 0 ? val : '',
+          color: '#2563eb',
+          font: { size: 8.5, weight: '600' },
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 45, font: { size: 8.5 }, autoSkip: true, maxTicksLimit: 13 } },
+        y: { grid: { color: G }, border: { display: false }, title: { display: true, text: 'Headcount', font: { size: 9 } } }
+      }
+    }
   });
 
   const tb = document.getElementById('sal-table');
@@ -792,7 +1022,6 @@ function initStaff() {
 function initProgress() {
   const maxTgt = Math.max(...progData.filter(d => d.tgtCum != null).map(d => d.tgtCum));
   const maxAch = Math.max(...progData.map(d => d.achCum));
-  const lastAch = progData[progData.length - 1];
   const achPct  = maxTgt > 0 ? (maxAch / maxTgt * 100).toFixed(1) : 0;
   const balCr   = (maxTgt - maxAch).toFixed(2);
   const balPct  = maxTgt > 0 ? (100 - Number(achPct)).toFixed(1) : 0;
@@ -806,25 +1035,113 @@ function initProgress() {
   setText('prog-pill-bal', balPct + '% remaining');
 
   const labs = progData.map(d => d.m);
+
   new Chart(document.getElementById('scurve'), {
     type: 'line',
-    data: { labels: labs, datasets: [
-      { label: 'Target cumulative', data: progData.map(d => d.tgtCum), borderColor: '#2563eb', borderDash: [5, 4], backgroundColor: 'rgba(37,99,235,0.04)', fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2, spanGaps: false },
-      { label: 'Achievement cumulative', data: progData.map(d => d.achCum), borderColor: '#16a34a', backgroundColor: 'rgba(34,197,94,0.07)', fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2.5 },
-    ] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false, callbacks: { label: c => c.raw != null ? ' ' + c.dataset.label + ': ₹' + c.raw + ' Cr' : '' } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 9.5 }, maxRotation: 35 } }, y: { grid: { color: G }, ticks: { callback: v => '₹' + v + 'Cr' }, border: { display: false } } } }
+    data: {
+      labels: labs,
+      datasets: [
+        { label: 'Target cumulative',      data: progData.map(d => d.tgtCum), borderColor: '#2563eb', borderDash: [5, 4], backgroundColor: 'rgba(37,99,235,0.04)', fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2, spanGaps: false },
+        { label: 'Achievement cumulative', data: progData.map(d => d.achCum), borderColor: '#16a34a', backgroundColor: 'rgba(34,197,94,0.07)', fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2.5 },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 22 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { mode: 'index', intersect: false, callbacks: { label: c => c.raw != null ? ' ' + c.dataset.label + ': ₹' + c.raw + ' Cr' : '' } },
+        datalabels: {
+          display: (ctx) => ctx.datasetIndex === 1 && ctx.dataIndex % 3 === 0 && ctx.raw != null,
+          anchor: 'top',
+          align: 'top',
+          offset: 4,
+          font: { size: 8.5, weight: '600' },
+          color: '#15803d',
+          formatter: (val) => val != null ? '₹' + Number(val).toFixed(1) + 'Cr' : '',
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 9.5 }, maxRotation: 35 } },
+        y: { grid: { color: G }, ticks: { callback: v => '₹' + v + 'Cr' }, border: { display: false } }
+      }
+    }
   });
 
   new Chart(document.getElementById('achieve-bar'), {
     type: 'bar',
-    data: { labels: labs, datasets: [{ data: progData.map(d => d.ach), backgroundColor: 'rgba(34,197,94,0.45)', borderColor: '#22c55e', borderWidth: 1.5, borderRadius: 4 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ₹' + c.raw + ' Cr' } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 8.5 }, maxRotation: 40 } }, y: { grid: { color: G }, ticks: { callback: v => '₹' + v }, border: { display: false } } } }
+    data: {
+      labels: labs,
+      datasets: [{
+        data: progData.map(d => d.ach),
+        backgroundColor: 'rgba(34,197,94,0.45)',
+        borderColor: '#22c55e',
+        borderWidth: 1.5,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 22 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => ' ₹' + c.raw + ' Cr' } },
+        datalabels: {
+          anchor: 'end',
+          align: 'end',
+          offset: 2,
+          font: { size: 8.5, weight: '600' },
+          color: '#15803d',
+          clamp: true,
+          formatter: (val) => val > 0 ? '₹' + Number(val).toFixed(1) : '',
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 8.5 }, maxRotation: 40 } },
+        y: { grid: { color: G }, ticks: { callback: v => '₹' + v }, border: { display: false } }
+      }
+    }
   });
 
   new Chart(document.getElementById('achieve-pct'), {
     type: 'bar',
-    data: { labels: labs, datasets: [{ data: progData.map(d => d.pct), backgroundColor: progData.map(d => d.pct >= 8 ? 'rgba(34,197,94,0.5)' : d.pct >= 4 ? 'rgba(217,119,6,0.45)' : 'rgba(220,38,38,0.4)'), borderColor: progData.map(d => d.pct >= 8 ? '#22c55e' : d.pct >= 4 ? '#d97706' : '#dc2626'), borderWidth: 1.5, borderRadius: 4 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ' + c.raw + '% of target' } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 8.5 }, maxRotation: 40 } }, y: { grid: { color: G }, ticks: { callback: v => v + '%' }, border: { display: false } } } }
+    data: {
+      labels: labs,
+      datasets: [{
+        data: progData.map(d => d.pct),
+        backgroundColor: progData.map(d => d.pct >= 8 ? 'rgba(34,197,94,0.5)' : d.pct >= 4 ? 'rgba(217,119,6,0.45)' : 'rgba(220,38,38,0.4)'),
+        borderColor: progData.map(d => d.pct >= 8 ? '#22c55e' : d.pct >= 4 ? '#d97706' : '#dc2626'),
+        borderWidth: 1.5,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 22 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => ' ' + c.raw + '% of target' } },
+        datalabels: {
+          anchor: 'end',
+          align: 'end',
+          offset: 2,
+          font: { size: 8.5, weight: '600' },
+          color: (ctx) => {
+            const v = ctx.raw;
+            return v >= 8 ? '#15803d' : v >= 4 ? '#92400e' : '#991b1b';
+          },
+          clamp: true,
+          formatter: (val) => val > 0 ? val + '%' : '',
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 8.5 }, maxRotation: 40 } },
+        y: { grid: { color: G }, ticks: { callback: v => v + '%' }, border: { display: false } }
+      }
+    }
   });
 
   const tb = document.getElementById('prog-table');
