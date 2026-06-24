@@ -21,8 +21,6 @@
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font-size:13px;line-height:1.5;min-height:100vh}
 .app{display:flex;min-height:100vh}
-
-/* SIDEBAR */
 .sidebar{width:230px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:10;overflow-y:auto}
 .sb-brand{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
 .sb-logo-icon{width:34px;height:34px;background:var(--green);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -42,32 +40,24 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .sb-upgrade-label{font-size:11px;font-weight:600;color:var(--green-dark);margin-bottom:2px}
 .sb-upgrade-note{font-size:10px;color:#16a34a99}
 .sb-upgrade-val{font-size:16px;font-weight:700;color:var(--green);margin-top:4px}
-
-/* MAIN */
 .main{flex:1;margin-left:230px;display:flex;flex-direction:column;min-height:100vh}
 .topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9}
 .topbar-left{display:flex;align-items:center;gap:16px}
 .topbar-title{font-size:15px;font-weight:600;color:var(--text-primary)}
 .topbar-meta{font-size:11px;color:var(--text-tertiary);margin-top:1px}
 .topbar-right{display:flex;align-items:center;gap:8px}
-
-/* PILLS */
 .pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:3px 8px;border-radius:20px;white-space:nowrap}
 .pill-green{background:var(--green-light);color:var(--green-dark)}
 .pill-blue{background:var(--blue-light);color:#1e40af}
 .pill-amber{background:var(--amber-light);color:#92400e}
 .pill-red{background:var(--red-light);color:#991b1b}
 .pill-purple{background:var(--purple-light);color:#5b21b6}
-
-/* CONTENT */
 .content{padding:20px 24px;flex:1}
 .page-header{margin-bottom:18px;display:flex;align-items:flex-end;justify-content:space-between}
 .page-title{font-size:18px;font-weight:600;color:var(--text-primary)}
 .page-sub{font-size:12px;color:var(--text-tertiary);margin-top:2px}
 .page-badges{display:flex;gap:6px;flex-wrap:wrap}
 .view{display:none}.view.active{display:block}
-
-/* KPI GRIDS */
 .kpi4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
 .kpi3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
 .kpi2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:16px}
@@ -88,53 +78,50 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .kpi-trend.up{color:var(--green)}.kpi-trend.down{color:var(--red)}
 .kpi-trend i{font-size:13px}
 .kpi-note{font-size:10px;color:var(--text-tertiary);margin-top:4px}
-
-/* CARDS */
 .card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:14px}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .card-title{font-size:13px;font-weight:600;color:var(--text-primary)}
 .row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
 .row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
-
-/* LEGEND */
 .legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px}
 .leg{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-secondary)}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .leg-sq{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-
-/* TABLE */
 .vtable{width:100%;border-collapse:collapse;font-size:12px}
 .vtable th{padding:8px 10px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--text-tertiary);background:var(--bg);border-bottom:1px solid var(--border);white-space:nowrap}
 .vtable td{padding:9px 10px;color:var(--text-primary);border-bottom:1px solid var(--border);vertical-align:middle}
 .vtable tr:last-child td{border-bottom:none}
 .vtable tr:hover td{background:#f9fafb}
 .tr{text-align:right}.tm{color:var(--text-secondary);font-size:11px}
-
-/* BAR ROWS */
 .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .bar-lbl{font-size:11px;color:var(--text-secondary);width:100px;flex-shrink:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar-track{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;transition:width .4s}
 .bar-pct{font-size:11px;color:var(--text-secondary);width:38px;text-align:right;flex-shrink:0;font-weight:500}
-
-/* ALERT ROWS */
 .alert-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
 .alert-row:last-child{border-bottom:none}
 .alert-name{font-size:12px;font-weight:500;color:var(--text-primary)}
 .alert-sub{font-size:10px;color:var(--text-tertiary);margin-top:1px}
-
-/* NEW badge flash */
+/* Loading overlay */
+.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:12px}
+.loading-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:13px;color:var(--text-secondary)}
+.error-banner{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:10px 16px;border-radius:8px;font-size:12px;margin-bottom:14px;display:none}
 @keyframes newpulse{0%,100%{opacity:1}50%{opacity:.6}}
 .sb-new{animation:newpulse 2s ease-in-out infinite}
-
-/* WO Overrun severity */
 .overrun-extreme{background:#fef2f2;border-left:3px solid #dc2626}
 </style>
 </head>
 <body>
-<div class="app">
 
-<!-- SIDEBAR -->
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Loading dashboard data…</div>
+</div>
+
+<div class="app">
 <aside class="sidebar">
   <div class="sb-brand">
     <div class="sb-logo-icon"><i class="ti ti-road"></i></div>
@@ -157,58 +144,53 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
   <div class="sb-foot">
     <div class="sb-upgrade">
       <div class="sb-upgrade-label">Work done rate</div>
-      <div class="sb-upgrade-note">₹2,301/MT actual · 2,76,110 MT total</div>
-      <div class="sb-upgrade-val">95% Complete</div>
+      <div class="sb-upgrade-note" id="sb-note">Loading…</div>
+      <div class="sb-upgrade-val" id="sb-complete">—</div>
     </div>
   </div>
 </aside>
 
-<!-- MAIN -->
 <div class="main">
   <div class="topbar">
     <div class="topbar-left">
       <div>
         <div class="topbar-title" id="tb-title">Executive Overview</div>
-        <div class="topbar-meta">WMPTL – Sarus Infrastructures · 2,76,110 MT Infrastructure Project · FY 2024–26</div>
+        <div class="topbar-meta" id="tb-meta">Loading…</div>
       </div>
     </div>
     <div class="topbar-right">
-      <span class="pill pill-blue"><i class="ti ti-clock" style="font-size:10px"></i> Last updated: April 2026</span>
-      <span class="pill pill-green">95% Complete</span>
+      <span class="pill pill-blue"><i class="ti ti-clock" style="font-size:10px"></i> Last updated: <span id="last-updated">—</span></span>
+      <span class="pill pill-green" id="topbar-complete">—</span>
     </div>
   </div>
 
   <div class="content">
+    <div class="error-banner" id="error-banner"></div>
 
-    <!-- ═══════════════════════════════════════════════════════ -->
     <!-- VIEW 1: OVERVIEW -->
-    <!-- ═══════════════════════════════════════════════════════ -->
     <div class="view active" id="view-overview">
       <div class="page-header">
         <div>
           <div class="page-title">Executive Overview</div>
-          <div class="page-sub">WMPTL – Sarus Infrastructures Pvt Ltd · Infrastructure Project</div>
+          <div class="page-sub" id="ov-sub">Loading…</div>
         </div>
         <div class="page-badges">
-          <span class="pill pill-green"><i class="ti ti-trending-up" style="font-size:11px"></i>+12.69% Profit</span>
-          <span class="pill pill-blue">95% Complete</span>
+          <span class="pill pill-green"><i class="ti ti-trending-up" style="font-size:11px"></i><span id="ov-profit-pill">—</span></span>
+          <span class="pill pill-blue" id="ov-complete-pill">—</span>
         </div>
       </div>
-
       <div class="kpi4">
-        <div class="kpi-card"><div><div class="kpi-label">Net Cash Inflow</div><div class="kpi-val blue">₹80.79 Cr</div><div class="kpi-note">From client + retention/PBG</div><div class="kpi-trend up"><i class="ti ti-trending-up"></i>+18.2%</div></div><div class="kpi-icon blue"><i class="ti ti-arrow-down-circle"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Net Cash Outflow</div><div class="kpi-val red">₹70.53 Cr</div><div class="kpi-note">All vendor &amp; staff payments</div><div class="kpi-trend down"><i class="ti ti-trending-up"></i>+12.5%</div></div><div class="kpi-icon red"><i class="ti ti-arrow-up-circle"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Net Profit</div><div class="kpi-val green">₹10.25 Cr</div><div class="kpi-note">+12.69% margin on inflow</div><div class="kpi-trend up"><i class="ti ti-trending-up"></i>+12.69%</div></div><div class="kpi-icon green"><i class="ti ti-coin"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Cash Diverted</div><div class="kpi-val amber">₹7.00 Cr</div><div class="kpi-note">Redirected outside project</div><div class="kpi-trend down"><i class="ti ti-trending-down"></i>-2.4%</div></div><div class="kpi-icon amber"><i class="ti ti-alert-triangle"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Net Cash Inflow</div><div class="kpi-val blue" id="ov-inflow">—</div><div class="kpi-note">From client + retention/PBG</div></div><div class="kpi-icon blue"><i class="ti ti-arrow-down-circle"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Net Cash Outflow</div><div class="kpi-val red" id="ov-outflow">—</div><div class="kpi-note">All vendor &amp; staff payments</div></div><div class="kpi-icon red"><i class="ti ti-arrow-up-circle"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Net Profit</div><div class="kpi-val green" id="ov-profit">—</div><div class="kpi-note" id="ov-profit-note">—</div></div><div class="kpi-icon green"><i class="ti ti-coin"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Cash Diverted</div><div class="kpi-val amber" id="ov-diverted">—</div><div class="kpi-note">Redirected outside project</div></div><div class="kpi-icon amber"><i class="ti ti-alert-triangle"></i></div></div>
       </div>
-
       <div class="kpi4">
-        <div class="kpi-card"><div><div class="kpi-label">Amount Received</div><div class="kpi-val">₹75.63 Cr</div><div class="kpi-note">99.87% of gross billed</div></div><div class="kpi-icon green"><i class="ti ti-receipt"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Balance Receivable</div><div class="kpi-val">₹0.10 Cr</div><div class="kpi-note">Regular billing pending</div></div><div class="kpi-icon amber"><i class="ti ti-clock"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Retention (5%)</div><div class="kpi-val">₹3.48 Cr</div><div class="kpi-note">Held by client — returnable</div></div><div class="kpi-icon blue"><i class="ti ti-lock"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">PBG (2.5%)</div><div class="kpi-val">₹1.57 Cr</div><div class="kpi-note">Performance bond — returnable</div></div><div class="kpi-icon blue"><i class="ti ti-shield-check"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Amount Received</div><div class="kpi-val" id="ov-received">—</div><div class="kpi-note" id="ov-received-note">—</div></div><div class="kpi-icon green"><i class="ti ti-receipt"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Balance Receivable</div><div class="kpi-val" id="ov-balance">—</div><div class="kpi-note">Regular billing pending</div></div><div class="kpi-icon amber"><i class="ti ti-clock"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Retention (5%)</div><div class="kpi-val" id="ov-retention">—</div><div class="kpi-note">Held by client — returnable</div></div><div class="kpi-icon blue"><i class="ti ti-lock"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">PBG (2.5%)</div><div class="kpi-val" id="ov-pbg">—</div><div class="kpi-note">Performance bond — returnable</div></div><div class="kpi-icon blue"><i class="ti ti-shield-check"></i></div></div>
       </div>
-
       <div class="row2">
         <div class="card">
           <div class="card-header">
@@ -225,35 +207,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <div style="position:relative;height:260px"><canvas id="donut"></canvas></div>
         </div>
       </div>
-
       <div class="card">
         <div class="card-header">
           <div class="card-title">Pending Vendor Dues</div>
-          <span class="pill pill-red">4 open balances</span>
+          <span class="pill pill-red" id="ov-dues-pill">— open balances</span>
         </div>
-        <div class="alert-row"><div><div class="alert-name">Aggregates Suppliers</div><div class="alert-sub">20.33% of total spend · ₹518.54/MT</div></div><span class="pill pill-red">₹0.36 Cr</span></div>
-        <div class="alert-row"><div><div class="alert-name">Aggregates Royalty</div><div class="alert-sub">3.21% of total spend · ₹81.79/MT</div></div><span class="pill pill-red">₹1.12 Cr</span></div>
-        <div class="alert-row"><div><div class="alert-name">Supplier – FO/LDO</div><div class="alert-sub">14.50% of total spend · ₹369.81/MT</div></div><span class="pill pill-red">₹0.10 Cr</span></div>
-        <div class="alert-row"><div><div class="alert-name">Dumpers Hire</div><div class="alert-sub">9.04% of total spend · ₹230.70/MT</div></div><span class="pill pill-red">₹0.21 Cr</span></div>
+        <div id="ov-dues-list"></div>
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════ -->
     <!-- VIEW 2: CASH FLOW -->
-    <!-- ═══════════════════════════════════════════════════════ -->
     <div class="view" id="view-cashflow">
       <div class="page-header">
         <div><div class="page-title">Cash Flow</div><div class="page-sub">Full breakdown of inflows, outflows, and profit</div></div>
       </div>
       <div class="kpi3">
-        <div class="kpi-card"><div><div class="kpi-label">Gross Receivable</div><div class="kpi-val blue">₹75.73 Cr</div><div class="kpi-note">Net amount billed to client</div></div><div class="kpi-icon blue"><i class="ti ti-file-invoice"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Retention + PBG</div><div class="kpi-val">₹5.05 Cr</div><div class="kpi-note">Security deposits — returnable</div></div><div class="kpi-icon blue"><i class="ti ti-lock"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Net Inflow</div><div class="kpi-val green">₹80.79 Cr</div><div class="kpi-note">Gross + retention/PBG</div></div><div class="kpi-icon green"><i class="ti ti-trending-up"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Gross Receivable</div><div class="kpi-val blue" id="cf-gross">—</div><div class="kpi-note">Net amount billed to client</div></div><div class="kpi-icon blue"><i class="ti ti-file-invoice"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Retention + PBG</div><div class="kpi-val" id="cf-retpbg">—</div><div class="kpi-note">Security deposits — returnable</div></div><div class="kpi-icon blue"><i class="ti ti-lock"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Net Inflow</div><div class="kpi-val green" id="cf-inflow">—</div><div class="kpi-note">Gross + retention/PBG</div></div><div class="kpi-icon green"><i class="ti ti-trending-up"></i></div></div>
       </div>
       <div class="kpi3">
-        <div class="kpi-card"><div><div class="kpi-label">Vendor Payments</div><div class="kpi-val red">₹63.90 Cr</div><div class="kpi-note">79.1% of net inflow</div></div><div class="kpi-icon red"><i class="ti ti-truck"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Staff + Site Expenses</div><div class="kpi-val red">₹6.54 Cr</div><div class="kpi-note">Salaries + purchases + plant</div></div><div class="kpi-icon red"><i class="ti ti-users"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Profit</div><div class="kpi-val green">₹10.25 Cr</div><div class="kpi-note">+12.69% · Diverted ₹7.00 Cr</div></div><div class="kpi-icon green"><i class="ti ti-coin"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Vendor Payments</div><div class="kpi-val red" id="cf-vendor">—</div><div class="kpi-note" id="cf-vendor-note">—</div></div><div class="kpi-icon red"><i class="ti ti-truck"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Staff + Site Expenses</div><div class="kpi-val red" id="cf-staff">—</div><div class="kpi-note">Salaries + purchases + plant</div></div><div class="kpi-icon red"><i class="ti ti-users"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Profit</div><div class="kpi-val green" id="cf-profit">—</div><div class="kpi-note" id="cf-profit-note">—</div></div><div class="kpi-icon green"><i class="ti ti-coin"></i></div></div>
       </div>
       <div class="row2">
         <div class="card">
@@ -276,44 +252,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
         <div class="card-header"><div class="card-title">Financial Statement Summary</div></div>
         <table class="vtable">
           <thead><tr><th style="width:55%">Particulars</th><th class="tr">Amount (₹ Cr)</th><th class="tr">% of Inflow</th></tr></thead>
-          <tbody>
-            <tr style="background:#f9fafb"><td style="color:var(--blue);font-weight:600">Gross Receivable from Client</td><td class="tr" style="color:var(--blue);font-weight:600">75.73</td><td class="tr tm">93.7%</td></tr>
-            <tr><td style="padding-left:20px;color:var(--text-tertiary)">Amount Received</td><td class="tr tm">75.63</td><td class="tr tm">93.6%</td></tr>
-            <tr><td style="padding-left:20px;color:var(--text-tertiary)">Balance Receivable</td><td class="tr tm">0.10</td><td class="tr tm">0.1%</td></tr>
-            <tr><td>Retention &amp; PBG (Security Deposits)</td><td class="tr tm">5.05</td><td class="tr tm">6.3%</td></tr>
-            <tr style="background:#eff6ff"><td style="font-weight:700"><strong>Net Cash Inflow</strong></td><td class="tr" style="color:var(--blue);font-weight:700"><strong>80.79</strong></td><td class="tr tm">100%</td></tr>
-            <tr><td style="color:var(--red)">Vendor Payments</td><td class="tr" style="color:var(--red)">−63.90</td><td class="tr tm">79.1%</td></tr>
-            <tr><td style="color:var(--red)">Staff Salaries</td><td class="tr" style="color:var(--red)">−3.40</td><td class="tr tm">4.2%</td></tr>
-            <tr><td style="color:var(--red)">Site Local Purchases</td><td class="tr" style="color:var(--red)">−1.71</td><td class="tr tm">2.1%</td></tr>
-            <tr><td style="color:var(--red)">Hot Mix Plant (30% cost)</td><td class="tr" style="color:var(--red)">−1.43</td><td class="tr tm">1.8%</td></tr>
-            <tr style="background:#f9fafb"><td style="color:var(--red);font-weight:700"><strong>Net Cash Outflow</strong></td><td class="tr" style="color:var(--red);font-weight:700"><strong>−70.53</strong></td><td class="tr tm">87.3%</td></tr>
-            <tr style="background:#f0fdf4"><td style="color:var(--green);font-weight:700"><strong>Net Profit</strong></td><td class="tr" style="color:var(--green);font-weight:700"><strong>10.25</strong></td><td class="tr tm">+12.69%</td></tr>
-            <tr><td style="color:var(--amber)">Cash Diverted (Outside Project)</td><td class="tr" style="color:var(--amber)">7.00</td><td class="tr tm">8.7%</td></tr>
-          </tbody>
+          <tbody id="cf-table"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <!-- VIEW 3: MONTHLY P&L (NEW) -->
-    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- VIEW 3: MONTHLY P&L -->
     <div class="view" id="view-pl">
       <div class="page-header">
         <div><div class="page-title">Monthly P&amp;L Trend</div><div class="page-sub">25 months · Apr'24 – Apr'26 · Abstract sheet data</div></div>
         <div class="page-badges">
-          <span class="pill pill-red">Peak deficit: Aug'24 −₹2.84 Cr</span>
-          <span class="pill pill-green">Best month: Dec'24 +₹4.94 Cr</span>
+          <span class="pill pill-red" id="pl-deficit-pill">—</span>
+          <span class="pill pill-green" id="pl-best-pill">—</span>
         </div>
       </div>
       <div class="kpi4">
-        <div class="kpi-card"><div><div class="kpi-label">Peak Deficit Month</div><div class="kpi-val red">−₹2.84 Cr</div><div class="kpi-note">Aug'24 — early mobilisation</div></div><div class="kpi-icon red"><i class="ti ti-trending-down"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Best Profit Month</div><div class="kpi-val green">+₹4.94 Cr</div><div class="kpi-note">Dec'24 — peak billing</div></div><div class="kpi-icon green"><i class="ti ti-trending-up"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Months Profitable</div><div class="kpi-val blue">12</div><div class="kpi-note">Out of 25 months</div></div><div class="kpi-icon blue"><i class="ti ti-circle-check"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Months in Deficit</div><div class="kpi-val amber">13</div><div class="kpi-note">Including zero-billing months</div></div><div class="kpi-icon amber"><i class="ti ti-clock"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Peak Deficit Month</div><div class="kpi-val red" id="pl-peak-deficit">—</div><div class="kpi-note" id="pl-peak-deficit-note">—</div></div><div class="kpi-icon red"><i class="ti ti-trending-down"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Best Profit Month</div><div class="kpi-val green" id="pl-best-month">—</div><div class="kpi-note" id="pl-best-month-note">—</div></div><div class="kpi-icon green"><i class="ti ti-trending-up"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Months Profitable</div><div class="kpi-val blue" id="pl-profitable">—</div><div class="kpi-note">Out of 25 months</div></div><div class="kpi-icon blue"><i class="ti ti-circle-check"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Months in Deficit</div><div class="kpi-val amber" id="pl-deficit">—</div><div class="kpi-note">Including zero-billing months</div></div><div class="kpi-icon amber"><i class="ti ti-clock"></i></div></div>
       </div>
       <div class="card">
         <div class="card-header">
-          <div class="card-title">Monthly Inflow vs Outflow (₹ Crores) — Full Project History</div>
+          <div class="card-title">Monthly Inflow vs Outflow (₹ Crores)</div>
           <div class="legend" style="margin:0">
             <span class="leg"><span class="leg-sq" style="background:rgba(37,99,235,0.5)"></span>Inflow</span>
             <span class="leg"><span class="leg-sq" style="background:rgba(220,38,38,0.5)"></span>Outflow</span>
@@ -342,17 +303,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════ -->
     <!-- VIEW 4: VENDORS -->
-    <!-- ═══════════════════════════════════════════════════════ -->
     <div class="view" id="view-vendors">
       <div class="page-header">
         <div><div class="page-title">Vendor Ledger</div><div class="page-sub">Outstanding, paid, and balance across all categories</div></div>
       </div>
       <div class="kpi3">
-        <div class="kpi-card"><div><div class="kpi-label">Total Outstanding</div><div class="kpi-val blue">₹63.90 Cr</div><div class="kpi-note">Across 14 billed categories</div></div><div class="kpi-icon blue"><i class="ti ti-building"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Total Paid</div><div class="kpi-val green">₹62.11 Cr</div><div class="kpi-note">97.2% payment efficiency</div></div><div class="kpi-icon green"><i class="ti ti-check-circle"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Balance Payable</div><div class="kpi-val red">₹1.83 Cr</div><div class="kpi-note">4 vendors with open dues</div></div><div class="kpi-icon red"><i class="ti ti-alert-circle"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Total Outstanding</div><div class="kpi-val blue" id="vnd-outstanding">—</div><div class="kpi-note" id="vnd-outstanding-note">—</div></div><div class="kpi-icon blue"><i class="ti ti-building"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Total Paid</div><div class="kpi-val green" id="vnd-paid">—</div><div class="kpi-note" id="vnd-paid-note">—</div></div><div class="kpi-icon green"><i class="ti ti-check-circle"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Balance Payable</div><div class="kpi-val red" id="vnd-balance">—</div><div class="kpi-note" id="vnd-balance-note">—</div></div><div class="kpi-icon red"><i class="ti ti-alert-circle"></i></div></div>
       </div>
       <div class="row2">
         <div class="card">
@@ -373,7 +332,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       <div class="card" style="padding:0">
         <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
           <div class="card-title">Full Vendor Ledger</div>
-          <span class="pill pill-blue">14 categories</span>
+          <span class="pill pill-blue" id="vnd-count-pill">—</span>
         </div>
         <div style="overflow-x:auto">
           <table class="vtable">
@@ -384,18 +343,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════ -->
     <!-- VIEW 5: STAFF SALARIES -->
-    <!-- ═══════════════════════════════════════════════════════ -->
     <div class="view" id="view-staff">
       <div class="page-header">
         <div><div class="page-title">Staff Salaries</div><div class="page-sub">On-roll, NMR manpower and RA bill payments</div></div>
       </div>
       <div class="kpi4">
-        <div class="kpi-card"><div><div class="kpi-label">Total Salary Paid</div><div class="kpi-val blue">₹3.40 Cr</div><div class="kpi-note">Apr'24 – Apr'26</div></div><div class="kpi-icon blue"><i class="ti ti-wallet"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Staff Salaries</div><div class="kpi-val">₹2.90 Cr</div><div class="kpi-note">On-roll total</div></div><div class="kpi-icon green"><i class="ti ti-user-check"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">NMR Manpower</div><div class="kpi-val">₹2.86 Cr</div><div class="kpi-note">Off-roll/NMR total</div></div><div class="kpi-icon amber"><i class="ti ti-user-plus"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">RA Bills Paid</div><div class="kpi-val">₹1.17 Cr</div><div class="kpi-note">Running account bills</div></div><div class="kpi-icon blue"><i class="ti ti-receipt"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Total Salary Paid</div><div class="kpi-val blue" id="sal-total">—</div><div class="kpi-note">Apr'24 – Apr'26</div></div><div class="kpi-icon blue"><i class="ti ti-wallet"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Staff Salaries</div><div class="kpi-val" id="sal-staff">—</div><div class="kpi-note">On-roll total</div></div><div class="kpi-icon green"><i class="ti ti-user-check"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">NMR Manpower</div><div class="kpi-val" id="sal-nmr">—</div><div class="kpi-note">Off-roll/NMR total</div></div><div class="kpi-icon amber"><i class="ti ti-user-plus"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">RA Bills Paid</div><div class="kpi-val" id="sal-ra">—</div><div class="kpi-note">Running account bills</div></div><div class="kpi-icon blue"><i class="ti ti-receipt"></i></div></div>
       </div>
       <div class="row2">
         <div class="card">
@@ -425,32 +382,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <!-- VIEW 6: COST PER MT (NEW) -->
-    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- VIEW 6: COST PER MT -->
     <div class="view" id="view-costmt">
       <div class="page-header">
-        <div><div class="page-title">Cost per MT Tracker</div><div class="page-sub">Planned vs Quoted vs Actual — 20 months Aug'24–Mar'26</div></div>
+        <div><div class="page-title">Cost per MT Tracker</div><div class="page-sub">Planned vs Quoted vs Actual</div></div>
         <div class="page-badges">
-          <span class="pill pill-amber">+₹292 over plan</span>
-          <span class="pill pill-green">−₹89 under quote</span>
+          <span class="pill pill-amber" id="costmt-over-plan">—</span>
+          <span class="pill pill-green" id="costmt-under-quote">—</span>
         </div>
       </div>
       <div class="kpi3">
-        <div class="kpi-card"><div><div class="kpi-label">Planned Cost / MT</div><div class="kpi-val blue">₹2,009</div><div class="kpi-note">Internal project plan basis</div></div><div class="kpi-icon blue"><i class="ti ti-clipboard-list"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Quoted Rate / MT</div><div class="kpi-val purple">₹2,390</div><div class="kpi-note">Contract price to client</div></div><div class="kpi-icon purple"><i class="ti ti-file-invoice"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Actual Cost / MT</div><div class="kpi-val amber">₹2,301</div><div class="kpi-note">Weighted avg — above plan, below quote</div></div><div class="kpi-icon amber"><i class="ti ti-calculator"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Planned Cost / MT</div><div class="kpi-val blue" id="cmt-planned">—</div><div class="kpi-note">Internal project plan basis</div></div><div class="kpi-icon blue"><i class="ti ti-clipboard-list"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Quoted Rate / MT</div><div class="kpi-val purple" id="cmt-quoted">—</div><div class="kpi-note">Contract price to client</div></div><div class="kpi-icon purple"><i class="ti ti-file-invoice"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Actual Cost / MT</div><div class="kpi-val amber" id="cmt-actual">—</div><div class="kpi-note">Weighted avg — above plan, below quote</div></div><div class="kpi-icon amber"><i class="ti ti-calculator"></i></div></div>
       </div>
       <div class="kpi2">
-        <div class="kpi-card"><div><div class="kpi-label">Plan vs Actual Variance</div><div class="kpi-val red">+₹292/MT over plan</div><div class="kpi-note">14.5% above planned cost</div><div class="kpi-trend down"><i class="ti ti-trending-up"></i>Cost overrun vs plan</div></div><div class="kpi-icon red"><i class="ti ti-alert-triangle"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Quote vs Actual Variance</div><div class="kpi-val green">−₹89/MT under quote</div><div class="kpi-note">3.7% below quoted rate — profitable margin</div><div class="kpi-trend up"><i class="ti ti-trending-down"></i>Good margin maintained</div></div><div class="kpi-icon green"><i class="ti ti-circle-check"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Plan vs Actual Variance</div><div class="kpi-val red" id="cmt-plan-var">—</div><div class="kpi-note" id="cmt-plan-var-note">—</div></div><div class="kpi-icon red"><i class="ti ti-alert-triangle"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Quote vs Actual Variance</div><div class="kpi-val green" id="cmt-quote-var">—</div><div class="kpi-note" id="cmt-quote-var-note">—</div></div><div class="kpi-icon green"><i class="ti ti-circle-check"></i></div></div>
       </div>
       <div class="card">
         <div class="card-header">
           <div class="card-title">Cost per MT — Monthly (Planned / Quoted / Actual)</div>
           <div class="legend" style="margin:0">
-            <span class="leg"><span class="leg-dot" style="background:#2563eb"></span>Planned ₹2,009</span>
-            <span class="leg"><span class="leg-dot" style="background:#7c3aed"></span>Quoted ₹2,390</span>
+            <span class="leg"><span class="leg-dot" style="background:#2563eb"></span>Planned</span>
+            <span class="leg"><span class="leg-dot" style="background:#7c3aed"></span>Quoted</span>
             <span class="leg"><span class="leg-dot" style="background:#d97706"></span>Actual</span>
           </div>
         </div>
@@ -483,20 +438,18 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <!-- VIEW 7: WORK ORDER OVERRUNS (NEW) -->
-    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- VIEW 7: WORK ORDER OVERRUNS -->
     <div class="view" id="view-overruns">
       <div class="page-header">
         <div><div class="page-title">Work Order Overruns</div><div class="page-sub">Vendors with billing exceeding work order value</div></div>
         <div class="page-badges">
-          <span class="pill pill-red"><i class="ti ti-alert-triangle" style="font-size:10px"></i>15 overruns detected</span>
+          <span class="pill pill-red" id="wo-count-pill">—</span>
         </div>
       </div>
       <div class="kpi3">
-        <div class="kpi-card"><div><div class="kpi-label">Total WO Value</div><div class="kpi-val blue">₹3.79 Cr</div><div class="kpi-note">Formal work orders issued</div></div><div class="kpi-icon blue"><i class="ti ti-file-text"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Total Billed Value</div><div class="kpi-val red">₹22.29 Cr</div><div class="kpi-note">Actual billings against WOs</div></div><div class="kpi-icon red"><i class="ti ti-receipt"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Total Overrun</div><div class="kpi-val red">₹18.50 Cr</div><div class="kpi-note">488% overall overrun</div></div><div class="kpi-icon red"><i class="ti ti-alert-triangle"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Total WO Value</div><div class="kpi-val blue" id="wo-total-val">—</div><div class="kpi-note">Formal work orders issued</div></div><div class="kpi-icon blue"><i class="ti ti-file-text"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Total Billed Value</div><div class="kpi-val red" id="wo-total-billed">—</div><div class="kpi-note">Actual billings against WOs</div></div><div class="kpi-icon red"><i class="ti ti-receipt"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Total Overrun</div><div class="kpi-val red" id="wo-total-overrun">—</div><div class="kpi-note" id="wo-overrun-note">—</div></div><div class="kpi-icon red"><i class="ti ti-alert-triangle"></i></div></div>
       </div>
       <div class="row2">
         <div class="card">
@@ -517,7 +470,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       <div class="card" style="padding:0">
         <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
           <div class="card-title">Full Work Order Register — Overrun Detail</div>
-          <span class="pill pill-red">15 vendors above WO limit</span>
+          <span class="pill pill-red" id="wo-table-pill">—</span>
         </div>
         <div style="overflow-x:auto">
           <table class="vtable" style="min-width:750px">
@@ -528,21 +481,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════ -->
     <!-- VIEW 8: S-CURVE PROGRESS -->
-    <!-- ═══════════════════════════════════════════════════════ -->
     <div class="view" id="view-progress">
       <div class="page-header">
         <div><div class="page-title">S-Curve Progress</div><div class="page-sub">Target vs achievement across project lifecycle</div></div>
         <div class="page-badges">
-          <span class="pill pill-green">99.8% MT achieved</span>
-          <span class="pill pill-amber">0.2% remaining</span>
+          <span class="pill pill-green" id="prog-achieved-pill">—</span>
+          <span class="pill pill-amber" id="prog-remaining-pill">—</span>
         </div>
       </div>
       <div class="kpi3">
-        <div class="kpi-card"><div><div class="kpi-label">Total Target MT</div><div class="kpi-val blue">2,76,110 MT</div><div class="kpi-note">Physical S-curve basis</div></div><div class="kpi-icon blue"><i class="ti ti-target"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Total Workdone MT</div><div class="kpi-val green">2,75,648 MT</div><div class="kpi-note">99.8% of target</div></div><div class="kpi-icon green"><i class="ti ti-check-circle"></i></div></div>
-        <div class="kpi-card"><div><div class="kpi-label">Balance MT</div><div class="kpi-val amber">462 MT</div><div class="kpi-note">0.2% remaining</div></div><div class="kpi-icon amber"><i class="ti ti-hourglass"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Total Target MT</div><div class="kpi-val blue" id="prog-target">—</div><div class="kpi-note">Physical S-curve basis</div></div><div class="kpi-icon blue"><i class="ti ti-target"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Total Workdone MT</div><div class="kpi-val green" id="prog-workdone">—</div><div class="kpi-note" id="prog-workdone-note">—</div></div><div class="kpi-icon green"><i class="ti ti-check-circle"></i></div></div>
+        <div class="kpi-card"><div><div class="kpi-label">Balance MT</div><div class="kpi-val amber" id="prog-balance">—</div><div class="kpi-note" id="prog-balance-note">—</div></div><div class="kpi-icon amber"><i class="ti ti-hourglass"></i></div></div>
       </div>
       <div class="card">
         <div class="card-header">
@@ -569,163 +520,72 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
-  </div>
-</div>
-</div>
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
 
 <script>
+// ─── CONFIG — replace with your actual Supabase URL and anon key ───────────
+const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
+const SUPABASE_KEY = 'YOUR_ANON_KEY';
+const PROJECT_ID   = '00000000-0000-0000-0000-000000000001';
+// ────────────────────────────────────────────────────────────────────────────
+
 Chart.register(ChartDataLabels);
 Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
 Chart.defaults.font.size = 11;
 Chart.defaults.color = '#6b7280';
 const G = 'rgba(0,0,0,0.05)';
+
 const fmtINR = v => '₹' + Number(v).toLocaleString('en-IN');
-const toCr = v => (v / 1e7).toFixed(2);
-const toLakh = v => (v / 1e5).toFixed(2);
+const toCr   = v => (v / 1e7).toFixed(2);
 
-// ── DATA ─────────────────────────────────────────────────────
+// ─── Supabase helper ────────────────────────────────────────────────────────
+async function sbFetch(table, params = '') {
+  const url = `${SUPABASE_URL}/rest/v1/${table}?${params}&project_id=eq.${PROJECT_ID}&order=id.asc`;
+  const res = await fetch(url, {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  if (!res.ok) throw new Error(`${table}: ${res.status} ${res.statusText}`);
+  return res.json();
+}
 
-const VENDORS = [
-  {id:1,  name:'Aggregates Suppliers',  outstanding:143173976, paid:139537779, color:'#2563eb', rate:518.54, pct:20.33},
-  {id:2,  name:'Aggregates Royalty',    outstanding:22583936,  paid:11344028,  color:'#7c3aed', rate:81.79,  pct:3.21},
-  {id:3,  name:'Supplier – FO/LDO',     outstanding:102107639, paid:101059524, color:'#0891b2', rate:369.81, pct:14.50},
-  {id:4,  name:'Supplier – HSD',        outstanding:95025012,  paid:95025012,  color:'#059669', rate:344.16, pct:13.49},
-  {id:5,  name:'Supplier – Firewood',   outstanding:7051191,   paid:7051191,   color:'#d97706', rate:25.54,  pct:1.00},
-  {id:6,  name:'Other Suppliers',       outstanding:22791275,  paid:23054617,  color:'#dc2626', rate:83.50,  pct:3.24},
-  {id:7,  name:'Vision Infra Hire',     outstanding:70351491,  paid:70351491,  color:'#9333ea', rate:254.80, pct:9.99},
-  {id:8,  name:'Dumpers Hire',          outstanding:63698654,  paid:61602775,  color:'#c2410c', rate:230.70, pct:9.04},
-  {id:9,  name:'Other Hire Machinery',  outstanding:33624555,  paid:33397721,  color:'#0f766e', rate:121.78, pct:4.77},
-  {id:10, name:'Labour Contractors',    outstanding:33223752,  paid:33285044,  color:'#1d4ed8', rate:120.55, pct:4.72},
-  {id:11, name:'Transport Creditors',   outstanding:4684766,   paid:4684766,   color:'#6d28d9', rate:16.97,  pct:0.67},
-  {id:12, name:'Rent Creditors',        outstanding:8505139,   paid:8505139,   color:'#0369a1', rate:30.80,  pct:1.21},
-  {id:13, name:'Admin – Creditors',     outstanding:3167050,   paid:3167050,   color:'#15803d', rate:11.47,  pct:0.45},
-  {id:14, name:'Other Creditors',       outstanding:29048884,  paid:29017732,  color:'#b45309', rate:105.21, pct:4.12},
-];
-VENDORS.forEach(v => { v.balance = Math.max(0, v.outstanding - v.paid); });
+async function sbFetchSingle(table, params = '') {
+  const url = `${SUPABASE_URL}/rest/v1/${table}?${params}&project_id=eq.${PROJECT_ID}&limit=1`;
+  const res = await fetch(url, {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  if (!res.ok) throw new Error(`${table}: ${res.status} ${res.statusText}`);
+  const data = await res.json();
+  return data[0] || null;
+}
 
-const SAL_DATA = [
-  {m:"Apr'24", sal:360483,  ra:143350,  nmr:70125,   tot:573958,   hc:8},
-  {m:"May'24", sal:516493,  ra:235575,  nmr:552013,  tot:1304081,  hc:10},
-  {m:"Jun'24", sal:544891,  ra:529644,  nmr:631400,  tot:1705935,  hc:11},
-  {m:"Jul'24", sal:945909,  ra:329625,  nmr:1698057, tot:2973591,  hc:14},
-  {m:"Aug'24", sal:1061450, ra:384185,  nmr:857769,  tot:2303404,  hc:16},
-  {m:"Sep'24", sal:1354285, ra:613285,  nmr:1088958, tot:3056528,  hc:19},
-  {m:"Oct'24", sal:1689112, ra:751410,  nmr:1600816, tot:4041338,  hc:23},
-  {m:"Nov'24", sal:1749424, ra:634995,  nmr:1868434, tot:4252853,  hc:24},
-  {m:"Dec'24", sal:1915359, ra:701790,  nmr:2065552, tot:4682701,  hc:26},
-  {m:"Jan'25", sal:1948232, ra:655770,  nmr:2221580, tot:4825582,  hc:27},
-  {m:"Feb'25", sal:1791205, ra:679160,  nmr:1832321, tot:4302686,  hc:25},
-  {m:"Mar'25", sal:1702396, ra:553750,  nmr:1584006, tot:3840152,  hc:24},
-  {m:"Apr'25", sal:1673468, ra:349500,  nmr:1838250, tot:3861218,  hc:23},
-  {m:"May'25", sal:1686339, ra:347500,  nmr:2097237, tot:4131076,  hc:23},
-  {m:"Jun'25", sal:1744958, ra:347500,  nmr:1981233, tot:4073691,  hc:24},
-  {m:"Jul'25", sal:1562982, ra:558500,  nmr:1438837, tot:3560319,  hc:21},
-  {m:"Aug'25", sal:1408889, ra:337500,  nmr:1532996, tot:3279385,  hc:19},
-  {m:"Sep'25", sal:1441431, ra:392500,  nmr:1510100, tot:3344031,  hc:20},
-  {m:"Oct'25", sal:1551106, ra:397500,  nmr:1770527, tot:3719133,  hc:21},
-  {m:"Nov'25", sal:1584741, ra:397500,  nmr:2130666, tot:4112907,  hc:21},
-  {m:"Dec'25", sal:1522923, ra:322500,  nmr:2055716, tot:3901139,  hc:20},
-  {m:"Jan'26", sal:1426868, ra:397500,  nmr:1409084, tot:3233452,  hc:19},
-  {m:"Feb'26", sal:1265969, ra:225500,  nmr:912618,  tot:2404087,  hc:17},
-  {m:"Mar'26", sal:811097,  ra:265000,  nmr:44000,   tot:1120097,  hc:11},
-  {m:"Apr'26", sal:693445,  ra:138500,  nmr:59000,   tot:890945,   hc:9},
-];
-
-const PL_DATA = [
-  {m:"Apr'24", inf:0,        out:2072283,  pl:0,          plp:0},
-  {m:"May'24", inf:11054545, out:12667269, pl:-3685007,   plp:-33.3},
-  {m:"Jun'24", inf:8807067,  out:9987823,  pl:-1180756,   plp:-13.4},
-  {m:"Jul'24", inf:0,        out:16699293, pl:0,          plp:0},
-  {m:"Aug'24", inf:19861612, out:9346450,  pl:-28425853,  plp:-127.5},
-  {m:"Sep'24", inf:22289981, out:24670091, pl:-1324931,   plp:-3.6},
-  {m:"Oct'24", inf:36714021, out:38038952, pl:15437969,   plp:27.1},
-  {m:"Nov'24", inf:57057300, out:41619331, pl:-3884096,   plp:-10.2},
-  {m:"Dec'24", inf:37884891, out:41768987, pl:49407545,   plp:50.3},
-  {m:"Jan'25", inf:98190707, out:48783162, pl:8788839,    plp:18.8},
-  {m:"Feb'25", inf:46876369, out:38087530, pl:13485402,   plp:22.7},
-  {m:"Mar'25", inf:59319491, out:45834089, pl:9681841,    plp:19.8},
-  {m:"Apr'25", inf:49004757, out:39322916, pl:10480396,   plp:20.4},
-  {m:"May'25", inf:51409888, out:40929492, pl:-5586072,   plp:-24.0},
-  {m:"Jun'25", inf:23297809, out:28883881, pl:-3992904,   plp:-25.3},
-  {m:"Jul'25", inf:15757163, out:19750067, pl:-1232251,   plp:-8.0},
-  {m:"Aug'25", inf:15419859, out:16652110, pl:-8360709,   plp:-63.8},
-  {m:"Sep'25", inf:13103877, out:21464586, pl:-10195211,  plp:-30.7},
-  {m:"Oct'25", inf:33186739, out:35021241, pl:12315386,   plp:25.5},
-  {m:"Nov'25", inf:48318026, out:36002640, pl:12332745,   plp:23.8},
-  {m:"Dec'25", inf:51793427, out:39460682, pl:-333194,    plp:-2.4},
-  {m:"Jan'26", inf:13706376, out:14039570, pl:-333194,    plp:0},
-  {m:"Feb'26", inf:0,        out:14574907, pl:-14574907,  plp:0},
-  {m:"Mar'26", inf:10445219, out:90147,    pl:10355072,   plp:99.1},
-  {m:"Apr'26", inf:0,        out:2064766,  pl:-2064766,   plp:0},
-];
-
-const COST_MT = [
-  {m:"Aug'24", bmt:5678,  wmt:5470,  act:7780},
-  {m:"Sep'24", bmt:8389,  wmt:9798,  act:1867},
-  {m:"Oct'24", bmt:14411, wmt:17631, act:1790},
-  {m:"Nov'24", bmt:30599, wmt:26292, act:1096},
-  {m:"Dec'24", bmt:15726, wmt:16022, act:2033},
-  {m:"Jan'25", bmt:32616, wmt:32629, act:1460},
-  {m:"Feb'25", bmt:18399, wmt:18384, act:1861},
-  {m:"Mar'25", bmt:22931, wmt:22931, act:1689},
-  {m:"Apr'25", bmt:19948, wmt:19992, act:1650},
-  {m:"May'25", bmt:21098, wmt:21121, act:1833},
-  {m:"Jun'25", bmt:8173,  wmt:10850, act:3290},
-  {m:"Jul'25", bmt:6561,  wmt:5733,  act:2705},
-  {m:"Aug'25", bmt:5981,  wmt:4260,  act:2450},
-  {m:"Sep'25", bmt:5368,  wmt:4720,  act:3626},
-  {m:"Oct'25", bmt:13059, wmt:12905, act:2529},
-  {m:"Nov'25", bmt:19277, wmt:18929, act:1764},
-  {m:"Dec'25", bmt:21141, wmt:21372, act:1796},
-  {m:"Jan'26", bmt:5031,  wmt:4283,  act:2592},
-  {m:"Feb'26", bmt:1723,  wmt:2326,  act:7880},
-  {m:"Mar'26", bmt:0,     wmt:0,     act:0},
-];
-
-const WORK_ORDERS = [
-  {no:'WO-14', vendor:'Eklingji Stone Crusher',   scope:'Aggregates supply',                wo:10020000,  billed:60199489},
-  {no:'WO-6',  vendor:'Vision Infra',             scope:'Asphalt Milling work',            wo:0,         billed:27974698},
-  {no:'WO-23', vendor:'Choudhary Infra',          scope:'Aggregates supply',               wo:9450000,   billed:36588137},
-  {no:'WO-75', vendor:'Krishna and Company',      scope:'Hiring of 12 Tyre Hyva Dumpers',  wo:6372000,   billed:29815852},
-  {no:'WO-91', vendor:'JKF Group Associates',     scope:'Hiring of 12 Tyre Hyva Dumpers',  wo:2389500,   billed:10349184},
-  {no:'WO-10', vendor:'SMA Infratech',            scope:'Production of DBM & BC',          wo:0,         billed:11067689},
-  {no:'WO-82', vendor:'Saroj Kumar Singh',        scope:'Safety labour',                   wo:891000,    billed:5832300},
-  {no:'WO-5',  vendor:'Vision Infra',             scope:'Hiring of Paving Machinery',      wo:465000,    billed:8143151},
-  {no:'WO-8',  vendor:'Anusha Devi',              scope:'Safety arrangements labour',      wo:216000,    billed:5365995},
-  {no:'WO-1',  vendor:'Chhedi Paswan',            scope:'Supply of Labour for DBM laying', wo:247500,    billed:7622730},
-  {no:'WO-76', vendor:'M Patel & Constructions',  scope:'Hyva Dumpers',                   wo:3150895,   billed:6607368},
-  {no:'WO-67', vendor:'Advika Enterprises',       scope:'Hiring of 10 Tyre Hyva Dumpers', wo:449580,    billed:2202550},
-  {no:'WO-39', vendor:'Shri Krishna Enterprises', scope:'Manpower for HM Plant O&M',      wo:1899800,   billed:3698074},
-  {no:'WO-4',  vendor:'Khushi Ram',               scope:'Tractor Compressor hire',         wo:140000,    billed:1108835},
-  {no:'WO-3',  vendor:'Shri Shyam Tour',          scope:'Mahindra Camper hire',            wo:80000,     billed:836295},
-];
-WORK_ORDERS.forEach(w => {
-  w.overrun = w.billed - w.wo;
-  w.overrunPct = w.wo > 0 ? ((w.overrun / w.wo) * 100).toFixed(1) : 'N/A';
-});
-
-// ── NAV ──────────────────────────────────────────────────────
-const views = {
-  overview:'Executive Overview',
-  cashflow:'Cash Flow',
-  pl:'Monthly P&L',
-  vendors:'Vendor Ledger',
-  staff:'Staff Salaries',
-  costmt:'Cost per MT',
-  overruns:'WO Overruns',
-  progress:'S-Curve Progress'
-};
+// ─── App state ──────────────────────────────────────────────────────────────
+let DB = {};
 const inited = {};
 
+// ─── NAV ────────────────────────────────────────────────────────────────────
+const viewTitles = {
+  overview:'Executive Overview', cashflow:'Cash Flow', pl:'Monthly P&L',
+  vendors:'Vendor Ledger',       staff:'Staff Salaries', costmt:'Cost per MT',
+  overruns:'WO Overruns',        progress:'S-Curve Progress'
+};
 function nav(el, id) {
   document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
   el.classList.add('active');
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + id).classList.add('active');
-  document.getElementById('tb-title').textContent = views[id];
+  document.getElementById('tb-title').textContent = viewTitles[id];
   if (!inited[id]) { inited[id] = true; initView(id); }
 }
-
 function initView(id) {
   if      (id === 'overview') initOverview();
   else if (id === 'cashflow') initCashflow();
@@ -737,648 +597,769 @@ function initView(id) {
   else if (id === 'progress') initProgress();
 }
 
-// ── OVERVIEW ─────────────────────────────────────────────────
+// ─── BOOTSTRAP — fetch all data once ────────────────────────────────────────
+async function bootstrap() {
+  try {
+    const [project, cf, vendors, salary, pl, costmt, wo] = await Promise.all([
+      sbFetchSingle('projects'),
+      sbFetchSingle('cashflow_summary'),
+      sbFetch('vendor_ledger', 'select=*&order=sort_order.asc'),
+      sbFetch('salary_data',   'select=*&order=month_date.asc'),
+      sbFetch('monthly_pl',    'select=*&order=month_date.asc'),
+      sbFetch('cost_per_mt',   'select=*&order=month_date.asc'),
+      sbFetch('work_orders',   'select=*&order=wo_number.asc'),
+    ]);
+
+    // Compute derived fields for vendors
+    vendors.forEach(v => { v.balance = Math.max(0, v.outstanding - v.paid); });
+    // Compute derived fields for work orders
+    wo.forEach(w => {
+      w.overrun    = w.billed_value - w.wo_value;
+      w.overrunPct = w.wo_value > 0 ? ((w.overrun / w.wo_value) * 100).toFixed(1) : null;
+    });
+
+    DB = { project, cf, vendors, salary, pl, costmt, wo };
+
+    // Populate static elements from project + cf
+    populateHeader();
+
+    // Init the active (overview) view
+    inited['overview'] = true;
+    initOverview();
+
+    document.getElementById('loading-overlay').style.display = 'none';
+  } catch (err) {
+    console.error(err);
+    document.getElementById('loading-overlay').style.display = 'none';
+    const banner = document.getElementById('error-banner');
+    banner.style.display = 'block';
+    banner.textContent = '⚠ Failed to load data from Supabase: ' + err.message + '. Check your SUPABASE_URL and SUPABASE_KEY.';
+  }
+}
+
+function populateHeader() {
+  const p = DB.project;
+  const cf = DB.cf;
+  if (!p || !cf) return;
+
+  const completePct = p.completion_pct + '% Complete';
+  document.getElementById('last-updated').textContent    = p.last_updated;
+  document.getElementById('topbar-complete').textContent = completePct;
+  document.getElementById('tb-meta').textContent         = `WMPTL – ${p.company} · ${p.total_mt.toLocaleString()} MT Infrastructure Project · FY 2024–26`;
+  document.getElementById('sb-note').textContent         = `₹${p.cost_actual_per_mt.toLocaleString()}/MT actual · ${p.total_mt.toLocaleString()} MT total`;
+  document.getElementById('sb-complete').textContent     = completePct;
+}
+
+// ─── VIEW 1: OVERVIEW ────────────────────────────────────────────────────────
 function initOverview() {
-  const wData   = [75.73, -0.10, 75.63, 5.05, 80.79, -70.53, 10.25];
+  const cf = DB.cf;
+  const vendors = DB.vendors;
+  const p = DB.project;
+  if (!cf || !vendors || !p) return;
+
+  const profitPct = cf.profit_pct.toFixed(2);
+  document.getElementById('ov-profit-pill').textContent    = `+${profitPct}% Profit`;
+  document.getElementById('ov-complete-pill').textContent  = p.completion_pct + '% Complete';
+  document.getElementById('ov-sub').textContent            = `WMPTL – ${p.company} · Infrastructure Project`;
+  document.getElementById('ov-inflow').textContent         = `₹${toCr(cf.net_inflow)} Cr`;
+  document.getElementById('ov-outflow').textContent        = `₹${toCr(cf.net_outflow)} Cr`;
+  document.getElementById('ov-profit').textContent         = `₹${toCr(cf.net_profit)} Cr`;
+  document.getElementById('ov-profit-note').textContent    = `+${profitPct}% margin on inflow`;
+  document.getElementById('ov-diverted').textContent       = `₹${toCr(cf.cash_diverted)} Cr`;
+  document.getElementById('ov-received').textContent       = `₹${toCr(cf.amount_received)} Cr`;
+  const recvPct = ((cf.amount_received / cf.gross_receivable) * 100).toFixed(2);
+  document.getElementById('ov-received-note').textContent  = `${recvPct}% of gross billed`;
+  document.getElementById('ov-balance').textContent        = `₹${toCr(cf.balance_receivable)} Cr`;
+  document.getElementById('ov-retention').textContent      = `₹${toCr(cf.retention_pct5)} Cr`;
+  document.getElementById('ov-pbg').textContent            = `₹${toCr(cf.pbg_pct25)} Cr`;
+
+  // Waterfall chart
+  const wValues = [
+    cf.gross_receivable / 1e7,
+    -cf.balance_receivable / 1e7,
+    cf.amount_received / 1e7,
+    (cf.retention_pct5 + cf.pbg_pct25) / 1e7,
+    cf.net_inflow / 1e7,
+    -cf.net_outflow / 1e7,
+    cf.net_profit / 1e7
+  ];
   const wLabels = ['Gross recv.','− Balance','Net recv.','+Ret+PBG','Net inflow','− Outflow','Profit'];
   new Chart(document.getElementById('wf'), {
     type: 'bar',
     data: {
       labels: wLabels,
       datasets: [{
-        data: wData.map(v => Math.abs(v)),
-        backgroundColor: wData.map(v => v >= 0 ? 'rgba(34,197,94,0.45)' : 'rgba(220,38,38,0.45)'),
-        borderColor:     wData.map(v => v >= 0 ? '#16a34a' : '#dc2626'),
+        data: wValues.map(v => Math.abs(v)),
+        backgroundColor: wValues.map(v => v >= 0 ? 'rgba(34,197,94,0.45)' : 'rgba(220,38,38,0.45)'),
+        borderColor:     wValues.map(v => v >= 0 ? '#16a34a' : '#dc2626'),
         borderWidth: 1.5, borderRadius: 5
       }]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 24}},
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:24}},
       plugins: {
-        legend: {display: false},
-        tooltip: {callbacks: {label: c => '₹' + wData[c.dataIndex].toFixed(2) + ' Cr'}},
-        datalabels: {
-          anchor:'end', align:'end', offset:2, font:{size:9.5, weight:'600'}, clamp:true,
-          color: ctx => wData[ctx.dataIndex] >= 0 ? '#15803d' : '#dc2626',
-          formatter: (v, ctx) => '₹' + Math.abs(wData[ctx.dataIndex]).toFixed(1) + 'Cr'
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>'₹'+wValues[c.dataIndex].toFixed(2)+' Cr'}},
+        datalabels:{
+          anchor:'end',align:'end',offset:2,font:{size:9.5,weight:'600'},clamp:true,
+          color:ctx=>wValues[ctx.dataIndex]>=0?'#15803d':'#dc2626',
+          formatter:(v,ctx)=>'₹'+Math.abs(wValues[ctx.dataIndex]).toFixed(1)+'Cr'
         }
       },
-      scales: {
-        x: {grid: {display:false}, ticks: {font:{size:10}, maxRotation:20}},
-        y: {grid: {color:G}, ticks: {callback: v => '₹'+v+'Cr'}, border: {display:false}}
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:10},maxRotation:20}},
+        y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}
       }
     }
   });
 
-  const sd = VENDORS.filter(v => v.pct > 0);
+  // Donut
+  const sd = vendors.filter(v => v.share_pct > 0);
   new Chart(document.getElementById('donut'), {
     type: 'doughnut',
     data: {
       labels: sd.map(v => v.name.split(' ').slice(0,2).join(' ')),
       datasets: [{
-        data: sd.map(v => v.pct),
+        data: sd.map(v => v.share_pct),
         backgroundColor: sd.map(v => v.color),
-        borderColor: '#ffffff', borderWidth: 2, hoverOffset: 6
+        borderColor:'#ffffff', borderWidth:2, hoverOffset:6
       }]
     },
     options: {
-      cutout: '55%', responsive: true, maintainAspectRatio: false,
+      cutout:'55%', responsive:true, maintainAspectRatio:false,
       plugins: {
-        legend: {position:'right', labels:{boxWidth:8, padding:6, font:{size:9.5}, usePointStyle:true, pointStyle:'circle'}},
-        tooltip: {callbacks: {label: c => ' ' + c.label + ': ' + c.raw + '%'}},
-        datalabels: {
-          anchor:'center', align:'center', font:{size:9.5, weight:'700'}, color:'#fff',
-          formatter: v => v > 2 ? v + '%' : ''
-        }
+        legend:{position:'right',labels:{boxWidth:8,padding:6,font:{size:9.5},usePointStyle:true,pointStyle:'circle'}},
+        tooltip:{callbacks:{label:c=>' '+c.label+': '+c.raw+'%'}},
+        datalabels:{anchor:'center',align:'center',font:{size:9.5,weight:'700'},color:'#fff',formatter:v=>v>2?v+'%':''}
       }
     }
   });
+
+  // Pending dues
+  const dues = vendors.filter(v => v.balance > 0);
+  document.getElementById('ov-dues-pill').textContent = `${dues.length} open balances`;
+  const duesList = document.getElementById('ov-dues-list');
+  duesList.innerHTML = dues.map(v =>
+    `<div class="alert-row">
+      <div><div class="alert-name">${v.name}</div><div class="alert-sub">${v.share_pct}% of total spend · ₹${v.rate}/MT</div></div>
+      <span class="pill pill-red">₹${toCr(v.balance)} Cr</span>
+    </div>`
+  ).join('');
 }
 
-// ── CASH FLOW ─────────────────────────────────────────────────
+// ─── VIEW 2: CASH FLOW ───────────────────────────────────────────────────────
 function initCashflow() {
+  const cf = DB.cf;
+  if (!cf) return;
+
+  const retpbg = (cf.retention_pct5 + cf.pbg_pct25) / 1e7;
+  const staffSiteTotal = (cf.staff_salaries + cf.site_purchases + cf.hotmix_plant) / 1e7;
+  const vendorPctOfInflow = ((cf.vendor_payments / cf.net_inflow) * 100).toFixed(1);
+  const profitPct = cf.profit_pct.toFixed(2);
+
+  document.getElementById('cf-gross').textContent      = `₹${toCr(cf.gross_receivable)} Cr`;
+  document.getElementById('cf-retpbg').textContent     = `₹${retpbg.toFixed(2)} Cr`;
+  document.getElementById('cf-inflow').textContent     = `₹${toCr(cf.net_inflow)} Cr`;
+  document.getElementById('cf-vendor').textContent     = `₹${toCr(cf.vendor_payments)} Cr`;
+  document.getElementById('cf-vendor-note').textContent= `${vendorPctOfInflow}% of net inflow`;
+  document.getElementById('cf-staff').textContent      = `₹${staffSiteTotal.toFixed(2)} Cr`;
+  document.getElementById('cf-profit').textContent     = `₹${toCr(cf.net_profit)} Cr`;
+  document.getElementById('cf-profit-note').textContent= `+${profitPct}% · Diverted ₹${toCr(cf.cash_diverted)} Cr`;
+
+  const inCr  = (cf.net_inflow / 1e7).toFixed(2);
+  const outCr = (cf.net_outflow / 1e7).toFixed(2);
+  const prCr  = (cf.net_profit / 1e7).toFixed(2);
+
   new Chart(document.getElementById('cf-bar'), {
     type: 'bar',
     data: {
-      labels: ['Net Inflow', 'Net Outflow', 'Profit'],
+      labels: ['Net Inflow','Net Outflow','Profit'],
       datasets: [{
-        data: [80.79, 70.53, 10.25],
-        backgroundColor: ['rgba(37,99,235,0.45)', 'rgba(220,38,38,0.45)', 'rgba(34,197,94,0.45)'],
-        borderColor: ['#2563eb','#dc2626','#16a34a'],
-        borderWidth: 1.5, borderRadius: 5
+        data: [+inCr, +outCr, +prCr],
+        backgroundColor:['rgba(37,99,235,0.45)','rgba(220,38,38,0.45)','rgba(34,197,94,0.45)'],
+        borderColor:['#2563eb','#dc2626','#16a34a'],
+        borderWidth:1.5, borderRadius:5
       }]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 28}},
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:28}},
       plugins: {
-        legend: {display: false},
-        tooltip: {callbacks: {label: c => '₹' + c.raw + ' Cr'}},
-        datalabels: {
-          anchor:'end', align:'end', offset:2, font:{size:10, weight:'700'}, clamp:true,
-          color: ctx => ['#1d4ed8','#b91c1c','#15803d'][ctx.dataIndex],
-          formatter: v => '₹' + v + ' Cr'
-        }
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>'₹'+c.raw+' Cr'}},
+        datalabels:{anchor:'end',align:'end',offset:2,font:{size:10,weight:'700'},clamp:true,
+          color:ctx=>['#1d4ed8','#b91c1c','#15803d'][ctx.dataIndex],
+          formatter:v=>'₹'+v+' Cr'}
       },
-      scales: {
-        x: {grid: {display:false}},
-        y: {grid: {color:G}, ticks: {callback: v => '₹'+v+'Cr'}, border: {display:false}}
-      }
+      scales:{x:{grid:{display:false}},y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}}
     }
   });
 
+  const recvCr = (cf.amount_received / 1e7);
+  const retCr  = (cf.retention_pct5 / 1e7);
+  const pbgCr  = (cf.pbg_pct25 / 1e7);
+  const balCr  = (cf.balance_receivable / 1e7);
   new Chart(document.getElementById('cf-pie'), {
     type: 'doughnut',
     data: {
-      labels: ['Amount Received', 'Retention 5%', 'PBG 2.5%', 'Balance Due'],
+      labels: ['Amount Received','Retention 5%','PBG 2.5%','Balance Due'],
       datasets: [{
-        data: [75.63, 3.48, 1.57, 0.10],
-        backgroundColor: ['rgba(34,197,94,0.55)','rgba(37,99,235,0.55)','rgba(124,58,237,0.55)','rgba(220,38,38,0.55)'],
-        borderColor: ['#16a34a','#2563eb','#7c3aed','#dc2626'],
-        borderWidth: 1.5, hoverOffset: 5
+        data: [recvCr, retCr, pbgCr, balCr].map(v => +v.toFixed(2)),
+        backgroundColor:['rgba(34,197,94,0.55)','rgba(37,99,235,0.55)','rgba(124,58,237,0.55)','rgba(220,38,38,0.55)'],
+        borderColor:['#16a34a','#2563eb','#7c3aed','#dc2626'],
+        borderWidth:1.5, hoverOffset:5
       }]
     },
     options: {
-      cutout: '50%', responsive: true, maintainAspectRatio: false,
+      cutout:'50%', responsive:true, maintainAspectRatio:false,
       plugins: {
-        legend: {position:'bottom', labels:{boxWidth:9, padding:10, font:{size:10}, usePointStyle:true, pointStyle:'circle'}},
-        tooltip: {callbacks: {label: c => ' ' + c.label + ': ₹' + c.raw + ' Cr'}},
-        datalabels: {
-          anchor:'center', align:'center', font:{size:9.5, weight:'700'}, color:'#fff',
-          formatter: v => v > 0.3 ? '₹' + Number(v).toFixed(1) + 'Cr' : ''
-        }
+        legend:{position:'bottom',labels:{boxWidth:9,padding:10,font:{size:10},usePointStyle:true,pointStyle:'circle'}},
+        tooltip:{callbacks:{label:c=>' '+c.label+': ₹'+c.raw+' Cr'}},
+        datalabels:{anchor:'center',align:'center',font:{size:9.5,weight:'700'},color:'#fff',formatter:v=>v>0.3?'₹'+v+'Cr':''}
       }
     }
   });
+
+  // Table
+  const rows = [
+    {label:'Gross Receivable from Client', val:toCr(cf.gross_receivable), pct:'93.7%', style:'color:var(--blue);font-weight:600', valStyle:'color:var(--blue);font-weight:600'},
+    {label:'— Amount Received',            val:toCr(cf.amount_received),   pct:'93.6%', indent:true},
+    {label:'— Balance Receivable',         val:toCr(cf.balance_receivable),pct:'0.1%',  indent:true},
+    {label:'Retention & PBG',              val:retpbg.toFixed(2),          pct:'6.3%'},
+    {label:'Net Cash Inflow',              val:inCr,                        pct:'100%',  style:'background:#eff6ff', valStyle:'color:var(--blue);font-weight:700', bold:true},
+    {label:'Vendor Payments',              val:'−'+toCr(cf.vendor_payments),pct:'79.1%', valStyle:'color:var(--red)'},
+    {label:'Staff Salaries',               val:'−'+toCr(cf.staff_salaries), pct:'4.2%',  valStyle:'color:var(--red)'},
+    {label:'Site Local Purchases',         val:'−'+toCr(cf.site_purchases), pct:'2.1%',  valStyle:'color:var(--red)'},
+    {label:'Hot Mix Plant (30% cost)',     val:'−'+toCr(cf.hotmix_plant),   pct:'1.8%',  valStyle:'color:var(--red)'},
+    {label:'Net Cash Outflow',             val:'−'+outCr,                   pct:'87.3%', style:'background:#f9fafb', valStyle:'color:var(--red);font-weight:700', bold:true},
+    {label:'Net Profit',                   val:prCr,                        pct:'+'+profitPct+'%', style:'background:#f0fdf4', valStyle:'color:var(--green);font-weight:700', bold:true},
+    {label:'Cash Diverted (Outside)',      val:toCr(cf.cash_diverted),      pct:'8.7%',  valStyle:'color:var(--amber)'},
+  ];
+  document.getElementById('cf-table').innerHTML = rows.map(r =>
+    `<tr style="${r.style||''}">
+      <td style="${r.indent?'padding-left:20px;color:var(--text-tertiary)':''}${r.bold?'font-weight:700':''}">${r.bold?'<strong>'+r.label+'</strong>':r.label}</td>
+      <td class="tr" style="${r.valStyle||'color:var(--text-secondary);font-size:11px'}">₹${r.val} Cr</td>
+      <td class="tr tm">${r.pct}</td>
+    </tr>`
+  ).join('');
 }
 
-// ── MONTHLY P&L ───────────────────────────────────────────────
+// ─── VIEW 3: MONTHLY P&L ────────────────────────────────────────────────────
 function initPL() {
-  const labs   = PL_DATA.map(d => d.m);
-  const inArr  = PL_DATA.map(d => +(d.inf / 1e7).toFixed(2));
-  const outArr = PL_DATA.map(d => +(d.out / 1e7).toFixed(2));
+  const data = DB.pl;
+  if (!data || !data.length) return;
+
+  const profitable = data.filter(d => d.profit_loss > 0).length;
+  const deficit    = data.filter(d => d.profit_loss < 0).length;
+  const peakDef    = data.reduce((a, b) => b.profit_loss < a.profit_loss ? b : a);
+  const bestProfit = data.reduce((a, b) => b.profit_loss > a.profit_loss ? b : a);
+
+  document.getElementById('pl-profitable').textContent     = profitable;
+  document.getElementById('pl-deficit').textContent        = deficit;
+  document.getElementById('pl-peak-deficit').textContent   = `−₹${Math.abs(toCr(peakDef.profit_loss))} Cr`;
+  document.getElementById('pl-peak-deficit-note').textContent = `${peakDef.month_label} — early mobilisation`;
+  document.getElementById('pl-best-month').textContent     = `+₹${toCr(bestProfit.profit_loss)} Cr`;
+  document.getElementById('pl-best-month-note').textContent= `${bestProfit.month_label} — peak billing`;
+  document.getElementById('pl-deficit-pill').textContent   = `Peak deficit: ${peakDef.month_label} −₹${Math.abs(toCr(peakDef.profit_loss))} Cr`;
+  document.getElementById('pl-best-pill').textContent      = `Best month: ${bestProfit.month_label} +₹${toCr(bestProfit.profit_loss)} Cr`;
+
+  const labs   = data.map(d => d.month_label);
+  const inArr  = data.map(d => +(d.inflow  / 1e7).toFixed(2));
+  const outArr = data.map(d => +(d.outflow / 1e7).toFixed(2));
 
   new Chart(document.getElementById('pl-bar'), {
-    type: 'bar',
-    data: {
-      labels: labs,
-      datasets: [
-        {label:'Inflow',  data:inArr,  backgroundColor:'rgba(37,99,235,0.5)',  borderColor:'#2563eb', borderWidth:0, borderRadius:3},
-        {label:'Outflow', data:outArr, backgroundColor:'rgba(220,38,38,0.5)', borderColor:'#dc2626', borderWidth:0, borderRadius:3}
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 4}},
-      plugins: {
-        legend: {display:false},
-        tooltip: {mode:'index', intersect:false, callbacks:{label: c => ' ' + c.dataset.label + ': ₹' + c.raw + 'Cr'}},
-        datalabels: {display: false}
-      },
-      scales: {
-        x: {grid:{display:false}, ticks:{maxRotation:45, font:{size:8.5}, autoSkip:true, maxTicksLimit:13}},
-        y: {grid:{color:G}, ticks:{callback: v => '₹'+v+'Cr'}, border:{display:false}}
+    type:'bar',
+    data:{labels:labs, datasets:[
+      {label:'Inflow',  data:inArr,  backgroundColor:'rgba(37,99,235,0.5)', borderWidth:0, borderRadius:3},
+      {label:'Outflow', data:outArr, backgroundColor:'rgba(220,38,38,0.5)', borderWidth:0, borderRadius:3}
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:4}},
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:c=>' '+c.dataset.label+': ₹'+c.raw+'Cr'}},datalabels:{display:false}},
+      scales:{
+        x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8.5},autoSkip:true,maxTicksLimit:13}},
+        y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}
       }
     }
   });
 
-  // Cumulative P/L
   let cum = 0;
-  const cumArr = PL_DATA.map(d => { cum += (d.pl / 1e7); return +cum.toFixed(2); });
+  const cumArr = data.map(d => { cum += (d.profit_loss / 1e7); return +cum.toFixed(2); });
   new Chart(document.getElementById('pl-cum'), {
-    type: 'line',
-    data: {
-      labels: labs,
-      datasets: [{
-        label: 'Cumulative P/L',
-        data: cumArr,
-        borderColor: '#16a34a',
-        backgroundColor: 'rgba(34,197,94,0.1)',
-        fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2.5,
-        segment: {
-          borderColor:     ctx => cumArr[ctx.p1DataIndex] >= 0 ? '#16a34a' : '#dc2626',
-          backgroundColor: ctx => cumArr[ctx.p1DataIndex] >= 0 ? 'rgba(34,197,94,0.08)' : 'rgba(220,38,38,0.08)'
-        }
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 18}},
-      plugins: {
-        legend: {display:false},
-        tooltip: {callbacks: {label: c => ' Cum P/L: ₹' + c.raw + ' Cr'}},
-        datalabels: {
-          display: ctx => ctx.dataIndex % 3 === 0,
-          anchor:'top', align:'top', offset:3, font:{size:8, weight:'600'}, clamp:true,
-          color: ctx => cumArr[ctx.dataIndex] >= 0 ? '#15803d' : '#dc2626',
-          formatter: v => '₹' + v + 'Cr'
+    type:'line',
+    data:{labels:labs, datasets:[{
+      label:'Cumulative P/L', data:cumArr,
+      borderColor:'#16a34a', backgroundColor:'rgba(34,197,94,0.1)',
+      fill:true, tension:0.3, pointRadius:3, borderWidth:2.5,
+      segment:{
+        borderColor:     ctx => cumArr[ctx.p1DataIndex] >= 0 ? '#16a34a' : '#dc2626',
+        backgroundColor: ctx => cumArr[ctx.p1DataIndex] >= 0 ? 'rgba(34,197,94,0.08)' : 'rgba(220,38,38,0.08)'
+      }
+    }]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:18}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>' Cum P/L: ₹'+c.raw+' Cr'}},
+        datalabels:{
+          display:ctx=>ctx.dataIndex%3===0,
+          anchor:'top',align:'top',offset:3,font:{size:8,weight:'600'},clamp:true,
+          color:ctx=>cumArr[ctx.dataIndex]>=0?'#15803d':'#dc2626',
+          formatter:v=>'₹'+v+'Cr'
         }
       },
-      scales: {
-        x: {grid:{display:false}, ticks:{maxRotation:45, font:{size:8.5}, autoSkip:true, maxTicksLimit:13}},
-        y: {grid:{color:G}, ticks:{callback: v => '₹'+v+'Cr'}, border:{display:false}}
+      scales:{
+        x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8.5},autoSkip:true,maxTicksLimit:13}},
+        y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}
       }
     }
   });
 
-  // ── P&L TABLE — BUG FIXED HERE ──
   const tb = document.getElementById('pl-table');
-  tb.innerHTML = '';
-  PL_DATA.forEach(d => {
-    const plCr  = (d.pl / 1e7).toFixed(2);
-    const inCr  = (d.inf / 1e7).toFixed(2);
-    const outCr = (d.out / 1e7).toFixed(2);
-    const isProfit = d.pl > 0;
-    const isLoss   = d.pl < 0;
-    // FIX: was ] instead of } closing the ternary inside the template literal
-    const plColor = isProfit ? 'var(--green)' : isLoss ? 'var(--red)' : 'var(--text-secondary)';
-    const plWeight = d.pl !== 0 ? '600' : '400';
-    const plText   = d.pl !== 0 ? (isProfit ? '+' : '') + plCr + ' Cr' : '—';
-    const status = isProfit
+  tb.innerHTML = data.map(d => {
+    const plCr   = (d.profit_loss / 1e7).toFixed(2);
+    const inCr   = (d.inflow / 1e7).toFixed(2);
+    const outCr  = (d.outflow / 1e7).toFixed(2);
+    const isP    = d.profit_loss > 0;
+    const isL    = d.profit_loss < 0;
+    const col    = isP ? 'var(--green)' : isL ? 'var(--red)' : 'var(--text-secondary)';
+    const wt     = d.profit_loss !== 0 ? '600' : '400';
+    const plText = d.profit_loss !== 0 ? (isP ? '+' : '') + plCr + ' Cr' : '—';
+    const status = isP
       ? '<span class="pill pill-green">Profit</span>'
-      : isLoss
-        ? '<span class="pill pill-red">Loss</span>'
-        : '<span class="pill pill-amber">Nil</span>';
-    tb.innerHTML += `<tr>
-      <td>${d.m}</td>
-      <td class="tr tm">${d.inf > 0 ? '₹' + inCr + ' Cr' : '—'}</td>
+      : isL ? '<span class="pill pill-red">Loss</span>'
+             : '<span class="pill pill-amber">Nil</span>';
+    return `<tr>
+      <td>${d.month_label}</td>
+      <td class="tr tm">${d.inflow > 0 ? '₹' + inCr + ' Cr' : '—'}</td>
       <td class="tr tm">₹${outCr} Cr</td>
-      <td class="tr" style="color:${plColor};font-weight:${plWeight}">${plText}</td>
-      <td class="tr tm">${d.plp !== 0 ? d.plp + '%' : '—'}</td>
+      <td class="tr" style="color:${col};font-weight:${wt}">${plText}</td>
+      <td class="tr tm">${d.pl_pct !== 0 ? d.pl_pct + '%' : '—'}</td>
       <td>${status}</td>
     </tr>`;
-  });
+  }).join('');
 }
 
-// ── VENDORS ──────────────────────────────────────────────────
+// ─── VIEW 4: VENDORS ─────────────────────────────────────────────────────────
 function initVendors() {
-  const top = VENDORS.filter(v => v.outstanding > 0).slice(0, 7);
+  const vendors = DB.vendors;
+  if (!vendors) return;
+
+  const totalOut = vendors.reduce((s, v) => s + v.outstanding, 0);
+  const totalPaid = vendors.reduce((s, v) => s + v.paid, 0);
+  const totalBal  = vendors.reduce((s, v) => s + v.balance, 0);
+  const payEff    = ((totalPaid / totalOut) * 100).toFixed(1);
+  const openCount = vendors.filter(v => v.balance > 0).length;
+
+  document.getElementById('vnd-outstanding').textContent    = `₹${toCr(totalOut)} Cr`;
+  document.getElementById('vnd-outstanding-note').textContent = `Across ${vendors.length} billed categories`;
+  document.getElementById('vnd-paid').textContent           = `₹${toCr(totalPaid)} Cr`;
+  document.getElementById('vnd-paid-note').textContent      = `${payEff}% payment efficiency`;
+  document.getElementById('vnd-balance').textContent        = `₹${toCr(totalBal)} Cr`;
+  document.getElementById('vnd-balance-note').textContent   = `${openCount} vendors with open dues`;
+  document.getElementById('vnd-count-pill').textContent     = `${vendors.length} categories`;
+
+  const top = vendors.filter(v => v.outstanding > 0).slice(0, 7);
   new Chart(document.getElementById('vnd-bar'), {
-    type: 'bar',
-    data: {
+    type:'bar',
+    data:{
       labels: top.map(v => v.name.split(' ').slice(0,2).join(' ')),
-      datasets: [
-        {label:'Outstanding', data:top.map(v => +(v.outstanding/1e7).toFixed(2)), backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1.5, borderRadius:4},
-        {label:'Paid',        data:top.map(v => +(v.paid/1e7).toFixed(2)),        backgroundColor:'rgba(34,197,94,0.4)',  borderColor:'#22c55e', borderWidth:1.5, borderRadius:4}
+      datasets:[
+        {label:'Outstanding', data:top.map(v=>+(v.outstanding/1e7).toFixed(2)), backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1.5, borderRadius:4},
+        {label:'Paid',        data:top.map(v=>+(v.paid/1e7).toFixed(2)),        backgroundColor:'rgba(34,197,94,0.4)',  borderColor:'#22c55e', borderWidth:1.5, borderRadius:4}
       ]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 22}},
-      plugins: {
-        legend: {display:false},
-        tooltip: {callbacks: {label: c => ' ₹' + c.raw + ' Cr'}},
-        datalabels: {
-          anchor:'end', align:'end', offset:2, font:{size:8.5, weight:'600'}, clamp:true,
-          color: ctx => ctx.datasetIndex === 0 ? '#1d4ed8' : '#15803d',
-          formatter: v => v > 0 ? '₹' + v + 'Cr' : ''
-        }
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:22}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>' ₹'+c.raw+' Cr'}},
+        datalabels:{anchor:'end',align:'end',offset:2,font:{size:8.5,weight:'600'},clamp:true,
+          color:ctx=>ctx.datasetIndex===0?'#1d4ed8':'#15803d',formatter:v=>v>0?'₹'+v+'Cr':''}
       },
-      scales: {
-        x: {grid:{display:false}, ticks:{maxRotation:35, font:{size:9.5}}},
-        y: {grid:{color:G}, ticks:{callback: v => '₹'+v+'Cr'}, border:{display:false}}
-      }
+      scales:{x:{grid:{display:false},ticks:{maxRotation:35,font:{size:9.5}}},y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}}
     }
   });
 
   const barsEl = document.getElementById('eff-bars');
-  barsEl.innerHTML = '';
-  VENDORS.filter(v => v.outstanding > 0).forEach(v => {
+  barsEl.innerHTML = vendors.filter(v => v.outstanding > 0).map(v => {
     const e   = Math.min(100, Math.round(v.paid / v.outstanding * 100));
     const col = e >= 95 ? '#16a34a' : e >= 70 ? '#d97706' : '#dc2626';
-    barsEl.innerHTML += `<div class="bar-row">
+    return `<div class="bar-row">
       <div class="bar-lbl">${v.name.split(' ').slice(0,2).join(' ')}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${e}%;background:${col}"></div></div>
       <div class="bar-pct">${e}%</div>
     </div>`;
-  });
+  }).join('');
 
-  const tb = document.getElementById('vnd-table');
-  tb.innerHTML = '';
-  VENDORS.forEach(v => {
-    const bal = Math.max(0, v.outstanding - v.paid);
-    const st  = bal === 0
+  document.getElementById('vnd-table').innerHTML = vendors.map((v, i) => {
+    const st = v.balance === 0
       ? '<span class="pill pill-green">Cleared</span>'
-      : '<span class="pill pill-red">₹' + toCr(bal) + ' Cr</span>';
-    tb.innerHTML += `<tr>
-      <td class="tm">${v.id}</td>
+      : `<span class="pill pill-red">₹${toCr(v.balance)} Cr</span>`;
+    return `<tr>
+      <td class="tm">${i+1}</td>
       <td>${v.name}</td>
-      <td class="tr tm">${v.outstanding > 0 ? '₹' + toCr(v.outstanding) + ' Cr' : '—'}</td>
+      <td class="tr tm">${v.outstanding > 0 ? '₹'+toCr(v.outstanding)+' Cr' : '—'}</td>
       <td class="tr" style="color:#15803d">₹${toCr(v.paid)} Cr</td>
-      <td class="tr">${bal > 0 ? '₹' + toCr(bal) + ' Cr' : '—'}</td>
-      <td class="tr tm">${v.rate > 0 ? '₹' + v.rate : '—'}</td>
-      <td class="tr"><span class="pill pill-blue">${v.pct}%</span></td>
+      <td class="tr">${v.balance > 0 ? '₹'+toCr(v.balance)+' Cr' : '—'}</td>
+      <td class="tr tm">${v.rate > 0 ? '₹'+v.rate : '—'}</td>
+      <td class="tr"><span class="pill pill-blue">${v.share_pct}%</span></td>
       <td>${st}</td>
     </tr>`;
-  });
+  }).join('');
 }
 
-// ── STAFF ─────────────────────────────────────────────────────
+// ─── VIEW 5: STAFF ──────────────────────────────────────────────────────────
 function initStaff() {
-  const labs = SAL_DATA.map(d => d.m);
+  const data = DB.salary;
+  if (!data || !data.length) return;
+
+  const totStaff = data.reduce((s, d) => s + d.staff_sal, 0);
+  const totRA    = data.reduce((s, d) => s + d.ra_bills, 0);
+  const totNMR   = data.reduce((s, d) => s + d.nmr_manpower, 0);
+  const totAll   = data.reduce((s, d) => s + d.total, 0);
+
+  document.getElementById('sal-total').textContent = `₹${toCr(totAll)} Cr`;
+  document.getElementById('sal-staff').textContent = `₹${toCr(totStaff)} Cr`;
+  document.getElementById('sal-nmr').textContent   = `₹${toCr(totNMR)} Cr`;
+  document.getElementById('sal-ra').textContent    = `₹${toCr(totRA)} Cr`;
+
+  const labs = data.map(d => d.month_label);
   new Chart(document.getElementById('sal-bar'), {
-    type: 'bar',
-    data: {
-      labels: labs,
-      datasets: [
-        {label:'Staff Salary',  data:SAL_DATA.map(d => +(d.sal/1e5).toFixed(2)), backgroundColor:'rgba(37,99,235,0.5)', borderWidth:0, stack:'s'},
-        {label:'RA Bills',      data:SAL_DATA.map(d => +(d.ra/1e5).toFixed(2)),  backgroundColor:'rgba(34,197,94,0.5)', borderWidth:0, stack:'s'},
-        {label:'NMR Manpower',  data:SAL_DATA.map(d => +(d.nmr/1e5).toFixed(2)),backgroundColor:'rgba(217,119,6,0.6)', borderWidth:0, stack:'s'},
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 22}},
-      plugins: {
-        legend: {display:false},
-        tooltip: {mode:'index', intersect:false},
-        datalabels: {
-          display: ctx => ctx.datasetIndex === 2,
-          anchor:'end', align:'end', offset:2, font:{size:8.5, weight:'600'}, color:'#374151', clamp:true,
-          formatter: (v, ctx) => {
-            const t = ctx.chart.data.datasets.reduce((s, ds) => s + (ds.data[ctx.dataIndex] || 0), 0);
-            return t > 0 ? '₹' + t.toFixed(1) + 'L' : '';
+    type:'bar',
+    data:{labels:labs, datasets:[
+      {label:'Staff Salary', data:data.map(d=>+(d.staff_sal/1e5).toFixed(2)),    backgroundColor:'rgba(37,99,235,0.5)', borderWidth:0, stack:'s'},
+      {label:'RA Bills',     data:data.map(d=>+(d.ra_bills/1e5).toFixed(2)),     backgroundColor:'rgba(34,197,94,0.5)', borderWidth:0, stack:'s'},
+      {label:'NMR Manpower', data:data.map(d=>+(d.nmr_manpower/1e5).toFixed(2)),backgroundColor:'rgba(217,119,6,0.6)', borderWidth:0, stack:'s'},
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:22}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{mode:'index',intersect:false},
+        datalabels:{
+          display:ctx=>ctx.datasetIndex===2,
+          anchor:'end',align:'end',offset:2,font:{size:8.5,weight:'600'},color:'#374151',clamp:true,
+          formatter:(v,ctx)=>{
+            const t=ctx.chart.data.datasets.reduce((s,ds)=>s+(ds.data[ctx.dataIndex]||0),0);
+            return t>0?'₹'+t.toFixed(1)+'L':'';
           }
         }
       },
-      scales: {
-        x: {stacked:true, grid:{display:false}, ticks:{maxRotation:45, font:{size:8.5}, autoSkip:true, maxTicksLimit:13}},
-        y: {stacked:true, grid:{color:G}, ticks:{callback: v => '₹'+v+'L'}, border:{display:false}}
+      scales:{
+        x:{stacked:true,grid:{display:false},ticks:{maxRotation:45,font:{size:8.5},autoSkip:true,maxTicksLimit:13}},
+        y:{stacked:true,grid:{color:G},ticks:{callback:v=>'₹'+v+'L'},border:{display:false}}
       }
     }
   });
 
   new Chart(document.getElementById('hc-line'), {
-    type: 'line',
-    data: {
-      labels: labs,
-      datasets: [{
-        label: 'Headcount',
-        data: SAL_DATA.map(d => d.hc),
-        borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.07)',
-        fill: true, tension: 0.35, pointRadius: 3, borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 18}},
-      plugins: {
-        legend: {display:false},
-        tooltip: {mode:'index', intersect:false},
-        datalabels: {
-          display: ctx => ctx.dataIndex % 2 === 0,
-          anchor:'top', align:'top', offset:2, font:{size:8, weight:'600'}, color:'#2563eb', clamp:true
-        }
+    type:'line',
+    data:{labels:labs, datasets:[{
+      label:'Headcount', data:data.map(d=>d.headcount),
+      borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.07)',
+      fill:true, tension:0.35, pointRadius:3, borderWidth:2
+    }]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:18}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{mode:'index',intersect:false},
+        datalabels:{display:ctx=>ctx.dataIndex%2===0,anchor:'top',align:'top',offset:2,font:{size:8,weight:'600'},color:'#2563eb',clamp:true}
       },
-      scales: {
-        x: {grid:{display:false}, ticks:{maxRotation:45, font:{size:8.5}, autoSkip:true, maxTicksLimit:13}},
-        y: {grid:{color:G}, border:{display:false}, title:{display:true, text:'Headcount', font:{size:9}}}
-      }
+      scales:{x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8.5},autoSkip:true,maxTicksLimit:13}},y:{grid:{color:G},border:{display:false}}}
     }
   });
 
-  const tb = document.getElementById('sal-table');
-  tb.innerHTML = '';
-  SAL_DATA.forEach(d => {
-    tb.innerHTML += `<tr>
-      <td>${d.m}</td>
-      <td class="tr tm">${d.sal > 0 ? fmtINR(d.sal) : '—'}</td>
-      <td class="tr tm">${d.ra  > 0 ? fmtINR(d.ra)  : '—'}</td>
-      <td class="tr tm">${d.nmr > 0 ? fmtINR(d.nmr) : '—'}</td>
-      <td class="tr" style="font-weight:600">${fmtINR(d.tot)}</td>
-      <td class="tr tm">${d.hc}</td>
-    </tr>`;
-  });
+  document.getElementById('sal-table').innerHTML = data.map(d =>
+    `<tr>
+      <td>${d.month_label}</td>
+      <td class="tr tm">${d.staff_sal > 0 ? fmtINR(d.staff_sal) : '—'}</td>
+      <td class="tr tm">${d.ra_bills  > 0 ? fmtINR(d.ra_bills)  : '—'}</td>
+      <td class="tr tm">${d.nmr_manpower > 0 ? fmtINR(d.nmr_manpower) : '—'}</td>
+      <td class="tr" style="font-weight:600">${fmtINR(d.total)}</td>
+      <td class="tr tm">${d.headcount}</td>
+    </tr>`
+  ).join('');
 }
 
-// ── COST PER MT ───────────────────────────────────────────────
+// ─── VIEW 6: COST PER MT ────────────────────────────────────────────────────
 function initCostMT() {
-  const labs        = COST_MT.map(d => d.m);
-  const actWithNull = COST_MT.map(d => d.act > 0 ? d.act : null);
+  const data    = DB.costmt;
+  const project = DB.project;
+  if (!data || !project) return;
+
+  const planned = project.cost_planned_per_mt;
+  const quoted  = project.cost_quoted_per_mt;
+  const actual  = project.cost_actual_per_mt;
+  const overPlan  = actual - planned;
+  const underQuote= quoted - actual;
+
+  document.getElementById('cmt-planned').textContent        = `₹${planned.toLocaleString()}`;
+  document.getElementById('cmt-quoted').textContent         = `₹${quoted.toLocaleString()}`;
+  document.getElementById('cmt-actual').textContent         = `₹${actual.toLocaleString()}`;
+  document.getElementById('cmt-plan-var').textContent       = `+₹${overPlan}/MT over plan`;
+  document.getElementById('cmt-plan-var-note').textContent  = `${((overPlan/planned)*100).toFixed(1)}% above planned cost`;
+  document.getElementById('cmt-quote-var').textContent      = `−₹${underQuote}/MT under quote`;
+  document.getElementById('cmt-quote-var-note').textContent = `${((underQuote/quoted)*100).toFixed(1)}% below quoted rate — profitable margin`;
+  document.getElementById('costmt-over-plan').textContent   = `+₹${overPlan}/MT over plan`;
+  document.getElementById('costmt-under-quote').textContent = `−₹${underQuote}/MT under quote`;
+
+  const labs        = data.map(d => d.month_label);
+  const actWithNull = data.map(d => d.cost_actual > 0 ? d.cost_actual : null);
 
   new Chart(document.getElementById('cost-line'), {
-    type: 'line',
-    data: {
-      labels: labs,
-      datasets: [
-        {label:'Planned ₹2,009', data:COST_MT.map(() => 2009), borderColor:'rgba(37,99,235,0.7)',  borderDash:[4,3], borderWidth:1.5, pointRadius:0, tension:0, datalabels:{display:false}},
-        {label:'Quoted ₹2,390',  data:COST_MT.map(() => 2390), borderColor:'rgba(124,58,237,0.7)', borderDash:[4,3], borderWidth:1.5, pointRadius:0, tension:0, datalabels:{display:false}},
-        {
-          label: 'Actual', data: actWithNull,
-          borderColor: '#d97706', backgroundColor: 'rgba(217,119,6,0.06)',
-          fill: false, tension: 0.3, pointRadius: 4, borderWidth: 2.5,
-          segment: {
-            borderColor: ctx => {
-              const v = actWithNull[ctx.p1DataIndex];
-              return v == null ? 'transparent' : v > 2390 ? '#dc2626' : v > 2009 ? '#d97706' : '#16a34a';
-            }
-          },
-          pointBackgroundColor: actWithNull.map(v => v == null ? 'transparent' : v > 2390 ? '#dc2626' : v > 2009 ? '#d97706' : '#16a34a'),
-          datalabels: {
-            display: ctx => ctx.dataIndex % 3 === 0 && ctx.raw != null,
-            anchor:'top', align:'top', offset:3, font:{size:8, weight:'600'}, color:'#374151',
-            formatter: v => v != null ? '₹' + v : ''
-          }
-        }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top:24, right:10}},
-      plugins: {
-        legend: {display:false},
-        tooltip: {mode:'index', intersect:false, callbacks:{label: c => c.raw != null ? ' ' + c.dataset.label + ': ₹' + c.raw + '/MT' : ''}},
-        datalabels: {}
-      },
-      scales: {
-        x: {grid:{display:false}, ticks:{maxRotation:40, font:{size:9}}},
-        y: {grid:{color:G}, ticks:{callback: v => '₹'+v}, border:{display:false}, min:0, max:9000}
+    type:'line',
+    data:{labels:labs, datasets:[
+      {label:'Planned', data:data.map(()=>planned), borderColor:'rgba(37,99,235,0.7)',  borderDash:[4,3], borderWidth:1.5, pointRadius:0, tension:0, datalabels:{display:false}},
+      {label:'Quoted',  data:data.map(()=>quoted),  borderColor:'rgba(124,58,237,0.7)', borderDash:[4,3], borderWidth:1.5, pointRadius:0, tension:0, datalabels:{display:false}},
+      {
+        label:'Actual', data:actWithNull,
+        borderColor:'#d97706', fill:false, tension:0.3, pointRadius:4, borderWidth:2.5,
+        segment:{borderColor:ctx=>{const v=actWithNull[ctx.p1DataIndex];return v==null?'transparent':v>quoted?'#dc2626':v>planned?'#d97706':'#16a34a'}},
+        pointBackgroundColor:actWithNull.map(v=>v==null?'transparent':v>quoted?'#dc2626':v>planned?'#d97706':'#16a34a'),
+        datalabels:{display:ctx=>ctx.dataIndex%3===0&&ctx.raw!=null,anchor:'top',align:'top',offset:3,font:{size:8,weight:'600'},color:'#374151',formatter:v=>v!=null?'₹'+v:''}
       }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:24,right:10}},
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:c=>c.raw!=null?' '+c.dataset.label+': ₹'+c.raw+'/MT':''}},datalabels:{}},
+      scales:{x:{grid:{display:false},ticks:{maxRotation:40,font:{size:9}}},y:{grid:{color:G},ticks:{callback:v=>'₹'+v},border:{display:false},min:0,max:9000}}
     }
   });
 
   new Chart(document.getElementById('mt-bar'), {
-    type: 'bar',
-    data: {
-      labels: labs,
-      datasets: [
-        {label:'Billed MT',   data:COST_MT.map(d => d.bmt), backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1, borderRadius:3},
-        {label:'Workdone MT', data:COST_MT.map(d => d.wmt), backgroundColor:'rgba(34,197,94,0.4)', borderColor:'#22c55e', borderWidth:1, borderRadius:3}
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 4}},
-      plugins: {legend:{display:false}, tooltip:{mode:'index', intersect:false}, datalabels:{display:false}},
-      scales: {
-        x: {grid:{display:false}, ticks:{maxRotation:40, font:{size:8.5}}},
-        y: {grid:{color:G}, ticks:{callback: v => v.toLocaleString() + 'MT'}, border:{display:false}}
-      }
+    type:'bar',
+    data:{labels:labs, datasets:[
+      {label:'Billed MT',   data:data.map(d=>d.billed_mt),   backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1, borderRadius:3},
+      {label:'Workdone MT', data:data.map(d=>d.workdone_mt), backgroundColor:'rgba(34,197,94,0.4)', borderColor:'#22c55e', borderWidth:1, borderRadius:3}
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:4}},
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false},datalabels:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{maxRotation:40,font:{size:8.5}}},y:{grid:{color:G},ticks:{callback:v=>v.toLocaleString()+'MT'},border:{display:false}}}
     }
   });
 
   const effEl = document.getElementById('cost-eff-bars');
-  effEl.innerHTML = '<div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;font-weight:500">Actual ₹/MT vs Planned (₹2,009) — colour coded</div>';
-  COST_MT.filter(d => d.act > 0).forEach(d => {
-    const pct = Math.min(200, Math.round(d.act / 90));
-    const col = d.act > 2390 ? '#dc2626' : d.act > 2009 ? '#d97706' : '#16a34a';
-    effEl.innerHTML += `<div class="bar-row">
-      <div class="bar-lbl">${d.m}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,pct)}%;background:${col}"></div></div>
-      <div class="bar-pct" style="color:${col};width:55px;font-size:10px">₹${d.act.toLocaleString()}</div>
-    </div>`;
-  });
+  effEl.innerHTML = '<div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;font-weight:500">Actual ₹/MT vs Planned — colour coded</div>' +
+    data.filter(d => d.cost_actual > 0).map(d => {
+      const pct = Math.min(100, Math.round(d.cost_actual / (quoted * 1.5) * 100));
+      const col = d.cost_actual > quoted ? '#dc2626' : d.cost_actual > planned ? '#d97706' : '#16a34a';
+      return `<div class="bar-row">
+        <div class="bar-lbl">${d.month_label}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${col}"></div></div>
+        <div class="bar-pct" style="color:${col};width:55px;font-size:10px">₹${d.cost_actual.toLocaleString()}</div>
+      </div>`;
+    }).join('');
 
-  const tb = document.getElementById('cost-table');
-  tb.innerHTML = '';
-  COST_MT.forEach(d => {
-    const col = d.act === 0 ? 'var(--text-tertiary)' : d.act > 2390 ? 'var(--red)' : d.act > 2009 ? 'var(--amber)' : 'var(--green-dark)';
-    const st  = d.act === 0
+  document.getElementById('cost-table').innerHTML = data.map(d => {
+    const col = d.cost_actual === 0 ? 'var(--text-tertiary)' : d.cost_actual > quoted ? 'var(--red)' : d.cost_actual > planned ? 'var(--amber)' : 'var(--green-dark)';
+    const st  = d.cost_actual === 0
       ? '<span class="pill pill-amber">No billing</span>'
-      : d.act > 2390
+      : d.cost_actual > quoted
         ? '<span class="pill pill-red">Above quote</span>'
-        : d.act > 2009
+        : d.cost_actual > planned
           ? '<span class="pill pill-amber">Above plan</span>'
           : '<span class="pill pill-green">Under plan</span>';
-    tb.innerHTML += `<tr>
-      <td>${d.m}</td>
-      <td class="tr tm">${d.bmt > 0 ? d.bmt.toLocaleString() : '—'}</td>
-      <td class="tr tm">${d.wmt > 0 ? d.wmt.toLocaleString() : '—'}</td>
-      <td class="tr tm">₹2,009</td>
-      <td class="tr tm">₹2,390</td>
-      <td class="tr" style="color:${col};font-weight:600">${d.act > 0 ? '₹' + d.act.toLocaleString() : '—'}</td>
+    return `<tr>
+      <td>${d.month_label}</td>
+      <td class="tr tm">${d.billed_mt > 0 ? d.billed_mt.toLocaleString() : '—'}</td>
+      <td class="tr tm">${d.workdone_mt > 0 ? d.workdone_mt.toLocaleString() : '—'}</td>
+      <td class="tr tm">₹${planned.toLocaleString()}</td>
+      <td class="tr tm">₹${quoted.toLocaleString()}</td>
+      <td class="tr" style="color:${col};font-weight:600">${d.cost_actual > 0 ? '₹'+d.cost_actual.toLocaleString() : '—'}</td>
       <td>${st}</td>
     </tr>`;
-  });
+  }).join('');
 }
 
-// ── WORK ORDER OVERRUNS ───────────────────────────────────────
+// ─── VIEW 7: WORK ORDER OVERRUNS ─────────────────────────────────────────────
 function initOverruns() {
-  const top10 = [...WORK_ORDERS].sort((a, b) => b.overrun - a.overrun).slice(0, 10);
+  const data = DB.wo;
+  if (!data) return;
 
+  const totalWO     = data.reduce((s, w) => s + w.wo_value,     0);
+  const totalBilled = data.reduce((s, w) => s + w.billed_value, 0);
+  const totalOverrun= totalBilled - totalWO;
+  const overallPct  = totalWO > 0 ? ((totalOverrun / totalWO) * 100).toFixed(0) : 'N/A';
+
+  document.getElementById('wo-total-val').textContent      = `₹${toCr(totalWO)} Cr`;
+  document.getElementById('wo-total-billed').textContent   = `₹${toCr(totalBilled)} Cr`;
+  document.getElementById('wo-total-overrun').textContent  = `₹${toCr(totalOverrun)} Cr`;
+  document.getElementById('wo-overrun-note').textContent   = `${overallPct}% overall overrun`;
+  document.getElementById('wo-count-pill').textContent     = `${data.length} overruns detected`;
+  document.getElementById('wo-table-pill').textContent     = `${data.length} vendors above WO limit`;
+
+  const top10 = [...data].sort((a, b) => b.overrun - a.overrun).slice(0, 10);
   new Chart(document.getElementById('wo-bar'), {
-    type: 'bar',
-    data: {
-      labels: top10.map(w => w.vendor.split(' ').slice(0,2).join(' ')),
-      datasets: [
-        {label:'WO Value', data:top10.map(w => +(w.wo/1e5).toFixed(1)),     backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1.5, borderRadius:4},
-        {label:'Billed',   data:top10.map(w => +(w.billed/1e5).toFixed(1)), backgroundColor:'rgba(220,38,38,0.4)', borderColor:'#dc2626', borderWidth:1.5, borderRadius:4}
+    type:'bar', indexAxis:'y',
+    data:{
+      labels:top10.map(w => w.vendor_name.split(' ').slice(0,2).join(' ')),
+      datasets:[
+        {label:'WO Value', data:top10.map(w=>+(w.wo_value/1e5).toFixed(1)),     backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1.5, borderRadius:4},
+        {label:'Billed',   data:top10.map(w=>+(w.billed_value/1e5).toFixed(1)), backgroundColor:'rgba(220,38,38,0.4)', borderColor:'#dc2626', borderWidth:1.5, borderRadius:4}
       ]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 22}}, indexAxis: 'y',
-      plugins: {
-        legend: {display:false},
-        tooltip: {callbacks: {label: c => ' ₹' + c.raw + ' L'}},
-        datalabels: {
-          anchor:'end', align:'end', offset:2, font:{size:8, weight:'600'}, clamp:true,
-          color: ctx => ctx.datasetIndex === 0 ? '#1d4ed8' : '#b91c1c',
-          formatter: v => v > 0 ? '₹' + v + 'L' : 'No WO'
-        }
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:22}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>' ₹'+c.raw+' L'}},
+        datalabels:{anchor:'end',align:'end',offset:2,font:{size:8,weight:'600'},clamp:true,
+          color:ctx=>ctx.datasetIndex===0?'#1d4ed8':'#b91c1c',
+          formatter:v=>v>0?'₹'+v+'L':'No WO'}
       },
-      scales: {
-        x: {grid:{color:G}, ticks:{callback: v => '₹'+v+'L'}, border:{display:false}},
-        y: {grid:{display:false}, ticks:{font:{size:9.5}}}
-      }
+      scales:{x:{grid:{color:G},ticks:{callback:v=>'₹'+v+'L'},border:{display:false}},y:{grid:{display:false},ticks:{font:{size:9.5}}}}
     }
   });
 
-  const extreme  = WORK_ORDERS.filter(w => w.wo > 0 && (w.overrun / w.wo) > 5).length;
-  const high     = WORK_ORDERS.filter(w => w.wo > 0 && (w.overrun / w.wo) > 1 && (w.overrun / w.wo) <= 5).length;
-  const noWO     = WORK_ORDERS.filter(w => w.wo === 0).length;
-  const moderate = WORK_ORDERS.length - extreme - high - noWO;
+  const extreme  = data.filter(w => w.wo_value > 0 && (w.overrun / w.wo_value) > 5).length;
+  const high     = data.filter(w => w.wo_value > 0 && (w.overrun / w.wo_value) > 1 && (w.overrun / w.wo_value) <= 5).length;
+  const noWO     = data.filter(w => w.wo_value === 0).length;
+  const moderate = data.length - extreme - high - noWO;
 
   new Chart(document.getElementById('wo-donut'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Extreme (>500%)', 'High (100–500%)', 'Moderate (<100%)', 'No WO issued'],
-      datasets: [{
-        data: [extreme, high, moderate, noWO],
-        backgroundColor: ['rgba(220,38,38,0.6)','rgba(217,119,6,0.6)','rgba(37,99,235,0.5)','rgba(124,58,237,0.5)'],
-        borderColor: ['#dc2626','#d97706','#2563eb','#7c3aed'],
-        borderWidth: 1.5, hoverOffset: 6
+    type:'doughnut',
+    data:{
+      labels:['Extreme (>500%)','High (100–500%)','Moderate (<100%)','No WO issued'],
+      datasets:[{
+        data:[extreme,high,moderate,noWO],
+        backgroundColor:['rgba(220,38,38,0.6)','rgba(217,119,6,0.6)','rgba(37,99,235,0.5)','rgba(124,58,237,0.5)'],
+        borderColor:['#dc2626','#d97706','#2563eb','#7c3aed'],
+        borderWidth:1.5, hoverOffset:6
       }]
     },
-    options: {
-      cutout: '52%', responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: {position:'bottom', labels:{boxWidth:9, padding:10, font:{size:10}, usePointStyle:true, pointStyle:'circle'}},
-        tooltip: {callbacks: {label: c => ' ' + c.label + ': ' + c.raw + ' vendors'}},
-        datalabels: {anchor:'center', align:'center', font:{size:11, weight:'700'}, color:'#fff', formatter: v => v > 0 ? v : ''}
+    options:{
+      cutout:'52%', responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'bottom',labels:{boxWidth:9,padding:10,font:{size:10},usePointStyle:true,pointStyle:'circle'}},
+        tooltip:{callbacks:{label:c=>' '+c.label+': '+c.raw+' vendors'}},
+        datalabels:{anchor:'center',align:'center',font:{size:11,weight:'700'},color:'#fff',formatter:v=>v>0?v:''}
       }
     }
   });
 
-  const tb = document.getElementById('wo-table');
-  tb.innerHTML = '';
-  [...WORK_ORDERS].sort((a, b) => b.overrun - a.overrun).forEach(w => {
-    const ovPct    = w.wo > 0 ? Number(w.overrunPct) : null;
-    const isExtreme = ovPct !== null && ovPct > 500;
-    const flag     = isExtreme
-      ? '<span style="color:#dc2626;font-size:14px">⚠</span>'
-      : w.wo === 0 ? '<span class="pill pill-purple">No WO</span>' : '';
-    const rowClass = isExtreme ? 'class="overrun-extreme"' : '';
-    tb.innerHTML += `<tr ${rowClass}>
-      <td class="tm">${w.no}</td>
-      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;font-size:11.5px">${w.vendor}</td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;font-size:11px;color:var(--text-secondary)">${w.scope}</td>
-      <td class="tr tm">${w.wo > 0 ? fmtINR(w.wo) : '—'}</td>
-      <td class="tr" style="color:var(--red);font-weight:500">${fmtINR(w.billed)}</td>
-      <td class="tr"><span class="pill pill-red">₹${(w.overrun/1e5).toFixed(1)}L</span></td>
-      <td class="tr tm">${ovPct !== null ? '+' + ovPct + '%' : 'N/A (no WO)'}</td>
-      <td>${flag}</td>
-    </tr>`;
-  });
+  document.getElementById('wo-table').innerHTML = [...data]
+    .sort((a, b) => b.overrun - a.overrun)
+    .map(w => {
+      const ovPct    = w.wo_value > 0 ? Number(w.overrun_pct) : null;
+      const isEx     = ovPct !== null && ovPct > 500;
+      const flag     = isEx ? '<span style="color:#dc2626;font-size:14px">⚠</span>'
+                             : w.wo_value === 0 ? '<span class="pill pill-purple">No WO</span>' : '';
+      return `<tr ${isEx?'class="overrun-extreme"':''}>
+        <td class="tm">${w.wo_number}</td>
+        <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;font-size:11.5px">${w.vendor_name}</td>
+        <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;font-size:11px;color:var(--text-secondary)">${w.scope||''}</td>
+        <td class="tr tm">${w.wo_value > 0 ? fmtINR(w.wo_value) : '—'}</td>
+        <td class="tr" style="color:var(--red);font-weight:500">${fmtINR(w.billed_value)}</td>
+        <td class="tr"><span class="pill pill-red">₹${(w.overrun/1e5).toFixed(1)}L</span></td>
+        <td class="tr tm">${ovPct !== null ? '+'+ovPct+'%' : 'N/A (no WO)'}</td>
+        <td>${flag}</td>
+      </tr>`;
+    }).join('');
 }
 
-// ── S-CURVE PROGRESS ─────────────────────────────────────────
+// ─── VIEW 8: S-CURVE PROGRESS ────────────────────────────────────────────────
 function initProgress() {
-  const labs = COST_MT.map(d => d.m);
-  let cumBilled = 0, cumWorkdone = 0;
-  const cumB = COST_MT.map(d => { cumBilled    += d.bmt; return cumBilled; });
-  const cumW = COST_MT.map(d => { cumWorkdone  += d.wmt; return cumWorkdone; });
+  const data    = DB.costmt;
+  const project = DB.project;
+  const pl      = DB.pl;
+  if (!data || !project) return;
+
+  const totalWorkdone = data.reduce((s, d) => s + d.workdone_mt, 0);
+  const totalBilled   = data.reduce((s, d) => s + d.billed_mt, 0);
+  const balance       = project.total_mt - totalWorkdone;
+  const achievedPct   = ((totalWorkdone / project.total_mt) * 100).toFixed(1);
+  const remainingPct  = (100 - +achievedPct).toFixed(1);
+
+  document.getElementById('prog-target').textContent         = project.total_mt.toLocaleString() + ' MT';
+  document.getElementById('prog-workdone').textContent       = totalWorkdone.toLocaleString() + ' MT';
+  document.getElementById('prog-workdone-note').textContent  = achievedPct + '% of target';
+  document.getElementById('prog-balance').textContent        = balance.toLocaleString() + ' MT';
+  document.getElementById('prog-balance-note').textContent   = remainingPct + '% remaining';
+  document.getElementById('prog-achieved-pill').textContent  = achievedPct + '% MT achieved';
+  document.getElementById('prog-remaining-pill').textContent = remainingPct + '% remaining';
+
+  const labs = data.map(d => d.month_label);
+  let cB = 0, cW = 0;
+  const cumB = data.map(d => { cB += d.billed_mt;   return cB; });
+  const cumW = data.map(d => { cW += d.workdone_mt; return cW; });
 
   new Chart(document.getElementById('scurve'), {
-    type: 'line',
-    data: {
-      labels: labs,
-      datasets: [
-        {label:'Cumulative Billed MT',   data:cumB, borderColor:'rgba(37,99,235,0.7)', backgroundColor:'rgba(37,99,235,0.04)', borderDash:[5,4], fill:true, tension:0.3, pointRadius:3, borderWidth:2},
-        {label:'Cumulative Workdone MT', data:cumW, borderColor:'#16a34a',             backgroundColor:'rgba(34,197,94,0.06)',                   fill:true, tension:0.3, pointRadius:3, borderWidth:2.5}
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 22}},
-      plugins: {
-        legend: {display:false},
-        tooltip: {mode:'index', intersect:false, callbacks:{label: c => ' ' + c.dataset.label + ': ' + c.raw.toLocaleString() + ' MT'}},
-        datalabels: {
-          display: ctx => ctx.datasetIndex === 1 && ctx.dataIndex % 3 === 0,
-          anchor:'top', align:'top', offset:3, font:{size:8, weight:'600'}, color:'#15803d',
-          formatter: v => (v / 1000).toFixed(0) + 'K MT'
-        }
+    type:'line',
+    data:{labels:labs, datasets:[
+      {label:'Cumulative Billed MT',   data:cumB, borderColor:'rgba(37,99,235,0.7)', backgroundColor:'rgba(37,99,235,0.04)', borderDash:[5,4], fill:true, tension:0.3, pointRadius:3, borderWidth:2},
+      {label:'Cumulative Workdone MT', data:cumW, borderColor:'#16a34a',             backgroundColor:'rgba(34,197,94,0.06)',                   fill:true, tension:0.3, pointRadius:3, borderWidth:2.5}
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:22}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{mode:'index',intersect:false,callbacks:{label:c=>' '+c.dataset.label+': '+c.raw.toLocaleString()+' MT'}},
+        datalabels:{display:ctx=>ctx.datasetIndex===1&&ctx.dataIndex%3===0,anchor:'top',align:'top',offset:3,font:{size:8,weight:'600'},color:'#15803d',formatter:v=>(v/1000).toFixed(0)+'K MT'}
       },
-      scales: {
-        x: {grid:{display:false}, ticks:{font:{size:9.5}, maxRotation:35}},
-        y: {grid:{color:G}, ticks:{callback: v => (v/1000).toFixed(0) + 'K MT'}, border:{display:false}}
-      }
+      scales:{x:{grid:{display:false},ticks:{font:{size:9.5},maxRotation:35}},y:{grid:{color:G},ticks:{callback:v=>(v/1000).toFixed(0)+'K MT'},border:{display:false}}}
     }
   });
 
   new Chart(document.getElementById('achieve-bar'), {
-    type: 'bar',
-    data: {
-      labels: labs,
-      datasets: [
-        {label:'Billed MT',   data:COST_MT.map(d => d.bmt), backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1, borderRadius:3},
-        {label:'Workdone MT', data:COST_MT.map(d => d.wmt), backgroundColor:'rgba(34,197,94,0.4)', borderColor:'#22c55e', borderWidth:1, borderRadius:3}
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding:{top:4}},
-      plugins: {legend:{display:false}, tooltip:{mode:'index', intersect:false}, datalabels:{display:false}},
-      scales: {
-        x: {grid:{display:false}, ticks:{maxRotation:40, font:{size:8.5}}},
-        y: {grid:{color:G}, ticks:{callback: v => v.toLocaleString()}, border:{display:false}}
-      }
+    type:'bar',
+    data:{labels:labs, datasets:[
+      {label:'Billed MT',   data:data.map(d=>d.billed_mt),   backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1, borderRadius:3},
+      {label:'Workdone MT', data:data.map(d=>d.workdone_mt), backgroundColor:'rgba(34,197,94,0.4)', borderColor:'#22c55e', borderWidth:1, borderRadius:3}
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:4}},
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false},datalabels:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{maxRotation:40,font:{size:8.5}}},y:{grid:{color:G},ticks:{callback:v=>v.toLocaleString()},border:{display:false}}}
     }
   });
 
-  const wmptlInflow = [19861612,22289981,36714021,57057300,37884891,98190707,46876369,59319491,49004757,51409888,23297809,15757163,15419859,13103877,33186739,48318026,51793427,13706376,0,10445219];
+  // Monthly inflow from pl data, aligned to costmt months
+  const plMap = {};
+  if (pl) pl.forEach(d => { plMap[d.month_label] = d.inflow; });
+  const inflowArr = data.map(d => {
+    const v = plMap[d.month_label] || 0;
+    return +(v / 1e7).toFixed(2);
+  });
+
   new Chart(document.getElementById('achieve-inflow'), {
-    type: 'bar',
-    data: {
-      labels: labs,
-      datasets: [{
-        data: wmptlInflow.map(v => +(v / 1e7).toFixed(2)),
-        backgroundColor: wmptlInflow.map(v => v > 0 ? 'rgba(34,197,94,0.45)' : 'rgba(156,163,175,0.3)'),
-        borderColor:     wmptlInflow.map(v => v > 0 ? '#22c55e' : '#9ca3af'),
-        borderWidth: 1.5, borderRadius: 4
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: {padding: {top: 22}},
-      plugins: {
-        legend: {display:false},
-        tooltip: {callbacks: {label: c => ' ₹' + c.raw + ' Cr'}},
-        datalabels: {
-          anchor:'end', align:'end', offset:2, font:{size:8, weight:'600'}, color:'#15803d', clamp:true,
-          formatter: v => v > 0 ? '₹' + v : ''
-        }
+    type:'bar',
+    data:{labels:labs, datasets:[{
+      data: inflowArr,
+      backgroundColor: inflowArr.map(v=>v>0?'rgba(34,197,94,0.45)':'rgba(156,163,175,0.3)'),
+      borderColor:     inflowArr.map(v=>v>0?'#22c55e':'#9ca3af'),
+      borderWidth:1.5, borderRadius:4
+    }]},
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:22}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>' ₹'+c.raw+' Cr'}},
+        datalabels:{anchor:'end',align:'end',offset:2,font:{size:8,weight:'600'},color:'#15803d',clamp:true,formatter:v=>v>0?'₹'+v:''}
       },
-      scales: {
-        x: {grid:{display:false}, ticks:{maxRotation:40, font:{size:8.5}}},
-        y: {grid:{color:G}, ticks:{callback: v => '₹'+v+'Cr'}, border:{display:false}}
-      }
+      scales:{x:{grid:{display:false},ticks:{maxRotation:40,font:{size:8.5}}},y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}}
     }
   });
 
-  let cB = 0, cW = 0;
-  const tb = document.getElementById('prog-table');
-  tb.innerHTML = '';
-  COST_MT.forEach(d => {
-    cB += d.bmt; cW += d.wmt;
-    const gap    = d.bmt - d.wmt;
-    const gapStr = `<span style="color:${gap >= 0 ? '#15803d' : '#dc2626'};font-weight:600">${gap >= 0 ? '+' : ''}${gap.toLocaleString()}</span>`;
-    tb.innerHTML += `<tr>
-      <td>${d.m}</td>
-      <td class="tr tm">${d.bmt > 0 ? d.bmt.toLocaleString() : '—'}</td>
-      <td class="tr tm">${d.wmt > 0 ? d.wmt.toLocaleString() : '—'}</td>
-      <td class="tr tm">${cB.toLocaleString()}</td>
-      <td class="tr" style="color:var(--blue);font-weight:500">${cW.toLocaleString()}</td>
-      <td class="tr">${d.bmt > 0 || d.wmt > 0 ? gapStr : '—'}</td>
+  let rB = 0, rW = 0;
+  document.getElementById('prog-table').innerHTML = data.map(d => {
+    rB += d.billed_mt; rW += d.workdone_mt;
+    const gap = d.billed_mt - d.workdone_mt;
+    const gapStr = `<span style="color:${gap>=0?'#15803d':'#dc2626'};font-weight:600">${gap>=0?'+':''}${gap.toLocaleString()}</span>`;
+    return `<tr>
+      <td>${d.month_label}</td>
+      <td class="tr tm">${d.billed_mt   > 0 ? d.billed_mt.toLocaleString()   : '—'}</td>
+      <td class="tr tm">${d.workdone_mt > 0 ? d.workdone_mt.toLocaleString() : '—'}</td>
+      <td class="tr tm">${rB.toLocaleString()}</td>
+      <td class="tr" style="color:var(--blue);font-weight:500">${rW.toLocaleString()}</td>
+      <td class="tr">${d.billed_mt>0||d.workdone_mt>0?gapStr:'—'}</td>
     </tr>`;
-  });
+  }).join('');
 }
 
-// ── INIT ──────────────────────────────────────────────────────
-inited['overview'] = true;
-initOverview();
+// ─── START ───────────────────────────────────────────────────────────────────
+bootstrap();
 </script>
 </body>
 </html>
