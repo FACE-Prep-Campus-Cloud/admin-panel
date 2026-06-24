@@ -302,7 +302,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
         <div><div class="page-title">Monthly P&amp;L Trend</div><div class="page-sub">25 months · Apr'24 – Apr'26 · Abstract sheet data</div></div>
         <div class="page-badges">
           <span class="pill pill-red">Peak deficit: Aug'24 −₹2.84 Cr</span>
-          <span class="pill pill-green">Best month: Jan'25 +₹4.94 Cr</span>
+          <span class="pill pill-green">Best month: Dec'24 +₹4.94 Cr</span>
         </div>
       </div>
       <div class="kpi4">
@@ -325,7 +325,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
         <div class="card-header">
           <div class="card-title">Cumulative Profit / Loss (₹ Crores)</div>
           <div class="legend" style="margin:0">
-            <span class="leg"><span class="leg-dot" style="background:#dc2626"></span>Deficit period (shaded)</span>
+            <span class="leg"><span class="leg-dot" style="background:#dc2626"></span>Deficit period</span>
             <span class="leg"><span class="leg-dot" style="background:#16a34a"></span>Profit period</span>
           </div>
         </div>
@@ -705,7 +705,16 @@ WORK_ORDERS.forEach(w => {
 });
 
 // ── NAV ──────────────────────────────────────────────────────
-const views = {overview:'Overview',cashflow:'Cash Flow',pl:'Monthly P&L',vendors:'Vendors',staff:'Staff Salaries',costmt:'Cost per MT',overruns:'WO Overruns',progress:'S-Curve Progress'};
+const views = {
+  overview:'Executive Overview',
+  cashflow:'Cash Flow',
+  pl:'Monthly P&L',
+  vendors:'Vendor Ledger',
+  staff:'Staff Salaries',
+  costmt:'Cost per MT',
+  overruns:'WO Overruns',
+  progress:'S-Curve Progress'
+};
 const inited = {};
 
 function nav(el, id) {
@@ -718,142 +727,225 @@ function nav(el, id) {
 }
 
 function initView(id) {
-  if (id === 'overview') initOverview();
+  if      (id === 'overview') initOverview();
   else if (id === 'cashflow') initCashflow();
-  else if (id === 'pl') initPL();
-  else if (id === 'vendors') initVendors();
-  else if (id === 'staff') initStaff();
-  else if (id === 'costmt') initCostMT();
+  else if (id === 'pl')       initPL();
+  else if (id === 'vendors')  initVendors();
+  else if (id === 'staff')    initStaff();
+  else if (id === 'costmt')   initCostMT();
   else if (id === 'overruns') initOverruns();
   else if (id === 'progress') initProgress();
 }
 
 // ── OVERVIEW ─────────────────────────────────────────────────
 function initOverview() {
-  const wData = [75.73, -0.10, 75.63, 5.05, 80.79, -70.53, 10.25];
+  const wData   = [75.73, -0.10, 75.63, 5.05, 80.79, -70.53, 10.25];
   const wLabels = ['Gross recv.','− Balance','Net recv.','+Ret+PBG','Net inflow','− Outflow','Profit'];
   new Chart(document.getElementById('wf'), {
-    type:'bar',
-    data:{labels:wLabels,datasets:[{
-      data:wData.map(v=>Math.abs(v)),
-      backgroundColor:wData.map(v=>v>=0?'rgba(34,197,94,0.45)':'rgba(220,38,38,0.45)'),
-      borderColor:wData.map(v=>v>=0?'#16a34a':'#dc2626'),
-      borderWidth:1.5,borderRadius:5
-    }]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:24}},
-      plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:c=>'₹'+wData[c.dataIndex].toFixed(2)+' Cr'}},
-        datalabels:{anchor:'end',align:'end',offset:2,font:{size:9.5,weight:'600'},
-          color:ctx=>wData[ctx.dataIndex]>=0?'#15803d':'#dc2626',clamp:true,
-          formatter:(v,ctx)=>'₹'+Math.abs(wData[ctx.dataIndex]).toFixed(1)+'Cr'}},
-      scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:20}},
-        y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}}}
+    type: 'bar',
+    data: {
+      labels: wLabels,
+      datasets: [{
+        data: wData.map(v => Math.abs(v)),
+        backgroundColor: wData.map(v => v >= 0 ? 'rgba(34,197,94,0.45)' : 'rgba(220,38,38,0.45)'),
+        borderColor:     wData.map(v => v >= 0 ? '#16a34a' : '#dc2626'),
+        borderWidth: 1.5, borderRadius: 5
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 24}},
+      plugins: {
+        legend: {display: false},
+        tooltip: {callbacks: {label: c => '₹' + wData[c.dataIndex].toFixed(2) + ' Cr'}},
+        datalabels: {
+          anchor:'end', align:'end', offset:2, font:{size:9.5, weight:'600'}, clamp:true,
+          color: ctx => wData[ctx.dataIndex] >= 0 ? '#15803d' : '#dc2626',
+          formatter: (v, ctx) => '₹' + Math.abs(wData[ctx.dataIndex]).toFixed(1) + 'Cr'
+        }
+      },
+      scales: {
+        x: {grid: {display:false}, ticks: {font:{size:10}, maxRotation:20}},
+        y: {grid: {color:G}, ticks: {callback: v => '₹'+v+'Cr'}, border: {display:false}}
+      }
+    }
   });
 
-  const sd = VENDORS.filter(v=>v.pct>0);
+  const sd = VENDORS.filter(v => v.pct > 0);
   new Chart(document.getElementById('donut'), {
-    type:'doughnut',
-    data:{labels:sd.map(v=>v.name.split(' ').slice(0,2).join(' ')),
-      datasets:[{data:sd.map(v=>v.pct),backgroundColor:sd.map(v=>v.color),
-        borderColor:'#ffffff',borderWidth:2,hoverOffset:6}]},
-    options:{cutout:'55%',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'right',labels:{boxWidth:8,padding:6,font:{size:9.5},usePointStyle:true,pointStyle:'circle'}},
-        tooltip:{callbacks:{label:c=>' '+c.label+': '+c.raw+'%'}},
-        datalabels:{anchor:'center',align:'center',font:{size:9.5,weight:'700'},color:'#fff',
-          formatter:v=>v>2?v+'%':''}}}
+    type: 'doughnut',
+    data: {
+      labels: sd.map(v => v.name.split(' ').slice(0,2).join(' ')),
+      datasets: [{
+        data: sd.map(v => v.pct),
+        backgroundColor: sd.map(v => v.color),
+        borderColor: '#ffffff', borderWidth: 2, hoverOffset: 6
+      }]
+    },
+    options: {
+      cutout: '55%', responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {position:'right', labels:{boxWidth:8, padding:6, font:{size:9.5}, usePointStyle:true, pointStyle:'circle'}},
+        tooltip: {callbacks: {label: c => ' ' + c.label + ': ' + c.raw + '%'}},
+        datalabels: {
+          anchor:'center', align:'center', font:{size:9.5, weight:'700'}, color:'#fff',
+          formatter: v => v > 2 ? v + '%' : ''
+        }
+      }
+    }
   });
 }
 
 // ── CASH FLOW ─────────────────────────────────────────────────
 function initCashflow() {
   new Chart(document.getElementById('cf-bar'), {
-    type:'bar',
-    data:{labels:['Net Inflow','Net Outflow','Profit'],
-      datasets:[{data:[80.79,70.53,10.25],
-        backgroundColor:['rgba(37,99,235,0.45)','rgba(220,38,38,0.45)','rgba(34,197,94,0.45)'],
-        borderColor:['#2563eb','#dc2626','#16a34a'],borderWidth:1.5,borderRadius:5}]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:28}},
-      plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:c=>'₹'+c.raw+' Cr'}},
-        datalabels:{anchor:'end',align:'end',offset:2,font:{size:10,weight:'700'},
-          color:ctx=>['#1d4ed8','#b91c1c','#15803d'][ctx.dataIndex],clamp:true,
-          formatter:v=>'₹'+v+' Cr'}},
-      scales:{x:{grid:{display:false}},
-        y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}}}
+    type: 'bar',
+    data: {
+      labels: ['Net Inflow', 'Net Outflow', 'Profit'],
+      datasets: [{
+        data: [80.79, 70.53, 10.25],
+        backgroundColor: ['rgba(37,99,235,0.45)', 'rgba(220,38,38,0.45)', 'rgba(34,197,94,0.45)'],
+        borderColor: ['#2563eb','#dc2626','#16a34a'],
+        borderWidth: 1.5, borderRadius: 5
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 28}},
+      plugins: {
+        legend: {display: false},
+        tooltip: {callbacks: {label: c => '₹' + c.raw + ' Cr'}},
+        datalabels: {
+          anchor:'end', align:'end', offset:2, font:{size:10, weight:'700'}, clamp:true,
+          color: ctx => ['#1d4ed8','#b91c1c','#15803d'][ctx.dataIndex],
+          formatter: v => '₹' + v + ' Cr'
+        }
+      },
+      scales: {
+        x: {grid: {display:false}},
+        y: {grid: {color:G}, ticks: {callback: v => '₹'+v+'Cr'}, border: {display:false}}
+      }
+    }
   });
 
   new Chart(document.getElementById('cf-pie'), {
-    type:'doughnut',
-    data:{labels:['Amount Received','Retention 5%','PBG 2.5%','Balance Due'],
-      datasets:[{data:[75.63,3.48,1.57,0.10],
-        backgroundColor:['rgba(34,197,94,0.55)','rgba(37,99,235,0.55)','rgba(124,58,237,0.55)','rgba(220,38,38,0.55)'],
-        borderColor:['#16a34a','#2563eb','#7c3aed','#dc2626'],borderWidth:1.5,hoverOffset:5}]},
-    options:{cutout:'50%',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{boxWidth:9,padding:10,font:{size:10},usePointStyle:true,pointStyle:'circle'}},
-        tooltip:{callbacks:{label:c=>' '+c.label+': ₹'+c.raw+' Cr'}},
-        datalabels:{anchor:'center',align:'center',font:{size:9.5,weight:'700'},color:'#fff',
-          formatter:v=>v>0.3?'₹'+Number(v).toFixed(1)+'Cr':''}}}
+    type: 'doughnut',
+    data: {
+      labels: ['Amount Received', 'Retention 5%', 'PBG 2.5%', 'Balance Due'],
+      datasets: [{
+        data: [75.63, 3.48, 1.57, 0.10],
+        backgroundColor: ['rgba(34,197,94,0.55)','rgba(37,99,235,0.55)','rgba(124,58,237,0.55)','rgba(220,38,38,0.55)'],
+        borderColor: ['#16a34a','#2563eb','#7c3aed','#dc2626'],
+        borderWidth: 1.5, hoverOffset: 5
+      }]
+    },
+    options: {
+      cutout: '50%', responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {position:'bottom', labels:{boxWidth:9, padding:10, font:{size:10}, usePointStyle:true, pointStyle:'circle'}},
+        tooltip: {callbacks: {label: c => ' ' + c.label + ': ₹' + c.raw + ' Cr'}},
+        datalabels: {
+          anchor:'center', align:'center', font:{size:9.5, weight:'700'}, color:'#fff',
+          formatter: v => v > 0.3 ? '₹' + Number(v).toFixed(1) + 'Cr' : ''
+        }
+      }
+    }
   });
 }
 
 // ── MONTHLY P&L ───────────────────────────────────────────────
 function initPL() {
-  const labs = PL_DATA.map(d=>d.m);
-  const inArr = PL_DATA.map(d=>+(d.inf/1e7).toFixed(2));
-  const outArr = PL_DATA.map(d=>+(d.out/1e7).toFixed(2));
+  const labs   = PL_DATA.map(d => d.m);
+  const inArr  = PL_DATA.map(d => +(d.inf / 1e7).toFixed(2));
+  const outArr = PL_DATA.map(d => +(d.out / 1e7).toFixed(2));
 
   new Chart(document.getElementById('pl-bar'), {
-    type:'bar',
-    data:{labels:labs,datasets:[
-      {label:'Inflow',data:inArr,backgroundColor:'rgba(37,99,235,0.5)',borderColor:'#2563eb',borderWidth:0,borderRadius:3},
-      {label:'Outflow',data:outArr,backgroundColor:'rgba(220,38,38,0.5)',borderColor:'#dc2626',borderWidth:0,borderRadius:3}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:4}},
-      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:c=>' '+c.dataset.label+': ₹'+c.raw+'Cr'}},datalabels:{display:false}},
-      scales:{x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8.5},autoSkip:true,maxTicksLimit:13}},
-        y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}}}
+    type: 'bar',
+    data: {
+      labels: labs,
+      datasets: [
+        {label:'Inflow',  data:inArr,  backgroundColor:'rgba(37,99,235,0.5)',  borderColor:'#2563eb', borderWidth:0, borderRadius:3},
+        {label:'Outflow', data:outArr, backgroundColor:'rgba(220,38,38,0.5)', borderColor:'#dc2626', borderWidth:0, borderRadius:3}
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 4}},
+      plugins: {
+        legend: {display:false},
+        tooltip: {mode:'index', intersect:false, callbacks:{label: c => ' ' + c.dataset.label + ': ₹' + c.raw + 'Cr'}},
+        datalabels: {display: false}
+      },
+      scales: {
+        x: {grid:{display:false}, ticks:{maxRotation:45, font:{size:8.5}, autoSkip:true, maxTicksLimit:13}},
+        y: {grid:{color:G}, ticks:{callback: v => '₹'+v+'Cr'}, border:{display:false}}
+      }
+    }
   });
 
   // Cumulative P/L
   let cum = 0;
-  const cumArr = PL_DATA.map(d=>{cum+=(d.pl/1e7);return +cum.toFixed(2);});
+  const cumArr = PL_DATA.map(d => { cum += (d.pl / 1e7); return +cum.toFixed(2); });
   new Chart(document.getElementById('pl-cum'), {
-    type:'line',
-    data:{labels:labs,datasets:[{
-      label:'Cumulative P/L',data:cumArr,
-      borderColor:'#16a34a',backgroundColor:'rgba(34,197,94,0.1)',
-      fill:true,tension:0.3,pointRadius:3,borderWidth:2.5,
-      segment:{
-        borderColor:ctx=>cumArr[ctx.p1DataIndex]>=0?'#16a34a':'#dc2626',
-        backgroundColor:ctx=>cumArr[ctx.p1DataIndex]>=0?'rgba(34,197,94,0.08)':'rgba(220,38,38,0.08)'
+    type: 'line',
+    data: {
+      labels: labs,
+      datasets: [{
+        label: 'Cumulative P/L',
+        data: cumArr,
+        borderColor: '#16a34a',
+        backgroundColor: 'rgba(34,197,94,0.1)',
+        fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2.5,
+        segment: {
+          borderColor:     ctx => cumArr[ctx.p1DataIndex] >= 0 ? '#16a34a' : '#dc2626',
+          backgroundColor: ctx => cumArr[ctx.p1DataIndex] >= 0 ? 'rgba(34,197,94,0.08)' : 'rgba(220,38,38,0.08)'
+        }
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 18}},
+      plugins: {
+        legend: {display:false},
+        tooltip: {callbacks: {label: c => ' Cum P/L: ₹' + c.raw + ' Cr'}},
+        datalabels: {
+          display: ctx => ctx.dataIndex % 3 === 0,
+          anchor:'top', align:'top', offset:3, font:{size:8, weight:'600'}, clamp:true,
+          color: ctx => cumArr[ctx.dataIndex] >= 0 ? '#15803d' : '#dc2626',
+          formatter: v => '₹' + v + 'Cr'
+        }
+      },
+      scales: {
+        x: {grid:{display:false}, ticks:{maxRotation:45, font:{size:8.5}, autoSkip:true, maxTicksLimit:13}},
+        y: {grid:{color:G}, ticks:{callback: v => '₹'+v+'Cr'}, border:{display:false}}
       }
-    }]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:18}},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' Cum P/L: ₹'+c.raw+' Cr'}},
-        datalabels:{display:ctx=>ctx.dataIndex%3===0,anchor:'top',align:'top',offset:3,
-          font:{size:8,weight:'600'},color:ctx=>cumArr[ctx.dataIndex]>=0?'#15803d':'#dc2626',
-          clamp:true,formatter:v=>'₹'+v+'Cr'}},
-      scales:{x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8.5},autoSkip:true,maxTicksLimit:13}},
-        y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}}}
+    }
   });
 
+  // ── P&L TABLE — BUG FIXED HERE ──
   const tb = document.getElementById('pl-table');
   tb.innerHTML = '';
-  PL_DATA.forEach(d=>{
-    const plCr = (d.pl/1e7).toFixed(2);
-    const inCr = (d.inf/1e7).toFixed(2);
-    const outCr = (d.out/1e7).toFixed(2);
+  PL_DATA.forEach(d => {
+    const plCr  = (d.pl / 1e7).toFixed(2);
+    const inCr  = (d.inf / 1e7).toFixed(2);
+    const outCr = (d.out / 1e7).toFixed(2);
     const isProfit = d.pl > 0;
-    const isLoss = d.pl < 0;
-    const status = isProfit ? '<span class="pill pill-green">Profit</span>' :
-                   isLoss   ? '<span class="pill pill-red">Loss</span>'   :
-                               '<span class="pill pill-amber">Nil</span>';
+    const isLoss   = d.pl < 0;
+    // FIX: was ] instead of } closing the ternary inside the template literal
+    const plColor = isProfit ? 'var(--green)' : isLoss ? 'var(--red)' : 'var(--text-secondary)';
+    const plWeight = d.pl !== 0 ? '600' : '400';
+    const plText   = d.pl !== 0 ? (isProfit ? '+' : '') + plCr + ' Cr' : '—';
+    const status = isProfit
+      ? '<span class="pill pill-green">Profit</span>'
+      : isLoss
+        ? '<span class="pill pill-red">Loss</span>'
+        : '<span class="pill pill-amber">Nil</span>';
     tb.innerHTML += `<tr>
       <td>${d.m}</td>
-      <td class="tr tm">${d.inf>0?'₹'+inCr+' Cr':'—'}</td>
+      <td class="tr tm">${d.inf > 0 ? '₹' + inCr + ' Cr' : '—'}</td>
       <td class="tr tm">₹${outCr} Cr</td>
-      <td class="tr" style="color:${isProfit?'var(--green)':isLoss?'var(--red)':'var(--text-secondary)'];font-weight:${d.pl!==0?'600':'400'}">${d.pl!==0?(isProfit?'+':'')+plCr+' Cr':'—'}</td>
-      <td class="tr tm">${d.plp!==0?d.plp+'%':'—'}</td>
+      <td class="tr" style="color:${plColor};font-weight:${plWeight}">${plText}</td>
+      <td class="tr tm">${d.plp !== 0 ? d.plp + '%' : '—'}</td>
       <td>${status}</td>
     </tr>`;
   });
@@ -861,43 +953,61 @@ function initPL() {
 
 // ── VENDORS ──────────────────────────────────────────────────
 function initVendors() {
-  const top = VENDORS.filter(v=>v.outstanding>0).slice(0,7);
+  const top = VENDORS.filter(v => v.outstanding > 0).slice(0, 7);
   new Chart(document.getElementById('vnd-bar'), {
-    type:'bar',
-    data:{labels:top.map(v=>v.name.split(' ').slice(0,2).join(' ')),
-      datasets:[
-        {label:'Outstanding',data:top.map(v=>+(v.outstanding/1e7).toFixed(2)),backgroundColor:'rgba(37,99,235,0.4)',borderColor:'#2563eb',borderWidth:1.5,borderRadius:4},
-        {label:'Paid',data:top.map(v=>+(v.paid/1e7).toFixed(2)),backgroundColor:'rgba(34,197,94,0.4)',borderColor:'#22c55e',borderWidth:1.5,borderRadius:4}
-      ]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' ₹'+c.raw+' Cr'}},
-        datalabels:{anchor:'end',align:'end',offset:2,font:{size:8.5,weight:'600'},
-          color:ctx=>ctx.datasetIndex===0?'#1d4ed8':'#15803d',clamp:true,
-          formatter:v=>v>0?'₹'+v+'Cr':''}},
-      scales:{x:{grid:{display:false},ticks:{maxRotation:35,font:{size:9.5}}},
-        y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}}}
+    type: 'bar',
+    data: {
+      labels: top.map(v => v.name.split(' ').slice(0,2).join(' ')),
+      datasets: [
+        {label:'Outstanding', data:top.map(v => +(v.outstanding/1e7).toFixed(2)), backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1.5, borderRadius:4},
+        {label:'Paid',        data:top.map(v => +(v.paid/1e7).toFixed(2)),        backgroundColor:'rgba(34,197,94,0.4)',  borderColor:'#22c55e', borderWidth:1.5, borderRadius:4}
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 22}},
+      plugins: {
+        legend: {display:false},
+        tooltip: {callbacks: {label: c => ' ₹' + c.raw + ' Cr'}},
+        datalabels: {
+          anchor:'end', align:'end', offset:2, font:{size:8.5, weight:'600'}, clamp:true,
+          color: ctx => ctx.datasetIndex === 0 ? '#1d4ed8' : '#15803d',
+          formatter: v => v > 0 ? '₹' + v + 'Cr' : ''
+        }
+      },
+      scales: {
+        x: {grid:{display:false}, ticks:{maxRotation:35, font:{size:9.5}}},
+        y: {grid:{color:G}, ticks:{callback: v => '₹'+v+'Cr'}, border:{display:false}}
+      }
+    }
   });
 
   const barsEl = document.getElementById('eff-bars');
   barsEl.innerHTML = '';
-  VENDORS.filter(v=>v.outstanding>0).forEach(v=>{
-    const e = Math.min(100, Math.round(v.paid/v.outstanding*100));
-    const col = e>=95?'#16a34a':e>=70?'#d97706':'#dc2626';
-    barsEl.innerHTML += `<div class="bar-row"><div class="bar-lbl">${v.name.split(' ').slice(0,2).join(' ')}</div><div class="bar-track"><div class="bar-fill" style="width:${e}%;background:${col}"></div></div><div class="bar-pct">${e}%</div></div>`;
+  VENDORS.filter(v => v.outstanding > 0).forEach(v => {
+    const e   = Math.min(100, Math.round(v.paid / v.outstanding * 100));
+    const col = e >= 95 ? '#16a34a' : e >= 70 ? '#d97706' : '#dc2626';
+    barsEl.innerHTML += `<div class="bar-row">
+      <div class="bar-lbl">${v.name.split(' ').slice(0,2).join(' ')}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${e}%;background:${col}"></div></div>
+      <div class="bar-pct">${e}%</div>
+    </div>`;
   });
 
   const tb = document.getElementById('vnd-table');
   tb.innerHTML = '';
-  VENDORS.forEach(v=>{
+  VENDORS.forEach(v => {
     const bal = Math.max(0, v.outstanding - v.paid);
-    const st = bal===0?'<span class="pill pill-green">Cleared</span>':'<span class="pill pill-red">₹'+toCr(bal)+' Cr</span>';
+    const st  = bal === 0
+      ? '<span class="pill pill-green">Cleared</span>'
+      : '<span class="pill pill-red">₹' + toCr(bal) + ' Cr</span>';
     tb.innerHTML += `<tr>
       <td class="tm">${v.id}</td>
       <td>${v.name}</td>
-      <td class="tr tm">${v.outstanding>0?'₹'+toCr(v.outstanding)+' Cr':'—'}</td>
+      <td class="tr tm">${v.outstanding > 0 ? '₹' + toCr(v.outstanding) + ' Cr' : '—'}</td>
       <td class="tr" style="color:#15803d">₹${toCr(v.paid)} Cr</td>
-      <td class="tr">${bal>0?'₹'+toCr(bal)+' Cr':'—'}</td>
-      <td class="tr tm">${v.rate>0?'₹'+v.rate:'—'}</td>
+      <td class="tr">${bal > 0 ? '₹' + toCr(bal) + ' Cr' : '—'}</td>
+      <td class="tr tm">${v.rate > 0 ? '₹' + v.rate : '—'}</td>
       <td class="tr"><span class="pill pill-blue">${v.pct}%</span></td>
       <td>${st}</td>
     </tr>`;
@@ -906,43 +1016,76 @@ function initVendors() {
 
 // ── STAFF ─────────────────────────────────────────────────────
 function initStaff() {
-  const labs = SAL_DATA.map(d=>d.m);
+  const labs = SAL_DATA.map(d => d.m);
   new Chart(document.getElementById('sal-bar'), {
-    type:'bar',
-    data:{labels:labs,datasets:[
-      {label:'Staff Salary',data:SAL_DATA.map(d=>+(d.sal/1e5).toFixed(2)),backgroundColor:'rgba(37,99,235,0.5)',borderWidth:0,stack:'s'},
-      {label:'RA Bills',data:SAL_DATA.map(d=>+(d.ra/1e5).toFixed(2)),backgroundColor:'rgba(34,197,94,0.5)',borderWidth:0,stack:'s'},
-      {label:'NMR Manpower',data:SAL_DATA.map(d=>+(d.nmr/1e5).toFixed(2)),backgroundColor:'rgba(217,119,6,0.6)',borderWidth:0,stack:'s'},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},
-      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false},
-        datalabels:{display:ctx=>ctx.datasetIndex===2,anchor:'end',align:'end',offset:2,
-          font:{size:8.5,weight:'600'},color:'#374151',clamp:true,
-          formatter:(v,ctx)=>{const t=ctx.chart.data.datasets.reduce((s,ds)=>s+(ds.data[ctx.dataIndex]||0),0);return t>0?'₹'+t.toFixed(1)+'L':''}}},
-      scales:{x:{stacked:true,grid:{display:false},ticks:{maxRotation:45,font:{size:8.5},autoSkip:true,maxTicksLimit:13}},
-        y:{stacked:true,grid:{color:G},ticks:{callback:v=>'₹'+v+'L'},border:{display:false}}}}
+    type: 'bar',
+    data: {
+      labels: labs,
+      datasets: [
+        {label:'Staff Salary',  data:SAL_DATA.map(d => +(d.sal/1e5).toFixed(2)), backgroundColor:'rgba(37,99,235,0.5)', borderWidth:0, stack:'s'},
+        {label:'RA Bills',      data:SAL_DATA.map(d => +(d.ra/1e5).toFixed(2)),  backgroundColor:'rgba(34,197,94,0.5)', borderWidth:0, stack:'s'},
+        {label:'NMR Manpower',  data:SAL_DATA.map(d => +(d.nmr/1e5).toFixed(2)),backgroundColor:'rgba(217,119,6,0.6)', borderWidth:0, stack:'s'},
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 22}},
+      plugins: {
+        legend: {display:false},
+        tooltip: {mode:'index', intersect:false},
+        datalabels: {
+          display: ctx => ctx.datasetIndex === 2,
+          anchor:'end', align:'end', offset:2, font:{size:8.5, weight:'600'}, color:'#374151', clamp:true,
+          formatter: (v, ctx) => {
+            const t = ctx.chart.data.datasets.reduce((s, ds) => s + (ds.data[ctx.dataIndex] || 0), 0);
+            return t > 0 ? '₹' + t.toFixed(1) + 'L' : '';
+          }
+        }
+      },
+      scales: {
+        x: {stacked:true, grid:{display:false}, ticks:{maxRotation:45, font:{size:8.5}, autoSkip:true, maxTicksLimit:13}},
+        y: {stacked:true, grid:{color:G}, ticks:{callback: v => '₹'+v+'L'}, border:{display:false}}
+      }
+    }
   });
 
   new Chart(document.getElementById('hc-line'), {
-    type:'line',
-    data:{labels:labs,datasets:[
-      {label:'Headcount',data:SAL_DATA.map(d=>d.hc),borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.07)',fill:true,tension:0.35,pointRadius:3,borderWidth:2}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:18}},
-      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false},
-        datalabels:{display:ctx=>ctx.dataIndex%2===0,anchor:'top',align:'top',offset:2,font:{size:8,weight:'600'},color:'#2563eb',clamp:true}},
-      scales:{x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8.5},autoSkip:true,maxTicksLimit:13}},
-        y:{grid:{color:G},border:{display:false},title:{display:true,text:'Headcount',font:{size:9}}}}}
+    type: 'line',
+    data: {
+      labels: labs,
+      datasets: [{
+        label: 'Headcount',
+        data: SAL_DATA.map(d => d.hc),
+        borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.07)',
+        fill: true, tension: 0.35, pointRadius: 3, borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 18}},
+      plugins: {
+        legend: {display:false},
+        tooltip: {mode:'index', intersect:false},
+        datalabels: {
+          display: ctx => ctx.dataIndex % 2 === 0,
+          anchor:'top', align:'top', offset:2, font:{size:8, weight:'600'}, color:'#2563eb', clamp:true
+        }
+      },
+      scales: {
+        x: {grid:{display:false}, ticks:{maxRotation:45, font:{size:8.5}, autoSkip:true, maxTicksLimit:13}},
+        y: {grid:{color:G}, border:{display:false}, title:{display:true, text:'Headcount', font:{size:9}}}
+      }
+    }
   });
 
   const tb = document.getElementById('sal-table');
   tb.innerHTML = '';
-  SAL_DATA.forEach(d=>{
+  SAL_DATA.forEach(d => {
     tb.innerHTML += `<tr>
       <td>${d.m}</td>
-      <td class="tr tm">${d.sal>0?fmtINR(d.sal):'—'}</td>
-      <td class="tr tm">${d.ra>0?fmtINR(d.ra):'—'}</td>
-      <td class="tr tm">${d.nmr>0?fmtINR(d.nmr):'—'}</td>
+      <td class="tr tm">${d.sal > 0 ? fmtINR(d.sal) : '—'}</td>
+      <td class="tr tm">${d.ra  > 0 ? fmtINR(d.ra)  : '—'}</td>
+      <td class="tr tm">${d.nmr > 0 ? fmtINR(d.nmr) : '—'}</td>
       <td class="tr" style="font-weight:600">${fmtINR(d.tot)}</td>
       <td class="tr tm">${d.hc}</td>
     </tr>`;
@@ -951,46 +1094,75 @@ function initStaff() {
 
 // ── COST PER MT ───────────────────────────────────────────────
 function initCostMT() {
-  const labs = COST_MT.map(d=>d.m);
-  const actWithNull = COST_MT.map(d=>d.act>0?d.act:null);
+  const labs        = COST_MT.map(d => d.m);
+  const actWithNull = COST_MT.map(d => d.act > 0 ? d.act : null);
 
   new Chart(document.getElementById('cost-line'), {
-    type:'line',
-    data:{labels:labs,datasets:[
-      {label:'Planned ₹2,009',data:COST_MT.map(()=>2009),borderColor:'rgba(37,99,235,0.7)',borderDash:[4,3],borderWidth:1.5,pointRadius:0,tension:0,datalabels:{display:false}},
-      {label:'Quoted ₹2,390', data:COST_MT.map(()=>2390),borderColor:'rgba(124,58,237,0.7)',borderDash:[4,3],borderWidth:1.5,pointRadius:0,tension:0,datalabels:{display:false}},
-      {label:'Actual',data:actWithNull,borderColor:'#d97706',backgroundColor:'rgba(217,119,6,0.06)',fill:false,tension:0.3,pointRadius:4,borderWidth:2.5,
-        segment:{borderColor:ctx=>{const v=actWithNull[ctx.p1DataIndex];return v==null?'transparent':v>2390?'#dc2626':v>2009?'#d97706':'#16a34a';}},
-        pointBackgroundColor:actWithNull.map(v=>v==null?'transparent':v>2390?'#dc2626':v>2009?'#d97706':'#16a34a'),
-        datalabels:{display:ctx=>ctx.dataIndex%3===0&&ctx.raw!=null,anchor:'top',align:'top',offset:3,font:{size:8,weight:'600'},color:'#374151',formatter:v=>v!=null?'₹'+v:''}
+    type: 'line',
+    data: {
+      labels: labs,
+      datasets: [
+        {label:'Planned ₹2,009', data:COST_MT.map(() => 2009), borderColor:'rgba(37,99,235,0.7)',  borderDash:[4,3], borderWidth:1.5, pointRadius:0, tension:0, datalabels:{display:false}},
+        {label:'Quoted ₹2,390',  data:COST_MT.map(() => 2390), borderColor:'rgba(124,58,237,0.7)', borderDash:[4,3], borderWidth:1.5, pointRadius:0, tension:0, datalabels:{display:false}},
+        {
+          label: 'Actual', data: actWithNull,
+          borderColor: '#d97706', backgroundColor: 'rgba(217,119,6,0.06)',
+          fill: false, tension: 0.3, pointRadius: 4, borderWidth: 2.5,
+          segment: {
+            borderColor: ctx => {
+              const v = actWithNull[ctx.p1DataIndex];
+              return v == null ? 'transparent' : v > 2390 ? '#dc2626' : v > 2009 ? '#d97706' : '#16a34a';
+            }
+          },
+          pointBackgroundColor: actWithNull.map(v => v == null ? 'transparent' : v > 2390 ? '#dc2626' : v > 2009 ? '#d97706' : '#16a34a'),
+          datalabels: {
+            display: ctx => ctx.dataIndex % 3 === 0 && ctx.raw != null,
+            anchor:'top', align:'top', offset:3, font:{size:8, weight:'600'}, color:'#374151',
+            formatter: v => v != null ? '₹' + v : ''
+          }
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top:24, right:10}},
+      plugins: {
+        legend: {display:false},
+        tooltip: {mode:'index', intersect:false, callbacks:{label: c => c.raw != null ? ' ' + c.dataset.label + ': ₹' + c.raw + '/MT' : ''}},
+        datalabels: {}
+      },
+      scales: {
+        x: {grid:{display:false}, ticks:{maxRotation:40, font:{size:9}}},
+        y: {grid:{color:G}, ticks:{callback: v => '₹'+v}, border:{display:false}, min:0, max:9000}
       }
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:24,right:10}},
-      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:c=>c.raw!=null?' '+c.dataset.label+': ₹'+c.raw+'/MT':''}},datalabels:{}},
-      scales:{x:{grid:{display:false},ticks:{maxRotation:40,font:{size:9}}},
-        y:{grid:{color:G},ticks:{callback:v=>'₹'+v},border:{display:false},
-          min:0,max:9000}}}
+    }
   });
 
   new Chart(document.getElementById('mt-bar'), {
-    type:'bar',
-    data:{labels:labs,datasets:[
-      {label:'Billed MT',data:COST_MT.map(d=>d.bmt),backgroundColor:'rgba(37,99,235,0.4)',borderColor:'#2563eb',borderWidth:1,borderRadius:3},
-      {label:'Workdone MT',data:COST_MT.map(d=>d.wmt),backgroundColor:'rgba(34,197,94,0.4)',borderColor:'#22c55e',borderWidth:1,borderRadius:3}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:4}},
-      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false},datalabels:{display:false}},
-      scales:{x:{grid:{display:false},ticks:{maxRotation:40,font:{size:8.5}}},
-        y:{grid:{color:G},ticks:{callback:v=>v.toLocaleString()+'MT'},border:{display:false}}}}
+    type: 'bar',
+    data: {
+      labels: labs,
+      datasets: [
+        {label:'Billed MT',   data:COST_MT.map(d => d.bmt), backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1, borderRadius:3},
+        {label:'Workdone MT', data:COST_MT.map(d => d.wmt), backgroundColor:'rgba(34,197,94,0.4)', borderColor:'#22c55e', borderWidth:1, borderRadius:3}
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 4}},
+      plugins: {legend:{display:false}, tooltip:{mode:'index', intersect:false}, datalabels:{display:false}},
+      scales: {
+        x: {grid:{display:false}, ticks:{maxRotation:40, font:{size:8.5}}},
+        y: {grid:{color:G}, ticks:{callback: v => v.toLocaleString() + 'MT'}, border:{display:false}}
+      }
+    }
   });
 
-  // Efficiency bars for cost/MT
   const effEl = document.getElementById('cost-eff-bars');
-  effEl.innerHTML = '<div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;font-weight:500">Actual ₹/MT vs Planned (₹2,009) — color coded</div>';
-  COST_MT.filter(d=>d.act>0).forEach(d=>{
-    const pct = Math.min(200, Math.round(d.act/90));
+  effEl.innerHTML = '<div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;font-weight:500">Actual ₹/MT vs Planned (₹2,009) — colour coded</div>';
+  COST_MT.filter(d => d.act > 0).forEach(d => {
+    const pct = Math.min(200, Math.round(d.act / 90));
     const col = d.act > 2390 ? '#dc2626' : d.act > 2009 ? '#d97706' : '#16a34a';
-    const label = d.act > 2390 ? 'Above quote' : d.act > 2009 ? 'Above plan' : 'Under plan';
     effEl.innerHTML += `<div class="bar-row">
       <div class="bar-lbl">${d.m}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,pct)}%;background:${col}"></div></div>
@@ -1000,19 +1172,22 @@ function initCostMT() {
 
   const tb = document.getElementById('cost-table');
   tb.innerHTML = '';
-  COST_MT.forEach(d=>{
-    const col = d.act===0?'var(--text-tertiary)':d.act>2390?'var(--red)':d.act>2009?'var(--amber)':'var(--green-dark)';
-    const st = d.act===0?'<span class="pill pill-amber">No billing</span>':
-               d.act>2390?'<span class="pill pill-red">Above quote</span>':
-               d.act>2009?'<span class="pill pill-amber">Above plan</span>':
-               '<span class="pill pill-green">Under plan</span>';
+  COST_MT.forEach(d => {
+    const col = d.act === 0 ? 'var(--text-tertiary)' : d.act > 2390 ? 'var(--red)' : d.act > 2009 ? 'var(--amber)' : 'var(--green-dark)';
+    const st  = d.act === 0
+      ? '<span class="pill pill-amber">No billing</span>'
+      : d.act > 2390
+        ? '<span class="pill pill-red">Above quote</span>'
+        : d.act > 2009
+          ? '<span class="pill pill-amber">Above plan</span>'
+          : '<span class="pill pill-green">Under plan</span>';
     tb.innerHTML += `<tr>
       <td>${d.m}</td>
-      <td class="tr tm">${d.bmt>0?d.bmt.toLocaleString():'—'}</td>
-      <td class="tr tm">${d.wmt>0?d.wmt.toLocaleString():'—'}</td>
+      <td class="tr tm">${d.bmt > 0 ? d.bmt.toLocaleString() : '—'}</td>
+      <td class="tr tm">${d.wmt > 0 ? d.wmt.toLocaleString() : '—'}</td>
       <td class="tr tm">₹2,009</td>
       <td class="tr tm">₹2,390</td>
-      <td class="tr" style="color:${col};font-weight:600">${d.act>0?'₹'+d.act.toLocaleString():'—'}</td>
+      <td class="tr" style="color:${col};font-weight:600">${d.act > 0 ? '₹' + d.act.toLocaleString() : '—'}</td>
       <td>${st}</td>
     </tr>`;
   });
@@ -1020,56 +1195,79 @@ function initCostMT() {
 
 // ── WORK ORDER OVERRUNS ───────────────────────────────────────
 function initOverruns() {
-  const top10 = [...WORK_ORDERS].sort((a,b)=>b.overrun-a.overrun).slice(0,10);
+  const top10 = [...WORK_ORDERS].sort((a, b) => b.overrun - a.overrun).slice(0, 10);
 
   new Chart(document.getElementById('wo-bar'), {
-    type:'bar',
-    data:{labels:top10.map(w=>w.vendor.split(' ').slice(0,2).join(' ')),
-      datasets:[
-        {label:'WO Value',data:top10.map(w=>+(w.wo/1e5).toFixed(1)),backgroundColor:'rgba(37,99,235,0.4)',borderColor:'#2563eb',borderWidth:1.5,borderRadius:4},
-        {label:'Billed',data:top10.map(w=>+(w.billed/1e5).toFixed(1)),backgroundColor:'rgba(220,38,38,0.4)',borderColor:'#dc2626',borderWidth:1.5,borderRadius:4}
-      ]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},indexAxis:'y',
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' ₹'+c.raw+' L'}},
-        datalabels:{anchor:'end',align:'end',offset:2,font:{size:8,weight:'600'},clamp:true,
-          color:ctx=>ctx.datasetIndex===0?'#1d4ed8':'#b91c1c',
-          formatter:v=>v>0?'₹'+v+'L':'No WO'}},
-      scales:{x:{grid:{color:G},ticks:{callback:v=>'₹'+v+'L'},border:{display:false}},
-        y:{grid:{display:false},ticks:{font:{size:9.5}}}}}
+    type: 'bar',
+    data: {
+      labels: top10.map(w => w.vendor.split(' ').slice(0,2).join(' ')),
+      datasets: [
+        {label:'WO Value', data:top10.map(w => +(w.wo/1e5).toFixed(1)),     backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1.5, borderRadius:4},
+        {label:'Billed',   data:top10.map(w => +(w.billed/1e5).toFixed(1)), backgroundColor:'rgba(220,38,38,0.4)', borderColor:'#dc2626', borderWidth:1.5, borderRadius:4}
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 22}}, indexAxis: 'y',
+      plugins: {
+        legend: {display:false},
+        tooltip: {callbacks: {label: c => ' ₹' + c.raw + ' L'}},
+        datalabels: {
+          anchor:'end', align:'end', offset:2, font:{size:8, weight:'600'}, clamp:true,
+          color: ctx => ctx.datasetIndex === 0 ? '#1d4ed8' : '#b91c1c',
+          formatter: v => v > 0 ? '₹' + v + 'L' : 'No WO'
+        }
+      },
+      scales: {
+        x: {grid:{color:G}, ticks:{callback: v => '₹'+v+'L'}, border:{display:false}},
+        y: {grid:{display:false}, ticks:{font:{size:9.5}}}
+      }
+    }
   });
 
-  // Donut by severity
-  const extreme = WORK_ORDERS.filter(w=>w.wo>0&&(w.overrun/w.wo)>5).length;
-  const high = WORK_ORDERS.filter(w=>w.wo>0&&(w.overrun/w.wo)>1&&(w.overrun/w.wo)<=5).length;
-  const noWO = WORK_ORDERS.filter(w=>w.wo===0).length;
+  const extreme  = WORK_ORDERS.filter(w => w.wo > 0 && (w.overrun / w.wo) > 5).length;
+  const high     = WORK_ORDERS.filter(w => w.wo > 0 && (w.overrun / w.wo) > 1 && (w.overrun / w.wo) <= 5).length;
+  const noWO     = WORK_ORDERS.filter(w => w.wo === 0).length;
   const moderate = WORK_ORDERS.length - extreme - high - noWO;
+
   new Chart(document.getElementById('wo-donut'), {
-    type:'doughnut',
-    data:{labels:['Extreme (>500%)', 'High (100–500%)','Moderate (<100%)','No WO issued'],
-      datasets:[{data:[extreme,high,moderate,noWO],
-        backgroundColor:['rgba(220,38,38,0.6)','rgba(217,119,6,0.6)','rgba(37,99,235,0.5)','rgba(124,58,237,0.5)'],
-        borderColor:['#dc2626','#d97706','#2563eb','#7c3aed'],borderWidth:1.5,hoverOffset:6}]},
-    options:{cutout:'52%',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{boxWidth:9,padding:10,font:{size:10},usePointStyle:true,pointStyle:'circle'}},
-        tooltip:{callbacks:{label:c=>' '+c.label+': '+c.raw+' vendors'}},
-        datalabels:{anchor:'center',align:'center',font:{size:11,weight:'700'},color:'#fff',formatter:v=>v>0?v:''}}}
+    type: 'doughnut',
+    data: {
+      labels: ['Extreme (>500%)', 'High (100–500%)', 'Moderate (<100%)', 'No WO issued'],
+      datasets: [{
+        data: [extreme, high, moderate, noWO],
+        backgroundColor: ['rgba(220,38,38,0.6)','rgba(217,119,6,0.6)','rgba(37,99,235,0.5)','rgba(124,58,237,0.5)'],
+        borderColor: ['#dc2626','#d97706','#2563eb','#7c3aed'],
+        borderWidth: 1.5, hoverOffset: 6
+      }]
+    },
+    options: {
+      cutout: '52%', responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {position:'bottom', labels:{boxWidth:9, padding:10, font:{size:10}, usePointStyle:true, pointStyle:'circle'}},
+        tooltip: {callbacks: {label: c => ' ' + c.label + ': ' + c.raw + ' vendors'}},
+        datalabels: {anchor:'center', align:'center', font:{size:11, weight:'700'}, color:'#fff', formatter: v => v > 0 ? v : ''}
+      }
+    }
   });
 
   const tb = document.getElementById('wo-table');
   tb.innerHTML = '';
-  [...WORK_ORDERS].sort((a,b)=>b.overrun-a.overrun).forEach(w=>{
-    const ovPct = w.wo>0 ? Number(w.overrunPct) : null;
+  [...WORK_ORDERS].sort((a, b) => b.overrun - a.overrun).forEach(w => {
+    const ovPct    = w.wo > 0 ? Number(w.overrunPct) : null;
     const isExtreme = ovPct !== null && ovPct > 500;
-    const flag = isExtreme ? '<span style="color:#dc2626;font-size:14px">⚠</span>' : w.wo===0 ? '<span class="pill pill-purple">No WO</span>' : '';
-    const rowStyle = isExtreme ? 'class="overrun-extreme"' : '';
-    tb.innerHTML += `<tr ${rowStyle}>
+    const flag     = isExtreme
+      ? '<span style="color:#dc2626;font-size:14px">⚠</span>'
+      : w.wo === 0 ? '<span class="pill pill-purple">No WO</span>' : '';
+    const rowClass = isExtreme ? 'class="overrun-extreme"' : '';
+    tb.innerHTML += `<tr ${rowClass}>
       <td class="tm">${w.no}</td>
       <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;font-size:11.5px">${w.vendor}</td>
       <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;font-size:11px;color:var(--text-secondary)">${w.scope}</td>
-      <td class="tr tm">${w.wo>0?fmtINR(w.wo):'—'}</td>
+      <td class="tr tm">${w.wo > 0 ? fmtINR(w.wo) : '—'}</td>
       <td class="tr" style="color:var(--red);font-weight:500">${fmtINR(w.billed)}</td>
       <td class="tr"><span class="pill pill-red">₹${(w.overrun/1e5).toFixed(1)}L</span></td>
-      <td class="tr tm">${ovPct!==null?'+'+ovPct+'%':'N/A (no WO)'}</td>
+      <td class="tr tm">${ovPct !== null ? '+' + ovPct + '%' : 'N/A (no WO)'}</td>
       <td>${flag}</td>
     </tr>`;
   });
@@ -1077,67 +1275,103 @@ function initOverruns() {
 
 // ── S-CURVE PROGRESS ─────────────────────────────────────────
 function initProgress() {
-  const labs = COST_MT.map(d=>d.m);
+  const labs = COST_MT.map(d => d.m);
   let cumBilled = 0, cumWorkdone = 0;
-  const cumB = COST_MT.map(d=>{cumBilled+=d.bmt;return cumBilled;});
-  const cumW = COST_MT.map(d=>{cumWorkdone+=d.wmt;return cumWorkdone;});
+  const cumB = COST_MT.map(d => { cumBilled    += d.bmt; return cumBilled; });
+  const cumW = COST_MT.map(d => { cumWorkdone  += d.wmt; return cumWorkdone; });
 
   new Chart(document.getElementById('scurve'), {
-    type:'line',
-    data:{labels:labs,datasets:[
-      {label:'Cumulative Billed MT',data:cumB,borderColor:'rgba(37,99,235,0.7)',backgroundColor:'rgba(37,99,235,0.04)',borderDash:[5,4],fill:true,tension:0.3,pointRadius:3,borderWidth:2},
-      {label:'Cumulative Workdone MT',data:cumW,borderColor:'#16a34a',backgroundColor:'rgba(34,197,94,0.06)',fill:true,tension:0.3,pointRadius:3,borderWidth:2.5}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},
-      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:c=>' '+c.dataset.label+': '+c.raw.toLocaleString()+' MT'}},
-        datalabels:{display:ctx=>ctx.datasetIndex===1&&ctx.dataIndex%3===0,anchor:'top',align:'top',offset:3,font:{size:8,weight:'600'},color:'#15803d',formatter:v=>(v/1000).toFixed(0)+'K MT'}},
-      scales:{x:{grid:{display:false},ticks:{font:{size:9.5},maxRotation:35}},
-        y:{grid:{color:G},ticks:{callback:v=>(v/1000).toFixed(0)+'K MT'},border:{display:false}}}}
+    type: 'line',
+    data: {
+      labels: labs,
+      datasets: [
+        {label:'Cumulative Billed MT',   data:cumB, borderColor:'rgba(37,99,235,0.7)', backgroundColor:'rgba(37,99,235,0.04)', borderDash:[5,4], fill:true, tension:0.3, pointRadius:3, borderWidth:2},
+        {label:'Cumulative Workdone MT', data:cumW, borderColor:'#16a34a',             backgroundColor:'rgba(34,197,94,0.06)',                   fill:true, tension:0.3, pointRadius:3, borderWidth:2.5}
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 22}},
+      plugins: {
+        legend: {display:false},
+        tooltip: {mode:'index', intersect:false, callbacks:{label: c => ' ' + c.dataset.label + ': ' + c.raw.toLocaleString() + ' MT'}},
+        datalabels: {
+          display: ctx => ctx.datasetIndex === 1 && ctx.dataIndex % 3 === 0,
+          anchor:'top', align:'top', offset:3, font:{size:8, weight:'600'}, color:'#15803d',
+          formatter: v => (v / 1000).toFixed(0) + 'K MT'
+        }
+      },
+      scales: {
+        x: {grid:{display:false}, ticks:{font:{size:9.5}, maxRotation:35}},
+        y: {grid:{color:G}, ticks:{callback: v => (v/1000).toFixed(0) + 'K MT'}, border:{display:false}}
+      }
+    }
   });
 
   new Chart(document.getElementById('achieve-bar'), {
-    type:'bar',
-    data:{labels:labs,datasets:[
-      {label:'Billed MT',data:COST_MT.map(d=>d.bmt),backgroundColor:'rgba(37,99,235,0.4)',borderColor:'#2563eb',borderWidth:1,borderRadius:3},
-      {label:'Workdone MT',data:COST_MT.map(d=>d.wmt),backgroundColor:'rgba(34,197,94,0.4)',borderColor:'#22c55e',borderWidth:1,borderRadius:3}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:4}},
-      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false},datalabels:{display:false}},
-      scales:{x:{grid:{display:false},ticks:{maxRotation:40,font:{size:8.5}}},
-        y:{grid:{color:G},ticks:{callback:v=>v.toLocaleString()},border:{display:false}}}}
+    type: 'bar',
+    data: {
+      labels: labs,
+      datasets: [
+        {label:'Billed MT',   data:COST_MT.map(d => d.bmt), backgroundColor:'rgba(37,99,235,0.4)', borderColor:'#2563eb', borderWidth:1, borderRadius:3},
+        {label:'Workdone MT', data:COST_MT.map(d => d.wmt), backgroundColor:'rgba(34,197,94,0.4)', borderColor:'#22c55e', borderWidth:1, borderRadius:3}
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding:{top:4}},
+      plugins: {legend:{display:false}, tooltip:{mode:'index', intersect:false}, datalabels:{display:false}},
+      scales: {
+        x: {grid:{display:false}, ticks:{maxRotation:40, font:{size:8.5}}},
+        y: {grid:{color:G}, ticks:{callback: v => v.toLocaleString()}, border:{display:false}}
+      }
+    }
   });
 
-  // Monthly billing in Crores
   const wmptlInflow = [19861612,22289981,36714021,57057300,37884891,98190707,46876369,59319491,49004757,51409888,23297809,15757163,15419859,13103877,33186739,48318026,51793427,13706376,0,10445219];
   new Chart(document.getElementById('achieve-inflow'), {
-    type:'bar',
-    data:{labels:labs,datasets:[{
-      data:wmptlInflow.map(v=>+(v/1e7).toFixed(2)),
-      backgroundColor:wmptlInflow.map(v=>v>0?'rgba(34,197,94,0.45)':'rgba(156,163,175,0.3)'),
-      borderColor:wmptlInflow.map(v=>v>0?'#22c55e':'#9ca3af'),
-      borderWidth:1.5,borderRadius:4
-    }]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' ₹'+c.raw+' Cr'}},
-        datalabels:{anchor:'end',align:'end',offset:2,font:{size:8,weight:'600'},color:'#15803d',clamp:true,formatter:v=>v>0?'₹'+v:''}},
-      scales:{x:{grid:{display:false},ticks:{maxRotation:40,font:{size:8.5}}},
-        y:{grid:{color:G},ticks:{callback:v=>'₹'+v+'Cr'},border:{display:false}}}}
+    type: 'bar',
+    data: {
+      labels: labs,
+      datasets: [{
+        data: wmptlInflow.map(v => +(v / 1e7).toFixed(2)),
+        backgroundColor: wmptlInflow.map(v => v > 0 ? 'rgba(34,197,94,0.45)' : 'rgba(156,163,175,0.3)'),
+        borderColor:     wmptlInflow.map(v => v > 0 ? '#22c55e' : '#9ca3af'),
+        borderWidth: 1.5, borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding: {top: 22}},
+      plugins: {
+        legend: {display:false},
+        tooltip: {callbacks: {label: c => ' ₹' + c.raw + ' Cr'}},
+        datalabels: {
+          anchor:'end', align:'end', offset:2, font:{size:8, weight:'600'}, color:'#15803d', clamp:true,
+          formatter: v => v > 0 ? '₹' + v : ''
+        }
+      },
+      scales: {
+        x: {grid:{display:false}, ticks:{maxRotation:40, font:{size:8.5}}},
+        y: {grid:{color:G}, ticks:{callback: v => '₹'+v+'Cr'}, border:{display:false}}
+      }
+    }
   });
 
-  let cB=0,cW=0;
+  let cB = 0, cW = 0;
   const tb = document.getElementById('prog-table');
   tb.innerHTML = '';
-  COST_MT.forEach(d=>{
-    cB+=d.bmt; cW+=d.wmt;
-    const gap = d.bmt - d.wmt;
-    const gapStr = `<span style="color:${gap>=0?'#15803d':'#dc2626'};font-weight:600">${gap>=0?'+':''}${gap.toLocaleString()}</span>`;
+  COST_MT.forEach(d => {
+    cB += d.bmt; cW += d.wmt;
+    const gap    = d.bmt - d.wmt;
+    const gapStr = `<span style="color:${gap >= 0 ? '#15803d' : '#dc2626'};font-weight:600">${gap >= 0 ? '+' : ''}${gap.toLocaleString()}</span>`;
     tb.innerHTML += `<tr>
       <td>${d.m}</td>
-      <td class="tr tm">${d.bmt>0?d.bmt.toLocaleString():'—'}</td>
-      <td class="tr tm">${d.wmt>0?d.wmt.toLocaleString():'—'}</td>
+      <td class="tr tm">${d.bmt > 0 ? d.bmt.toLocaleString() : '—'}</td>
+      <td class="tr tm">${d.wmt > 0 ? d.wmt.toLocaleString() : '—'}</td>
       <td class="tr tm">${cB.toLocaleString()}</td>
       <td class="tr" style="color:var(--blue);font-weight:500">${cW.toLocaleString()}</td>
-      <td class="tr">${d.bmt>0||d.wmt>0?gapStr:'—'}</td>
+      <td class="tr">${d.bmt > 0 || d.wmt > 0 ? gapStr : '—'}</td>
     </tr>`;
   });
 }
