@@ -15,10 +15,17 @@ body{background:linear-gradient(135deg,#EBF3FA 0%,#F4F8FC 60%,#FFFFFF 100%);colo
 ::-webkit-scrollbar-track{background:var(--bg3)}
 ::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:99px}
 .wrap{max-width:1400px;margin:0 auto;padding:28px 24px 60px;}
-.header{margin-bottom:22px;}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px;}
+.header-text{flex:1;min-width:260px;}
 .eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#7F00FF;margin-bottom:6px;}
 .title{font-family:var(--font-head);font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-0.01em;}
 .sub{font-size:13px;color:var(--ink3);margin-top:6px;line-height:1.6;max-width:680px;}
+.summary-box-btn{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 18px;box-shadow:var(--shadow);cursor:pointer;transition:all .15s;text-align:left;font-family:var(--font-body);min-width:210px;}
+.summary-box-btn:hover:not(:disabled){border-color:var(--accent);transform:translateY(-1px);}
+.summary-box-btn:disabled{opacity:.45;cursor:not-allowed;}
+.summary-box-icon{width:38px;height:38px;flex-shrink:0;border-radius:10px;background:var(--accent-lt);color:var(--accent2);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.summary-box-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--ink3);}
+.summary-box-value{font-family:var(--font-head);font-size:15px;font-weight:800;color:var(--ink);margin-top:2px;}
 .status-bar{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 16px;margin:18px 0;font-size:13px;color:var(--ink2);box-shadow:var(--shadow);}
 .spinner{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
 .spinner.done{display:none;}
@@ -57,14 +64,39 @@ tbody tr:hover td{background:var(--surface);}
 .college-pill{font-size:10.5px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:99px;}
 .empty-state{text-align:center;padding:48px;color:var(--ink3);font-size:13px;}
 .footnote{font-size:11.5px;color:var(--ink3);margin-top:10px;line-height:1.6;}
+.modal-overlay{position:fixed;inset:0;background:rgba(17,24,39,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;animation:fadeUp .15s ease;}
+.modal-box{background:var(--bg2);border-radius:var(--radius);box-shadow:0 20px 60px rgba(0,0,0,0.3);width:100%;max-width:760px;max-height:82vh;display:flex;flex-direction:column;overflow:hidden;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.modal-title{font-family:var(--font-head);font-weight:800;font-size:17px;}
+.modal-sub{font-size:11.5px;color:var(--ink3);margin-top:2px;}
+.modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink3);line-height:1;padding:4px 8px;border-radius:6px;}
+.modal-close:hover{color:var(--ink);background:var(--surface);}
+.modal-body{overflow-y:auto;padding:18px 22px;}
+.summary-college-block{margin-bottom:14px;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;}
+.summary-college-block:last-child{margin-bottom:0;}
+.summary-college-header{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;background:var(--bg3);font-weight:700;font-size:13.5px;color:var(--ink);}
+.summary-dept-row{display:flex;justify-content:space-between;align-items:center;padding:8px 16px 8px 26px;font-size:12.5px;border-top:1px solid var(--border);color:var(--ink2);}
+.summary-dept-row:hover{background:var(--surface);}
+.summary-dept-count{font-family:var(--font-head);font-weight:800;color:var(--ink);background:var(--surface2);padding:1px 10px;border-radius:99px;font-size:11.5px;}
+.summary-grand-total{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;border-top:1px solid var(--border2);background:var(--bg3);font-weight:800;font-family:var(--font-head);font-size:13.5px;flex-shrink:0;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="header">
-    <div class="eyebrow">Master Export</div>
-    <div class="title">All Colleges — Final Score Summary</div>
-    <div class="sub">Pulls students, mentor evaluations, weekly progress, approvals and peer reviews for every college in the tracker, then computes each student's Final Score exactly like the per-college dashboard (Peer 30% + Mentor 70%, out of 100).</div>
+    <div class="header-text">
+      <div class="eyebrow">Master Export</div>
+      <div class="title">All Colleges — Final Score Summary</div>
+      <div class="sub">Pulls students, mentor evaluations, weekly progress, approvals and peer reviews for every college in the tracker, then computes each student's Final Score exactly like the per-college dashboard (Peer 30% + Mentor 70%, out of 100).</div>
+    </div>
+    <button class="summary-box-btn" id="summaryBoxBtn" onclick="openSummaryModal()" disabled>
+      <div class="summary-box-icon">&#128202;</div>
+      <div>
+        <div class="summary-box-label">Student Counts</div>
+        <div class="summary-box-value" id="summaryBoxValue">Loading…</div>
+        <div style="font-size:11px;color:var(--accent2);font-weight:600;margin-top:2px;">View by college &amp; department &rarr;</div>
+      </div>
+    </button>
   </div>
 
   <div class="status-bar"><div class="spinner" id="statusSpinner"></div><span id="statusText">Starting…</span></div>
@@ -99,6 +131,20 @@ tbody tr:hover td{background:var(--surface);}
   </table></div></div>
 
   <div class="footnote" id="footnote"></div>
+</div>
+
+<div class="modal-overlay" id="summaryModalOverlay" style="display:none;" onclick="closeSummaryModalOnOverlay(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Student Counts by College &amp; Department</div>
+        <div class="modal-sub">Counts only — no individual student names</div>
+      </div>
+      <button class="modal-close" onclick="closeSummaryModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="summaryModalBody"></div>
+    <div class="summary-grand-total" id="summaryGrandTotal"></div>
+  </div>
 </div>
 
 <script>
@@ -154,6 +200,8 @@ function approvalBadge(s){const m={'approved':'<span class="badge badge-green">A
 
 async function loadAll(){
   document.getElementById('exportBtn').disabled=true;
+  document.getElementById('summaryBoxBtn').disabled=true;
+  document.getElementById('summaryBoxValue').textContent='Loading…';
   document.getElementById('toolbar').style.display='none';
   document.getElementById('statsRow').style.display='none';
   document.getElementById('statusSpinner').classList.remove('done');
@@ -201,7 +249,9 @@ async function loadAll(){
     document.getElementById('statsRow').style.display='grid';
     document.getElementById('toolbar').style.display='flex';
     document.getElementById('exportBtn').disabled=computedRows.length===0;
+    document.getElementById('summaryBoxBtn').disabled=computedRows.length===0;
     const collegesWithData=new Set(allStudents.map(s=>s._collegeName)).size;
+    document.getElementById('summaryBoxValue').textContent=allStudents.length+' students · '+collegesWithData+' colleges';
     setStatus('Done. Loaded '+allStudents.length+' students across '+collegesWithData+' of '+entries.length+' colleges with data.',true);
     renderStats();
     render();
@@ -302,6 +352,35 @@ function exportAllCSV(){
   a.href=url;a.download='all_colleges_final_scores_'+new Date().toISOString().split('T')[0]+'.csv';
   a.click();URL.revokeObjectURL(url);
 }
+
+function openSummaryModal(){
+  if(!computedRows.length)return;
+  const byCollege={};
+  computedRows.forEach(r=>{
+    const college=r.collegeName;
+    const dept=r.course||'Unspecified';
+    if(!byCollege[college])byCollege[college]={total:0,depts:{}};
+    byCollege[college].total++;
+    byCollege[college].depts[dept]=(byCollege[college].depts[dept]||0)+1;
+  });
+  const collegesSorted=Object.keys(byCollege).sort();
+  const body=document.getElementById('summaryModalBody');
+  body.innerHTML=collegesSorted.map(c=>{
+    const data=byCollege[c];
+    const deptRows=Object.entries(data.depts).sort((a,b)=>b[1]-a[1]).map(([d,count])=>
+      `<div class="summary-dept-row"><span>${escHTML(d)}</span><span class="summary-dept-count">${count}</span></div>`
+    ).join('');
+    return `<div class="summary-college-block">
+      <div class="summary-college-header"><span>${escHTML(c)}</span><span class="badge badge-blue">${data.total} students</span></div>
+      ${deptRows}
+    </div>`;
+  }).join('');
+  document.getElementById('summaryGrandTotal').innerHTML=`<span>Total across ${collegesSorted.length} colleges</span><span>${computedRows.length} students</span>`;
+  document.getElementById('summaryModalOverlay').style.display='flex';
+}
+function closeSummaryModal(){document.getElementById('summaryModalOverlay').style.display='none';}
+function closeSummaryModalOnOverlay(e){if(e.target.id==='summaryModalOverlay')closeSummaryModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSummaryModal();});
 
 loadAll();
 </script>
