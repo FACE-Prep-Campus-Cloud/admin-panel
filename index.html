@@ -250,8 +250,8 @@ async function loadAll(){
     document.getElementById('exportBtn').disabled=computedRows.length===0;
     document.getElementById('summaryBoxBtn').disabled=computedRows.length===0;
     const collegesWithData=new Set(allStudents.map(s=>s._collegeName)).size;
-    document.getElementById('summaryBoxValue').textContent=allStudents.length+' students · '+collegesWithData+' colleges';
-    setStatus('Done. Loaded '+allStudents.length+' students across '+collegesWithData+' of '+entries.length+' colleges with data.',true);
+    document.getElementById('summaryBoxValue').textContent=collegesWithData+' colleges';
+    setStatus('Done. Loaded '+allStudents.length+' students across '+collegesWithData+' colleges with data.',true);
     renderStats();
     render();
   }catch(e){
