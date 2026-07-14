@@ -359,23 +359,28 @@ function openSummaryModal(){
   computedRows.forEach(r=>{
     const college=r.collegeName;
     const dept=r.course||'Unspecified';
-    if(!byCollege[college])byCollege[college]={total:0,depts:{}};
+    const isCompleted=r.weeksDone>=4;
+    if(!byCollege[college])byCollege[college]={total:0,completed:0,depts:{}};
     byCollege[college].total++;
-    byCollege[college].depts[dept]=(byCollege[college].depts[dept]||0)+1;
+    if(isCompleted)byCollege[college].completed++;
+    if(!byCollege[college].depts[dept])byCollege[college].depts[dept]={total:0,completed:0};
+    byCollege[college].depts[dept].total++;
+    if(isCompleted)byCollege[college].depts[dept].completed++;
   });
   const collegesSorted=Object.keys(byCollege).sort();
   const body=document.getElementById('summaryModalBody');
   body.innerHTML=collegesSorted.map(c=>{
     const data=byCollege[c];
-    const deptRows=Object.entries(data.depts).sort((a,b)=>b[1]-a[1]).map(([d,count])=>
-      `<div class="summary-dept-row"><span>${escHTML(d)}</span><span class="summary-dept-count">${count}</span></div>`
+    const deptRows=Object.entries(data.depts).sort((a,b)=>b[1].total-a[1].total).map(([d,dd])=>
+      `<div class="summary-dept-row"><span>${escHTML(d)}</span><span class="summary-dept-count">${dd.completed} / ${dd.total} completed</span></div>`
     ).join('');
     return `<div class="summary-college-block">
-      <div class="summary-college-header"><span>${escHTML(c)}</span><span class="badge badge-blue">${data.total} students</span></div>
+      <div class="summary-college-header"><span>${escHTML(c)}</span><span class="badge badge-blue">${data.completed} / ${data.total} completed</span></div>
       ${deptRows}
     </div>`;
   }).join('');
-  document.getElementById('summaryGrandTotal').innerHTML=`<span>Total across ${collegesSorted.length} colleges</span><span>${computedRows.length} students</span>`;
+  const grandCompleted=computedRows.filter(r=>r.weeksDone>=4).length;
+  document.getElementById('summaryGrandTotal').innerHTML=`<span>Total across ${collegesSorted.length} colleges</span><span>${grandCompleted} / ${computedRows.length} completed</span>`;
   document.getElementById('summaryModalOverlay').style.display='flex';
 }
 function closeSummaryModal(){document.getElementById('summaryModalOverlay').style.display='none';}
