@@ -74,11 +74,13 @@ tbody tr:hover td{background:var(--surface);}
 .modal-body{overflow-y:auto;padding:18px 22px;}
 .summary-college-block{margin-bottom:14px;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;}
 .summary-college-block:last-child{margin-bottom:0;}
-.summary-college-header{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;background:var(--bg3);font-weight:700;font-size:13.5px;color:var(--ink);}
-.summary-dept-row{display:flex;justify-content:space-between;align-items:center;padding:8px 16px 8px 26px;font-size:12.5px;border-top:1px solid var(--border);color:var(--ink2);}
+.summary-college-header{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;background:var(--bg3);font-weight:700;font-size:13.5px;color:var(--ink);gap:10px;flex-wrap:wrap;}
+.summary-dept-row{display:flex;justify-content:space-between;align-items:center;padding:8px 16px 8px 26px;font-size:12.5px;border-top:1px solid var(--border);color:var(--ink2);gap:10px;flex-wrap:wrap;}
 .summary-dept-row:hover{background:var(--surface);}
 .summary-dept-count{font-family:var(--font-head);font-weight:800;color:var(--ink);background:var(--surface2);padding:1px 10px;border-radius:99px;font-size:11.5px;}
-.summary-grand-total{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;border-top:1px solid var(--border2);background:var(--bg3);font-weight:800;font-family:var(--font-head);font-size:13.5px;flex-shrink:0;}
+.summary-badge-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.summary-badge-group .badge{font-size:10px;padding:2px 8px;}
+.summary-grand-total{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;border-top:1px solid var(--border2);background:var(--bg3);font-weight:800;font-family:var(--font-head);font-size:13.5px;flex-shrink:0;flex-wrap:wrap;gap:10px;}
 </style>
 </head>
 <body>
