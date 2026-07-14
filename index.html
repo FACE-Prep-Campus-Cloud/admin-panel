@@ -3,1081 +3,307 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FACE Prep Campus — Faculty Feedback</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<title>All Colleges — Final Score Export</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --surface2: #f1f5f9;
-  --border: #e2e8f0;
-  --accent: #3b82f6;
-  --accent2: #8b5cf6;
-  --text: #1e293b;
-  --muted: #64748b;
-  --error: #ef4444;
-  --success: #10b981;
-  --radius: 14px;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
-  min-height: 100vh;
-}
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(59,130,246,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(139,92,246,0.06) 0%, transparent 60%);
-  pointer-events: none; z-index: 0;
-}
-.wrap {
-  position: relative; z-index: 1;
-  max-width: 780px; margin: 0 auto;
-  padding: 60px 20px 100px;
-}
-@media (max-width: 640px) { .wrap { padding: 36px 16px 80px; } }
-
-.header { text-align: center; margin-bottom: 52px; animation: fadeUp .7s ease both; }
-.logo-area { display: flex; align-items: center; justify-content: center; margin-bottom: 28px; }
-.logo-img-wrap {
-  display: inline-flex; align-items: center; gap: 12px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 16px; padding: 10px 24px 10px 14px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-}
-.logo-img { height: 80px; width: auto; object-fit: contain; display: block; }
-.logo-text-block { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
-.logo-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; color: var(--text); letter-spacing: .01em; }
-.logo-badge-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: .04em; }
-.logo-badge-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 8px rgba(16,185,129,0.4); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
-
-h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(1.6rem, 5vw, 2.8rem);
-  font-weight: 800; line-height: 1.15;
-  background: linear-gradient(135deg, #1e293b 30%, #3b82f6 70%, #8b5cf6);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; margin-bottom: 12px;
-}
-.subtitle { color: var(--muted); font-size: 14px; max-width: 500px; margin: 0 auto; font-weight: 300; line-height: 1.7; }
-
-.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 8px; animation: fadeUp .7s .1s ease both; }
-.progress-bar-outer { background: var(--surface2); border-radius: 100px; height: 4px; margin-bottom: 44px; overflow: hidden; animation: fadeUp .7s .1s ease both; }
-.progress-bar-inner { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 100px; transition: width .4s ease; width: 0%; }
-
-.section {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 32px; margin-bottom: 20px;
-  opacity: 0; animation: fadeUp .5s ease both;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-@media (max-width: 640px) { .section { padding: 22px 18px; } }
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
-.section:nth-child(1){animation-delay:.1s;} .section:nth-child(2){animation-delay:.15s;}
-.section:nth-child(3){animation-delay:.2s;} .section:nth-child(4){animation-delay:.25s;}
-.section:nth-child(5){animation-delay:.3s;} .section:nth-child(6){animation-delay:.35s;}
-.section:nth-child(7){animation-delay:.4s;} .section:nth-child(8){animation-delay:.45s;}
-.section:nth-child(9){animation-delay:.5s;} .section:nth-child(10){animation-delay:.55s;}
-.section:nth-child(11){animation-delay:.6s;} .section:nth-child(12){animation-delay:.65s;}
-
-.section-title {
-  font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
-  color: var(--text); margin-bottom: 22px;
-  display: flex; align-items: center; gap: 10px;
-}
-.section-title .icon {
-  width: 32px; height: 32px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; flex-shrink: 0;
-}
-.icon-blue   { background: rgba(59,130,246,.1);  color: var(--accent); }
-.icon-purple { background: rgba(139,92,246,.1);  color: var(--accent2); }
-.icon-green  { background: rgba(16,185,129,.1);  color: var(--success); }
-.icon-orange { background: rgba(249,115,22,.1);  color: #f97316; }
-
-.field { margin-bottom: 18px; }
-.field:last-child { margin-bottom: 0; }
-label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 7px; letter-spacing: .04em; text-transform: uppercase; }
-label .req { color: var(--accent); margin-left: 2px; }
-
-input[type="text"], input[type="email"], select, textarea {
-  width: 100%; background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; color: var(--text);
-  font-family: 'DM Sans', sans-serif; font-size: 15px;
-  padding: 11px 15px; outline: none;
-  transition: border-color .2s, box-shadow .2s;
-  appearance: none; -webkit-appearance: none;
-}
-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-@media (max-width: 640px) { input[type="text"], input[type="email"], select, textarea { font-size: 16px; } }
-input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,.1); }
-input::placeholder, textarea::placeholder { color: #94a3b8; }
-
-.field.error input, .field.error select, .field.error textarea { border-color: var(--error); box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
-.field.error > label { color: var(--error); }
-.err-msg { display: none; font-size: 11px; color: var(--error); margin-top: 5px; font-weight: 500; }
-.field.error .err-msg { display: block; }
-
-.select-wrapper { position: relative; }
-.select-wrapper::after { content:''; position:absolute; right:14px; top:50%; transform:translateY(-50%); width:0; height:0; border-left:5px solid transparent; border-right:5px solid transparent; border-top:6px solid var(--muted); pointer-events:none; }
-.select-wrapper select { padding-right: 38px; cursor: pointer; }
-
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-@media (max-width: 540px) { .field-row { grid-template-columns: 1fr; gap: 10px; } }
-
-.faculty-header {
-  display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;
-  padding-bottom: 18px; border-bottom: 1px solid var(--border);
-}
-.faculty-avatar {
-  width: 44px; height: 44px; border-radius: 12px;
-  background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(139,92,246,.15));
-  border: 1px solid rgba(139,92,246,.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 700; flex-shrink: 0;
-  font-family: 'Syne', sans-serif; color: var(--accent);
-}
-.faculty-meta { flex: 1; min-width: 0; }
-.faculty-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-.faculty-subject { font-size: 12px; color: var(--muted); font-weight: 400; }
-
-.yn-list { display: flex; flex-direction: column; gap: 14px; }
-.yn-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 13px 16px; border-radius: 10px;
-  background: var(--surface2); border: 1px solid var(--border);
-}
-.yn-row.error-row { border-color: var(--error); background: rgba(239,68,68,.04); }
-.yn-qnum {
-  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
-  color: var(--accent); background: rgba(59,130,246,.1);
-  border-radius: 6px; padding: 2px 7px; flex-shrink: 0;
-}
-.yn-text { flex: 1; font-size: 13px; color: var(--text); line-height: 1.4; }
-.yn-btns { display: flex; gap: 6px; flex-shrink: 0; }
-.yn-btns input[type="radio"] { display: none; }
-.yn-btns label {
-  text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 600;
-  padding: 5px 14px; border-radius: 7px; cursor: pointer;
-  background: var(--surface); border: 1px solid var(--border);
-  color: var(--muted); transition: all .15s; margin: 0;
-}
-.yn-btns input[type="radio"]:checked + label.yes-lbl { background: rgba(16,185,129,.12); border-color: var(--success); color: var(--success); }
-.yn-btns input[type="radio"]:checked + label.no-lbl  { background: rgba(239,68,68,.12); border-color: var(--error); color: var(--error); }
-.yn-btns label:hover { border-color: var(--accent); color: var(--text); }
-
-.rating-block {
-  background: rgba(59,130,246,.04);
-  border: 1px solid rgba(59,130,246,.15);
-  border-radius: 10px; padding: 14px 18px 18px; margin-bottom: 16px;
-  display: flex; flex-direction: column; gap: 14px;
-}
-.rating-block-title { font-size: 12px; font-weight: 700; color: var(--text); letter-spacing: .01em; text-transform: uppercase; }
-.scale-btns { display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end; padding-bottom: 4px; }
-.scale-btns input[type="radio"] { display: none; }
-.scale-circle-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.scale-btns label {
-  width: 44px; height: 44px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
-  border-radius: 50%; border: 2.5px solid transparent;
-  cursor: pointer; transition: all 0.22s cubic-bezier(.34,1.56,.64,1); margin: 0;
-  text-transform: none; letter-spacing: 0; position: relative;
-}
-.scale-btns label .s-num { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; line-height: 1; color: #fff; transition: font-size 0.2s; }
-.scale-btns label .s-word { font-family: 'DM Sans', sans-serif; font-size: 0px; font-weight: 600; color: #fff; line-height: 1; white-space: nowrap; overflow: hidden; transition: font-size 0.18s ease; }
-.scale-btns label[data-v="1"] { background: #e53935; }
-.scale-btns label[data-v="2"] { background: #f57c00; }
-.scale-btns label[data-v="3"] { background: #fdd835; }
-.scale-btns label[data-v="3"] .s-num  { color: #555; }
-.scale-btns label[data-v="3"] .s-word { color: #555; }
-.scale-btns label[data-v="4"] { background: #43a047; }
-.scale-btns label[data-v="5"] { background: #2e7d32; }
-.s-circle-label { font-size: 10px; font-weight: 500; color: var(--muted); text-align: center; line-height: 1.2; transition: opacity 0.2s, font-weight 0.2s, color 0.2s; white-space: nowrap; }
-.scale-btns:not(.has-selection) label:hover { opacity: 0.78; transform: scale(0.92) translateY(-3px); }
-.scale-btns.has-selection label { width: 30px; height: 30px; opacity: 0.32; }
-.scale-btns.has-selection label .s-num { font-size: 12px; }
-.scale-btns.has-selection .s-circle-label { opacity: 0.28; }
-.scale-btns.has-selection input[type="radio"]:checked + label { width: 70px; height: 70px; opacity: 1; border-color: rgba(255,255,255,0.88); box-shadow: 0 8px 28px rgba(0,0,0,0.22); transform: translateY(-10px); }
-.scale-btns.has-selection input[type="radio"]:checked + label .s-num { font-size: 24px; }
-.scale-btns.has-selection input[type="radio"]:checked + label .s-word { font-size: 10px; }
-.scale-btns.has-selection input[type="radio"]:checked ~ .s-circle-label { opacity: 1 !important; font-weight: 600; color: var(--text); }
-.rating-block.error-rating { border-color: var(--error); background: rgba(239,68,68,.04); }
-@media (max-width: 640px) {
-  .rating-block { padding: 10px 14px 14px; gap: 10px; }
-  .scale-btns { gap: 10px; }
-  .scale-btns label { width: 36px; height: 36px; }
-  .scale-btns label .s-num { font-size: 14px; }
-  .s-circle-label { font-size: 9px; }
-  .scale-btns.has-selection input[type="radio"]:checked + label { width: 58px; height: 58px; }
-  .scale-btns.has-selection input[type="radio"]:checked + label .s-num { font-size: 20px; }
-  .scale-btns.has-selection input[type="radio"]:checked + label .s-word { font-size: 9px; }
-}
-
-.nps-block {
-  background: rgba(139,92,246,.04);
-  border: 1px solid rgba(139,92,246,.15);
-  border-radius: 10px; padding: 18px 20px; margin-bottom: 16px;
-}
-.nps-block-title { font-size: 12px; font-weight: 700; color: var(--text); letter-spacing: .01em; text-transform: uppercase; margin-bottom: 18px; }
-.nps-btns { display: flex; gap: 8px; flex-wrap: wrap; }
-.nps-btns input[type="radio"] { display: none; }
-.nps-btns label {
-  width: 44px; height: 44px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
-  cursor: pointer; transition: all .18s; margin: 0; text-transform: none; letter-spacing: 0;
-  border: 2px solid var(--border); background: var(--surface2); color: var(--muted);
-}
-.nps-btns input[type="radio"]:checked + label { border-color: var(--accent2); background: var(--accent2); color: #fff; box-shadow: 0 4px 14px rgba(139,92,246,.3); transform: translateY(-3px); }
-.nps-btns label:hover { border-color: var(--accent2); color: var(--accent2); }
-.nps-labels { display: flex; justify-content: space-between; margin-top: 10px; font-size: 11px; color: var(--muted); font-weight: 500; }
-.nps-block.error-nps { border-color: var(--error); background: rgba(239,68,68,.04); }
-
-.check-list { display: flex; flex-direction: column; gap: 10px; }
-.check-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 16px; border-radius: 10px;
-  background: var(--surface2); border: 1px solid var(--border);
-  cursor: pointer; transition: border-color .15s, background .15s;
-}
-.check-item:hover { border-color: var(--accent); background: rgba(59,130,246,.04); }
-.check-item input[type="checkbox"] { display: none; }
-.check-box {
-  width: 20px; height: 20px; border-radius: 6px;
-  border: 2px solid var(--border); background: var(--surface);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all .15s;
-}
-.check-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
-.check-tick { display: none; color: #fff; font-size: 12px; font-weight: 700; }
-.check-item.checked .check-box .check-tick { display: block; }
-.check-label { font-size: 13px; color: var(--text); font-weight: 500; }
-
-.conditional-field { display: none; margin-top: 12px; }
-.conditional-field.visible { display: block; }
-
-.elective-mentor-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.25);
-  border-radius: 8px; padding: 7px 14px; margin-bottom: 18px;
-  font-size: 13px; font-weight: 500; color: var(--accent2);
-}
-
-.form-section-label {
-  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
-  margin: 32px 0 12px; display: flex; align-items: center; gap: 10px;
-}
-.form-section-label::before, .form-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-.submit-area { text-align: center; margin-top: 36px; animation: fadeUp .5s .6s ease both; opacity: 0; }
-.btn-submit {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-  color: #fff; font-family: 'Syne', sans-serif; font-size: 16px;
-  font-weight: 700; letter-spacing: .04em; border: none;
-  border-radius: 12px; padding: 15px 44px; cursor: pointer;
-  transition: all .2s; box-shadow: 0 4px 14px rgba(59,130,246,.25);
-}
-@media (max-width: 640px) { .btn-submit { width: 100%; justify-content: center; } }
-.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59,130,246,.3); }
-.btn-submit:active { transform: translateY(0); }
-.btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-.note { color: var(--muted); font-size: 12px; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-
-#alreadyScreen {
-  display: none; text-align: center; padding: 80px 20px;
-  animation: fadeUp .6s ease both;
-}
-#alreadyScreen .already-icon { font-size: 72px; margin-bottom: 24px; display: block; }
-#alreadyScreen h2 {
-  font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
-  background: linear-gradient(135deg, #f97316, #ef4444);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; margin-bottom: 14px;
-}
-#alreadyScreen p { color: var(--muted); font-size: 15px; max-width: 440px; margin: 0 auto 10px; line-height: 1.7; }
-#alreadyScreen .reg-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.2);
-  border-radius: 10px; padding: 10px 20px; margin: 20px auto 0;
-  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--error);
-}
-
-#successScreen {
-  display: none; text-align: center; padding: 60px 20px;
-  animation: fadeUp .6s ease both;
-}
-#successScreen .success-icon { font-size: 64px; margin-bottom: 20px; display: block; }
-#successScreen h2 {
-  font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
-  background: linear-gradient(135deg, var(--success), #059669);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; margin-bottom: 12px;
-}
-#successScreen p { color: var(--muted); font-size: 15px; max-width: 400px; margin: 0 auto 28px; }
-#successScreen .btn-new {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--surface); border: 1px solid var(--border);
-  color: var(--text); font-family: 'Syne', sans-serif; font-size: 14px;
-  font-weight: 600; border-radius: 10px; padding: 12px 28px;
-  cursor: pointer; transition: all .2s; text-decoration: none;
-}
-#successScreen .btn-new:hover { border-color: var(--accent); color: var(--accent); }
-
-#toast {
-  position: fixed; bottom: 28px; left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 13px 22px; font-size: 14px; color: var(--text);
-  box-shadow: 0 10px 40px rgba(0,0,0,.15); opacity: 0; transition: all .3s;
-  z-index: 9999; display: flex; align-items: center; gap: 10px;
-  white-space: nowrap; max-width: calc(100vw - 32px);
-}
-#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-#toast.success { border-color: rgba(16,185,129,.3); background: rgba(16,185,129,.05); }
-#toast.error   { border-color: rgba(239,68,68,.3);  background: rgba(239,68,68,.05); }
-
-#loadingOverlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(248,250,252,0.85); backdrop-filter: blur(4px);
-  z-index: 9000; align-items: center; justify-content: center;
-  flex-direction: column; gap: 16px;
-}
-#loadingOverlay.show { display: flex; }
-.spinner {
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 3px solid var(--border);
-  border-top-color: var(--accent); animation: spin .8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-#loadingOverlay p { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--muted); }
-
-@keyframes shake { 0%,100%{transform:translateX(0);} 10%,30%,50%,70%,90%{transform:translateX(-4px);} 20%,40%,60%,80%{transform:translateX(4px);} }
-.shake { animation: shake 0.5s; }
+:root{--bg:#f4f5f9;--bg2:#fff;--bg3:#eef0f6;--surface:#f0f2f8;--surface2:#e8eaf2;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--ink:#111827;--ink2:#374151;--ink3:#9ca3af;--accent:#6c63ff;--accent2:#5046e5;--accent-lt:rgba(108,99,255,0.1);--green:#16a34a;--green-lt:rgba(22,163,74,0.12);--amber:#d97706;--amber-lt:rgba(217,119,6,0.12);--red:#dc2626;--red-lt:rgba(220,38,38,0.12);--blue:#2563eb;--blue-lt:rgba(37,99,235,0.12);--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--radius:14px;--radius-sm:8px;--shadow:0 4px 24px rgba(0,0,0,0.08);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:linear-gradient(135deg,#EBF3FA 0%,#F4F8FC 60%,#FFFFFF 100%);color:var(--ink);font-family:var(--font-body);font-size:14px;min-height:100vh;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg3)}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:99px}
+.wrap{max-width:1400px;margin:0 auto;padding:28px 24px 60px;}
+.header{margin-bottom:22px;}
+.eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#7F00FF;margin-bottom:6px;}
+.title{font-family:var(--font-head);font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-0.01em;}
+.sub{font-size:13px;color:var(--ink3);margin-top:6px;line-height:1.6;max-width:680px;}
+.status-bar{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 16px;margin:18px 0;font-size:13px;color:var(--ink2);box-shadow:var(--shadow);}
+.spinner{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
+.spinner.done{display:none;}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);}
+.stat-label{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);}
+.stat-value{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--ink);line-height:1.15;margin-top:3px;}
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.search-wrap{position:relative;flex:1;min-width:220px;}
+.search-input{width:100%;padding:9px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink);font-family:var(--font-body);font-size:13px;outline:none;}
+.search-input:focus{border-color:var(--accent);}
+.filter-select{padding:9px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink2);font-family:var(--font-body);font-size:13px;cursor:pointer;outline:none;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:12.5px;font-weight:700;cursor:pointer;transition:all 0.15s;border:none;white-space:nowrap;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--ink2);}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent2);}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead th{text-align:left;padding:11px 14px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;color:var(--ink3);background:var(--bg3);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;}
+tbody td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--ink2);vertical-align:middle;white-space:nowrap;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:var(--surface);}
+.badge{display:inline-flex;align-items:center;font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:99px;}
+.badge-green{background:var(--green-lt);color:var(--green);}
+.badge-blue{background:var(--blue-lt);color:var(--blue);}
+.badge-amber{background:var(--amber-lt);color:var(--amber);}
+.badge-red{background:var(--red-lt);color:var(--red);}
+.badge-grey{background:var(--surface2);color:var(--ink);border:1px solid var(--border2);}
+.score-display{font-family:var(--font-head);font-weight:800;}
+.score-high{color:var(--green);}
+.score-mid{color:var(--amber);}
+.score-low{color:var(--red);}
+.college-pill{font-size:10.5px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:99px;}
+.empty-state{text-align:center;padding:48px;color:var(--ink3);font-size:13px;}
+.footnote{font-size:11.5px;color:var(--ink3);margin-top:10px;line-height:1.6;}
 </style>
 </head>
 <body>
-
-<div id="loadingOverlay">
-  <div class="spinner"></div>
-  <p id="loadingMsg">Checking submission status…</p>
-</div>
-
 <div class="wrap">
-
   <div class="header">
-    <div class="logo-area">
-      <div class="logo-img-wrap">
-        <img src="Face prep logo3.png" alt="FACE Prep Campus Logo" class="logo-img" onerror="this.style.display='none'">
-        <div class="logo-text-block">
-          <div class="logo-title">FACE Prep Campus</div>
-          <div class="logo-badge-pill"><span class="dot"></span>Faculty Feedback</div>
-        </div>
-      </div>
-    </div>
-    <h1>Mentor Feedback Form</h1>
-    <p class="subtitle">Rate each mentor based on your learning experience. Your responses are confidential.</p>
+    <div class="eyebrow">Master Export</div>
+    <div class="title">All Colleges — Final Score Summary</div>
+    <div class="sub">Pulls students, mentor evaluations, weekly progress, approvals and peer reviews for every college in the tracker, then computes each student's Final Score exactly like the per-college dashboard (Peer 30% + Mentor 70%, out of 100).</div>
   </div>
 
-  <div class="progress-label"><span>Progress</span><span id="pct">0%</span></div>
-  <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+  <div class="status-bar"><div class="spinner" id="statusSpinner"></div><span id="statusText">Starting…</span></div>
 
-  <div id="alreadyScreen">
-    <span class="already-icon">🚫</span>
-    <h2>Already Submitted!</h2>
-    <p>Our records show that you have already submitted the feedback form.</p>
-    <p>Each student is allowed only <strong>one submission</strong>. If you believe this is a mistake, please contact your respective Campus Manager.</p>
-    <div class="reg-badge"> Register Number: <span id="alreadyRegNo">—</span></div>
+  <div class="stats-row" id="statsRow" style="display:none;"></div>
+
+  <div class="toolbar" id="toolbar" style="display:none;">
+    <div class="search-wrap"><input type="text" class="search-input" id="searchInput" placeholder="Search by student, register no, mentor…" oninput="render()"></div>
+    <select class="filter-select" id="collegeFilter" onchange="render()"><option value="">All Colleges</option></select>
+    <select class="filter-select" id="gradeFilter" onchange="render()">
+      <option value="">All Grades</option>
+      <option value="Excellent">Excellent</option>
+      <option value="Very Good">Very Good</option>
+      <option value="Good">Good</option>
+      <option value="Pass">Pass</option>
+      <option value="Fail">Fail</option>
+      <option value="Not Started">Not Started</option>
+    </select>
+    <button class="btn btn-outline" onclick="loadAll()">&#8635; Reload All Data</button>
+    <button class="btn btn-primary" id="exportBtn" onclick="exportAllCSV()" disabled>&darr; Download All Colleges (CSV)</button>
   </div>
 
-  <div id="successScreen">
-    <span class="success-icon">🎉</span>
-    <h2 id="successTitle">Thank you!</h2>
-    <p>Your feedback has been recorded successfully. We appreciate your time.</p>
-    <a href="javascript:void(0)" class="btn-new" onclick="resetForm()">Submit Another Response</a>
-  </div>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr>
+      <th>#</th><th>College</th><th>Section</th><th>Mentor</th><th>Student Name</th><th>Register No</th>
+      <th style="text-align:center;">Weeks</th>
+      <th style="text-align:center;">Peer Raw /50</th><th style="text-align:center;">Peer /30</th>
+      <th style="text-align:center;">Mentor Raw /100</th><th style="text-align:center;">Mentor /70</th>
+      <th style="text-align:center;">Final /100</th><th>Grade</th><th>Approval</th>
+    </tr></thead>
+    <tbody id="tableBody"><tr><td colspan="14"><div class="empty-state">Loading…</div></td></tr></tbody>
+  </table></div></div>
 
-  <form id="feedbackForm" novalidate>
-
-    <input type="hidden" name="payload" id="payloadField">
-
-    <div class="form-section-label">Personal Information</div>
-    <div class="section">
-      <div class="section-title"><div class="icon icon-blue">👤</div>Personal Information</div>
-      <div class="field-row">
-        <div class="field">
-          <label for="studentName">Student Name <span class="req">*</span></label>
-          <input type="text" id="studentName" name="studentName" placeholder="Your full name" required>
-          <div class="err-msg">Please enter your name</div>
-        </div>
-        <div class="field">
-          <label for="regNumber">Register Number <span class="req">*</span></label>
-          <input type="text" id="regNumber" name="regNumber" placeholder="e.g. 22CS001" required>
-          <div class="err-msg">Please enter your register number</div>
-        </div>
-      </div>
-      <div class="field">
-        <label for="studentEmail">Email ID <span class="req">*</span></label>
-        <input type="email" id="studentEmail" name="studentEmail" placeholder="yourname@college.edu" required>
-        <div class="err-msg">Please enter a valid email address</div>
-      </div>
-      <div class="field">
-        <label for="collegeName">College <span class="req">*</span></label>
-        <div class="select-wrapper">
-          <select id="collegeName" name="collegeName" required>
-            <option value="" disabled selected>Select your college</option>
-            <option>SDNB Vaishnav College for Women</option>
-            <option>TJS College of Arts and Science</option>
-            <option>Noorul Islam Centre for Higher Education (NICHE)</option>
-            <option>Alliance University</option>
-          </select>
-        </div>
-        <div class="err-msg">Please select your college</div>
-      </div>
-      <div class="field">
-        <label for="department">Department <span class="req">*</span></label>
-        <div class="select-wrapper">
-          <select id="department" name="department" required disabled>
-            <option value="" disabled selected>First select your college</option>
-          </select>
-        </div>
-        <div class="err-msg">Please select your department</div>
-      </div>
-    </div>
-
-    <div id="dynamicContent" style="display:none;">
-
-      <div class="form-section-label">Academic &amp; Program Effectiveness</div>
-      <div class="section">
-        <div class="section-title">Academic &amp; Program Effectiveness</div>
-        <div class="yn-list" style="margin-bottom:18px;">
-          <div class="yn-row" id="ape_q1_row">
-            <span class="yn-qnum">Q1</span>
-            <span class="yn-text">Did you have regular assessments and assignments as part of your academic curriculum?</span>
-            <div class="yn-btns">
-              <input type="radio" id="ape_q1_y" name="ape_q1" value="Yes" required>
-              <label for="ape_q1_y" class="yes-lbl">Yes</label>
-              <input type="radio" id="ape_q1_n" name="ape_q1" value="No">
-              <label for="ape_q1_n" class="no-lbl">No</label>
-            </div>
-          </div>
-          <div class="yn-row" id="ape_q2_row">
-            <span class="yn-qnum">Q2</span>
-            <span class="yn-text">Did you receive study materials for all the course papers?</span>
-            <div class="yn-btns">
-              <input type="radio" id="ape_q2_y" name="ape_q2" value="Yes" required>
-              <label for="ape_q2_y" class="yes-lbl">Yes</label>
-              <input type="radio" id="ape_q2_n" name="ape_q2" value="No">
-              <label for="ape_q2_n" class="no-lbl">No</label>
-            </div>
-          </div>
-        </div>
-        <div class="conditional-field" id="ape_q2_detail_wrap">
-          <div class="field">
-            <label for="ape_q2_detail">Please mention the course papers you didn't receive study materials for <span class="req">*</span></label>
-            <textarea id="ape_q2_detail" name="ape_q2_detail" placeholder="List the course papers here…" rows="3"></textarea>
-            <div class="err-msg">Please mention the course papers</div>
-          </div>
-        </div>
-        <div class="rating-block" id="ape_q3_block">
-          <div class="rating-block-title">Q3 — How effective and industry-relevant are the program's hands-on learning and curriculum?</div>
-          <div class="scale-btns" id="apeScaleBtns3">
-            <div class="scale-circle-wrap"><input type="radio" id="ape3v1" name="ape_q3_rating" value="1" required><label for="ape3v1" data-v="1"><span class="s-num">1</span><span class="s-word">Poor</span></label><div class="s-circle-label">Poor</div></div>
-            <div class="scale-circle-wrap"><input type="radio" id="ape3v2" name="ape_q3_rating" value="2"><label for="ape3v2" data-v="2"><span class="s-num">2</span><span class="s-word">Below Avg</span></label><div class="s-circle-label">Below Avg</div></div>
-            <div class="scale-circle-wrap"><input type="radio" id="ape3v3" name="ape_q3_rating" value="3"><label for="ape3v3" data-v="3"><span class="s-num">3</span><span class="s-word">Average</span></label><div class="s-circle-label">Average</div></div>
-            <div class="scale-circle-wrap"><input type="radio" id="ape3v4" name="ape_q3_rating" value="4"><label for="ape3v4" data-v="4"><span class="s-num">4</span><span class="s-word">Good</span></label><div class="s-circle-label">Good</div></div>
-            <div class="scale-circle-wrap"><input type="radio" id="ape3v5" name="ape_q3_rating" value="5"><label for="ape3v5" data-v="5"><span class="s-num">5</span><span class="s-word">Excellent</span></label><div class="s-circle-label">Excellent</div></div>
-          </div>
-          <div class="err-msg" style="margin-top:4px;">Please select a rating</div>
-        </div>
-        <div class="rating-block" id="ape_q4_block">
-          <div class="rating-block-title">Q4 — How effectively has the program improved your confidence and prepared you for industry expectations and future job roles?</div>
-          <div class="scale-btns" id="apeScaleBtns4">
-            <div class="scale-circle-wrap"><input type="radio" id="ape4v1" name="ape_q4_rating" value="1" required><label for="ape4v1" data-v="1"><span class="s-num">1</span><span class="s-word">Poor</span></label><div class="s-circle-label">Poor</div></div>
-            <div class="scale-circle-wrap"><input type="radio" id="ape4v2" name="ape_q4_rating" value="2"><label for="ape4v2" data-v="2"><span class="s-num">2</span><span class="s-word">Below Avg</span></label><div class="s-circle-label">Below Avg</div></div>
-            <div class="scale-circle-wrap"><input type="radio" id="ape4v3" name="ape_q4_rating" value="3"><label for="ape4v3" data-v="3"><span class="s-num">3</span><span class="s-word">Average</span></label><div class="s-circle-label">Average</div></div>
-            <div class="scale-circle-wrap"><input type="radio" id="ape4v4" name="ape_q4_rating" value="4"><label for="ape4v4" data-v="4"><span class="s-num">4</span><span class="s-word">Good</span></label><div class="s-circle-label">Good</div></div>
-            <div class="scale-circle-wrap"><input type="radio" id="ape4v5" name="ape_q4_rating" value="5"><label for="ape4v5" data-v="5"><span class="s-num">5</span><span class="s-word">Excellent</span></label><div class="s-circle-label">Excellent</div></div>
-          </div>
-          <div class="err-msg" style="margin-top:4px;">Please select a rating</div>
-        </div>
-      </div>
-
-      <div class="form-section-label">Mentor Performance Rating</div>
-      <div id="facultySections"></div>
-
-      <div class="form-section-label">Challenges Faced</div>
-      <div class="section">
-        <div class="section-title"><div class="icon icon-orange">⚠️</div>Challenges Faced </div>
-        <div class="field" style="margin-bottom:20px;">
-          <label>Q1. What challenges are you currently facing? <span class="req">*</span> <span style="text-transform:none;letter-spacing:0;font-weight:400;font-size:11px;">(Select all that apply)</span></label>
-          <div class="check-list" id="challengeList">
-            <label class="check-item" onclick="toggleCheck(this,'challenge_infra')"><input type="checkbox" id="challenge_infra" value="Infrastructure & Facilities"><span class="check-box"><span class="check-tick">✓</span></span><span class="check-label">Infrastructure &amp; Facilities</span></label>
-            <label class="check-item" onclick="toggleCheck(this,'challenge_teaching')"><input type="checkbox" id="challenge_teaching" value="Teaching Quality & Delivery"><span class="check-box"><span class="check-tick">✓</span></span><span class="check-label">Teaching Quality &amp; Delivery</span></label>
-            <label class="check-item" onclick="toggleCheck(this,'challenge_comm')"><input type="checkbox" id="challenge_comm" value="Communication & Language Issues"><span class="check-box"><span class="check-tick">✓</span></span><span class="check-label">Communication &amp; Language Issues</span></label>
-            <label class="check-item" onclick="toggleCheck(this,'challenge_curriculum')"><input type="checkbox" id="challenge_curriculum" value="Curriculum & Academic Concerns"><span class="check-box"><span class="check-tick">✓</span></span><span class="check-label">Curriculum &amp; Academic Concerns</span></label>
-            <label class="check-item" onclick="toggleCheck(this,'challenge_materials')"><input type="checkbox" id="challenge_materials" value="Study Materials & Resources"><span class="check-box"><span class="check-tick">✓</span></span><span class="check-label">Study Materials &amp; Resources</span></label>
-            <label class="check-item" onclick="toggleCheck(this,'challenge_none','exclusive')"><input type="checkbox" id="challenge_none" value="No Challenges"><span class="check-box"><span class="check-tick">✓</span></span><span class="check-label">No Challenges</span></label>
-            <label class="check-item" onclick="toggleCheck(this,'challenge_others')"><input type="checkbox" id="challenge_others" value="Others"><span class="check-box"><span class="check-tick">✓</span></span><span class="check-label">Others</span></label>
-          </div>
-          <div class="err-msg" id="challengeErr" style="display:none;margin-top:6px;">Please select at least one option</div>
-        </div>
-        <div class="field">
-          <label for="challengeDetail">Q2. Please describe the challenges you are facing in detail <span class="req">*</span></label>
-          <textarea id="challengeDetail" name="challengeDetail" placeholder="Describe your challenges…" required></textarea>
-          <div class="err-msg">Please describe your challenges</div>
-        </div>
-        <div class="field" style="margin-bottom:0;">
-          <label for="challengeSuggestions">Q3. Please share your suggestions where we can improve <span class="req">*</span></label>
-          <textarea id="challengeSuggestions" name="challengeSuggestions" placeholder="Your suggestions…" required></textarea>
-          <div class="err-msg">Please share your suggestions</div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="submit-area">
-      <button type="submit" class="btn-submit" id="submitBtn">
-        <span>Submit Feedback</span><span>→</span>
-      </button>
-      <p class="note">🔒 All responses will be kept confidential and will be used only to enhance the quality of our training, support, and overall campus experience.</p>
-    </div>
-
-  </form>
+  <div class="footnote" id="footnote"></div>
 </div>
-
-<div id="toast"></div>
 
 <script>
-// ─── GOOGLE SHEET CONFIG ─────────────────────────────────────────────────────
-// This Apps Script endpoint is the ONLY storage layer now (Supabase removed).
-// It both checks for duplicate register numbers and appends the response row.
-const SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz62BqSF6qkF8-0q9W7EwuV1cBc7br7p8eFQtFngi_84cDz5B4t-OuQ_tG-ReAUlKcQQQ/exec";
+const SUPABASE_URL='https://qjwbndrgzvboszfzrcuy.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2JuZHJnenZib3N6ZnpyY3V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NTA3MzIsImV4cCI6MjA5NjEyNjczMn0.x-su_5f_XQ9_ql7iw3Aa_4E4ww9SJIqRGVdTHo6zSpE';
+const PEER_SUPABASE_URL='https://zykmcumlzhucnvxqhpgm.supabase.co';
+const PEER_SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5a21jdW1semh1Y252eHFocGdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NzE5MDYsImV4cCI6MjA5NTM0NzkwNn0.kqUgSpGFSwMXpHkWRihhVJXDtVfl0tGdU24POxmXHWc';
 
-// All 4 colleges write into the SAME spreadsheet, each to its own tab (gid).
-const SHEET_ID = "1UtqX7zThVik6t-XItTAbBMtFcIATBGPyytpOV4_swLc";
-const SHEET_ROUTES = {
-  "SDNB Vaishnav College for Women":                  { sheetId: SHEET_ID, gid: "0",          tabName: "SDNB" },
-  "TJS College of Arts and Science":                   { sheetId: SHEET_ID, gid: "1872802365", tabName: "TJS" },
-  "Noorul Islam Centre for Higher Education (NICHE)":  { sheetId: SHEET_ID, gid: "679717801",  tabName: "NICHE" },
-  "Alliance University":                               { sheetId: SHEET_ID, gid: "2143757213", tabName: "Alliance" }
+const COLLEGE_NAMES={
+  'kamaraj':'Kamaraj College','kamaraj-women':"Kamaraj Women's College",
+  'sdnb':'SDNB Vaishnav College for Women','patrician':'Patrician College of Arts & Science',
+  'terf':"TERF's College of Arts and Science",'sst':'Sree Saraswathi Thyagaraja College',
+  'tjs':'TJS College of Arts and Science','bharathidasan':'Bharathidasan College of Arts and Science',
+  'nagarathinam':'Nagarathinam Angalammal Arts & Science College',
+  'vinayaga':"Vinayaga Mission's Research Foundation School of Arts & Science",
+  'amaraavathi':'Sri Amaraavathi College of Arts & Sciences','takshashila':'Takshashila University',
+  'studyworld':'Study World Group of Institution','rathinam':'Rathinam College of Arts & Science',
+  'niche':'Noorul Islam Centre for Higher Education (NICHE)','amet':'AMET University',
+  'joy':'Joy University','sasurie':'Sasurie College of Arts and Science',
+  'alliance':'Alliance University','kristu':'Kristu Jayanti (Deemed to be University)',
+  'svyasa':'S-VYASA University','asb':'Asian School of Business'
 };
 
-const QUESTIONS = [
-  "Were the sessions delivered by the Faculty clear and well-structured?",
-  "Are you convinced with the professional behavior of the Faculty during sessions?",
-  "Was the trainer effective in solving problems and explaining solutions with examples?",
-  "Did the trainer support doubt clearing and student queries?",
-  "Were the sessions useful in improving your understanding and skills?"
-];
+function escHTML(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function chunk(arr,size){const out=[];for(let i=0;i<arr.length;i+=size)out.push(arr.slice(i,i+size));return out;}
+function setStatus(msg,done){document.getElementById('statusText').textContent=msg;if(done)document.getElementById('statusSpinner').classList.add('done');}
 
-const SCALE_WORDS = {1:'Poor', 2:'Below Avg', 3:'Average', 4:'Good', 5:'Excellent'};
-const CHALLENGE_IDS = ['challenge_infra','challenge_teaching','challenge_comm','challenge_curriculum','challenge_materials','challenge_none','challenge_others'];
-
-// ─── COLLEGE DATA (SDNB, TJS, NICHE, Alliance only) ───────────────────────────
-const COLLEGE_DATA = {
-  "SDNB Vaishnav College for Women": {
-    "III B.Sc. CS with AI": [
-      {subject:"Advanced Generative Artificial Intelligence",mentor:"Geetha"},
-      {subject:"Modern Natural Language Processing",mentor:"Geetha"},
-      {subject:"Time Series Analysis",mentor:"Dharani"},
-      {subject:"Modern Natural Language Processing - Lab",mentor:"Geetha"},
-      {subject:"Fundamentals of Recruitment and Talent Acquisition",mentor:"Bavyashree"},
-      {subject:"Social Media Analytics",mentor:"Geetha"},
-      {subject:"Full Stack Development",mentor:"Geetha"},
-      {subject:"Essentials of Effective Communication Skill",mentor:"Bavyashree"},
-      {subject:"Aptitude",mentor:"Lydia"}
-    ],
-    "II B.Sc. CS with AI (Shift 1)": [
-      {subject:"Language - IV",mentor:"Stella Mary"},
-      {subject:"General English - IV",mentor:"Jaisha"},
-      {subject:"Foundations of LLMs & Prompt Engineering",mentor:"Arockiyamary"},
-      {subject:"Database Management Systems",mentor:"Arockiyamary"},
-      {subject:"Data Ethics And Privacy",mentor:"Arockiyamary"},
-      {subject:"Database Management Systems - Lab",mentor:"Arockiyamary"},
-      {subject:"Descriptive Statistics",mentor:"Saradha"},
-      {subject:"Effective Communication",mentor:"Jaisha"}
-    ],
-    "II B.Sc. CS with AI (Shift 2)": [
-      {subject:"Language - IV",mentor:"Mekala"},
-      {subject:"General English - IV",mentor:"Vijitha"},
-      {subject:"Foundations of LLMs & Prompt Engineering",mentor:"Subashini"},
-      {subject:"Database Management Systems",mentor:"Subashini"},
-      {subject:"Data Ethics And Privacy",mentor:"Subashini"},
-      {subject:"Database Management Systems - Lab",mentor:"Subashini"},
-      {subject:"Descriptive Statistics",mentor:"Anusha"},
-      {subject:"Effective Communication",mentor:"Vijitha"}
-    ],
-    "II B.Sc. DS & AI": [
-      {subject:"Language - IV",mentor:"Stella Mary"},
-      {subject:"General English - IV",mentor:"Sandra"},
-      {subject:"Data Structures and Algorithms",mentor:"Dharani"},
-      {subject:"Data Structures and Algorithms Lab",mentor:"Dharani"},
-      {subject:"Statistics - I",mentor:"Lydia"},
-      {subject:"Analytical Reasoning and Problem Solving - III",mentor:"Saradha"},
-      {subject:"Effective Communication",mentor:"Sandra"}
-    ],
-    "II B.Com FinTech with AI": [
-      {subject:"Corporate Accounting",mentor:"Malarvizhi"},
-      {subject:"Company Law",mentor:"Athira"},
-      {subject:"Stock Market Trading and Investment Analysis",mentor:"Astha"},
-      {subject:"Governance and Ethics of Financial Services / Securities Market Research",mentor:"Astha"},
-      {subject:"Entrepreneurship and Startup Fundamentals",mentor:"Malarvizhi"},
-      {subject:"Effective Communication",mentor:"Jaisha"},
-      {subject:"Analytical Reasoning and Problem Solving - III",mentor:"Saradha"}
-    ],
-    "II BBA DM & BA": [
-      {subject:"Consumer Behaviour & Digital Customer Journey",mentor:"Nayeemunnisa"},
-      {subject:"Business Intelligence Fundamentals",mentor:"Nayeemunnisa"},
-      {subject:"Business Strategy and Competitive Advantage",mentor:"Priyanka"},
-      {subject:"Effective Communication",mentor:"Sandra"},
-      {subject:"Financial Accounting",mentor:"Athira"},
-      {subject:"Supply Chain Management",mentor:"Nayeemunnisa"},
-      {subject:"Global E-Commerce",mentor:"Vishnupriya"},
-      {subject:"Effective communication for Professionals",mentor:"Sandra"},
-      {subject:"Problem Solving through Aptitude II",mentor:"Lydia"}
-    ]
-  },
-  "TJS College of Arts and Science": {
-    "III B.Sc CS with AI": [
-      {subject:"Technical - FPC",mentor:"Subhashini KM"},{subject:"Computer Vision",mentor:"Subhashini K M"},
-      {subject:"Natural Language Processing",mentor:"Aarthi R"},{subject:"Communicative English",mentor:"Aarthi R"},
-      {subject:"Software engineering",mentor:"Aarthi R"},{subject:"Cloud computing",mentor:"Subhashini K M"}
-    ]
-  },
-  "Noorul Islam Centre for Higher Education (NICHE)": {
-   "B.Sc AI & ML": [
-  {subject:"Tamil II / Malayalam II / Hindi II", mentor:"Kalaiarasi"},
-  {subject:"English II",                         mentor:"Nishanthini"},
-  {subject:"Communicative English",              mentor:"Nishanthini"},
-  {subject:"Aptitude",                           mentor:"Nishanthini"},
-  {subject:"Professional Ethics",                mentor:"Nishanthini"},
-  {subject:"Numerical Techniques",              mentor:"Indhumathi"},
-  {subject:"Front-End Web Development",         mentor:"Aasik"},
-  {subject:"Object Oriented Programming in Java", mentor:"Aasik"}
-]
-  },
-  "Alliance University": {
-    "I MCA - A": [
-      {subject:"Data Analytics for Business",mentor:"Aman"},{subject:"Data Mining and Big Data Analytics",mentor:"Nagasri"},
-      {subject:"Deep Learning Models and Applications",mentor:"Tanisha"},{subject:"Engineering Principles of Software",mentor:"Gomathy"},
-      {subject:"NLP Algorithms and Applications",mentor:"Nagasri"},{subject:"Professional Skill Development",mentor:"Dharshinee"}
-    ],
-    "I MCA - B": [
-      {subject:"Data Analytics for Business",mentor:"Aman"},{subject:"Data Mining and Big Data Analytics",mentor:"Nagasri"},
-      {subject:"Deep Learning Models and Applications",mentor:"Tanisha"},{subject:"Engineering Principles of Software",mentor:"Gomathy"},
-      {subject:"NLP Algorithms and Applications",mentor:"Nagasri"},{subject:"Professional Skill Development",mentor:"Dharshinee"}
-    ]
-  }
-};
-
-// ─── COLLEGE → DEPARTMENT ─────────────────────────────────────────────────────
-document.getElementById('collegeName').addEventListener('change', function () {
-  const college = this.value;
-  const deptSel = document.getElementById('department');
-  deptSel.innerHTML = '<option value="" disabled selected>Select your department</option>';
-  document.getElementById('facultySections').innerHTML = '';
-  document.getElementById('dynamicContent').style.display = 'none';
-  if (COLLEGE_DATA[college]) {
-    deptSel.disabled = false;
-    Object.keys(COLLEGE_DATA[college]).forEach(d => {
-      const o = document.createElement('option');
-      o.value = d; o.textContent = d;
-      deptSel.appendChild(o);
-    });
-  } else {
-    deptSel.disabled = true;
-    deptSel.innerHTML = '<option value="" disabled selected>No departments available</option>';
-  }
-  updateProgress();
-});
-
-document.getElementById('department').addEventListener('change', function () {
-  const college = document.getElementById('collegeName').value;
-  const dept = this.value;
-  const container = document.getElementById('facultySections');
-  container.innerHTML = '';
-  if (!COLLEGE_DATA[college] || !COLLEGE_DATA[college][dept]) return;
-  COLLEGE_DATA[college][dept].forEach((sub, idx) => {
-    const sec = document.createElement('div');
-    sec.className = 'section';
-    sec.style.animationDelay = `${0.15 + idx * 0.05}s`;
-    sec.innerHTML = sub.isElective ? buildElective(sub, idx) : buildCard(sub, idx);
-    container.appendChild(sec);
-  });
-  document.getElementById('dynamicContent').style.display = 'block';
-  updateProgress();
-});
-
-function buildScaleHtml(n) {
-  let btns = '';
-  for (let v = 1; v <= 5; v++) {
-    btns += `<div class="scale-circle-wrap">
-      <input type="radio" id="sr${n}v${v}" name="s${n}_rating" value="${v}" ${v===1?'required':''}>
-      <label for="sr${n}v${v}" data-v="${v}"><span class="s-num">${v}</span><span class="s-word">${SCALE_WORDS[v]}</span></label>
-      <div class="s-circle-label">${SCALE_WORDS[v]}</div>
-    </div>`;
-  }
-  return `<div class="rating-block" id="ratingBlock${n}">
-    <div class="rating-block-title">Overall Rating — Rate your faculty based on your learning experience</div>
-    <div class="scale-btns" id="scaleBtns${n}">${btns}</div>
-    <div class="err-msg" style="margin-top:4px;">Please select a rating</div>
-  </div>`;
+async function sb(base,key,path){
+  const res=await fetch(base+'/rest/v1/'+path,{headers:{'apikey':key,'Authorization':'Bearer '+key,'Accept':'application/json'}});
+  const text=await res.text();
+  if(!res.ok)throw new Error(text||('Request failed: '+res.status));
+  return text?JSON.parse(text):[];
 }
 
-function buildCard(sub, idx) {
-  const n = idx + 1;
-  let qs = '';
-  QUESTIONS.forEach((q, qi) => {
-    const yId = `s${n}q${qi}y`, nId = `s${n}q${qi}n`;
-    qs += `<div class="yn-row" id="yn_${n}_${qi}">
-      <span class="yn-qnum">Q${qi+1}</span>
-      <span class="yn-text">${q}</span>
-      <div class="yn-btns">
-        <input type="radio" id="${yId}" name="s${n}_q${qi}" value="Yes" required>
-        <label for="${yId}" class="yes-lbl">Yes</label>
-        <input type="radio" id="${nId}" name="s${n}_q${qi}" value="No">
-        <label for="${nId}" class="no-lbl">No</label>
-      </div>
-    </div>`;
-  });
-  return `
-    <input type="hidden" name="subject${n}_Name" value="${sub.subject}">
-    <input type="hidden" name="subject${n}_Mentor" value="${sub.mentor}">
-    <div class="faculty-header">
-      <div class="faculty-avatar">${n}</div>
-      <div class="faculty-meta">
-        <div class="faculty-name">${sub.mentor}</div>
-        <div class="faculty-subject">${sub.subject}</div>
-      </div>
-    </div>
-    ${buildScaleHtml(n)}
-    <div class="yn-list">${qs}</div>
-    <div class="err-msg" id="err_${n}" style="margin-top:8px;">Please answer all questions for this faculty</div>`;
+let allStudents=[],progressMap={},evalMap={},approvalMap={},peerReviews=[],computedRows=[];
+
+function getWeeksDone(sid){return Object.values(progressMap[sid]||{}).filter(w=>w.status==='completed').length;}
+function getPeerRaw(reg){
+  const reviews=peerReviews.filter(r=>r.project_reg===reg);
+  if(!reviews.length)return 0;
+  const avg=reviews.reduce((sum,r)=>sum+(r.clarity||0)+(r.innovation||0)+(r.execution||0)+(r.usability||0)+(r.overall||0),0)/reviews.length;
+  return parseFloat(avg.toFixed(1));
 }
-
-function buildElective(sub, idx) {
-  const n = idx + 1;
-  const opts = sub.electiveOptions.map((o,oi) =>
-    `<option value="${oi}" data-mentor="${o.mentor}">${o.label}</option>`
-  ).join('');
-  let qs = '';
-  QUESTIONS.forEach((q, qi) => {
-    const yId = `s${n}q${qi}y`, nId = `s${n}q${qi}n`;
-    qs += `<div class="yn-row" id="yn_${n}_${qi}">
-      <span class="yn-qnum">Q${qi+1}</span><span class="yn-text">${q}</span>
-      <div class="yn-btns">
-        <input type="radio" id="${yId}" name="s${n}_q${qi}" value="Yes" class="elective-r-${n}">
-        <label for="${yId}" class="yes-lbl">Yes</label>
-        <input type="radio" id="${nId}" name="s${n}_q${qi}" value="No" class="elective-r-${n}">
-        <label for="${nId}" class="no-lbl">No</label>
-      </div>
-    </div>`;
-  });
-  return `
-    <input type="hidden" name="subject${n}_Name" id="electSubj${n}">
-    <input type="hidden" name="subject${n}_Mentor" id="electMentor${n}">
-    <div class="section-title" style="margin-bottom:16px;">
-      <div class="icon icon-purple">${n}</div>
-      ${sub.subject}
-      <span style="font-size:11px;font-weight:400;color:var(--accent2);margin-left:4px;">(Choose your elective)</span>
-    </div>
-    <div class="field" style="margin-bottom:16px;">
-      <label>Select Your Elective <span class="req">*</span></label>
-      <div class="select-wrapper">
-        <select id="electSel${n}" required onchange="handleElective(this,${n})">
-          <option value="" disabled selected>— Choose elective subject —</option>
-          ${opts}
-        </select>
-      </div>
-      <div class="err-msg">Please select an elective</div>
-    </div>
-    <div id="electDetail${n}" style="display:none;">
-      <div class="elective-mentor-badge"><span id="electMentorDisplay${n}">—</span></div>
-      ${buildScaleHtml(n)}
-      <div class="yn-list">${qs}</div>
-      <div class="err-msg" id="err_${n}" style="margin-top:8px;">Please answer all questions for this faculty</div>
-    </div>`;
+function getFinalGrade(score,notStarted){
+  if(notStarted)return{label:'Not Started',cls:'badge-grey'};
+  if(score>=85)return{label:'Excellent',cls:'badge-green'};
+  if(score>=70)return{label:'Very Good',cls:'badge-blue'};
+  if(score>=55)return{label:'Good',cls:'badge-amber'};
+  if(score>=40)return{label:'Pass',cls:'badge-grey'};
+  return{label:'Fail',cls:'badge-red'};
 }
+function approvalBadge(s){const m={'approved':'<span class="badge badge-green">Approved</span>','needs-revision':'<span class="badge badge-red">Needs Revision</span>','pending':'<span class="badge badge-grey">Pending</span>'};return m[s]||m['pending'];}
 
-function handleElective(sel, n) {
-  const chosen = sel.options[sel.selectedIndex];
-  const mentor = chosen.getAttribute('data-mentor');
-  document.getElementById(`electMentorDisplay${n}`).textContent = mentor;
-  document.getElementById(`electMentor${n}`).value = mentor;
-  document.getElementById(`electSubj${n}`).value = chosen.textContent;
-  document.getElementById(`electDetail${n}`).style.display = 'block';
-  document.querySelectorAll(`.elective-r-${n}`).forEach(r => r.required = true);
-  document.querySelectorAll(`[name="s${n}_rating"]`).forEach(r => r.required = true);
-  updateProgress();
-}
+async function loadAll(){
+  document.getElementById('exportBtn').disabled=true;
+  document.getElementById('toolbar').style.display='none';
+  document.getElementById('statsRow').style.display='none';
+  document.getElementById('statusSpinner').classList.remove('done');
+  document.getElementById('tableBody').innerHTML='<tr><td colspan="14"><div class="empty-state">Loading…</div></td></tr>';
+  allStudents=[];progressMap={};evalMap={};approvalMap={};peerReviews=[];computedRows=[];
 
-function toggleCheck(labelEl, id, mode) {
-  const cb = document.getElementById(id);
-  if (mode === 'exclusive') {
-    const wasChecked = cb.checked;
-    CHALLENGE_IDS.forEach(cid => {
-      const el = document.getElementById(cid);
-      if (el) { el.checked = false; el.closest('.check-item').classList.remove('checked'); }
-    });
-    if (!wasChecked) { cb.checked = true; labelEl.classList.add('checked'); }
-  } else {
-    const noneEl = document.getElementById('challenge_none');
-    if (noneEl) { noneEl.checked = false; noneEl.closest('.check-item').classList.remove('checked'); }
-    cb.checked = !cb.checked;
-    labelEl.classList.toggle('checked', cb.checked);
-  }
-  document.getElementById('challengeErr').style.display = 'none';
-  updateProgress();
-}
+  try{
+    const entries=Object.entries(COLLEGE_NAMES);
+    setStatus('Fetching students from '+entries.length+' colleges…');
+    let done=0;
+    const results=await Promise.all(entries.map(async([key,name])=>{
+      try{
+        const rows=await sb(SUPABASE_URL,SUPABASE_KEY,'students?select=*&college=eq.'+encodeURIComponent(name)+'&order=id');
+        rows.forEach(r=>{r._collegeKey=key;r._collegeName=name;});
+        done++;setStatus('Fetched students: '+done+'/'+entries.length+' colleges done…');
+        return rows;
+      }catch(e){console.error('Failed for',name,e);return[];}
+    }));
+    allStudents=results.flat();
 
-function atLeastOneChallengeSelected() {
-  return CHALLENGE_IDS.some(id => { const el = document.getElementById(id); return el && el.checked; });
-}
-
-function updateProgress() {
-  let req = 0, done = 0;
-  const groups = new Set();
-  document.querySelectorAll('[required]').forEach(el => {
-    if (el.offsetParent === null) return;
-    if (el.type === 'radio') { groups.add(el.name); return; }
-    if (el.type === 'hidden') return;
-    req++;
-    if (el.tagName === 'SELECT') { if (el.value) done++; }
-    else { if (el.value.trim()) done++; }
-  });
-  groups.forEach(name => {
-    req++;
-    if (document.querySelector(`[name="${name}"]:checked`)) done++;
-  });
-  req++;
-  if (atLeastOneChallengeSelected()) done++;
-  const pct = Math.min(100, Math.round((done / Math.max(req, 1)) * 100));
-  document.getElementById('progressBar').style.width = pct + '%';
-  document.getElementById('pct').textContent = pct + '%';
-}
-
-document.addEventListener('change', e => {
-  if (e.target.name === 'ape_q2') {
-    const wrap = document.getElementById('ape_q2_detail_wrap');
-    const ta = document.getElementById('ape_q2_detail');
-    if (e.target.value === 'No') { wrap.classList.add('visible'); ta.required = true; }
-    else { wrap.classList.remove('visible'); ta.required = false; ta.value = ''; const f = ta.closest('.field'); if(f) f.classList.remove('error'); }
-  }
-  if (e.target.type === 'radio' && e.target.name && e.target.name.endsWith('_rating')) {
-    const sb = e.target.closest('.scale-btns'); if(sb) sb.classList.add('has-selection');
-    const rb = e.target.closest('.rating-block'); if(rb) rb.classList.remove('error-rating');
-  }
-  if (e.target.name === 'ape_q3_rating') { document.getElementById('apeScaleBtns3').classList.add('has-selection'); document.getElementById('ape_q3_block').classList.remove('error-rating'); }
-  if (e.target.name === 'ape_q4_rating') { document.getElementById('apeScaleBtns4').classList.add('has-selection'); document.getElementById('ape_q4_block').classList.remove('error-rating'); }
-  if (e.target.type === 'radio') { const row = e.target.closest('.yn-row'); if(row) row.classList.remove('error-row'); }
-  const field = e.target.closest('.field');
-  if (field && field.classList.contains('error')) field.classList.remove('error');
-  updateProgress();
-});
-document.addEventListener('input', e => {
-  const field = e.target.closest('.field');
-  if (field && field.classList.contains('error')) field.classList.remove('error');
-  updateProgress();
-});
-
-function validateForm() {
-  let valid = true, first = null;
-  document.querySelectorAll('#feedbackForm .field').forEach(field => {
-    const inp = field.querySelector('input:not([type="radio"]):not([type="hidden"]):not([type="checkbox"]), select, textarea');
-    if (!inp || inp.offsetParent === null) return;
-    let ok = true;
-    if (inp.type === 'email') ok = inp.value.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inp.value);
-    else if (inp.tagName === 'SELECT') ok = !!inp.value;
-    else if (inp.required) ok = !!inp.value.trim();
-    if (!ok) { field.classList.add('error'); valid = false; if (!first) first = field; }
-    else field.classList.remove('error');
-  });
-  if (!atLeastOneChallengeSelected()) {
-    document.getElementById('challengeErr').style.display = 'block'; valid = false;
-    if (!first) first = document.getElementById('challengeList');
-  }
-  ['ape_q3_rating','ape_q4_rating'].forEach((name,i) => {
-    const blockId = `ape_q${i+3}_block`, block = document.getElementById(blockId);
-    if (!document.querySelector(`[name="${name}"]:checked`)) { block.classList.add('error-rating'); valid = false; if(!first) first=block; }
-    else block.classList.remove('error-rating');
-  });
-  ['ape_q1','ape_q2'].forEach((name,qi) => {
-    const row = document.getElementById(`ape_q${qi+1}_row`);
-    if (!document.querySelector(`[name="${name}"]:checked`)) { row.classList.add('error-row'); valid = false; if(!first) first=row; }
-    else row.classList.remove('error-row');
-  });
-  const college = document.getElementById('collegeName').value;
-  const dept = document.getElementById('department').value;
-  if (college && dept && COLLEGE_DATA[college] && COLLEGE_DATA[college][dept]) {
-    COLLEGE_DATA[college][dept].forEach((sub, idx) => {
-      const n = idx + 1;
-      const ratingBlock = document.getElementById(`ratingBlock${n}`);
-      if (ratingBlock && ratingBlock.offsetParent !== null) {
-        if (!document.querySelector(`[name="s${n}_rating"]:checked`)) { ratingBlock.classList.add('error-rating'); valid = false; if(!first) first=ratingBlock; }
-        else ratingBlock.classList.remove('error-rating');
+    if(allStudents.length){
+      const ids=allStudents.map(s=>s.id);
+      const idChunks=chunk(ids,200);
+      setStatus('Fetching progress, evaluations & approvals for '+allStudents.length+' students…');
+      let cdone=0;
+      for(const c of idChunks){
+        const[p,e,a]=await Promise.all([
+          sb(SUPABASE_URL,SUPABASE_KEY,'weekly_progress?student_id=in.('+c.join(',')+')'),
+          sb(SUPABASE_URL,SUPABASE_KEY,'mentor_evaluation?student_id=in.('+c.join(',')+')'),
+          sb(SUPABASE_URL,SUPABASE_KEY,'project_approval?student_id=in.('+c.join(',')+')')
+        ]);
+        p.forEach(row=>{if(!progressMap[row.student_id])progressMap[row.student_id]={};progressMap[row.student_id][row.week_number]=row;});
+        e.forEach(row=>{evalMap[row.student_id]=row;});
+        a.forEach(row=>{approvalMap[row.student_id]=row;});
+        cdone++;setStatus('Fetched evaluation data: batch '+cdone+'/'+idChunks.length+'…');
       }
-      QUESTIONS.forEach((_,qi) => {
-        const row = document.getElementById(`yn_${n}_${qi}`);
-        if (!document.querySelector(`[name="s${n}_q${qi}"]:checked`) && row && row.offsetParent !== null) {
-          row.classList.add('error-row'); valid = false; if(!first) first=row;
-        } else if (row) row.classList.remove('error-row');
-      });
-    });
+    }
+
+    setStatus('Fetching peer reviews…');
+    try{peerReviews=await sb(PEER_SUPABASE_URL,PEER_SUPABASE_KEY,'reviews_named?order=created_at.desc');}
+    catch(e){console.error('Peer fetch failed',e);peerReviews=[];}
+
+    buildComputedRows();
+    populateCollegeFilter();
+    document.getElementById('statsRow').style.display='grid';
+    document.getElementById('toolbar').style.display='flex';
+    document.getElementById('exportBtn').disabled=computedRows.length===0;
+    const collegesWithData=new Set(allStudents.map(s=>s._collegeName)).size;
+    setStatus('Done. Loaded '+allStudents.length+' students across '+collegesWithData+' of '+entries.length+' colleges with data.',true);
+    renderStats();
+    render();
+  }catch(e){
+    console.error(e);
+    setStatus('Error: '+e.message,true);
+    document.getElementById('tableBody').innerHTML='<tr><td colspan="14"><div class="empty-state">Failed to load data: '+escHTML(e.message)+'</div></td></tr>';
   }
-  if (!valid && first) { first.scrollIntoView({behavior:'smooth',block:'center'}); showToast('Please answer all required questions','error'); }
-  return valid;
 }
 
-function showToast(msg, type='success') {
-  const t = document.getElementById('toast');
-  t.textContent = (type==='success'?'✅ ':'❌ ') + msg;
-  t.className = 'show ' + type;
-  setTimeout(() => t.className = '', 4000);
-}
-
-function resetForm() {
-  document.getElementById('feedbackForm').reset();
-  document.getElementById('successScreen').style.display = 'none';
-  document.getElementById('feedbackForm').style.display = 'block';
-  CHALLENGE_IDS.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) { el.checked = false; el.closest('.check-item').classList.remove('checked'); }
-  });
-  document.getElementById('ape_q2_detail_wrap').classList.remove('visible');
-  document.getElementById('department').disabled = true;
-  document.getElementById('department').innerHTML = '<option value="" disabled selected>First select your college</option>';
-  document.getElementById('facultySections').innerHTML = '';
-  document.getElementById('dynamicContent').style.display = 'none';
-  document.querySelectorAll('.scale-btns').forEach(sb => sb.classList.remove('has-selection'));
-  updateProgress();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-// ─── SUBMIT — Google Sheets is the single source of truth ─────────────────────
-// The Apps Script (doPost) checks the target tab for a matching Register
-// Number, and either returns {result:"duplicate"} or appends the row and
-// returns {result:"success"}.
-document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  if (!validateForm()) return;
-
-  const regNo = document.getElementById('regNumber').value.trim().toUpperCase();
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span>Submitting…</span><span>⏳</span>';
-
-  const overlay = document.getElementById('loadingOverlay');
-  const loadingMsg = document.getElementById('loadingMsg');
-  loadingMsg.textContent = 'Submitting your feedback…';
-  overlay.classList.add('show');
-
-  try {
-    // ── Build the full data object ─────────────────────────────────────────
-    const fd = new FormData(this);
-    const college = fd.get('collegeName');
-    const dept    = fd.get('department');
-
-    const selectedChallenges = CHALLENGE_IDS
-      .filter(id => document.getElementById(id)?.checked)
-      .map(id => document.getElementById(id).value)
-      .join(', ');
-
-    const data = {
-      timestamp:                  new Date().toISOString(),
-      studentName:                fd.get('studentName')          || '',
-      registerNumber:             regNo,
-      studentEmail:                fd.get('studentEmail')         || '',
-      collegeName:                college                        || '',
-      department:                 dept                           || '',
-      ape_q1_assessments:         fd.get('ape_q1')               || '',
-      ape_q2_studyMaterials:      fd.get('ape_q2')               || '',
-      ape_q2_missingPapers:       fd.get('ape_q2_detail')        || '',
-      ape_q3_handsOnRating:       fd.get('ape_q3_rating')        || '',
-      ape_q4_confidenceRating:    fd.get('ape_q4_rating')        || '',
-      challenges_selected:        selectedChallenges,
-      challenges_detail:          fd.get('challengeDetail')      || '',
-      challenges_suggestions:     fd.get('challengeSuggestions') || '',
+function buildComputedRows(){
+  computedRows=allStudents.map(s=>{
+    const weeksDone=getWeeksDone(s.id);
+    const mentorRaw=evalMap[s.id]?evalMap[s.id].total_score:null;
+    const peerRaw=getPeerRaw(s.register_number);
+    const peerScore=parseFloat((peerRaw/50*30).toFixed(1));
+    const mentorScore=mentorRaw!==null?parseFloat((mentorRaw/100*70).toFixed(1)):null;
+    const notStarted=peerRaw===0&&mentorRaw===null;
+    const finalScore=notStarted?0:parseFloat((peerScore+(mentorScore??0)).toFixed(1));
+    const grade=getFinalGrade(finalScore,notStarted);
+    const approval=approvalMap[s.id]?approvalMap[s.id].status:'pending';
+    return{
+      collegeKey:s._collegeKey,collegeName:s._collegeName,section:s.section||'',mentor:s.mentor_assigned||'',
+      name:s.name||'',register:s.register_number||'',course:s.course||'',weeksDone,
+      peerRaw,peerScore,mentorRaw,mentorScore,finalScore,grade:grade.label,gradeCls:grade.cls,approval
     };
+  });
+}
 
-    if (COLLEGE_DATA[college] && COLLEGE_DATA[college][dept]) {
-      COLLEGE_DATA[college][dept].forEach((sub, idx) => {
-        const n = idx + 1;
-        data[`subject${n}_Name`]   = fd.get(`subject${n}_Name`)   || sub.subject;
-        data[`subject${n}_Mentor`] = fd.get(`subject${n}_Mentor`) || (sub.mentor || '');
-        data[`subject${n}_Rating`] = fd.get(`s${n}_rating`)       || '';
-        QUESTIONS.forEach((_, qi) => {
-          data[`subject${n}_Q${qi+1}`] = fd.get(`s${n}_q${qi}`) || '';
-        });
-      });
-    }
+function populateCollegeFilter(){
+  const sel=document.getElementById('collegeFilter');
+  const colleges=[...new Set(allStudents.map(s=>s._collegeName))].sort();
+  sel.innerHTML='<option value="">All Colleges ('+colleges.length+')</option>'+colleges.map(c=>`<option value="${escHTML(c)}">${escHTML(c)}</option>`).join('');
+}
 
-    // Tag which sheet tab this submission belongs to
-    const route = SHEET_ROUTES[college];
-    if (route) {
-      data.target_sheet_id   = route.sheetId;
-      data.target_sheet_gid  = route.gid;
-      data.target_sheet_name = route.tabName;
-    }
+function renderStats(){
+  const total=computedRows.length;
+  const evaluated=computedRows.filter(r=>r.mentorRaw!==null||r.peerRaw>0).length;
+  const avg=evaluated>0?(computedRows.filter(r=>r.mentorRaw!==null||r.peerRaw>0).reduce((s,r)=>s+r.finalScore,0)/evaluated).toFixed(1):'--';
+  const excellent=computedRows.filter(r=>r.grade==='Excellent').length;
+  const colleges=new Set(computedRows.map(r=>r.collegeName)).size;
+  document.getElementById('statsRow').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value">${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Colleges With Data</div><div class="stat-value" style="color:var(--blue);">${colleges}</div></div>
+    <div class="stat-card"><div class="stat-label">Evaluated</div><div class="stat-value" style="color:var(--accent2);">${evaluated}</div></div>
+    <div class="stat-card"><div class="stat-label">Avg Final Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div></div>
+    <div class="stat-card"><div class="stat-label">Excellent (&ge;85)</div><div class="stat-value" style="color:var(--green);">${excellent}</div></div>`;
+}
 
-    // ── POST to Apps Script and wait for its response ──────────────────────
-    const formPayload = new URLSearchParams();
-    formPayload.append('payload', JSON.stringify(data));
+function getFilteredRows(){
+  const q=(document.getElementById('searchInput').value||'').toLowerCase();
+  const college=document.getElementById('collegeFilter').value;
+  const grade=document.getElementById('gradeFilter').value;
+  return computedRows.filter(r=>{
+    const matchQ=!q||r.name.toLowerCase().includes(q)||r.register.toLowerCase().includes(q)||r.mentor.toLowerCase().includes(q);
+    const matchCollege=!college||r.collegeName===college;
+    const matchGrade=!grade||r.grade===grade;
+    return matchQ&&matchCollege&&matchGrade;
+  });
+}
 
-    const res = await fetch(SHEET_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: formPayload.toString()
-    });
+function scoreCls(v,hi,mid){if(v===null||v===undefined)return'';return v>=hi?'score-high':v>=mid?'score-mid':'score-low';}
 
-    let result;
-    try {
-      result = await res.json();
-    } catch (parseErr) {
-      throw new Error('Unexpected response from server');
-    }
+function render(){
+  const list=getFilteredRows().sort((a,b)=>a.collegeName.localeCompare(b.collegeName)||b.finalScore-a.finalScore);
+  const tb=document.getElementById('tableBody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="14"><div class="empty-state">No matching students.</div></td></tr>';document.getElementById('footnote').textContent='';return;}
+  tb.innerHTML=list.map((r,i)=>`<tr>
+    <td style="color:var(--ink3);">${i+1}</td>
+    <td><span class="college-pill">${escHTML(r.collegeName)}</span></td>
+    <td style="font-size:11.5px;">${escHTML(r.section)}</td>
+    <td style="font-size:12px;font-weight:600;">${escHTML(r.mentor||'—')}</td>
+    <td style="font-weight:600;color:var(--ink);">${escHTML(r.name)}</td>
+    <td style="font-size:11.5px;color:var(--ink3);">${escHTML(r.register)}</td>
+    <td style="text-align:center;">${r.weeksDone}/4</td>
+    <td style="text-align:center;"><span class="score-display" style="font-size:14px;">${r.peerRaw}</span></td>
+    <td style="text-align:center;"><span class="score-display ${scoreCls(r.peerScore,22,15)}" style="font-size:14px;">${r.peerScore}</span></td>
+    <td style="text-align:center;">${r.mentorRaw!==null?r.mentorRaw:'<span style="color:var(--ink3);">—</span>'}</td>
+    <td style="text-align:center;">${r.mentorScore!==null?`<span class="score-display ${scoreCls(r.mentorScore,52,35)}" style="font-size:14px;">${r.mentorScore}</span>`:'<span style="color:var(--ink3);">—</span>'}</td>
+    <td style="text-align:center;"><span class="score-display ${scoreCls(r.finalScore,75,50)}" style="font-size:17px;">${r.finalScore}</span></td>
+    <td><span class="badge ${r.gradeCls}">${r.grade}</span></td>
+    <td>${approvalBadge(r.approval)}</td>
+  </tr>`).join('');
+  document.getElementById('footnote').textContent='Showing '+list.length+' of '+computedRows.length+' students. The download button always exports the complete dataset for every college, regardless of the filters above.';
+}
 
-    overlay.classList.remove('show');
-    btn.disabled = false;
-    btn.innerHTML = '<span>Submit Feedback</span><span>→</span>';
+function exportAllCSV(){
+  const rows=[...computedRows].sort((a,b)=>a.collegeName.localeCompare(b.collegeName)||b.finalScore-a.finalScore);
+  const header=['#','College','Section','Mentor','Student Name','Register No','Course','Weeks Completed','Peer Raw (/50)','Peer Score (/30)','Mentor Raw (/100)','Mentor Score (/70)','Final Score (/100)','Grade','Approval Status'];
+  const lines=[header];
+  rows.forEach((r,i)=>{
+    lines.push([i+1,r.collegeName,r.section,r.mentor,r.name,r.register,r.course,r.weeksDone+'/4',r.peerRaw,r.peerScore,r.mentorRaw??'',r.mentorScore??'',r.finalScore,r.grade,r.approval]);
+  });
+  const csv=lines.map(row=>row.map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='all_colleges_final_scores_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();URL.revokeObjectURL(url);
+}
 
-    if (result.result === 'duplicate') {
-      document.getElementById('feedbackForm').style.display = 'none';
-      document.getElementById('alreadyRegNo').textContent = regNo;
-      document.getElementById('alreadyScreen').style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    if (result.result !== 'success') {
-      throw new Error(result.message || 'Submission failed');
-    }
-
-    // ── Show success ─────────────────────────────────────────────────────
-    document.getElementById('feedbackForm').style.display = 'none';
-    const studentName = (fd.get('studentName') || '').trim();
-    const title = studentName ? `Thank you, ${studentName}! 🎉` : 'Feedback Submitted! 🎉';
-    document.getElementById('successTitle').textContent = title;
-    document.getElementById('successScreen').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  } catch (err) {
-    console.error('Submission error:', err);
-    overlay.classList.remove('show');
-    btn.disabled = false;
-    btn.innerHTML = '<span>Submit Feedback</span><span>→</span>';
-    showToast('Network error. Please check your connection and try again.', 'error');
-  }
-});
+loadAll();
 </script>
 </body>
 </html>
