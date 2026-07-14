@@ -288,8 +288,8 @@ function populateCollegeFilter(){
 
 function renderStats(){
   const total=computedRows.length;
-  const evaluated=computedRows.filter(r=>r.mentorRaw!==null||r.peerRaw>0).length;
-  const avg=evaluated>0?(computedRows.filter(r=>r.mentorRaw!==null||r.peerRaw>0).reduce((s,r)=>s+r.finalScore,0)/evaluated).toFixed(1):'--';
+  const evaluated=computedRows.filter(r=>r.mentorRaw!==null&&r.peerRaw>0).length;
+  const avg=evaluated>0?(computedRows.filter(r=>r.mentorRaw!==null&&r.peerRaw>0).reduce((s,r)=>s+r.finalScore,0)/evaluated).toFixed(1):'--';
   const excellent=computedRows.filter(r=>r.grade==='Excellent').length;
   const colleges=new Set(computedRows.map(r=>r.collegeName)).size;
   document.getElementById('statsRow').innerHTML=`
