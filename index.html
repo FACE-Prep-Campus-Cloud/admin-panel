@@ -357,31 +357,65 @@ function exportAllCSV(){
 function openSummaryModal(){
   if(!computedRows.length)return;
   const byCollege={};
+  const blankBucket=()=>({total:0,weeksCompleted:0,mentorDone:0,peerDone:0,bothDone:0});
   computedRows.forEach(r=>{
     const college=r.collegeName;
     const dept=r.course||'Unspecified';
-    const isCompleted=r.weeksDone>=4;
-    if(!byCollege[college])byCollege[college]={total:0,completed:0,depts:{}};
-    byCollege[college].total++;
-    if(isCompleted)byCollege[college].completed++;
-    if(!byCollege[college].depts[dept])byCollege[college].depts[dept]={total:0,completed:0};
-    byCollege[college].depts[dept].total++;
-    if(isCompleted)byCollege[college].depts[dept].completed++;
+    const weeksCompleted=r.weeksDone>=4;
+    const mentorDone=r.mentorRaw!==null;
+    const peerDone=r.peerRaw>0;
+    const bothDone=mentorDone&&peerDone;
+    if(!byCollege[college])byCollege[college]={...blankBucket(),depts:{}};
+    const cb=byCollege[college];
+    cb.total++;
+    if(weeksCompleted)cb.weeksCompleted++;
+    if(mentorDone)cb.mentorDone++;
+    if(peerDone)cb.peerDone++;
+    if(bothDone)cb.bothDone++;
+    if(!cb.depts[dept])cb.depts[dept]=blankBucket();
+    const db=cb.depts[dept];
+    db.total++;
+    if(weeksCompleted)db.weeksCompleted++;
+    if(mentorDone)db.mentorDone++;
+    if(peerDone)db.peerDone++;
+    if(bothDone)db.bothDone++;
   });
   const collegesSorted=Object.keys(byCollege).sort();
   const body=document.getElementById('summaryModalBody');
   body.innerHTML=collegesSorted.map(c=>{
     const data=byCollege[c];
     const deptRows=Object.entries(data.depts).sort((a,b)=>b[1].total-a[1].total).map(([d,dd])=>
-      `<div class="summary-dept-row"><span>${escHTML(d)}</span><span class="summary-dept-count">${dd.completed} / ${dd.total} completed</span></div>`
+      `<div class="summary-dept-row">
+        <span>${escHTML(d)} <span class="summary-dept-count">${dd.total}</span></span>
+        <span class="summary-badge-group">
+          <span class="badge badge-green">Mentor: ${dd.mentorDone}/${dd.total}</span>
+          <span class="badge badge-amber">Peer: ${dd.peerDone}/${dd.total}</span>
+          <span class="badge badge-blue">Both: ${dd.bothDone}/${dd.total}</span>
+        </span>
+      </div>`
     ).join('');
     return `<div class="summary-college-block">
-      <div class="summary-college-header"><span>${escHTML(c)}</span><span class="badge badge-blue">${data.completed} / ${data.total} completed</span></div>
+      <div class="summary-college-header">
+        <span>${escHTML(c)} <span class="summary-dept-count">${data.total}</span></span>
+        <span class="summary-badge-group">
+          <span class="badge badge-green">Mentor: ${data.mentorDone}/${data.total}</span>
+          <span class="badge badge-amber">Peer: ${data.peerDone}/${data.total}</span>
+          <span class="badge badge-blue">Both: ${data.bothDone}/${data.total}</span>
+        </span>
+      </div>
       ${deptRows}
     </div>`;
   }).join('');
-  const grandCompleted=computedRows.filter(r=>r.weeksDone>=4).length;
-  document.getElementById('summaryGrandTotal').innerHTML=`<span>Total across ${collegesSorted.length} colleges</span><span>${grandCompleted} / ${computedRows.length} completed</span>`;
+  const grandMentor=computedRows.filter(r=>r.mentorRaw!==null).length;
+  const grandPeer=computedRows.filter(r=>r.peerRaw>0).length;
+  const grandBoth=computedRows.filter(r=>r.mentorRaw!==null&&r.peerRaw>0).length;
+  document.getElementById('summaryGrandTotal').innerHTML=`
+    <span>Total across ${collegesSorted.length} colleges (${computedRows.length} students)</span>
+    <span class="summary-badge-group">
+      <span class="badge badge-green">Mentor: ${grandMentor}/${computedRows.length}</span>
+      <span class="badge badge-amber">Peer: ${grandPeer}/${computedRows.length}</span>
+      <span class="badge badge-blue">Both: ${grandBoth}/${computedRows.length}</span>
+    </span>`;
   document.getElementById('summaryModalOverlay').style.display='flex';
 }
 function closeSummaryModal(){document.getElementById('summaryModalOverlay').style.display='none';}
