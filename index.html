@@ -180,6 +180,31 @@ async function sb(base,key,path){
   return text?JSON.parse(text):[];
 }
 
+async function sbPaged(base,key,path){
+  // Paginates through PostgREST's default row cap (commonly 1000).
+  // Use this for any query that could plausibly return more than ~1000 rows.
+  const pageSize=1000;
+  let from=0,all=[],keepGoing=true;
+  while(keepGoing){
+    const res=await fetch(base+'/rest/v1/'+path,{
+      headers:{
+        'apikey':key,
+        'Authorization':'Bearer '+key,
+        'Accept':'application/json',
+        'Range-Unit':'items',
+        'Range':from+'-'+(from+pageSize-1)
+      }
+    });
+    const text=await res.text();
+    if(!res.ok)throw new Error(text||('Request failed: '+res.status));
+    const page=text?JSON.parse(text):[];
+    all=all.concat(page);
+    keepGoing=page.length===pageSize;
+    from+=pageSize;
+  }
+  return all;
+}
+
 let allStudents=[],progressMap={},evalMap={},approvalMap={},peerReviews=[],computedRows=[];
 
 function getWeeksDone(sid){return Object.values(progressMap[sid]||{}).filter(w=>w.status==='completed').length;}
@@ -215,7 +240,7 @@ async function loadAll(){
     let done=0;
     const results=await Promise.all(entries.map(async([key,name])=>{
       try{
-        const rows=await sb(SUPABASE_URL,SUPABASE_KEY,'students?select=*&college=eq.'+encodeURIComponent(name)+'&order=id');
+const rows=await sb(SUPABASE_URL,SUPABASE_KEY,'students?select=*&college=eq.'+encodeURIComponent(name)+'&order=id');
         rows.forEach(r=>{r._collegeKey=key;r._collegeName=name;});
         done++;setStatus('Fetched students: '+done+'/'+entries.length+' colleges done…');
         return rows;
@@ -241,8 +266,8 @@ async function loadAll(){
       }
     }
 
-    setStatus('Fetching peer reviews…');
-    try{peerReviews=await sb(PEER_SUPABASE_URL,PEER_SUPABASE_KEY,'reviews_named?order=created_at.desc');}
+   setStatus('Fetching peer reviews…');
+    try{peerReviews=await sbPaged(PEER_SUPABASE_URL,PEER_SUPABASE_KEY,'reviews_named?order=created_at.desc');}
     catch(e){console.error('Peer fetch failed',e);peerReviews=[];}
 
     buildComputedRows();
